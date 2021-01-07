@@ -16,7 +16,6 @@
 // +----------------------------------------------------------------------
 // 应用公共文件
 
-
 use think\exception\HttpResponseException;
 use app\common\service\AuthService;
 use think\facade\Cache;
@@ -73,3 +72,35 @@ if (!function_exists('api_return')) {
     }
 }
 
+
+if (!function_exists('random')) {
+    function random($length, $numeric = FALSE) {
+        $seed = base_convert(md5(microtime() . $_SERVER['DOCUMENT_ROOT']), 16, $numeric ? 10 : 35);
+        $seed = $numeric ? (str_replace('0', '', $seed) . '012340567890') : ($seed . 'zZ' . strtoupper($seed));
+        if ($numeric) {
+            $hash = '';
+        } else {
+            $hash = chr(rand(1, 26) + rand(0, 1) * 32 + 64);
+            $length--;
+        }
+        $max = strlen($seed) - 1;
+        for ($i = 0; $i < $length; $i++) {
+            $hash .= $seed{mt_rand(0, $max)};
+        }
+        return $hash;
+    }
+}
+/*
+ * 生成一个随机订单号：如果需要唯一性，请自己验证重复调用
+ *
+ * @params string $prefix 标示 SN RV
+ * @params bool $numeric 是否为纯数字
+ *
+ * @return mixed
+ * @Author yitian */
+if (!function_exists('createNo')) {
+    function createNo($prefix, $length = 6, $numeric = FALSE)
+    {
+        return $prefix . date('YmdHis') . random($length, $numeric);
+    }
+}

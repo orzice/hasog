@@ -5,4 +5,5 @@
 /资料
 *.log
 *.sql
+*.zip
 .env

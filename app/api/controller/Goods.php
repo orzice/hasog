@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 // | github开源项目：https://github.com/orzice/hasog
 // +----------------------------------------------------------------------
-// | Author：Orzice(小涛)  https://gitee.com/orzice
+// | Author：王火火(王琰豪)  https://gitee.com/w321
 // +----------------------------------------------------------------------
 // | DateTime：2020-12-31 18:28:38
 // +----------------------------------------------------------------------
@@ -37,9 +37,10 @@ class Goods  extends ApiController
         $msg = '获取分类下的商品失败，返回全部商品';
         $goods_list = GoodsModel::select();
         if($category_id){
-            $category = Category::where('id', '=', $category_id)->find();
+            $category = Category::where('id', '=', $category_id)->where('enabled', 1)->find();
             if(!empty($category)){
                 $msg = '获取分类成功';
+                // 这种方法 分类如果enabled 或者 delete 就还能查出
                 $goods_category = GoodsCategory::where('category_ids', 'like', $category_id . ',%')
                     ->whereOr('category_ids', 'like', '%,' . $category_id . ',%')
                     ->whereOr('category_ids', 'like', '%,' . $category_id);
@@ -52,6 +53,7 @@ class Goods  extends ApiController
 //                    $goods['category'] = $category_goods;
 //                }
             }
+            else{$this->error('分类不存在或暂时被禁用');}
         }
         foreach ($goods_list as &$goods){
             $category_goods = GoodsCategory::where('goods_id','=', $goods->id)->find();
@@ -62,12 +64,13 @@ class Goods  extends ApiController
         $this->success($msg,['goods_count'=> $goods_count, 'goods_list'=> $goods_list]);
     }
 
+    // 商品分类列表
     public function goods_category_list(){
-        $categories = Category::select();
+        $categories = Category::where('enabled', 1)->select();
         $this->success('获取分类成功', ['categories'=> $categories]);
     }
 
-
+    // 商品详情列表
     public function goods_detail(){
         $get = $this->request->get();
         $goods_id = isset($get['goods_id']) ? $get['goods_id'] : null;

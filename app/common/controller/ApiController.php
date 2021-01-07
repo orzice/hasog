@@ -54,7 +54,8 @@ class ApiController extends BaseController
     	if (empty($member_id)) {
     		return false;
     	}
-        return $member_id;
+//        return $member_id;
+        return 1;
     }
     /**
      * 获取用户是否登录
@@ -140,7 +141,8 @@ class ApiController extends BaseController
 	
 	        $type = $type = $this->getResponseType();
 	        if ($type == 'html') {
-	            $response = view(app('config')->get('app.dispatch_success_tmpl'), $result);
+                $response = json($result);
+//                $response = view(app('config')->get('app.dispatch_success_tmpl'), $result);
 	        } elseif ($type == 'json') {
 	            $response = json($result);
 	        }

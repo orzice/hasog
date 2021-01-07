@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 // | github开源项目：https://github.com/orzice/hasog
 // +----------------------------------------------------------------------
-// | Author：Orzice(小涛)  https://gitee.com/orzice
+// | Author：梗集(王国骁)  https://gitee.com/orzice
 // +----------------------------------------------------------------------
 // | DateTime：2020-12-31 18:12:10
 // +----------------------------------------------------------------------
@@ -52,6 +52,7 @@ class Balanceset extends AdminController
         }
         $sole = json_decode($row['sole'],true);
 
+
         if ($this->request->isAjax()){
             $post = $this->request->post();
             $rule = [
@@ -61,29 +62,34 @@ class Balanceset extends AdminController
             ];
             $this->validate($post['balance'], $rule);
             if ($post['balance']['enough']){
-            $enough = $post['balance']['enough'];
-            $give = $post['balance']['give'];
-            $sole = array();
-            if (!empty($enough)) {
-                $array = is_array($enough) ? $enough : array();
-                foreach ($array as $k => $v) {
-                    $sole[] = array(
-                        'enough' => $enough[$k],
-                        'give' => $give[$k],
-                    );
+                $enough = $post['balance']['enough'];
+                $give = $post['balance']['give'];
+                $sole = array();
+                if (!empty($enough)) {
+                    $array = is_array($enough) ? $enough : array();
+                    foreach ($array as $k => $v) {
+                        $sole[] = array(
+                            'enough' => $enough[$k],
+                            'give' => $give[$k],
+                        );
+                    }
                 }
-            }
-            $rule = [
-                'enough'=>'number|min:0',
-                'give' => 'number|min:0',
-            ];
-            foreach ($sole as $k => $v){
-                $this->validate($v, $rule);
-            }
-            $post['balance']['sole'] = json_encode($sole);
-            unset($post['balance']['enough']);
-            unset($post['balance']['give']);
-            $this->validate($post['balance'], $rule);
+                foreach ($sole as $k=>$v){
+                    if ($v['enough'] == ''&& $v['give'] ==''){
+                        unset($sole[$k]);
+                    }
+                }
+                $rule = [
+                    'enough'=>'number|min:0',
+                    'give' => 'number|min:0',
+                ];
+                foreach ($sole as $k => $v){
+                    $this->validate($v, $rule);
+                }
+                $post['balance']['sole'] = json_encode($sole);
+                unset($post['balance']['enough']);
+                unset($post['balance']['give']);
+                $this->validate($post['balance'], $rule);
             }
             $res = $this->model->limit(1)->select();
             $post['balance']['id'] = $res['0']['id'];

@@ -295,7 +295,8 @@ class Home extends AdminController
                 $goodsCategory && $result = $goods_category->save($goodsCategory);
                 $goodsCategory && $old_goods_category->delete();
                 Uploadfile($post['goods']['thumb']);
-                Uploadfile($post['goods']['thumb_url']);Db::commit();
+                Uploadfile($post['goods']['thumb_url']);
+                Db::commit();
             } catch (\Exception $e) {
                 $this->error('保存失败:' . $e->getMessage());
                 Db::rollback();
@@ -339,6 +340,9 @@ class Home extends AdminController
         }
     }
 
+    /**
+     * @NodeAnotation(title="删除")
+     */
     public function delete($id)
     {
         $row = $this->model->whereIn('id', $id)->select();

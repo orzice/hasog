@@ -300,17 +300,24 @@ class Home extends AdminController
             $save_refund = $order->order_refund()->save($data);
             $order->status = -2;
             $save = $order->save();
+            if ($save === false || $save_refund === false){
+//                    $this->success('支付成功');
+                throw new \Exception('添加失败');
+            }
+            Db::commit();
         }catch (\Exception $e){
             Db::rollback();
             $this->error('订单错误');
         }
 //        $save ? $this->success('申请成功', ['status'=>Order::STATUS_ARRAY[$order->status]]) : $this->error('订单错误') ;
-        if ($save_refund && $save){
-            Db::commit();
-            event('OrderRefund',$order_id);
-            $this->success('申请成功', ['status'=>Order::STATUS_ARRAY[$order->status]]);
-        }
-        $this->error('订单错误');
+//        if ($save_refund && $save){
+//            Db::commit();
+//            event('OrderRefund',$order_id);
+//            $this->success('申请成功', ['status'=>Order::STATUS_ARRAY[$order->status]]);
+//        }
+        event('OrderRefund',$order_id);
+        $this->success('申请成功', ['status'=>Order::STATUS_ARRAY[$order->status]]);
+//        $this->error('订单错误');
     }
 
     // 批量发货

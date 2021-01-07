@@ -90,7 +90,7 @@ class User extends AdminController
             ];
             $this->validate($post, $rule);
 
-            $post['password'] = password($post['password']);
+            $post['password'] = U_password($post['password']);
     
             event('MemberAdd',$post);
             try {
@@ -204,7 +204,7 @@ class User extends AdminController
             event('MemberPassword',$post);
             try {
                 $save = $row->save([
-                    'password' => password($post['password']),
+                    'password' => U_password($post['password']),
                 ]);
             } catch (\Exception $e) {
                 $this->error('保存失败');

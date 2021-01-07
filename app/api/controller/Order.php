@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 // | github开源项目：https://github.com/orzice/hasog
 // +----------------------------------------------------------------------
-// | Author：Orzice(小涛)  https://gitee.com/orzice
+// | Author：王火火(王琰豪)  https://gitee.com/w321
 // +----------------------------------------------------------------------
 // | DateTime：2020-12-31 18:28:38
 // +----------------------------------------------------------------------
@@ -27,6 +27,7 @@ use app\common\model\MemberAddress;
 use app\common\model\Goods;
 use app\common\model\Order as OrderModel;
 
+use think\Exception;
 use think\facade\Config;
 use think\facade\Db;
 use think\facade\Event;
@@ -91,8 +92,8 @@ class Order extends ApiController
             'user_address|收货地址' => 'require|number',
         ];
         $validate = $this->validate($post, $rule);
-//        $user_id = $this->MemberId();
-        $user_id = 1;
+        $user_id = $this->MemberId();
+//        $user_id = 1;
         $user = Member::find($user_id);
         $order_sn = OrderModel::createOrderSn('AC');
         $goods_price = 0;
@@ -204,17 +205,24 @@ class Order extends ApiController
             $order->generate_address($request_address);
             $save = $order->together(['address'])->save();
             $save_goods = $order->generate_goods($goods_objs);
+            if ($order_save=== false || $save === false || $save_goods=== false){
+                $order->delete();
+//                $this->success('生成订单成功');
+                throw new \Exception('添加失败');
+            }
+            Db::commit();
         }catch (\Exception $e){
             Db::rollback();
             $this->error('生成订单失败，请稍后重试');
         }
-        if ($order_save && $save&& $save_goods){
+/*        if ($order_save && $save && $save_goods){
             Db::commit();
             $this->success('生成订单成功');
-        }
-        Db::rollback();
-        $order->delete();
-        $this->error('生成订单失败，请稍后重试');
+        }*/
+        $this->success('生成订单成功');
+//        Db::rollback();
+//        $order->delete();
+//        $this->error('生成订单失败，请稍后重试');
     }
 
 
@@ -223,8 +231,8 @@ class Order extends ApiController
     {
         $post = $this->request->post();
 //        print_r($post);die();
-//        $user_id = $this->MemberId();
-        $user_id = 1;
+        $user_id = $this->MemberId();
+//        $user_id = 1;
         $user = Member::find($user_id);
         $order_sn = OrderModel::createOrderSn('AC');
 //        $price = 0;
@@ -328,6 +336,7 @@ class Order extends ApiController
             'weight' => $weight,
             'check_address' => $request_address->id,
             'user_address' => $user->address,
+            'pay_type' => OrderModel::PAY_TYPE_ID,
             'dispatch_price' => $dispatch_price,
             'goods_price' => $goods_price,       // 总现价
             'discount_price' => $discount_price, // 总折扣价
@@ -344,8 +353,11 @@ class Order extends ApiController
     {
         $post = $this->request->post();
         $order_id = isset($post['order_id']) ? $post['order_id'] : null ;
+        $pay_type_id = isset($post['pay_type_id']) ? $post['pay_type_id'] : null ;
         empty($order_id) && $this->error('订单不存在');
-        $user_id = 1;
+        !array_key_exists($pay_type_id, OrderModel::PAY_TYPE_ID) && $this->error('请选择正确的支付方式');
+        $user_id = $this->MemberId();
+//        $user_id = 1;
         $user = Member::find($user_id);
         $order = OrderModel::where('uid', $user_id)->where('id', $order_id)->find();
         empty($order_id) && $this->error('订单不存在');
@@ -359,6 +371,8 @@ class Order extends ApiController
         if($order->status === 0){
             $order->status = 1;
             $order->pay_time = time();
+            // 此处应该有支付逻辑并更改支付id
+            $order->pay_type_id = $pay_type_id;
             try{
                 Db::startTrans();
                 $goods_array = $order->goods;
@@ -369,17 +383,24 @@ class Order extends ApiController
                     }
                 }
                 $save = $order->save();
+
+                if ($save === false){
+//                    $this->success('支付成功');
+                    throw new \Exception('添加失败');
+                }
                 Db::commit();
             }catch(\Exception $e){
                 Db::rollback();
                 $this->error('支付失败请稍后重试');
                 // $this->tuikuan() // 退款操作
             }
-            if ($save){
-                $this->success('支付成功');
-            }
-            Db::rollback();
-            $this->error('支付失败请稍后重试');
+//            if ($save){
+//                $this->success('支付成功');
+//            }
+//            Db::rollback();
+//            $this->error('支付失败请稍后重试');
+            $this->success('支付成功');
+
         }
         $this->error('该订单当前状态不能付款');
 
@@ -391,7 +412,8 @@ class Order extends ApiController
         $post = $this->request->post();
         $order_id = isset($post['order_id']) ? $post['order_id'] : null ;
         empty($order_id) && $this->error('订单不存在');
-        $user_id = 1;
+        $user_id = $this->MemberId();
+//        $user_id = 1;
         $user = Member::find($user_id);
         $order = OrderModel::where('uid', $user_id)->where('id', $order_id)->find();
         empty($order_id) && $this->error('订单不存在');
@@ -418,7 +440,8 @@ class Order extends ApiController
         $post = $this->request->post();
         $order_id = isset($post['order_id']) ? $post['order_id'] : null ;
         empty($order_id) && $this->error('订单不存在');
-        $user_id = 1;
+        $user_id = $this->MemberId();
+//        $user_id = 1;
         $user = Member::find($user_id);
         $order = OrderModel::where('uid', $user_id)->where('id', $order_id)->find();
         empty($order_id) && $this->error('订单不存在');
@@ -436,16 +459,21 @@ class Order extends ApiController
                 $save_refund = $order->order_refund()->save($data);
                 $order->status = -2;
                 $save = $order->save();
+                if ($save_refund === false || $save === false){
+                    throw new \Exception('添加失败');
+                }
+                Db::commit();
             }catch (\Exception $e){
                 Db::rollback();
-                $this->error('订单错误');
+                $this->error('申请失败');
             }
 //        $save ? $this->success('申请成功', ['status'=>Order::STATUS_ARRAY[$order->status]]) : $this->error('订单错误') ;
-            if ($save_refund && $save){
-                Db::commit();
+/*            if ($save_refund && $save){
+                Db::rollback();
                 $this->success('申请成功');
             }
-            $this->error('支付失败请稍后重试');
+            $this->error('申请失败请稍后重试');*/
+            $this->success('申请成功');
         }
         $this->error('该订单当前状态不能申请退款');
     }
@@ -463,8 +491,8 @@ class Order extends ApiController
 
     // 用户地址列表及选择
     public function user_address(){
-//        $user_id = $this->MemberId();
-        $user_id = 1;
+        $user_id = $this->MemberId();
+//        $user_id = 1;
         $user_address = MemberAddress::where('uid', $user_id)->select()
             ->hidden(['create_time', 'update_time', 'delete_time'])
             ->toArray();
@@ -475,8 +503,8 @@ class Order extends ApiController
     // 订单详情 get order_id
     public function order_detail()
     {
-        //        $user_id = $this->MemberId();
-        $user_id = 1;
+        $user_id = $this->MemberId();
+//        $user_id = 1;
         $get = $this->request->get();
         $order_id = $get['order_id'];
         // 判断订单是否存在以及是否是该用户的订单
@@ -504,8 +532,8 @@ class Order extends ApiController
     // 订单列表 get status
     public function order_list()
     {
-//        $user_id = $this->MemberId();
-        $user_id = 1;
+        $user_id = $this->MemberId();
+//        $user_id = 1;
         $get = $this->request->get();
         $request_status = isset($get['status'])? $get['status'] : null ;
         $order_list = OrderModel::where('uid', $user_id)->select();

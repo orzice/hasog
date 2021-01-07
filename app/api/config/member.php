@@ -19,12 +19,18 @@ return [
 
     // 不需要验证登录的控制器
     'no_login_controller' => [
-        'login',
+//        'login',
         'area',
         'index',
         'plugin',
         'page',
+        'goods',
     ],
 
+    // 不需要验证登录的节点
+    'no_login_node'       => [
+        'login/index',
+        'login/register',
+    ],
 
 ];

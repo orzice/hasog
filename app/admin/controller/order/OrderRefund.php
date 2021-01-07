@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 // | github开源项目：https://github.com/orzice/hasog
 // +----------------------------------------------------------------------
-// | Author：Orzice(小涛)  https://gitee.com/orzice
+// | Author：王火火(王琰豪) https://gitee.com/w321
 // +----------------------------------------------------------------------
 // | DateTime：2020-12-31 18:16:23
 // +----------------------------------------------------------------------
@@ -69,7 +69,9 @@ class OrderRefund extends AdminController
     }
 
 
-
+    /**
+     * @NodeAnotation(title="审核退款")
+     */
     public function edit($id)
     {
         $order_refund = $this->model::where('id', $id)->find();
@@ -105,16 +107,22 @@ class OrderRefund extends AdminController
                 }
                 $order_save = $order->save();
                 $save = $order_refund->allowField($this->model::ALLOW_FIELDS)->save($post);
+                if($save === false)
+                {
+                    throw new \Exception('添加失败');
+                }
+                DB::commit();
             } catch (\Exception $e) {
                 DB::rollback();
                 $this->error('保存失败了' . $e);
             }
-            if ($save) {
+/*            if ($save) {
                 DB::commit();
                 $this->success('保存成功');
-            }
-            DB::rollback();
-            $this->error('保存失败');
+            }*/
+            $this->success('保存成功');
+//            DB::rollback();
+//            $this->error('保存失败');
         }
         $this->assign('status_array', $this->model::STATUS_ARRAY);
         $this->assign('status_zh', $this->model::STATUS_ARRAY[$order_refund->status]);
@@ -125,13 +133,6 @@ class OrderRefund extends AdminController
     }
 
 
-
-
-
-
-    public function batch_delivery(){
-
-    }
 
 
 }
