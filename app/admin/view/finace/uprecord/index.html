@@ -1,0 +1,40 @@
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <table id="currentTable" class="layui-table layui-hide"
+               data-auth-preview="{:auth('finace.uprecord/preview')}"
+               lay-filter="currentTable">
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    require(["jquery", "easy-admin"], function ($, ea) {
+
+        var init = {
+            table_elem: '#currentTable',
+            table_render_id: 'currentTableRenderId',
+            index_url: 'finace.uprecord/index',
+            modify_url: 'finace.uprecord/modify',
+            export_url: 'finace.uprecord/export',
+            preview_url: 'finace.uprecord/preview'
+        };
+
+
+        ea.table.render({
+            init: init,
+            toolbar: ['refresh', 'export',],
+            cols: [[
+                {field: 'id', minWidth: 200, title: 'ID',sort: true},
+                {field: 'uid', minWidth: 200, title: '会员id'},
+                {field: 'way', minWidth: 80, title: '充值方式',search: 'select', selectList: { 0: '后台充值'}},
+                {field: 'money', minWidth: 200, title: '充值金额'},
+                {field: 'state', minWidth: 80, title: '充值状态',search: 'select', selectList: { 0: '充值失败',1: '充值成功'}},
+                {field: 'create_time', minWidth: 80, title: '创建时间', search: 'range'},
+            ]],
+        });
+
+        ea.listen();
+
+    });
+</script>

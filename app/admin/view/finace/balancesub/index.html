@@ -1,0 +1,40 @@
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <table id="currentTable" class="layui-table layui-hide"
+               data-auth-preview="{:auth('finace.balancesub/preview')}"
+               lay-filter="currentTable">
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    require(["jquery", "easy-admin"], function ($, ea) {
+
+        var init = {
+            table_elem: '#currentTable',
+            table_render_id: 'currentTableRenderId',
+            index_url: 'finace.balancesub/index',
+            modify_url: 'finace.balancesub/modify',
+            export_url: 'finace.balancesub/export',
+            preview_url: 'finace.balancesub/preview'
+        };
+
+
+        ea.table.render({
+            init: init,
+            toolbar: ['refresh', 'export',],
+            cols: [[
+                {field: 'id', minWidth: 200, title: 'ID',sort: true},
+                {field: 'uid', minWidth: 200, title: '会员id'},
+                {field: 'balance', minWidth: 200, title: '余额'},
+                {field: 'state', minWidth: 80, title: '业务类型',search: 'select', selectList: { 0: '平台扣款',1: '后台充值'}},
+                {field: 'money', minWidth: 200, title: '金额'},
+                {field: 'create_time', minWidth: 80, title: '创建时间', search: 'range'},
+            ]],
+        });
+
+        ea.listen();
+
+    });
+</script>

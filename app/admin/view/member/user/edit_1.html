@@ -1,0 +1,26 @@
+
+        <div class="layui-form-item">
+            <label class="layui-form-label required">UID</label>
+            <div class="layui-input-block">
+                <input type="text"class="layui-input" readonly value="{$row.id|default=''}">
+                <tip></tip>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required">手机号</label>
+            <div class="layui-input-block">
+                <input type="text"  class="layui-input" readonly value="{$row.mobile|default=''}">
+                <tip></tip>
+            </div>
+        </div>
+
+
+
+
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">备注信息</label>
+            <div class="layui-input-block">
+                <textarea name="remark" class="layui-textarea" placeholder="请输入备注信息">{$row.remark|default=''}</textarea>
+            </div>
+        </div>

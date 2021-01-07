@@ -1,0 +1,98 @@
+<style type="text/css">
+.plugin .bold{
+    font-weight: 700;
+}
+.plugin .sml{
+    font-size: 9px !important;
+    -webkit-text-size-adjust: none;
+}
+.plugin p {
+    margin-top: 10px;
+}
+.plugin div.memo {
+    margin: 5px;
+    padding: 5px;
+    border: 1px dotted #DEEFFB;
+    background: #FFF;
+}
+tip{
+    color: #737373;
+}
+</style>
+<link rel="stylesheet" href="__STATIC__/lib/layer-mobile-2.0/need/layer.css?v={$version}" media="all">
+<div class="layuimini-container">
+
+<form id="app-form" class="layui-form layuimini-form">
+
+    <div class="layuimini-main" id="app">
+        <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief" >
+            <ul class="layui-tab-title">
+                <li class="layui-this">配送逻辑</li>
+                <li layuimini-content-href="goods.dispatch/dataadd?id={$row.id}" data-title="【{$row.dispatch_name}】添加配送逻辑">添加逻辑</li>
+
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show layui-table-body layui-table-main" >
+                    {include file="goods/dispatch/data_1" /}
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <div class="hr-line"></div>
+        <div class="layui-form-item text-center">
+            <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit>确认</button>
+            <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">重置</button>
+        </div>
+
+    </form>
+</div>
+<script type="text/javascript">
+
+require(["jquery", "easy-admin", "vue",'miniTab'], function ($,ea, Vue,miniTab) {
+
+    var form = layui.form;
+
+    var app = new Vue({
+        el: '#app',
+        data: {}
+    });
+
+    var init = {
+        table_elem: '#currentTable',
+        table_render_id: 'currentTableRenderId',
+        index_url: 'goods.dispatch/data?id={$row.id}',
+        edit_url: 'goods.dispatch/dataedit',
+        modify_url: 'goods.dispatch/datamodify',
+        delete_url: 'goods.dispatch/datadelete',
+    };
+
+            ea.table.render({
+                init: init,
+                toolbar: ['refresh'],
+                cols: [[
+                    {field: 'id', minWidth: 80, title: '索引'},
+                    {field: 'display_order', minWidth: 80, title: '优先权', edit: 'text'},
+                    {field: 'areas_txt', minWidth: 200, title: '地区'},
+                    {field: 'state', minWidth: 200,search: false, title: '0白名单 1黑名单', selectList: {0: '允许发货', 1: '禁止发货'}},
+                    {field: 'first_piece', minWidth: 80, title: '首件(个)', edit: 'text'},
+                    {field: 'first_piece_price', minWidth: 80, title: '运费(元)', edit: 'text', templet: ea.table.price},
+                    {field: 'another_piece', minWidth: 80, title: '续件(个)', edit: 'text'},
+                    {field: 'another_piece_price', minWidth: 80, title: '续费(元)', edit: 'text', templet: ea.table.price},
+                    {
+                        width: 200,
+                        title: '操作',
+                        templet: ea.table.tool,
+                        operat: [
+                            'edit',
+                            'delete'
+                        ]
+                    }
+                ]],
+            });
+
+    ea.listen();
+    miniTab.listen();
+    
+});
+</script>

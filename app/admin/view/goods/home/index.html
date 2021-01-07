@@ -1,0 +1,72 @@
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <table id="currentTable" class="layui-table layui-hide"
+               data-auth-add="{:auth('goods.home/add')}"
+               data-auth-edit="{:auth('goods.home/edit')}"
+               data-auth-delete="{:auth('goods.home/delete')}"
+               lay-filter="currentTable">
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+require(["jquery", "easy-admin"], function ($, ea) {
+
+    var init = {
+        table_elem: '#currentTable',
+        table_render_id: 'currentTableRenderId',
+        index_url: 'goods.home/index',
+        add_url: 'goods.home/add',
+        edit_url: 'goods.home/edit',
+        delete_url: 'goods.home/delete',
+        modify_url: 'goods.home/modify',
+        export_url: 'goods.home/export',
+    };
+
+
+            ea.table.render({
+                init: init,
+                toolbar: ['refresh',
+                    [{
+                        text: '添加',
+                        url: init.add_url,
+                        method: 'open',
+                        auth: 'add',
+                        class: 'layui-btn layui-btn-normal layui-btn-sm',
+                        icon: 'fa fa-plus ',
+                        extend: 'data-full="true"',
+                    }], 'export'],
+                cols: [[
+                    {field: 'id', minWidth: 80, title: 'ID'},
+                    {field: 'thumb', minWidth: 80, title: '封面', search: false, templet: ea.table.image},
+                    {field: 'title', minWidth: 200, title: '标题', edit: 'text'},
+                    {field: 'price', minWidth: 80,search: false, title: '价格', edit: 'text', templet: ea.table.price},
+                    {field: 'stock', minWidth: 80, search: false,title: '库存', edit: 'text'},
+                    {field: 'real_sales', minWidth: 80,search: false, title: '出售数量'},
+                    {field: 'type', title: '是否实体商品', minWidth: 85, search: 'select', selectList: {1: '实体商品', 2: '虚拟商品'}, templet: ea.table.switch},
+                    {field: 'status', title: '上架', minWidth: 85, search: 'select', selectList: {0: '下架', 1: '上架'}, templet: ea.table.switch},
+                    {field: 'create_time', minWidth: 80, title: '创建时间', search: 'range'},
+                    {
+                        width: 180,
+                        title: '操作',
+                        templet: ea.table.tool,
+                        operat: [
+                            [{
+                                text: '编辑',
+                                url: init.edit_url,
+                                method: 'open',
+                                auth: 'edit',
+                                class: 'layui-btn layui-btn-xs layui-btn-success',
+                                extend: 'data-full="true"',
+                            }],
+                            'delete'
+                        ]
+                    }
+                ]],
+            });
+
+            ea.listen();
+    
+});
+</script>

@@ -1,0 +1,62 @@
+<style type="text/css">
+.plugin .bold{
+    font-weight: 700;
+}
+.plugin .sml{
+    font-size: 9px !important;
+    -webkit-text-size-adjust: none;
+}
+.plugin p {
+    margin-top: 10px;
+}
+.plugin div.memo {
+    margin: 5px;
+    padding: 5px;
+    border: 1px dotted #DEEFFB;
+    background: #FFF;
+}
+</style>
+<link rel="stylesheet" href="__STATIC__/lib/layer-mobile-2.0/need/layer.css?v={$version}" media="all">
+<div class="layuimini-container">
+    <div class="layuimini-main" id="app">
+
+        <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+            <ul class="layui-tab-title">
+                <li class="layui-this">已开启插件<span class="layui-badge layui-bg-blue">{:count($PluginOn);}</span></li>
+                <li>已关闭插件<span class="layui-badge layui-bg-blue">{:count($PluginOff);}</span></li>
+                <li>待安装插件<span class="layui-badge">{:count($Install);}</span></li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show layui-table-body layui-table-main" >
+                    {include file="plugin/index/on" /}
+                </div>
+                <div class="layui-tab-item">
+                    {include file="plugin/index/off" /}
+                </div>
+                <div class="layui-tab-item">
+                    {include file="plugin/index/install" /}
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script type="text/javascript">
+
+require(["jquery", "easy-admin", "vue","layer"], function ($, ea, Vue,layer) {
+
+    var form = layui.form;
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+        }
+    });
+
+  //loading带文字
+  // layer.open({type: 2,shadeClose: false,content: '加载中'});
+
+    ea.listen();
+    
+});
+</script>

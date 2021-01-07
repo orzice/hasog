@@ -1,0 +1,402 @@
+<!--<div class="layui-form-item">-->
+<!--    <label class="layui-form-label required">UID</label>-->
+<!--    <div class="layui-input-block">-->
+<!--        <input type="text" class="layui-input" readonly value="{$row.uid|default=''}">-->
+<!--        <tip></tip>-->
+<!--    </div>-->
+<!--</div>-->
+
+<div class="layui-form-item">
+    <label class="layui-form-label">买家</label>
+    <div class="layui-input-block">
+        <!--        <input type="text" class="layui-input" readonly value="{$row.member.mobile|default=''}">-->
+        <a href="" class="layui-form-label-col">{$row.member.mobile|default=''}</a>
+        <tip></tip>
+    </div>
+</div>
+
+
+<!--<div class="layui-form-item">-->
+<!--    <label class="layui-form-label required">{$row.member.mobile}</label>-->
+<!--    <div class="layui-input-block">-->
+<!--        <img src="{$row.member.head_img}" alt="">-->
+<!--    </div>-->
+<!--</div>-->
+
+
+<div class="layui-form-item">
+    <label class="layui-form-label">订单号</label>
+    <div class="layui-input-block">
+        <!--        <input type="text" class="layui-input" readonly value="{$row.order_sn|default=''}">-->
+        <div class="layui-form-label-col">
+            {$row.order_sn|default=''}
+        </div>
+        <tip></tip>
+    </div>
+</div>
+
+
+<div class="layui-form-item">
+    <label class="layui-form-label">订单状态</label>
+    <div class="layui-input-block">
+        <div class="layui-form-label-col">
+            <p id="status" style="display: inline">{$row.status_zh}</p>
+            <!--            <button id="receive_money" type="button" onclick="receive_money()" class="layui-btn layui-btn-primary layui-btn-sm">确认收款</button>-->
+            {if $row.status === 0}<button id="receive_money" type="button" class="layui-btn layui-btn-primary layui-btn-sm">确认收款</button>{/if}
+            {if $row.status === 1}<button id="send_goods" type="button" class="layui-btn layui-btn-primary layui-btn-sm">确认发货</button>{/if}
+            {if $row.status === 2}<button id="receive_goods" type="button" class="layui-btn layui-btn-primary layui-btn-sm">确认收货</button>{/if}
+            {if $row.status === 1}<button id="apply_cancel" type="button" class="layui-btn layui-btn-primary layui-btn-sm">申请退款</button>{/if}
+        </div>
+        <!--        <select name="status">
+                    {foreach $status_array as $k=>$v}
+                    <option value="{$k}" {if $row.status==$k}selected{/if}>{$v|raw}</option>
+                    {/foreach}
+                </select>-->
+    </div>
+</div>
+
+<div class="layui-form-item">
+    <label class="layui-form-label required">订单金额</label>
+    <div class="layui-input-block">
+        <div class="layui-form-label-col">
+            商品金额: {$row.goods_price}<br>
+            运费: {$row.dispatch_price}<br>
+            优惠金额: {$row.discount_price}<br>
+            商品订单总金额: {$row.order_goods_price}<br>
+            抵扣总金额: {$row.deduction_price}<br>
+            订单支付记录: {$row.order_pay_id}<br>
+            成本总价: {$row.cost_amount}<br>
+            是否虚拟订单: {$row.is_virtual}<br>
+        </div>
+    </div>
+</div>
+
+<div class="layui-form-item">
+    <label class="layui-form-label required"> 订单改价金额
+    </label>
+    {if $row.status === 0}
+    <div class="layui-input-block">
+        <input name="change_price" type="number" class="layui-input"
+               value="{$row.change_price|default=''}">
+        <tip></tip>
+    </div>
+    {else /}
+    <div class="layui-form-label-col">
+        {$row.change_price|default='未改价'}
+    </div>
+    {/if}
+</div>
+<div class="layui-form-item">
+    <label class="layui-form-label"> 运费改价金额
+    </label>
+    {if $row.status === 0}
+    <div class="layui-input-block">
+        <input name="change_dispatch_price" type="number" class="layui-input"
+               value="{$row.change_dispatch_price|default=''}">
+        <tip></tip>
+    </div>
+    {else /}
+    <div class="layui-form-label-col">
+        {$row.change_dispatch_price|default='未改价'}
+    </div>
+    {/if}
+</div>
+
+<div class="layui-form-item">
+    <label class="layui-form-label required">收货地址</label>
+    <div class="layui-input-block">
+        <div class="layui-form-label-col">
+            收货电话: {$row.address.mobile}<br>
+            收货人: {$row.address.realname}<br>
+            省: {$row.address.province.ext_name}<br>
+            市: {$row.address.city.ext_name}<br>
+            县(区): {$row.address.district.ext_name}<br>
+            街道: {$row.address.street.ext_name}<br>
+            详细地址: {$row.address.address}<br>
+        </div>
+    </div>
+</div>
+
+<div class="layui-form-item">
+    <label class="layui-form-label required">快递公司码</label>
+    {if $row.status === 1 || $row.status === 2}
+    <div class="layui-input-block">
+        <input type="text" name="express_code" class="layui-input" value="{$row.express_code|default=''}">
+        <tip></tip>
+    </div>
+    {else /}
+    <div class="layui-form-label-col">
+        {$row.express_code}
+    </div>
+    {/if}
+</div>
+
+<div class="layui-form-item">
+    <label class="layui-form-label required">快递公司名称</label>
+    {if $row.status === 1 || $row.status === 2}
+    <div class="layui-input-block">
+        <input type="text" name="express_company_name" class="layui-input"
+               value="{$row.express_company_name|default=''}">
+        <tip></tip>
+    </div>
+    {else /}
+    <div class="layui-form-label-col">
+        {$row.express_code}
+    </div>
+    {/if}
+</div>
+
+<div class="layui-form-item">
+
+    <label class="layui-form-label required">快递单号</label>
+    {if $row.status === 1 || $row.status === 2}
+    <div class="layui-form-label-col">
+        <button id="add-express" type="button" class="layui-btn layui-btn-sm layui-btn-normal ">添加快递单号</button>
+    </div>
+    <div id="add-express-div" class="layui-input-block">
+        {foreach $express_sns as $key=>$vo }
+        <div>
+            <input style="min-width: 300px;width: 80%; float: left" type="text" name="express_sn[]" class="layui-input" value="{$vo|default=''}">
+            {if $key !== 0}
+            <button style="display:inline-block;float: left; margin-left: 30px;" class="delete-express layui-btn layui-btn-sm layui-btn-danger" type="button">删除</button>
+            {/if}
+        </div>
+        {/foreach}
+    </div>
+    {else /}
+    <div class="layui-form-label-col">
+        {foreach $express_sns as $key=>$vo }
+        {$vo}<br>
+        {/foreach}
+
+    </div>
+    {/if}
+</div>
+
+<div class="layui-form-item">
+    <label class="layui-form-label">支付时间</label>
+    <div class="layui-input-block">
+        <div class="layui-form-label-col">
+            {$row.pay_time|date='Y-m-d H:i'|default=''}
+        </div>
+        <!--        <input name="pay_time" type="text" class="layui-input" readonly-->
+        <!--               value="{$row.pay_time|date='Y-m-d H:i'|default=''}">-->
+        <!--        <tip></tip>-->
+    </div>
+</div>
+
+<div class="layui-form-item">
+    <label class="layui-form-label required">订单完成时间</label>
+    <div class="layui-input-block">
+        <div class="layui-form-label-col">
+            {$row.finish_time|date='Y-m-d H:i'|default=''}
+        </div>
+        <!--        <input name="finish_time" type="text" class="layui-input" readonly-->
+        <!--               value="{$row.finish_time|date='Y-m-d H:i'|default=''}">-->
+        <!--        <tip></tip>-->
+    </div>
+</div>
+
+<div class="layui-form-item">
+    <label class="layui-form-label required">发货时间</label>
+    <div class="layui-input-block">
+        <div class="layui-form-label-col">
+            {$row.finish_time|date='Y-m-d H:i'|default=''}
+        </div>
+        <!--        <input name="finish_time" type="text" class="layui-input" readonly-->
+        <!--               value="{$row.finish_time|date='Y-m-d H:i'|default=''}">-->
+        <!--        <tip></tip>-->
+    </div>
+</div>
+
+<div class="layui-form-item">
+    <label class="layui-form-label required">订单取消时间</label>
+    <div class="layui-input-block">
+        <div class="layui-form-label-col">
+            {$row.cancel_time|date='Y-m-d H:i'|default=''}
+        </div>
+        <!--        <input name="cancel_time" type="text" class="layui-input" readonly-->
+        <!--               value="{$row.cancel_time|date='Y-m-d H:i'|default=''}">-->
+        <!--        <tip></tip>-->
+    </div>
+</div>
+
+<!--        <div class="layui-form-item">-->
+<!--            <label class="layui-form-label required">取消支付时间</label>-->
+<!--            <div class="layui-input-block">-->
+<!--                <input name="cancel_pay_time" type="datetime-local" class="layui-input" readonly value="{$row.cancel_pay_time|default=''}">-->
+<!--                <tip></tip>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        <div class="layui-form-item">-->
+<!--            <label class="layui-form-label required">取消发货时间</label>-->
+<!--            <div class="layui-input-block">-->
+<!--                <input type="text" class="layui-input" readonly value="{$row.pay_time|default=''}">-->
+<!--                <tip></tip>-->
+<!--            </div>-->
+<!--        </div>-->
+
+
+<div class="layui-form-item">
+    <label class="layui-form-label">评论状态</label>
+    <div class="layui-input-block">
+        <div class="layui-form-label-col">
+            {$row.comment_status}
+        </div>
+    </div>
+</div>
+
+
+<div class="layui-form-item layui-form-text">
+    <label class="layui-form-label">客户备注</label>
+    <div class="layui-input-block">
+        <textarea name="member_remark" disabled class="layui-textarea"
+                  placeholder="暂无">{$row.member_remark|default=''}</textarea>
+    </div>
+</div>
+
+<div class="layui-form-item layui-form-text">
+    <label class="layui-form-label">商家备注</label>
+    <div class="layui-input-block">
+        <textarea name="merchant_remark" class="layui-textarea"
+                  placeholder="请输入备注信息">{$row.merchant_remark|default=''}</textarea>
+    </div>
+</div>
+
+<!--<div class="layui-form-item layui-form-text">-->
+<!--    <label class="layui-form-label">商品信息</label>-->
+<!--    <div class="layui-input-block">-->
+<!--        <table id="goods"></table>-->
+<!--    </div>-->
+<!--</div>-->
+
+<div class="layui-form-item layui-form-text">
+    <label class="layui-form-label">商品信息</label>
+    <div class="layui-input-block">
+        <!--        <button class="layui-btn layui-btn-normal layui-btn-sm" data-open="system.menu/add" data-title="添加" data-full="true"><i class="fa fa-plus"></i> 添加</button>-->
+        <!--        <button class="layui-btn layui-btn-normal layui-btn-sm"-->
+        <!--                data-open="/admin/order.order_goods/get_goods/?order_id={$row.id}" data-title="查看订单商品" data-full="false" data-width="600" data-height="300">-->
+        <!--            查看订单商品-->
+        <!--        </button>-->
+        <table class="layui-table">
+            <colgroup>
+                <col width="20">
+                <col width="120">
+                <col width="120">
+                <col width="120">
+                <col width="120">
+                <col width="120">
+                <col width="120">
+                <col>
+            </colgroup>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>商品标题</th>
+                <th>订单商品数</th>
+                <th>真实价格</th>
+                <th>商品编码</th>
+                <th>商品快照价格</th>
+                <!--                <th>改价金额</th>-->
+                <!--                <th>确定改价</th>-->
+            </tr>
+            </thead>
+            <tbody>
+            {foreach $row.goods as $goods}
+            <tr>
+                <td>{$goods.id}</td>
+                <td><a href="/admin/goods.home/edit?id={$goods.id}">{$goods.title}</a></td>
+                <td>{$goods.total}</td>
+                <td>{$goods.price}</td>
+                <td>{$goods.goods_sn}</td>
+                <td>{$goods.goods_price}</td>
+                <!--                <td id="change-{$goods.id}" class="change-goods">{$goods.change_price}</td>-->
+                <!--                <td is_input="false" onclick="change_goods(this,'{$goods.id}')">{$goods.change_price}</td>-->
+                <!--                <td>-->
+                <!--                    <input class="layui-input change-goods" type="text" name="change_price" value="{$goods.change_price}" >-->
+                <!--                </td>-->
+                <!--                <td>
+                &lt;!&ndash;                    <button onclick="send_change(this, '{$goods.id}')" class="send-button layui-btn layui-btn-normal layui-btn-sm">&ndash;&gt;
+                                    <button class="send-button layui-btn layui-btn-normal layui-btn-sm">
+                                        确定修改
+                                    </button>
+                                </td>-->
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+    require(["jquery"], function ($) {
+        $('change-goods').each(function (event) {
+            // $(this).click(function (event){
+            //     event.stopPropagation()
+            //     console.log($(this).text())
+            // })
+            // $(this).changeEvent('change',)
+        })
+
+        /*        function receive_money() {
+                    $.ajax({
+                        url: 'receive_money',
+                        dataType: 'json',
+                        data: {'order_id': },
+                        success: function(res) {
+                            // 假如返回的 res.data 是需要导出的列表数据
+                            console.log(res.data);// [{name: 'wang', age: 18}, {name: 'layui', age: 3}]
+                        }
+                    });
+                }*/
+
+
+    })
+
+
+    require(["jquery"], function ($) {
+        // $(document).ready(
+        /*        $('.change-goods').each(function (event) {
+                    // alert($(this).text())
+                    // $(this).on('click', function () {
+                    $(this).click(function (event) {
+                        alert(1)
+                        old_change_price = $(this).attr('class')
+                        console.log(old_change_price)
+                        str = '<input class="layui-input" type="text" name="change_price" value="' + old_change_price + '" >'
+                        $(this).html(str);
+                    })
+                })*/
+        // $('.change-goods').click(function (event) {
+        //     alert(1)
+        //     old_change_price = $(this).attr('class')
+        //     console.log(old_change_price)
+        //     str = '<input class="layui-input" type="text" name="change_price" value="' + old_change_price + '" >'
+        //     $(this).html(str);
+        // })
+        // $('.change-goods').on('click', function (event) {
+        //     alert(2)
+        //     // alert(1)
+        //     // old_change_price = $(this).attr('class')
+        //     // console.log(old_change_price)
+        //     // str = '<input class="layui-input" type="text" name="change_price" value="' + old_change_price + '" >'
+        //     // $(this).html(str);
+        // })
+        // )
+    })
+
+    // function change_goods(event, goods_id) {
+    //     console.log(event.innerText)
+    //     is_input = event.getAttribute('is_input')
+    //     console.log(goods_id)
+    //     old_change_price = event.innerText
+    //     event.setAttribute('onclick', '')
+    //     str = '<input class="layui-input" type="text" name="change_price" value="' + old_change_price + '" >'
+    //     event.innerHTML = str
+    // }
+
+
+</script>
+
+<!--<script src="/layui/layui.js"></script>-->

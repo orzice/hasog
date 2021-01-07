@@ -1,0 +1,28 @@
+
+<link rel="stylesheet" href="__STATIC__/lib/layer-mobile-2.0/need/layer.css?v={$version}" media="all">
+<div class="layuimini-container">
+
+    <form id="app-form" class="layui-form layuimini-form">
+<div class="layui-form-item">
+    <label class="layui-form-label">买家</label>
+    <div class="layui-input-block">
+                <input type="text" class="layui-input" readonly value="{$row.member.mobile|default=''}">
+<!--        <a href="" class="layui-form-label-col">{$row.member.mobile|default=''}</a>-->
+        <tip></tip>
+    </div>
+</div>
+
+    </form>
+</div>
+
+<script type="text/javascript">
+    require(["jquery"], function ($) {
+        $('change-goods').each(function (event) {
+            // $(this).click(function (event){
+            //     event.stopPropagation()
+            //     console.log($(this).text())
+            // })
+            // $(this).changeEvent('change',)
+        })
+    })
+</script>

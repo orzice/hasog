@@ -1,0 +1,282 @@
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <table id="currentTable" class="layui-table layui-hide"
+               lay-filter="currentTable">
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    require(["jquery", "easy-admin"], function ($, ea) {
+
+        var init = {
+            table_elem: '#currentTable',
+            table_render_id: 'currentTableRenderId',
+            index_url: 'order.home/index',
+            edit_url: 'order.home/edit',
+            batch_url: 'order.home/batch_delivery',
+        };
+
+
+        ea.table.render({
+            init: init,
+            toolbar: ['refresh','#batch_delivery',
+                // [{
+                //     text: '批量发货',
+                //     url: '',
+                //     method: 'open',
+                //     auth: 'add',
+                //     class: 'layui-btn layui-btn-normal layui-btn-sm',
+                //     icon: 'fa fa-plus ',
+                //     extend: 'data-full="false"',
+                // }]
+            ],
+            // toolbar: '#batch_delivery',
+            cols: [[
+                {type: "checkbox"},
+                {field: 'id', minWidth: 30, title: 'ID'},
+                {field: 'order_sn', minWidth: 80, title: '订单号'},
+
+                {
+                    field: 'goods.goods_id', title: '商品ID', minWidth: 300,
+                    templet: function (d) {
+                        var titles = '';
+                        for (var i = 0; i < d.goods.length; i++) {
+
+                            titles += '<div style="text-align: left;margin-bottom: 5px;border: 1px solid #ddd;">';
+                            titles += '<img style="max-width: 200px; max-height: 40px;" src="' + d.goods[i].thumb + '" data-image="undefined"> ';
+                            titles += '[' + d.goods[i].goods_id + '] ';
+                            titles += d.goods[i].title;
+                            titles += ' 【 ¥' + d.goods[i].price + ' 】 数量：' + d.goods[i].total;
+                            titles += '</div>';
+                        }
+                        return titles;
+                    }
+                },
+
+                {field: 'uid', minWidth: 30, title: '购买人ID'},
+
+
+                {
+                    field: 'status',
+                    title: '状态',
+                    width: 85,
+                    search: 'select',
+                    selectList: {"-1": '取消状态', 0: '待付款', 1: '已付款', 2: '已发货', 3: '已完成'}
+                },
+
+                {field: 'create_time', minWidth: 80, title: '创建时间', search: 'range'},
+
+                {
+                    field: 'price', minWidth: 150, title: '金额', search: false,
+                    templet: function (d) {
+                        var titles = '';
+                        titles += '<div>';
+
+                        titles += '<div>';
+                        titles += '<div style="text-align: left;position: absolute;">';
+                        titles += '商品小计: ';
+                        titles += '</div>';
+                        titles += '<div style="text-align: right;">￥';
+                        titles += d.goods_price;
+                        titles += '</div>';
+                        titles += '</div>';
+
+                        titles += '<div>';
+                        titles += '<div style="text-align: left;position: absolute;">';
+                        titles += '运费: ';
+                        titles += '</div>';
+                        titles += '<div style="text-align: right;">￥';
+                        titles += d.dispatch_price;
+                        titles += '</div>';
+                        titles += '</div>';
+
+                        titles += '<div>';
+                        titles += '<div style="text-align: left;position: absolute;">';
+                        titles += '应收款: ';
+                        titles += '</div>';
+                        titles += '<div style="text-align: right;color:green;">￥';
+                        titles += d.price;
+                        titles += '</div>';
+                        titles += '</div>';
+
+                        titles += '</div>';
+                        return titles;
+                    }
+                },
+
+                {
+                    minWidth: 100,
+                    title: '操作',
+                    templet: ea.table.tool,
+                    operat: [
+                        [{
+                            text: '查看详细',
+                            url: init.edit_url,
+                            method: 'open',
+                            auth: 'edit',
+                            class: 'layui-btn layui-btn-normal',
+                            extend: 'data-full="true"',
+                        }]
+                    ]
+                }
+            ]],
+        });
+        layui.config({
+            base: 'layui_ext/',
+        }).extend({
+            excel: 'excel',
+        });
+
+
+
+        // 监听头工具栏事件
+        layui.table.on(en.table.toolbar('batch_delivery'), function (obj) {
+            var layer = layui.layer;
+            // 添加终端
+            if (obj.event == 'import') {
+                layer.open({
+                    type: 1,
+                    shade: false,
+                    area: ['350px', '260px'],
+                    title: '导入Excel',
+                    content: $("#ImportExcel"),
+                    cancel: function () {
+                        layer.close();
+                    },
+                    success: function (layero, index) {
+                        ImportExcel();
+                    },
+                });
+
+            }
+            //导入Excel结束
+        });
+        //监听头工具栏事件结束
+
+        //导入方法
+        /*function ImportExcel() {
+            var $ = layui.jquery
+                , upload = layui.upload;
+            var uploadInst = upload.render({
+                elem: '#importExcel',
+                /!*method: 'POST',*!/
+                url: basePath + 'PowerUser/importPowerUserData.action',
+                accept: 'file', //普通文件
+                exts: 'xls|excel|xlsx', //导入表格
+                auto: false,  //选择文件后不自动上传
+                before: function (obj) {
+                    layer.load(); //上传loading
+                },
+                choose: function (obj) {// 选择文件回调
+                    var files = obj.pushFile();
+                    var fileArr = Object.values(files);// 注意这里的数据需要是数组，所以需要转换一下
+                    //console.debug(fileArr)
+                    // 用完就清理掉，避免多次选中相同文件时出现问题
+                    for (var index in files) {
+                        if (files.hasOwnProperty(index)) {
+                            delete files[index];
+                        }
+                    }
+                    uploadExcel(fileArr); // 如果只需要最新选择的文件，可以这样写： uploadExcel([files.pop()])
+                },
+                error: function () {
+                    setTimeout(function () {
+                        layer.msg("上传失败！", {
+                            icon: 1
+                        });
+                        //关闭所有弹出层
+                        layer.closeAll(); //疯狂模式，关闭所有层
+                    }, 1000);
+                }
+            });
+        }*/
+
+        /*function uploadExcel(files) {
+            try {
+                var excel = layui.excel;
+                excel.importExcel(files, {
+                    // 读取数据的同时梳理数据
+                    fields: {
+                        'tId': 'A',
+                        'inport': 'B',
+                        'state': 'C',
+                        'householdNumber': 'D',
+                        'accountName': 'E',
+                        'phone': 'F'
+                    }
+                }, function (data) {
+                    var arr = new Array();
+                    for (i = 1; i < data[0].Sheet1.length; i++) {
+                        var tt = {
+                            cId: selectConcentrator,
+                            tId: data[0].Sheet1[i].tId,
+                            inport: data[0].Sheet1[i].inport,
+                            state: data[0].Sheet1[i].state,
+                            householdNumber: data[0].Sheet1[i].householdNumber,
+                            accountName: data[0].Sheet1[i].accountName,
+                            phone: data[0].Sheet1[i].phone,
+                        };
+                        arr.push(tt);
+                    }
+
+                    $.ajax({
+                        async: false,
+                        url: basePath + 'PowerUser/importPowerUserData.action',
+                        type: 'post',
+                        dataType: "json",
+                        contentType: "application/x-www-form-urlencoded",
+                        data: {
+                            data: JSON.stringify(arr)
+                        },
+                        success: function (data) {
+                            if (data.success) {
+                                layer.msg(data.message);
+                                setTimeout(function () {
+                                    layer.closeAll(); //疯狂模式，关闭所有层
+                                }, 1000);
+                                //表格导入成功后，重载表格
+                                tableIns.reload('testTerminalConfigReload', {
+                                    url: basePath + 'PowerUser/PowerUserDataTable.action',
+                                    page: {
+                                        limit: 10, // 初始 每页几条数据
+                                        limits: [10, 20, 30]
+                                        // 可以选择的 每页几条数据
+                                    },
+                                    where: {
+                                        cId: selectConcentrator,
+                                        tId: selectTerminal
+                                    },
+                                    parseData: function (res) { //res 即为原始返回的数据
+                                        return {
+                                            "code": 0, //解析接口状态
+                                            "msg": res.message, //解析提示文本
+                                            "count": res.total, //解析数据长度
+                                            "data": res.data //解析数据列表
+                                        };
+                                    }
+                                }, 'data');
+                            } else {
+                                //表格导入失败后，重载文件上传
+                                layer.alert(data.error + "请重新上传", {icon: 2});
+                            }
+                        },
+                        error: function (msg) {
+                            layer.msg('请联系管理员!!!');
+                        }
+                    });
+                });
+            } catch (e) {
+                layer.alert(e.message);
+            }
+        }*/
+
+        ea.listen();
+
+    });
+
+
+
+
+</script>

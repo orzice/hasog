@@ -1,0 +1,260 @@
+<style type="text/css">
+.plugin .bold{
+    font-weight: 700;
+}
+.plugin .sml{
+    font-size: 9px !important;
+    -webkit-text-size-adjust: none;
+}
+.plugin p {
+    margin-top: 10px;
+}
+.plugin div.memo {
+    margin: 5px;
+    padding: 5px;
+    border: 1px dotted #DEEFFB;
+    background: #FFF;
+}
+tip{
+    color: #737373;
+}
+</style>
+<link rel="stylesheet" href="__STATIC__/lib/layer-mobile-2.0/need/layer.css?v={$version}" media="all">
+<div class="layuimini-container">
+
+<form id="app-form" class="layui-form layuimini-form">
+
+    <div class="layuimini-main" id="app">
+        <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief" >
+            <ul class="layui-tab-title">
+                <li class="layui-this">添加逻辑</li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show layui-table-body layui-table-main" >
+                    
+        <div class="layui-form-item">
+            <label class="layui-form-label required">优先权</label>
+            <div class="layui-input-block">
+                <input type="text" name="display_order" class="layui-input" lay-verify="required" placeholder="" value="50">
+                <tip>值越大，优先权越高，如果相同则按照添加顺序</tip>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label required">类型</label>
+            <div class="layui-input-block">
+                <input type="radio" name="state" value="1" title="黑名单">
+                <input type="radio" name="state" value="0" title="白名单" checked="">
+            </div>
+                <tip>黑名单：禁止此地区发货，白名单：允许此地区发货。</tip>
+        </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">地区</label>
+                <div class="layui-input-inline" id="province">
+                    <input type="text" name="province" value="" lay-verify="required" style="display: none;"  >
+                    <select name="province_id" lay-filter="province"  data-value="" >
+                        
+                    </select>
+                </div>
+                <div class="layui-input-inline" id="city">
+                    <input type="text" name="city" value="" style="display: none;" >
+                    <select name="city_id" lay-filter="city" data-value="" >
+                        
+                    </select>
+                </div>
+                <div class="layui-input-inline" id="area">
+                    <input type="text" name="area" value="" style="display: none;" >
+                    <select name="area_id" lay-filter="area" data-value=""  >
+                        
+                    </select>
+                </div>
+                <div class="layui-input-inline" id="street">
+                    <input type="text" name="street" value="" style="display: none;" >
+                    <select name="street_id" lay-filter="street" data-value=""  >
+                        
+                    </select>
+                </div>
+                <div>
+
+            </div>
+
+                
+            </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <tip style="color: #f00;">注意！选到哪一个级别就是控制某个地区！如果想控制全国请只提交省地区！</tip>
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label required">首件(个/斤)</label>
+            <div class="layui-input-block">
+                <input type="text" name="first_piece" class="layui-input" lay-verify="required" placeholder="" value="1">
+                <tip>多少件之内是首件价格</tip>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required">运费(元)</label>
+            <div class="layui-input-block">
+                <input type="text" name="first_piece_price" class="layui-input" lay-verify="required" placeholder="" value="0.00">
+                <tip>用户购买第一件的配送费价格</tip>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required">续件(个/斤)</label>
+            <div class="layui-input-block">
+                <input type="text" name="another_piece" class="layui-input" lay-verify="required" placeholder="" value="1">
+                <tip>每几次购买增加一次配送费</tip>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required">续费(元)</label>
+            <div class="layui-input-block">
+                <input type="text" name="another_piece_price" class="layui-input" lay-verify="required" placeholder="" value="0.00">
+                <tip>用户多次购买的配送价格</tip>
+            </div>
+            <tip>根据件数来计算运费，当物品不足《首件数量》时，按照《首件费用》计算，超过部分按照《续件数量》和《续件费用》乘积来计算</tip>       
+        </div>
+
+        
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <div class="hr-line"></div>
+        <div class="layui-form-item text-center">
+            <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit>确认</button>
+            <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">重置</button>
+        </div>
+
+    </form>
+</div>
+<script type="text/javascript">
+
+require(["jquery", "easy-admin", "vue","layer"], function ($, ea, Vue,layer) {
+
+    var form = layui.form;
+
+    var app = new Vue({
+        el: '#app',
+        data: {}
+    });
+
+
+            if ($("input[name=province]").attr("disabled") !== "disabled") {
+                ea.request.get(
+                    {
+                        url: "/api/area",
+                        data: {
+                            pid: 0,
+                            deep: 0
+                        }
+                    }, function (res) {
+                        var optionstring = "";
+                        $.each(res.data,function(key,value){  //循环遍历后台传过来的json数据
+                            if(value.ext_name == null){
+                                value.ext_name = '全国'
+                            }
+                            optionstring += "<option value=\"" + value.id + "\" >" + value.ext_name + "</option>";
+                        });
+                        $("select[name=province_id]").html("<option value=''>请选择省</option> "+optionstring); //获得要赋值的select的id，进行赋值
+                        this.layui.form.render();
+
+                        if($("select[name=province_id]").attr("data-value") != "") {
+                            $(".layui-anim dd[lay-value="+$("select[name=province_id]").attr("data-value")+"]").trigger("click");//主动触发
+                        }
+                    }
+                );
+            }
+            
+            layui.form.on('select(province)', function(data) {
+                $("input[name=province]").val($("option[value="+data.value+"]").text());
+                ea.request.get(
+                    {
+                        url: "/api/area",
+                        data: {
+                            pid: data.value,
+                            deep: 1
+                        }
+                    }, function (res) {
+                        var optionstring = "";
+                        $("select[name=area_id]").empty();
+                        $.each(res.data,function(key,value){  //循环遍历后台传过来的json数据
+                            optionstring += "<option value=\"" + value.id + "\" >" + value.ext_name + "</option>";
+                        });
+                        $("select[name=city_id]").html("<option value=''>请选择市</option> "+optionstring); //获得要赋值的select的id，进行赋值
+                        this.layui.form.render();
+                        
+                        if($("select[name=city_id]").attr("data-value") != "") {
+                            $(".layui-anim dd[lay-value="+$("select[name=city_id]").attr("data-value")+"]").trigger("click");//主动触发
+                        }
+                        
+                    }
+                );
+            });
+            
+            layui.form.on('select(city)', function(data) {
+                $("input[name=city]").val($("option[value="+data.value+"]").text());
+                ea.request.get(
+                    {
+                        url: "/api/area",
+                        data: {
+                            pid: data.value,
+                            deep: 2
+                        }
+                    }, function (res) {
+                        var optionstring = "";
+                        $.each(res.data,function(key,value){  //循环遍历后台传过来的json数据
+                            optionstring += "<option value=\"" + value.id + "\" >" + value.ext_name + "</option>";
+                        });
+                        $("select[name=area_id]").html("<option value=''>请选择县/区</option> "+optionstring); //获得要赋值的select的id，进行赋值
+                        this.layui.form.render();
+                        
+                        
+                        if($("select[name=area_id]").attr("data-value") != "") {
+                            $(".layui-anim dd[lay-value="+$("select[name=area_id]").attr("data-value")+"]").trigger("click");//主动触发
+                        }
+                    }
+                );
+            });
+
+            layui.form.on('select(area)', function(data) {
+
+                $("input[name=area]").val($("option[value="+data.value+"]").text());
+                ea.request.get(
+                    {
+                        url: "/api/area",
+                        data: {
+                            pid: data.value,
+                            deep: 3
+                        }
+                    }, function (res) {
+                        var optionstring = "";
+                        $.each(res.data,function(key,value){  //循环遍历后台传过来的json数据
+                            optionstring += "<option value=\"" + value.id + "\" >" + value.ext_name + "</option>";
+                        });
+                        $("select[name=street_id]").html("<option value=''>请选择街道</option> "+optionstring); //获得要赋值的select的id，进行赋值
+                        this.layui.form.render();
+                        
+                        
+                        if($("select[name=street_id]").attr("data-value") != "") {
+                            $(".layui-anim dd[lay-value="+$("select[name=street_id]").attr("data-value")+"]").trigger("click");//主动触发
+                        }
+                    }
+                );
+
+            });
+
+            layui.form.on('select(street)', function(data) {
+                $("input[name=street]").val($("option[value="+data.value+"]").text());
+            });
+
+      
+    ea.listen();
+    
+});
+</script>

@@ -1,0 +1,41 @@
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <table id="currentTable" class="layui-table layui-hide"
+               data-auth-preview="{:auth('finace.income/preview')}"
+               lay-filter="currentTable">
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    require(["jquery", "easy-admin"], function ($, ea) {
+
+        var init = {
+            table_elem: '#currentTable',
+            table_render_id: 'currentTableRenderId',
+            index_url: 'finace.income/index',
+            modify_url: 'finace.income/modify',
+            export_url: 'finace.income/export',
+            preview_url: 'finace.income/preview'
+        };
+
+
+        ea.table.render({
+            init: init,
+            toolbar: ['refresh', 'export',],
+            cols: [[
+                {field: 'create_time', minWidth: 80, title: '创建时间', search: 'range',sort: true},
+                {field: 'uid', minWidth: 200, title: '会员id'},
+                {field: 'money', minWidth: 200, title: '收入金额'},
+                {field: 'tos', minWidth: 80, title: '业务类型',search: 'select', selectList: { 0: '余额提现'}},
+                {field: 'withstate', minWidth: 80, title: '提现状态',search: 'select', selectList: { 0: '未提现',1: '已提现'}},
+                {field: 'moneystate', minWidth: 80, title: '打款状态',search: 'select', selectList: { 0: '无效',1: '未审核',2: '未打款',3: '已打款',4: '已驳回'}},
+
+            ]],
+        });
+
+        ea.listen();
+
+    });
+</script>

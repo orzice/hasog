@@ -1,0 +1,61 @@
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <table id="currentTable" class="layui-table layui-hide"
+               data-auth-edit="{:auth('finace.withdrawalrecord/edit')}"
+               data-auth-delete="{:auth('finace.withdrawalrecord/delete')}"
+               data-auth-preview="{:auth('finace.withdrawalrecord/preview')}"
+               lay-filter="currentTable">
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    require(["jquery", "easy-admin"], function ($, ea) {
+
+        var init = {
+            table_elem: '#currentTable',
+            table_render_id: 'currentTableRenderId',
+            index_url: 'finace.withdrawalrecord/index',
+            edit_url: 'finace.withdrawalrecord/edit',
+            delete_url: 'finace.withdrawalrecord/delete',
+            modify_url: 'finace.withdrawalrecord/modify',
+            export_url: 'finace.withdrawalrecord/export',
+            preview_url: 'finace.withdrawalrecord/preview'
+        };
+
+
+        ea.table.render({
+            init: init,
+            toolbar: ['refresh', 'export',],
+            cols: [[
+                {field: 'id', minWidth: 200, title: 'ID',sort: true},
+                {field: 'number', minWidth: 200, title: '提现编号', },
+                {field: 'uid', minWidth: 200, title: '用户ID', },
+                {field: 'money', minWidth: 200, title: '金额', },
+                {field: 'numstatus', minWidth: 80, title: '提现方式',search: 'select', selectList: { 0: '微信',1: '支付宝',2: '余额',3: '手动'}},
+                {field: 'status', minWidth: 80, title: '提现状态',search: 'select', selectList: { 0: '待审核',1: '待打款',2: '打款中',3: '已打款',4: '已驳回',5: '无效提现'}},
+                {field: 'create_time', minWidth: 80, title: '创建时间', search: 'range'},
+                {
+                    width: 180,
+                    title: '操作',
+                    templet: ea.table.tool,
+                    operat: [
+                        [{
+                            text: '编辑',
+                            url: init.edit_url,
+                            method: 'open',
+                            auth: 'edit',
+                            class: 'layui-btn layui-btn-xs layui-btn-success',
+                            extend: 'data-full="true"',
+                        }],
+                        'delete'
+                    ]
+                }
+            ]],
+        });
+
+        ea.listen();
+
+    });
+</script>

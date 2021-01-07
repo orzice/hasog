@@ -1,0 +1,26 @@
+<table id="goods"></table>
+
+
+<script>
+    layui.use('table', function () {
+        var table = layui.table;
+
+        //第一个实例
+        table.render({
+            elem: '#goods',
+            height: 300,
+            // url: '/admin/order.order_goods/get_goods/?order_id={$row.id}', //数据接口,
+            page: false, //开启分页// ,
+            cols: [[
+                {field: 'id', title: 'ID', minWidth: 80},
+                {field: 'title', title: '商品标题', minWidth: 80},
+                {field: 'total', title: '订单商品数', minWidth: 80},
+                {field: 'price', title: '真实价格', minWidth: 80},
+                {field: 'goods_sn', title: '商品编码', minWidth: 177},
+                {field: 'goods_price', title: '商品快照价格', minWidth: 80},
+                {field: 'change_price', title: '改价金额', minWidth: 80}
+            ]]
+        });
+
+    });
+</script>

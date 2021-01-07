@@ -1,0 +1,130 @@
+<style type="text/css">
+    tip{
+        width: 100px;
+        color: #737373;
+    }
+</style>
+<div class="layuimini-container">
+    <form id="app-form" class="layui-form layuimini-form">
+        <div class="layui-form-item">
+            <label class="layui-form-label">开启账户充值</label>
+            <div class="layui-input-block">
+                <input type="radio" name="balance[recharge]" lay-filter="balance[recharge]" value="1" title="开启" {eq name="$row.recharge" value="1"}checked=""{/eq}>
+                <input type="radio" name="balance[recharge]" lay-filter="balance[recharge]" value="0" title="关闭" {eq name="$row.recharge" value="0"}checked=""{/eq}>
+            </div>
+            <tip>是否允许用户对账户余额进行充值</tip>
+        </div>
+        <div id="recharge" {eq name="$row.recharge" value="0"}style="display:none"{/eq} >
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <input type="radio" name="balance[proportion_status]" lay-filter="balance[proportion_status]" value="0" title="赠送固定金额" {eq name="$row.proportion_status" value="0"}checked=""{/eq} >
+                    <input type="radio" name="balance[proportion_status]" lay-filter="balance[proportion_status]" value="1" title="赠送充值比例" {eq name="$row.proportion_status" value="1"}checked=""{/eq}>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label"></label>
+                <h4>
+                    充值满额送:
+                    <button type='button' class="layui-btn layui-btn-normal layui-btn-sm" onclick='addRechargeItem()' style="margin-bottom:5px">
+                        <i class='fa fa-plus'></i> 增加优惠项
+                    </button>
+                </h4>
+                <div class="layui-form-item recharge-items" >
+                    <div class="recharge-item">
+                        {foreach $sole as $key=>$vo }
+                         <div class="recharge-item">
+                         <label class="layui-form-label"></label>
+                         <div class="layui-inline">
+                         <div class="layui-input-inline">
+                         满<input type="text" name="balance[enough][]" value="{$vo.enough}" autocomplete="off" class="layui-input">
+                         </div>
+                         <div class="layui-input-inline">
+                         赠送<input type="text" name="balance[give][]" value="{$vo.give}" autocomplete="off" class="layui-input">
+                         </div>
+                         <span class="layui-badge layui-bg-gray unset">{if empty($row.proportion_status)} 元 {else /} % {/if}</span>
+                         <button type="button"  class="layui-btn layui-btn-danger layui-btn layui-btn-xs" onclick="removeRechargeItem(this)" style="margin-bottom:5px">
+                          X
+                          </button>
+                          </div>
+                         </div>
+                        {/foreach}
+                        </div>
+                </div>
+                <tip style="margin-left: 130px">两项都填写才能生效</tip>
+                <br>
+                <tip style="margin-left: 130px">赠送固定金额：充值满100，赠送10元,实际赠送10元</tip>
+                <br>
+                <tip style="margin-left: 130px">赠送充值比例：充值满200，赠送15%，实际赠送30【200*15%】元</tip>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">开启余额转账</label>
+            <div class="layui-input-block">
+                <input type="radio" name="balance[transfer]"  value="1" title="开启" {eq name="$row.transfer" value="1"}checked=""{/eq}>
+                <input type="radio" name="balance[transfer]"  value="0" title="关闭" {eq name="$row.transfer" value="0"}checked=""{/eq}>
+            </div>
+            <tip>是否允许用户对账户余额进行转账</tip>
+        </div>
+        <div class="hr-line"></div>
+        <div class="layui-form-item text-center">
+            <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit>确认</button>
+        </div>
+
+    </form>
+</div>
+<script type="text/javascript">
+    require(["jquery", "easy-admin"], function ($, ea) {
+        ea.listen();
+    });
+</script>
+<script type="text/javascript">
+    layui.use(['element','form','jquery'], function(){
+        var form = layui.form
+            ,element = layui.element
+            ,$= layui.$;
+
+        form.on('radio(balance[proportion_status])', function(data){
+            if(data.value == 1){
+                $(".unset").html('%');
+            }else{
+                $(".unset").html('元');
+
+            }
+        });
+        form.on('radio(balance[recharge])', function(data){
+            if(data.value == 1){
+                $("#recharge").show();
+            }else{
+                $("#recharge").hide();
+
+            }
+        });
+    });
+    function addRechargeItem(){
+        var value  = $('input[name="balance[proportion_status]"]:checked').val();
+        if (value == 1) {
+            var unit = '%';
+        } else {
+            var unit = '元';
+        }
+        var html = '<div class="recharge-item">';
+        html += '<label class="layui-form-label"></label>';
+        html += '<div class="layui-inline">';
+        html += ' <div class="layui-input-inline">';
+        html += '满<input type="text" name="balance[enough][]" autocomplete="off" class="layui-input">';
+        html += '</div>';
+        html += '<div class="layui-input-inline">';
+        html += '赠送<input type="text" name="balance[give][]" autocomplete="off" class="layui-input">';
+        html += '</div>';
+        html += '<span class="layui-badge layui-bg-gray unset">'+unit+'</span>';
+        html += '<button type="button"  class="layui-btn layui-btn-danger layui-btn layui-btn-xs" onclick="removeRechargeItem(this)" style="margin-bottom:5px">';
+        html += ' X';
+        html += '</button>';
+        html += '</div>';
+        html += '</div>';
+        $('.recharge-items').append(html);
+    }
+    function removeRechargeItem(obj) {
+        $(obj).closest('.recharge-item').remove();
+    }
+</script>

@@ -1,0 +1,87 @@
+<style type="text/css">
+.plugin .bold{
+    font-weight: 700;
+}
+.plugin .sml{
+    font-size: 9px !important;
+    -webkit-text-size-adjust: none;
+}
+.plugin p {
+    margin-top: 10px;
+}
+.plugin div.memo {
+    margin: 5px;
+    padding: 5px;
+    border: 1px dotted #DEEFFB;
+    background: #FFF;
+}
+.poster{
+        display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.poster li{
+    display: inline-block;
+    width: 45%;
+    margin: 1%;
+}
+tip{
+    color: #737373;
+}
+</style>
+<link rel="stylesheet" href="__STATIC__/lib/layer-mobile-2.0/need/layer.css?v={$version}" media="all">
+<div class="layuimini-container">
+
+<form id="app-form" class="layui-form layuimini-form">
+
+    <div class="layuimini-main" id="app">
+        <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief" >
+            <ul class="layui-tab-title">
+                <li class="layui-this">基本信息</li>
+                {foreach $plugin as $key=>$vo } 
+                <li>{$vo.name}<span class="layui-badge">插件</span></li>
+                {/foreach}
+
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show layui-table-body layui-table-main" >
+                    {include file="member/user/edit_1" /}
+                </div>
+                {foreach $plugin as $key=>$vo } 
+                <div class="layui-tab-item">
+                    {plugins:include file="$vo['src']" /}
+                </div>
+                {/foreach}
+            </div>
+
+          
+        </div>
+    </div>
+
+        <div class="hr-line"></div>
+        <div class="layui-form-item text-center">
+            <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit>确认</button>
+            <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">重置</button>
+        </div>
+
+    </form>
+</div>
+<script type="text/javascript">
+
+require(["jquery", "easy-admin", "vue","layer"], function ($, ea, Vue,layer) {
+
+    var form = layui.form;
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+        }
+    });
+
+  //loading带文字
+  // layer.open({type: 2,shadeClose: false,content: '加载中'});
+
+    ea.listen();
+    
+});
+</script>

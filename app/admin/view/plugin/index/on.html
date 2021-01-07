@@ -1,0 +1,44 @@
+<table cellspacing="0" cellpadding="0" border="0" class="layui-table plugin" >
+  <colgroup>
+    <col width="41">
+    <col>
+    <col>
+  </colgroup>
+  <thead>
+  <!--   <tr>
+      <th>图标</th>
+      <th>简介</th>
+      <th>操作</th>
+    </tr>  -->
+  </thead>
+
+  <tbody>
+{foreach $PluginOn as $key=>$vo } 
+
+<tr>
+      <td>
+        <img src="https://addon.dismall.com/static/img/admin_plugin_logo.png" width="40" height="40" align="left">
+      </td>
+      <td>
+        <span class="bold">{$vo.name} {$vo.version}</span> 
+        <span class="sml">({$vo.dir})</span>
+        <b style="display: none;">
+            <a href="###" title="点击在线安装新版"><font color="red">发现新版本</font></a>
+        </b>
+        <p>
+            <span class="light">作者: <a target="_blank" href="{$vo.url}">{$vo.author}</a></span>
+        </p>
+        <div class="memo" style="">{$vo.description}<br></div>
+      </td>
+    <td>
+        <div class="layui-btn-container">
+            <a href="###" class="layui-btn layui-btn-normal">更新插件</a>
+            <a href="{:__url('admin/plugin.index/off',['name'=>$vo.namespace])}" target="_self" onclick="layer.open({type: 2,shadeClose: false,content: '插件关闭中，请稍后...'});" class="layui-btn layui-btn-danger">关闭插件</a>
+        </div>
+    </td>
+ </tr>
+{/foreach}
+
+
+  </tbody>
+</table>

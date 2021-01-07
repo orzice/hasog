@@ -1,0 +1,142 @@
+<style>
+    .layui-iconpicker-body.layui-iconpicker-body-page .hide {
+        display: none;
+    }
+</style>
+<link rel="stylesheet" href="__STATIC__/lib/lay-module/autocomplete/autocomplete.css?v={:time()}" media="all">
+<div class="layuimini-container">
+    <form id="app-form" class="layui-form layuimini-form">
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label required">名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" class="layui-input" lay-verify="required" lay-reqtext="请输入微信支付名称" placeholder="请输入菜单名称" value="{$row.name|default=''}">
+                <tip>微信支付名称</tip>
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label required">app_id</label>
+            <div class="layui-input-block layuimini-upload">
+<!--                <input name="thumb" class="layui-input layui-col-xs6" lay-verify="required"  lay-reqtext="请上传分类图片" placeholder="请上传分类图片" value="{$row.app_id}">-->
+                <input type="text" name="app_id" class="layui-input" lay-verify="required" lay-reqtext="请输入app_id" placeholder="请输入app_id" value="{$row.app_id|default=''}">
+            </div>
+        </div>
+
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">app_secret</label>
+            <div class="layui-input-block">
+                <input  type="text" name="app_secret" lay-reqtext="app_secret不能为空" placeholder="请输入app_secret" value="{$row.app_secret}" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label required">商户号id</label>
+            <div class="layui-input-block layuimini-upload">
+                <input type="text" name="merchant_id" class="layui-input" lay-verify="required" lay-reqtext="请输入商户号id" placeholder="请输入商户号id" value="{$row.merchant_id|default=''}">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">商户号支付秘钥(api_secret)</label>
+            <div class="layui-input-block">
+                <input  type="text" name="merchant_secret" lay-reqtext="请输入商户号支付秘钥" placeholder="商户号支付秘钥" value="{$row.merchant_secret}" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">cert证书文件</label>
+            <div class="layui-input-block layuimini-upload">
+                <input class="layui-input layui-col-xs6" name="cert_file" lay-reqtext="请上传cert证书文件" placeholder="请上传cert证书文件" value="{$row.cert_file}" >
+                <div class="layuimini-upload-btn">
+                    <span><a class="layui-btn" data-upload="cert_file" data-upload-number="one" data-upload-exts="pem" data-upload-icon='file'><i class="fa fa-upload"></i> 上传</a></span>
+<!--                    <span><a class="layui-btn layui-btn-normal" id="select_cert_file" data-upload-select="cert_file" data-upload-number="one" data-upload-exts="pem" data-upload-mimetype="*"><i class="fa fa-list"></i> 选择</a></span>-->
+                </div>
+                <tip>下载证书 cert.zip 中的 apiclient_cert.pem 文件</tip>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">key秘钥文件</label>
+            <div class="layui-input-block layuimini-upload">
+                <input class="layui-input layui-col-xs6" name="key_file" lay-reqtext="请上传key秘钥文件" placeholder="请上传key秘钥文件" value="{$row.key_file}">
+                <div class="layuimini-upload-btn">
+                    <span><a class="layui-btn" data-upload="key_file" data-upload-number="one" data-upload-exts="pem" data-upload-icon='file'><i class="fa fa-upload"></i> 上传</a></span>
+<!--                    <span><a class="layui-btn layui-btn-normal" id="select_key_file" data-upload-select="key_file" data-upload-number="one" data-upload-exts="pem" data-upload-mimetype="*"><i class="fa fa-list"></i> 选择</a></span>-->
+                </div>
+                <tip>下载证书 cert.zip 中的 apiclient_key.pem 文件</tip>
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">标准微信支付</label>
+            <div class="layui-input-block">
+                <input type="radio" name="open_status" value="1" title="开启" {eq name="$row.open_status" value="1"}checked=""{/eq}>
+                <input type="radio" name="open_status" value="0" title="关闭" {eq name="$row.open_status" value="0"}checked=""{/eq}>
+                <tip>是否开启该支付</tip>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">是否登录</label>
+            <div class="layui-input-block">
+                <input type="radio" name="is_login" value="1" title="开启" {eq name="$row.is_login" value="1"}checked=""{/eq}>
+                <input type="radio" name="is_login" value="0" title="关闭" {eq name="$row.is_login" value="0"}checked=""{/eq}>
+                <tip>是否登录</tip>
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+                <textarea name="remark" class="layui-textarea" placeholder="请输入备注信息">{$row.remark|default=''}</textarea>
+            </div>
+        </div>
+
+
+        <div class="hr-line"></div>
+        <div class="layui-form-item text-center">
+            <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit>确认</button>
+            <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">重置</button>
+        </div>
+
+    </form>
+</div>
+<script type="text/javascript">
+
+require(["jquery", "easy-admin", "treetable", "iconPickerFa", "autocomplete"], function ($, ea) {
+
+    var table = layui.table,
+        treetable = layui.treetable,
+        iconPickerFa = layui.iconPickerFa,
+        autocomplete = layui.autocomplete;
+        
+    iconPickerFa.render({
+                elem: '#icon',
+                url: PATH_CONFIG.iconLess,
+                limit: 12,
+                click: function (data) {
+                    $('#icon').val('fa ' + data.icon);
+                },
+                success: function (d) {
+                    console.log(d);
+                }
+            });
+            autocomplete.render({
+                elem: $('#href')[0],
+                url: ea.url('system.menu/getMenuTips'),
+                template_val: '{{d.node}}',
+                template_txt: '{{d.node}} <span class=\'layui-badge layui-bg-gray\'>{{d.title}}</span>',
+                onselect: function (resp) {
+                }
+            });
+
+            ea.listen();
+    
+});
+</script>

@@ -1,0 +1,36 @@
+<div class="layuimini-container">
+    <form id="app-form" class="layui-form layuimini-form">
+        <input type="hidden" name="id" value="{$row.id}">
+        <div class="layui-form-item">
+            <label class="layui-form-label required">公告标题</label>
+            <div class="layui-input-block">
+                <input type="text" name="goods[title]" class="layui-input" lay-verify="required" lay-reqtext="请输入公告标题" placeholder="请输入公告标题" value="{$row.title}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required">公告内容</label>
+            <div class="layui-input-block">
+                <textarea name="notice" rows="20" class="layui-textarea editor" placeholder="请输入公告内容">{$row.notice}</textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">是否开启</label>
+            <div class="layui-input-block">
+                <input type="radio" name="goods[state]" value="1" title="开启" {eq name="$row.state" value="1"}checked=""{/eq}>
+                <input type="radio" name="goods[state]" value="0" title="关闭" {eq name="$row.state" value="0"}checked=""{/eq}>
+            </div>
+        </div>
+
+        <div class="hr-line"></div>
+        <div class="layui-form-item text-center">
+            <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit>确认</button>
+            <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">重置</button>
+        </div>
+
+    </form>
+</div>
+<script type="text/javascript">
+    require(["jquery", "easy-admin"], function ($, ea) {
+        ea.listen();
+    });
+</script>

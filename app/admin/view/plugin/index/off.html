@@ -1,0 +1,39 @@
+<table cellspacing="0" cellpadding="0" border="0" class="layui-table plugin" >
+  <colgroup>
+    <col width="41">
+    <col>
+    <col>
+  </colgroup>
+  <thead>
+  </thead>
+
+  <tbody>
+{foreach $PluginOff as $key=>$vo } 
+
+<tr>
+      <td>
+        <img src="https://addon.dismall.com/static/img/admin_plugin_logo.png" width="40" height="40" align="left">
+      </td>
+      <td>
+        <span class="bold">{$vo.name} {$vo.version}</span> 
+        <span class="sml">({$vo.dir})</span>
+        <b style="display: none;">
+            <a href="###" title="点击在线安装新版"><font color="red">发现新版本</font></a>
+        </b>
+        <p>
+            <span class="light">作者: <a target="_blank" href="{$vo.url}">{$vo.author}</a></span>
+        </p>
+        <div class="memo" style="">{$vo.description}<br></div>
+      </td>
+    <td>
+        <div class="layui-btn-container">
+            <a href="{:__url('admin/plugin.index/on',['name'=>$vo.namespace])}" target="_self" onclick="layer.open({type: 2,shadeClose: false,content: '启动中，请稍后'});" class="layui-btn layui-btn-normal">启动插件</a>
+            <a href="{:__url('admin/plugin.index/del',['name'=>$vo.namespace])}" target="_self" onclick="layer.open({type: 2,shadeClose: false,content: '插件卸载中，请稍后...'});" class="layui-btn layui-btn-danger">卸载插件</a>
+        </div>
+    </td>
+ </tr>
+{/foreach}
+
+
+  </tbody>
+</table>

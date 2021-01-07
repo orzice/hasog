@@ -1,0 +1,69 @@
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <table id="currentTable" class="layui-table layui-hide"
+               data-auth-add="{:auth('member.user/add')}"
+               data-auth-edit="{:auth('member.user/edit')}"
+               data-auth-delete="{:auth('member.user/delete')}"
+               data-auth-password="{:auth('member.user/password')}"
+               lay-filter="currentTable">
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+require(["jquery", "easy-admin"], function ($, ea) {
+
+    var init = {
+        table_elem: '#currentTable',
+        table_render_id: 'currentTableRenderId',
+        index_url: 'member.user/index',
+        add_url: 'member.user/add',
+        edit_url: 'member.user/edit',
+        delete_url: 'member.user/delete',
+        modify_url: 'member.user/modify',
+        export_url: 'member.user/export',
+    };
+
+
+            ea.table.render({
+                init: init,
+                cols: [[
+                    {type: "checkbox"},
+                    {field: 'id', width: 80, title: 'ID'},
+                    {field: 'parent_id', width: 80, title: '推荐人'},
+                    {field: 'mobile', minWidth: 80, title: '手机'},
+                    {field: 'fname', minWidth: 80, title: '真实姓名'},
+                    {field: 'invite_code', minWidth: 80, title: '邀请码'},
+                    {field: 'state', title: '黑名单', width: 85, search: 'select', selectList: {0: '禁用', 1: '启用'}, templet: ea.table.switch},
+                    {field: 'create_time', minWidth: 80, title: '创建时间', search: 'range'},
+                    {
+                        width: 400,
+                        title: '操作',
+                        templet: ea.table.tool,
+                        operat: [
+                            'edit',
+                            [{
+                                text: '重置密码',
+                                url: 'member.user/password',
+                                method: 'open',
+                                auth: 'password',
+                                class: 'layui-btn layui-btn-normal layui-btn-xs',
+                            }],
+                            [{
+                                text: '修改推荐人',
+                                url: 'member.user/parent',
+                                method: 'open',
+                                auth: 'parent',
+                                class: 'layui-btn layui-btn-danger layui-btn-xs',
+                            }],
+                            'delete'
+                        ]
+                    }
+                ]],
+            });
+
+            ea.listen();
+    
+});
+</script>

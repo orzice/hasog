@@ -1,0 +1,61 @@
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <table id="currentTable" class="layui-table layui-hide"
+               data-auth-add="{:auth('goods.dispatch/add')}"
+               data-auth-edit="{:auth('goods.dispatch/edit')}"
+               data-auth-delete="{:auth('goods.dispatch/delete')}"
+               lay-filter="currentTable">
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+require(["jquery", "easy-admin",'miniTab'], function ($, ea,miniTab) {
+
+    var init = {
+        table_elem: '#currentTable',
+        table_render_id: 'currentTableRenderId',
+        index_url: 'goods.dispatch/index',
+        add_url: 'goods.dispatch/add',
+        edit_url: 'goods.dispatch/edit',
+        delete_url: 'goods.dispatch/delete',
+        modify_url: 'goods.dispatch/modify',
+        export_url: 'goods.dispatch/export',
+    };
+
+            ea.table.render({
+                init: init,
+                cols: [[
+                    {type: "checkbox"},
+                    {field: 'id', minWidth: 80, title: 'ID'},
+                    {field: 'dispatch_name', minWidth: 200, title: '配送模板名称'},
+                    {field: 'calculate_type', minWidth: 80,search: false, selectList: {0: '根据重量计算', 1: '根据数量计算'}, title: '计费方式（0：记重；1：记件）'},
+                    {field: 'state', title: '是否启用', minWidth: 85, search: 'select', selectList: {0: '关闭', 1: '启用'}, templet: ea.table.switch},
+                    {
+                        field: 'state',
+                        minWidth: 160,
+                        search: false,
+                        title: '配置逻辑',
+                        templet: function(d) {
+                            //return '<a class="layui-btn layui-btn-normal layui-btn-xs" data-width="100%"  data-height="100%" data-open="goods.dispatch/data?id='+d.id+'" data-title="配置逻辑">配置逻辑</a>';
+                            return '<a class="layui-btn layui-btn-normal layui-btn-xs" data-width="100%"  data-height="100%" layuimini-content-href="goods.dispatch/data?id='+d.id+'" data-title="【'+d.dispatch_name+'】的配置逻辑">配置逻辑</a>';
+                        }
+                    },
+                    {
+                        width: 400,
+                        title: '操作',
+                        templet: ea.table.tool,
+                        operat: [
+                            'edit',
+                            'delete'
+                        ]
+                    }
+                ]],
+            });
+
+    ea.listen();
+    miniTab.listen();
+    
+});
+</script>

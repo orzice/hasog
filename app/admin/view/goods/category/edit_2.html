@@ -1,0 +1,13 @@
+
+<div class="layui-form-item">
+    <label class="layui-form-label">配送模板</label>
+    <div class="layui-input-block">
+        <select name="goods[dispatch]" lay-verify="required" lay-reqtext=""  lay-filter="aihao">
+            <option value="" >请选择配送模板</option>
+            {foreach $dispatch as $key=>$vo } 
+                 <option value="{$vo.id}" {eq name="$vo.id" value="$row.dispatch"}selected=""{/eq}>【ID：{$vo.id}】{$vo.dispatch_name}</option>
+            {/foreach}
+        </select>
+    </div>
+</div>
+ <textarea name="describe" rows="20" class="layui-textarea editor" placeholder="请输入商品描述">{$row.content}</textarea>

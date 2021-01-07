@@ -1,0 +1,72 @@
+<div class="layui-form-item">
+    <label class="layui-form-label">申请用户</label>
+    <div class="layui-input-block">
+<!--        <div class="layui-form-label-col">-->
+            <a href="/admin/Member.user/edit/id/{$row.uid}" class="layui-form-label-col">{$row.member.mobile|default=''}</a>
+<!--        </div>-->
+    </div>
+</div>
+<div class="layui-form-item">
+    <label class="layui-form-label">申请订单号</label>
+    <div class="layui-input-block">
+<!--        <div class="layui-form-label-col">-->
+            <a href="/admin/order.home/edit/id/{$row.order_id}" class="layui-form-label-col">{$row.order_sn|default=''}</a>
+<!--        </div>-->
+    </div>
+</div>
+
+<div class="layui-form-item">
+    <label class="layui-form-label">退款金额</label>
+    <div class="layui-input-block">
+        <div class="layui-form-label-col">
+            {$row.price|default=''}
+        </div>
+        <tip></tip>
+    </div>
+</div>
+<div class="layui-form-item">
+    <label class="layui-form-label">申请时间</label>
+    <div class="layui-input-block">
+        <div class="layui-form-label-col">
+            {$row.create_time|default=''}
+        </div>
+        <tip></tip>
+    </div>
+</div>
+<div class="layui-form-item">
+    <label class="layui-form-label">审批状态</label>
+    <div class="layui-input-block">
+        {if $row.status === 0}
+        <select name="status" id="">
+            <option value="0">待审核</option>
+            <option value="1">通过</option>
+            <option value="2">驳回</option>
+        </select>
+        {else /}
+        <div class="layui-form-label-col">
+            {$status_zh}
+        </div>
+        {/if}
+        <tip></tip>
+    </div>
+</div>
+
+
+<div class="layui-form-item layui-form-text">
+    <label class="layui-form-label">驳回原因</label>
+    <div class="layui-input-block">
+        <textarea name="reason" class="layui-textarea"
+                  {if $row.status !== 0} disabled {/if}
+                  placeholder="请输入驳回原因">{$row.reason|default=''}
+        </textarea>
+    </div>
+</div>
+
+<div class="layui-form-item layui-form-text">
+    <label class="layui-form-label">备注</label>
+    <div class="layui-input-block">
+        <textarea name="remark" class="layui-textarea"
+                  placeholder="请输入备注信息">{$row.remark|default=''}</textarea>
+    </div>
+</div>
+
