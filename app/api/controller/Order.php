@@ -538,19 +538,33 @@ class Order extends ApiController
         $request_status = isset($get['status'])? $get['status'] : null ;
         $order_list = OrderModel::where('uid', $user_id)->select();
         if(array_key_exists($request_status, OrderModel::STATUS_ARRAY)){
-            $order_list = OrderModel::where('uid', $user_id)->where('status', $request_status)->select;
+            $order_list = OrderModel::where('uid', $user_id)
+                ->where('status', $request_status)
+                ->order('id', 'desc')
+                ->paginatefront($get)
+                ->select;
         }
         $this->success('请求成功', ['order_list'=>$order_list, 'status_array'=>OrderModel::STATUS_ARRAY]);
     }
 
-/*    // 订单状态
+    // 订单状态
     public function order_status()
     {
 //        $user_id = $this->MemberId();
         $user_id = 1;
         $status = OrderModel::STATUS_ARRAY;
-        $this->success('请求成功', $status);
-    }*/
+        $this->success('请求成功', ['status'=>$status]);
+    }
+
+
+    // 支付类型
+    public function pay_type()
+    {
+//        $user_id = $this->MemberId();
+        $user_id = 1;
+        $pay_type = OrderModel::PAY_TYPE_ID;
+        $this->success('请求成功', ['pay_type'=>$pay_type]);
+    }
 
 
 

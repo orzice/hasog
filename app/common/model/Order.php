@@ -24,7 +24,13 @@ use app\common\model\TimeModel;
 class Order extends TimeModel
 {
 
+    protected $deleteTime = 'delete_time';
     const STATUS_ARRAY = [-2 => '申请退款', -1 => '已取消', 0 => '待付款', 1 => '已付款', 2 => '已发货', 3 => '已完成'];
+    const PAY_TYPE_ID = [
+1=> '微信支付',
+2=> '支付宝支付',
+3=> '线下支付',
+4=> '余额支付',];
     const MERCHANT_STATUS = [-1 => '已取消', 1 => '已付款', 2 => '已发货', 3 => '已完成'];
     const ORDER_ARRAY = [0 => '无需配送', 1 => '快递', 2 => '门店自提', 3 => '门店配送'];
     const ALLOW_FIELDS = [
@@ -99,7 +105,6 @@ class Order extends TimeModel
         foreach ($goods_objs as &$goods_item){
             $goods = $goods_item['goods_obj'];
             $goods_array[] = [
-                'order_id'=> 1,
                 'goods_id'=> $goods->id,
 //                'goods_id'=> $goods->id,
                 'total'=> $goods_item['goods_num'],

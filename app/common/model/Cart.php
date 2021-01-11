@@ -21,26 +21,18 @@ namespace app\common\model;
 use app\common\model\TimeModel;
 use think\model\relation\HasMany;
 
-class Member extends TimeModel
+class Cart extends TimeModel
 {
 
     protected $deleteTime = 'delete_time';
 
 
-    public function orders(){
-        return $this->hasMany('app\common\model\Order', 'uid', 'id');
+    public function member(){
+        return $this->belongsTo('app\common\model\Member', 'uid');
     }
 
-    public function address(){
-        return $this->hasMany('app\common\model\MemberAddress', 'uid', 'id');
-    }
-
-    public function carts(){
-        return $this->hasMany('app\common\model\Cart', 'uid', 'id');
-    }
-
-    public function favors(){
-        return $this->hasMany('app\common\model\GoodsFavor', 'uid', 'id');
+    public function goods(){
+        return $this->belongsTo('app\common\model\Goods', 'goods_id');
     }
 
 }

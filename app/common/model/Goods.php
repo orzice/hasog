@@ -30,6 +30,14 @@ class Goods extends TimeModel
         return $this->belongsTo('app\common\model\Dispatch', 'dispatch');
     }
 
+    public function carts(){
+        return $this->hasMany('app\common\model\Cart', 'goods_id');
+    }
+
+    public function favors(){
+        return $this->hasMany('app\common\model\GoodsFavor', 'goods_id');
+    }
+
     public function setIsHotAttr($value){
 //        print_r(111111);
 

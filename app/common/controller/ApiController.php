@@ -54,8 +54,8 @@ class ApiController extends BaseController
     	if (empty($member_id)) {
     		return false;
     	}
-//        return $member_id;
-        return 1;
+        return $member_id;
+//        return 1;
     }
     /**
      * 获取用户是否登录

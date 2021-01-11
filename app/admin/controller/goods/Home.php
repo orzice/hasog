@@ -166,7 +166,7 @@ class Home extends AdminController
                 $goodsCategory['goods_id'] = $model_obj->id;
                 $result = $goods_category->save($goodsCategory);
                 Db::commit();
-                Uploadfile($post['goods']['thumb']);
+                ($post['goods']['thumUploadfileb']);
 
                 Uploadfile($post['goods']['thumb_url']);
             } catch (\Exception $e) {

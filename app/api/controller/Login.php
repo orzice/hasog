@@ -39,14 +39,14 @@ class Login extends ApiController
             $post = $this->request->post();
             $rule = [
                 'mobile|用户手机号' => 'require|mobile',
-                'password|用户密码' => 'require|length:4,20',
+                'password|用户密码' => 'require|length:4,40',
             ];
             $validate = $this->validate($post, $rule);
             //验证失败
             $user = Member::where(['mobile' => $post['mobile']])->find();
-            empty($user) && $this->error('用户名或密码错误1');
+            empty($user) && $this->error('用户名或密码错误');
             $is_user = (U_password($post['password']) == $user->password);
-            !$is_user && $this->error('用户名或密码错误2');
+            !$is_user && $this->error('用户名或密码错误');
             Sessions("member_id", $user->id);
             $this->success('登录成功了哦');
         }
