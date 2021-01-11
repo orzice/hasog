@@ -78,9 +78,15 @@ class Goods  extends ApiController
 
     // 商品分类列表
     public function goods_category_list(){
-        $categories = Category::where('enabled', 1)
+        $categories = Category::where('enabled', 1)->where('level', 1)
             ->order('sort')
             ->select();
+        foreach ($categories as $item){
+            $item->child_category;
+            foreach ($item->child_category as $second_item){
+                $second_item->child_category;
+            }
+        }
         $this->success('获取分类成功', ['categories'=> $categories]);
     }
 
