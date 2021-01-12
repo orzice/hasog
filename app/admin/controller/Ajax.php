@@ -38,7 +38,7 @@ class Ajax extends AdminController
     {
         $cacheData = Cache::get('initAdmin_' . Sessions("id"));
         if (!empty($cacheData)) {
-            return json($cacheData);
+            // return json($cacheData);
         }
         $menuService = new MenuService(Sessions('id'));
         $data = [

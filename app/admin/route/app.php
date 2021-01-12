@@ -32,4 +32,5 @@ Route::rule('plugins.<p1>-<p2>-<p3>-<p4>','Plugin/call');
 
 Route::rule('plugins.<p1>-<p2>-<p3>/<p4>','Plugin/call');
 
+Route::rule('plugins.<p1>','Plugin/default');
 

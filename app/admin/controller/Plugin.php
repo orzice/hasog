@@ -24,6 +24,20 @@ use app\common\Plugins;
 
 class Plugin extends AdminController
 {
+    //插件详情  待开发
+    public function default()
+    {
+        $name = 'plugins.';
+        $info = Request::pathinfo();
+        if (substr ($info, 0,strlen($name)) !== $name) {
+            return $this->error('插件不存在', '','');
+        }
+        $plugin = str_replace($name, '', $info);
+        $plugin = str_replace('.html', '', $plugin);
+        print_r($plugin);
+        exit;
+
+    }
     public function call()
     {
         // plugins.a-index-index-index

@@ -70,9 +70,19 @@ class MenuService
     {
         $treeList = [];
         $authServer = (new AuthService($this->adminId));
+
         foreach ($menuList as &$v) {
             $check = empty($v['href']) ? true : $authServer->checkNode($v['href']);
-            !empty($v['href']) && $v['href'] = __url($v['href']);
+        
+
+            $controller = app('http')->getName();
+       
+            if (!empty($v['href'] && substr ($v['href'], 0,strlen('plugins.')) !== 'plugins.')) {
+                $v['href'] = __url($v['href']);
+            }else if(substr ($v['href'], 0,strlen('plugins.')) == 'plugins.'){
+                $v['href'] = '/'.$controller.'/'.$v['href'];
+            }
+
             if ($pid == $v['pid'] && $check) {
                 $node = $v;
                 $child = $this->buildMenuChild($v['id'], $menuList);
