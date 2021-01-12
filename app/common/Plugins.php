@@ -234,21 +234,22 @@ class Plugins
             if ($pids) {
                 $pid = $pids['id'];
             }else{
+                //创建父级别
+                $sql = array(
+                    'pid' => 1,
+                    'title' => $data["name"],
+                    'icon' => "fa fa-code",
+                    'href' => 'plugins.'.$dir,
+                    'target' => "_self",
+                    'sort' => 10,
+                    'status' => 1,
+                    );
+                $model = new SystemMenu();
+                $pid = $model->insertGetId($sql);
+                    
                 //如果有其他小伙伴但是没有父接口那么自动创建父接口
                 $plugs = SystemMenu::where('href','like','plugins.'.$dir.'-%')->select();
                 if (count($plugs) !== 0) {
-                    //创建父级别
-                    $sql = array(
-                        'pid' => 1,
-                        'title' => $data["name"],
-                        'icon' => "fa fa-code",
-                        'href' => 'plugins.'.$dir,
-                        'target' => "_self",
-                        'sort' => 10,
-                        'status' => 1,
-                        );
-                    $model = new SystemMenu();
-                    $pid = $model->insertGetId($sql);
                     //给原来的子数据更改为父接口
                     SystemMenu::where('href','like','plugins.'.$dir.'-%')->update(['pid'=>$pid]);
                 }
