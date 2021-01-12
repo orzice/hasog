@@ -19,6 +19,7 @@ namespace app\common\model;
 
 
 use app\common\model\TimeModel;
+use think\Exception;
 use think\model\relation\HasMany;
 
 class Member extends TimeModel
@@ -34,6 +35,16 @@ class Member extends TimeModel
     public function address(){
         return $this->hasMany('app\common\model\MemberAddress', 'uid', 'id');
     }
+
+    public function address_string(){
+        $address = $this->address()->select();
+        foreach ($address as $item){
+            $item->area_name();
+        }
+//        print_r($address->toArray());die();
+        return $address;
+    }
+
 
     public function carts(){
         return $this->hasMany('app\common\model\Cart', 'uid', 'id');

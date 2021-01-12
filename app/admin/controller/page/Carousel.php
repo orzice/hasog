@@ -84,6 +84,7 @@ class Carousel extends AdminController
             ];
             $this->validate($post, $rule);
             $post['picture'] = $post['thumb'];
+            Uploadfile($post['thumb']);
             unset($post['thumb']);
             try {
                 $save = $this->model->save($post);
@@ -112,6 +113,7 @@ class Carousel extends AdminController
             ];
             $this->validate($post, $rule);
             $post['picture'] = $post['thumb'];
+            Uploadfile($post['thumb']);
 //            print_r($post);die;
             unset($post['thumb']);
             unset($post['file']);

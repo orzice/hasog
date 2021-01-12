@@ -70,7 +70,7 @@ class TimeModel extends Model
 //            $limit = $limit;
             return $query->limit($offset, $limit);
         }
-        return $query->limit(0, 10);;
+        return $query->limit(0, 15);;
     }
 
 }

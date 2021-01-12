@@ -34,54 +34,6 @@ use think\facade\Event;
 
 class Order extends ApiController
 {
-    // 订单生成请求
-    /*public function add_order()
-    {
-//        $example = ['goods_data' => [
-//                ['goods_id' => 1, 'goods_num' => 1],
-//                ['goods_id' => 2, 'goods_num' => 3],
-//                'address_id'=> 1,
-//                'dispatch_type_id'=> 1,
-//            ],
-//        ];
-//        print_r(json_encode($example));die();
-
-        $post = $this->request->post();
-        $rule = [
-            'pid|pid' => 'require|number',
-            'user_address|收货地址' => 'require|number',
-        ];
-        $validate = $this->validate($post, $rule);
-//        print_r($post);die();
-//        $user_id = $this->MemberId();
-        $user_id = 1;
-        $user = Member::find($user_id);
-        $order_sn = OrderModel::createOrderSn('AC');
-        $price = 0;
-//        $goods_price = 0;
-        $goods_total = 0;
-        $goods_data = $post['goods_data'];
-        $address_id = $post['address_id'];
-        $dispatch_type_id = $post['dispatch_type_id'];
-//        $goods_objs = Goods::whereIn('id', array_column($goods_data, 'goods_id'));
-        $goods_objs = [];
-        foreach ($goods_data as $goods_item){
-            $goods_obj = Goods::where('id', $goods_item['goods_id'])
-                ->where('status', 1)->find;
-            empty($goods_obj) && $this->error('部分商品不存在或已下架');
-            $goods_obj->stock === 0 && $this->error($goods_obj->title.'暂时无货');
-            $price += $goods_obj->price * $goods_item['goods_num'];
-            $goods_total += $goods_item['goods_num'];
-            $goods_objs[] = ['obj'=>$goods_obj, 'num'=> $goods_item['goods_num'] ];
-        }
-        $order_data = [
-            'uid' => $user_id,
-            'order_sn' => $order_sn,
-            'status' => 0,
-//            'dispatch_type_id'=> ,
-            'order_goods_price' => $user_id,
-        ];
-    }*/
 
     // 生成订单请求
     public function add_order()
@@ -93,8 +45,9 @@ class Order extends ApiController
         ];
         $validate = $this->validate($post, $rule);
         $user_id = $this->MemberId();
-//        $user_id = 1;
-        $user = Member::find($user_id);
+        $user = Member::where('state', '0')->find($user_id);
+//        print_r($user->toArray());die();
+        empty($user) && $this->error('用户数据错误');
         $order_sn = OrderModel::createOrderSn('AC');
         $goods_price = 0;
         $discount_price = 0;
@@ -129,6 +82,7 @@ class Order extends ApiController
             $discount_price += ($goods_obj->market_price - $goods_obj->price) * $goods_item['goods_num'];
             $order_goods_price += ($goods_obj->market_price) * $goods_item['goods_num'];
             $goods_obj->stock === 0 && $this->error($goods_obj->title.'暂时无货');
+            $goods_obj->stock < $goods_item['goods_num'] && $this->error($goods_obj->title.'拍下数量大于库存');
             $goods_price += $goods_obj->price * $goods_item['goods_num'];
             $goods_objs[] = ['goods_obj'=>$goods_obj, 'goods_num'=> $goods_item['goods_num'] ];
             $goods_total += $goods_item['goods_num'];
@@ -213,6 +167,9 @@ class Order extends ApiController
             Db::commit();
         }catch (\Exception $e){
             Db::rollback();
+            if(isset($order_save)){
+                $order->delete();
+            }
             $this->error('生成订单失败，请稍后重试');
         }
 /*        if ($order_save && $save && $save_goods){
@@ -232,8 +189,9 @@ class Order extends ApiController
         $post = $this->request->post();
 //        print_r($post);die();
         $user_id = $this->MemberId();
-//        $user_id = 1;
-        $user = Member::find($user_id);
+        $user = Member::where('state', '0')->find($user_id);
+//        print_r($user->toArray());die();
+        empty($user) && $this->error('用户数据错误');
         $order_sn = OrderModel::createOrderSn('AC');
 //        $price = 0;
         $goods_price = 0;
@@ -266,7 +224,7 @@ class Order extends ApiController
             $validate = $this->validate($goods_item, $rule);
             //验证失败
             if($validate !== true){
-                return api_return(0, '商品数量只能为正整数');
+                return api_return(0, '商品数量只能为正整数,且最大不能超过999999');
             }
             $goods_obj = Goods::where('id', $goods_item['goods_id'])
                 ->where('status', 1)->hidden(['cost_price','reduce_stock_method', 'real_sales', 'virtual_sales' ])->find();
@@ -274,6 +232,7 @@ class Order extends ApiController
             $discount_price += ($goods_obj->market_price - $goods_obj->price) * $goods_item['goods_num'];
             $order_goods_price += ($goods_obj->market_price) * $goods_item['goods_num'];
             $goods_obj->stock === 0 && $this->error($goods_obj->title.'暂时无货');
+            $goods_obj->stock < $goods_item['goods_num'] && $this->error($goods_obj->title.'拍下数量大于库存');
             $goods_price += $goods_obj->price * $goods_item['goods_num'];
             $goods_objs[] = ['goods_obj'=>$goods_obj, 'goods_num'=> $goods_item['goods_num'] ];
             // 计算重量
@@ -335,7 +294,8 @@ class Order extends ApiController
             'goods' => $goods_objs,
             'weight' => $weight,
             'check_address' => $request_address->id,
-            'user_address' => $user->address,
+//            'user_address' => $user->address,
+            'user_address' => $user->address_string(),
             'pay_type' => OrderModel::PAY_TYPE_ID,
             'dispatch_price' => $dispatch_price,
             'goods_price' => $goods_price,       // 总现价
@@ -360,7 +320,7 @@ class Order extends ApiController
 //        $user_id = 1;
         $user = Member::find($user_id);
         $order = OrderModel::where('uid', $user_id)->where('id', $order_id)->find();
-        empty($order_id) && $this->error('订单不存在');
+        empty($order) && $this->error('订单不存在');
         // 获取支付逻辑
         /**
          $order->is_paid === 1;  // 获取支付结果
@@ -376,15 +336,18 @@ class Order extends ApiController
             try{
                 Db::startTrans();
                 $goods_array = $order->goods;
+                $goods_result = true;
                 foreach ($goods_array as &$goods_obj){
-                    if ($goods_obj->reduce_stock_method === 1){
-                        $goods_obj->stock -= 1;
-                        $goods_obj->save();
+                    $goods = $goods_obj->goods;
+                    if ($goods->reduce_stock_method === 1){
+                        $goods->stock -= $goods_obj->total;
+                        $goods_result = $goods->save();
+                        if($goods_result){break;}
                     }
                 }
                 $save = $order->save();
 
-                if ($save === false){
+                if ($save === false || $goods_result === false){
 //                    $this->success('支付成功');
                     throw new \Exception('添加失败');
                 }

@@ -29,7 +29,11 @@ class Login extends ApiController
     //当前登录用户
     public function state()
     {
-
+        $user_id = $this->MemberId();
+//        $user_id = 1;
+        $user_id === false && $this->error('请先登录');
+        $user = Member::where('state', '0')->find($user_id)->hidden(['password', 'salt', '']);
+        $this->success('获取用户信息成功', ['user_info'=> $user->toArray()]);
     }
     //登录
     public function index()
@@ -42,6 +46,9 @@ class Login extends ApiController
                 'password|用户密码' => 'require|length:4,40',
             ];
             $validate = $this->validate($post, $rule);
+            if ($validate !== true){
+                $this->error($validate);
+            }
             //验证失败
             $user = Member::where(['mobile' => $post['mobile']])->find();
             empty($user) && $this->error('用户名或密码错误');
@@ -67,7 +74,7 @@ class Login extends ApiController
             ];
             $validate = $this->validate($post, $rule);
             //验证失败
-            $isset_phone = Member::where('mobile', $post['mobile'])->findOrEmpty();
+            $isset_phone = Member::where('mobile', $post['mobile'])->find();
             !empty($isset_phone) && $this->error('该手机号已注册');
             $post['password'] = U_password($post['password']);
             try {
@@ -80,6 +87,7 @@ class Login extends ApiController
         }
         $this->error('您已登录');
     }
+
     //找回密码
     public function lostpasswd()
     {
@@ -89,6 +97,9 @@ class Login extends ApiController
     // 用户退出
     public function user_out()
     {
+        $user_id = $this->MemberId();
+//        $user_id = 1;
+        $user_id === false && $this->error('请先登录');
         Sessions('member_id', null);
         $this->success('退出登录成功了哦');
     }

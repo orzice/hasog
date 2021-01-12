@@ -19,6 +19,7 @@ namespace app\common\model;
 
 
 use app\common\model\TimeModel;
+use think\Exception;
 
 class MemberAddress extends TimeModel
 {
@@ -38,6 +39,24 @@ class MemberAddress extends TimeModel
         return $this->belongsTo('app\common\model\Member', 'uid');
     }
 
+    public function area_name(){
+        $this->province = $this->find_area($this->province_id);
+        $this->city = $this->find_area($this->city_id);
+        $this->district = $this->find_area($this->district_id);
+        $this->street = $this->find_area($this->street_id);
 
+    }
+
+    public function find_area($id){
+        try{
+            $area_name = Area::where('id', $id)->find();
+            if(empty($area_name)){
+                throw new Exception('错误');
+            }
+            return $area_name->ext_name;
+        }catch (Exception $exception){
+            return '暂无';
+        }
+    }
 
 }
