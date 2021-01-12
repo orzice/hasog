@@ -14,7 +14,7 @@
 // +----------------------------------------------------------------------
 // | DateTime：2020-12-24 16:37:39
 // +----------------------------------------------------------------------
-namespace AcShop\plugin\ac_cron\admin\index;
+namespace HaSog\plugin\ac_cron\admin\index;
 
 
 use app\common\controller\AdminController;

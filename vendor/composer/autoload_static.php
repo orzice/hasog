@@ -9,6 +9,7 @@ class ComposerStaticInitd61ad5f6781248304efb40bde2b78078
     public static $files = array (
         '9b552a3cc426e3287cc811caefa3cf53' => __DIR__ . '/..' . '/topthink/think-helper/src/helper.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
+        '2cffec82183ee1cea088009cef9a6fc3' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier.composer.php',
         'abede361264e2ae69ec1eee813a101af' => __DIR__ . '/..' . '/markbaker/complex/classes/src/functions/abs.php',
         '21a5860fbef5be28db5ddfbc3cca67c4' => __DIR__ . '/..' . '/markbaker/complex/classes/src/functions/acos.php',
         '1546e3f9d127f2a9bb2d1b6c31c26ef1' => __DIR__ . '/..' . '/markbaker/complex/classes/src/functions/acosh.php',
@@ -124,6 +125,10 @@ class ComposerStaticInitd61ad5f6781248304efb40bde2b78078
         array (
             'League\\Flysystem\\Cached\\' => 24,
             'League\\Flysystem\\' => 17,
+        ),
+        'H' => 
+        array (
+            'HaSog\\plugin\\' => 13,
         ),
         'D' => 
         array (
@@ -252,6 +257,10 @@ class ComposerStaticInitd61ad5f6781248304efb40bde2b78078
         array (
             0 => __DIR__ . '/..' . '/league/flysystem/src',
         ),
+        'HaSog\\plugin\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/plugin',
+        ),
         'Doctrine\\Common\\Lexer\\' => 
         array (
             0 => __DIR__ . '/..' . '/doctrine/lexer/lib/Doctrine/Common/Lexer',
@@ -278,11 +287,22 @@ class ComposerStaticInitd61ad5f6781248304efb40bde2b78078
         ),
     );
 
+    public static $prefixesPsr0 = array (
+        'H' => 
+        array (
+            'HTMLPurifier' => 
+            array (
+                0 => __DIR__ . '/..' . '/ezyang/htmlpurifier/library',
+            ),
+        ),
+    );
+
     public static $fallbackDirsPsr0 = array (
         0 => __DIR__ . '/../..' . '/extend',
     );
 
     public static $classMap = array (
+        'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'Stringable' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
         'UnhandledMatchError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
         'ValueError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
@@ -293,6 +313,7 @@ class ComposerStaticInitd61ad5f6781248304efb40bde2b78078
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInitd61ad5f6781248304efb40bde2b78078::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInitd61ad5f6781248304efb40bde2b78078::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitd61ad5f6781248304efb40bde2b78078::$prefixesPsr0;
             $loader->fallbackDirsPsr0 = ComposerStaticInitd61ad5f6781248304efb40bde2b78078::$fallbackDirsPsr0;
             $loader->classMap = ComposerStaticInitd61ad5f6781248304efb40bde2b78078::$classMap;
 

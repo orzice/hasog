@@ -45,7 +45,7 @@ class Plugin extends ApiController
         }
         // AcShop\plugin\<p1>\api\<p2>\<p3>@<p4>
         try {
-            $dic = 'AcShop\plugin\\'.$call[0].'\api\\'.$call[1].'\\'.$call[2];
+            $dic = 'HaSog\plugin\\'.$call[0].'\api\\'.$call[1].'\\'.$call[2];
             $dic2 = $call3[0];
             $test = new $dic($this->app);
             $test->$dic2();

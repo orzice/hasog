@@ -18,8 +18,8 @@ HaSog（全名 幻神商城系统）基于TP6框架 的一套 开源的微信社
 >
 > 原名叫 AcShop 更名为 HaSog系统
 > 
-> [![AcShop](https://img.shields.io/badge/license-AGPL--3.0-blue)](https://www.hasog.com)
-> [![AcShop](https://img.shields.io/badge/HaSog-开发中-brightgreen)](https://www.hasog.com)
+> [![HaSog](https://img.shields.io/badge/license-AGPL--3.0-blue)](https://www.hasog.com)
+> [![HaSog](https://img.shields.io/badge/HaSog-开发中-brightgreen)](https://www.hasog.com)
 > [![star](https://gitee.com/orzice/hasog/badge/star.svg?theme=dark)](https://gitee.com/orzice/hasog/stargazers)
 > [![fork](https://gitee.com/orzice/hasog/badge/fork.svg?theme=dark)](https://gitee.com/orzice/hasog/members)
 > 
@@ -52,7 +52,7 @@ HaSog（全名 幻神商城系统）基于TP6框架 的一套 开源的微信社
 >
 > 后端开发：梗集（王国骁） ，王火火（王琰豪）
 >
-> 前端开发：懒惰与猫（孙敬冉），M-A-O（张帆）
+> 前端开发：慵懒与猫（孙敬冉），M-A-O（张帆）
 >
 > UI设计：潮鳴り（姚羽）
 

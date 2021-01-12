@@ -120,7 +120,6 @@ class Node
             AnnotationRegistry::registerLoader('class_exists');
             $reader = new FileCacheReader(new AnnotationReader(), $this->annotationCacheDir, $this->annotationDebug);
             foreach ($controllerList as $controllerFormat => $controller) {
-
                 // 获取类和方法的注释信息
                 $reflectionClass = new \ReflectionClass($controller);
                 $methods         = $reflectionClass->getMethods();
@@ -178,6 +177,11 @@ class Node
      */
     protected function readControllerFiles($path)
     {
+        //目录不存在则会报错，修复此BUG
+        if (!is_dir($path)){
+            return [];
+        }
+
         list($list, $temp_list, $dirExplode) = [[], scandir($path), explode($this->dir, $path)];
         $middleDir = isset($dirExplode[1]) && !empty($dirExplode[1]) ? str_replace('/', '\\', substr($dirExplode[1], 1)) . "\\" : null;
 

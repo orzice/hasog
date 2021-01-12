@@ -1,8 +1,8 @@
 {
-  "namespace": "a",
+  "namespace": "hasog_view",
   "dir": "wap",
-  "name": "基础版页面",
+  "name": "幻神商城默认前端",
   "version": "1.0.0",
-  "description": "官方插件",
-  "author": "Orzice"
+  "description": "幻神商城默认前端系统",
+  "author": "幻神科技",
 }

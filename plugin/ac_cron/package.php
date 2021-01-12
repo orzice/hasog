@@ -28,7 +28,7 @@ return function () {
         'description' => '常用计划任务管理模块',
         'author' => 'AcShop官方',
         'url' => 'https://oauth.acgice.com',
-        'namespace' => 'AcShop\\plugin\\ac_cron',
+        'namespace' => 'HaSog\\plugin\\ac_cron',
         'admin' => 'index-index-index',//后台管理页面 留空就是没有
         ]], 'plugins_menu');
 

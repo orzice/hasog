@@ -245,7 +245,11 @@ class Template
 
             // 页面缓存
             ob_start();
-            ob_implicit_flush(0);
+            if (PHP_VERSION > 8.0) {
+                ob_implicit_flush(false);
+            } else {
+                ob_implicit_flush(0);
+            }
 
             // 读取编译存储
             $this->storage->read($cacheFile, $this->data);
@@ -345,7 +349,13 @@ class Template
         }
 
         // 读取第一行
-        preg_match('/\/\*(.+?)\*\//', fgets($handle), $matches);
+        $line = fgets($handle);
+
+        if (false === $line) {
+            return false;
+        }
+
+        preg_match('/\/\*(.+?)\*\//', $line, $matches);
 
         if (!isset($matches[1])) {
             return false;
@@ -490,9 +500,6 @@ class Template
 
         // 还原被替换的Literal标签
         $this->parseLiteral($content, true);
-        
-        // print_r($content);
-        // exit;
     }
 
     /**
@@ -552,10 +559,8 @@ class Template
     private function parseInclude(string &$content): void
     {
         $regex = $this->getRegex('include');
-      
         $func  = function ($template) use (&$func, &$regex, &$content) {
             if (preg_match_all($regex, $template, $matches, PREG_SET_ORDER)) {
-
                 foreach ($matches as $match) {
                     $array = $this->parseAttr($match[0]);
                     $file  = $array['file'];
@@ -1195,7 +1200,7 @@ class Template
      * @param  string $templateName 模板文件名
      * @return string
      */
-    private function parseTemplateName(string $templateName,$plus=false): string
+    private function parseTemplateName(string $templateName): string
     {
         $array    = explode(',', $templateName);
         $parseStr = '';
@@ -1210,11 +1215,7 @@ class Template
                 $templateName = $this->get(substr($templateName, 1));
             }
 
-            if($plus){
-                $template = $templateName;
-            }else{
-                $template = $this->parseTemplateFile($templateName);
-            }
+            $template = $this->parseTemplateFile($templateName);
 
             if ($template) {
                 // 获取模板文件内容

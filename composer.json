@@ -39,6 +39,7 @@
     "autoload": {
         "psr-4": {
             "app\\": "app",
+            "HaSog\\plugin\\": "plugin/",
             "AcShop\\plugin\\": "plugin/"
         },
         "psr-0": {

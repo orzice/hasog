@@ -1,17 +1,17 @@
 [
     {
         "name": "doctrine/annotations",
-        "version": "1.10.4",
-        "version_normalized": "1.10.4.0",
+        "version": "1.11.1",
+        "version_normalized": "1.11.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/doctrine/annotations.git",
-            "reference": "bfe91e31984e2ba76df1c1339681770401ec262f"
+            "reference": "ce77a7ba1770462cd705a91a151b6c3746f9c6ad"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/doctrine/annotations/zipball/bfe91e31984e2ba76df1c1339681770401ec262f",
-            "reference": "bfe91e31984e2ba76df1c1339681770401ec262f",
+            "url": "https://api.github.com/repos/doctrine/annotations/zipball/ce77a7ba1770462cd705a91a151b6c3746f9c6ad",
+            "reference": "ce77a7ba1770462cd705a91a151b6c3746f9c6ad",
             "shasum": "",
             "mirrors": [
                 {
@@ -27,14 +27,15 @@
         },
         "require-dev": {
             "doctrine/cache": "1.*",
+            "doctrine/coding-standard": "^6.0 || ^8.1",
             "phpstan/phpstan": "^0.12.20",
             "phpunit/phpunit": "^7.5 || ^9.1.5"
         },
-        "time": "2020-08-10T19:35:50+00:00",
+        "time": "2020-10-26T10:28:16+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "1.9.x-dev"
+                "dev-master": "1.11.x-dev"
             }
         },
         "installation-source": "source",
@@ -70,7 +71,7 @@
             }
         ],
         "description": "Docblock Annotations Parser",
-        "homepage": "http://www.doctrine-project.org",
+        "homepage": "https://www.doctrine-project.org/projects/annotations.html",
         "keywords": [
             "annotations",
             "docblock",
@@ -159,6 +160,64 @@
                 "url": "https://tidelift.com/funding/github/packagist/doctrine%2Flexer",
                 "type": "tidelift"
             }
+        ]
+    },
+    {
+        "name": "ezyang/htmlpurifier",
+        "version": "v4.13.0",
+        "version_normalized": "4.13.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/ezyang/htmlpurifier.git",
+            "reference": "08e27c97e4c6ed02f37c5b2b20488046c8d90d75"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/08e27c97e4c6ed02f37c5b2b20488046c8d90d75",
+            "reference": "08e27c97e4c6ed02f37c5b2b20488046c8d90d75",
+            "shasum": "",
+            "mirrors": [
+                {
+                    "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                    "preferred": true
+                }
+            ]
+        },
+        "require": {
+            "php": ">=5.2"
+        },
+        "require-dev": {
+            "simpletest/simpletest": "dev-master#72de02a7b80c6bb8864ef9bf66d41d2f58f826bd"
+        },
+        "time": "2020-06-29T00:56:53+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "HTMLPurifier": "library/"
+            },
+            "files": [
+                "library/HTMLPurifier.composer.php"
+            ],
+            "exclude-from-classmap": [
+                "/library/HTMLPurifier/Language/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "LGPL-2.1-or-later"
+        ],
+        "authors": [
+            {
+                "name": "Edward Z. Yang",
+                "email": "admin@htmlpurifier.org",
+                "homepage": "http://ezyang.com"
+            }
+        ],
+        "description": "Standards compliant HTML filter written in PHP",
+        "homepage": "http://htmlpurifier.org/",
+        "keywords": [
+            "html"
         ]
     },
     {
@@ -677,17 +736,17 @@
     },
     {
         "name": "myclabs/php-enum",
-        "version": "1.7.6",
-        "version_normalized": "1.7.6.0",
+        "version": "1.7.7",
+        "version_normalized": "1.7.7.0",
         "source": {
             "type": "git",
             "url": "https://github.com/myclabs/php-enum.git",
-            "reference": "5f36467c7a87e20fbdc51e524fd8f9d1de80187c"
+            "reference": "d178027d1e679832db9f38248fcc7200647dc2b7"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/myclabs/php-enum/zipball/5f36467c7a87e20fbdc51e524fd8f9d1de80187c",
-            "reference": "5f36467c7a87e20fbdc51e524fd8f9d1de80187c",
+            "url": "https://api.github.com/repos/myclabs/php-enum/zipball/d178027d1e679832db9f38248fcc7200647dc2b7",
+            "reference": "d178027d1e679832db9f38248fcc7200647dc2b7",
             "shasum": "",
             "mirrors": [
                 {
@@ -705,7 +764,7 @@
             "squizlabs/php_codesniffer": "1.*",
             "vimeo/psalm": "^3.8"
         },
-        "time": "2020-02-14T08:15:52+00:00",
+        "time": "2020-11-14T18:14:52+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -727,21 +786,31 @@
         "homepage": "http://github.com/myclabs/php-enum",
         "keywords": [
             "enum"
+        ],
+        "funding": [
+            {
+                "url": "https://github.com/mnapoli",
+                "type": "github"
+            },
+            {
+                "url": "https://tidelift.com/funding/github/packagist/myclabs/php-enum",
+                "type": "tidelift"
+            }
         ]
     },
     {
         "name": "nesbot/carbon",
-        "version": "2.41.3",
-        "version_normalized": "2.41.3.0",
+        "version": "2.43.0",
+        "version_normalized": "2.43.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/briannesbitt/Carbon.git",
-            "reference": "e148788eeae9b9b7b87996520358b86faad37b52"
+            "reference": "d32c57d8389113742f4a88725a170236470012e2"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/e148788eeae9b9b7b87996520358b86faad37b52",
-            "reference": "e148788eeae9b9b7b87996520358b86faad37b52",
+            "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/d32c57d8389113742f4a88725a170236470012e2",
+            "reference": "d32c57d8389113742f4a88725a170236470012e2",
             "shasum": "",
             "mirrors": [
                 {
@@ -762,11 +831,11 @@
             "kylekatarnls/multi-tester": "^2.0",
             "phpmd/phpmd": "^2.9",
             "phpstan/extension-installer": "^1.0",
-            "phpstan/phpstan": "^0.12.35",
+            "phpstan/phpstan": "^0.12.54",
             "phpunit/phpunit": "^7.5 || ^8.0",
             "squizlabs/php_codesniffer": "^3.4"
         },
-        "time": "2020-10-12T20:36:09+00:00",
+        "time": "2020-12-17T20:55:32+00:00",
         "bin": [
             "bin/carbon"
         ],
@@ -828,17 +897,17 @@
     },
     {
         "name": "phpoffice/phpspreadsheet",
-        "version": "1.15.0",
-        "version_normalized": "1.15.0.0",
+        "version": "1.16.0",
+        "version_normalized": "1.16.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/PHPOffice/PhpSpreadsheet.git",
-            "reference": "a8e8068b31b8119e1daa5b1eb5715a3a8ea8305f"
+            "reference": "76d4323b85129d0c368149c831a07a3e258b2b50"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/a8e8068b31b8119e1daa5b1eb5715a3a8ea8305f",
-            "reference": "a8e8068b31b8119e1daa5b1eb5715a3a8ea8305f",
+            "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/76d4323b85129d0c368149c831a07a3e258b2b50",
+            "reference": "76d4323b85129d0c368149c831a07a3e258b2b50",
             "shasum": "",
             "mirrors": [
                 {
@@ -861,10 +930,11 @@
             "ext-xmlwriter": "*",
             "ext-zip": "*",
             "ext-zlib": "*",
+            "ezyang/htmlpurifier": "^4.13",
             "maennchen/zipstream-php": "^2.1",
-            "markbaker/complex": "^1.5|^2.0",
-            "markbaker/matrix": "^1.2|^2.0",
-            "php": "^7.2|^8.0",
+            "markbaker/complex": "^1.5||^2.0",
+            "markbaker/matrix": "^1.2||^2.0",
+            "php": "^7.2||^8.0",
             "psr/http-client": "^1.0",
             "psr/http-factory": "^1.0",
             "psr/simple-cache": "^1.0"
@@ -875,7 +945,7 @@
             "jpgraph/jpgraph": "^4.0",
             "mpdf/mpdf": "^8.0",
             "phpcompatibility/php-compatibility": "^9.3",
-            "phpunit/phpunit": "^8.5|^9.3",
+            "phpunit/phpunit": "^8.5||^9.3",
             "squizlabs/php_codesniffer": "^3.5",
             "tecnickcom/tcpdf": "^6.3"
         },
@@ -885,7 +955,7 @@
             "mpdf/mpdf": "Option for rendering PDF with PDF Writer",
             "tecnickcom/tcpdf": "Option for rendering PDF with PDF Writer (doesn't yet support PHP8)"
         },
-        "time": "2020-10-11T13:20:59+00:00",
+        "time": "2020-12-31T18:03:49+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1329,17 +1399,17 @@
     },
     {
         "name": "symfony/polyfill-mbstring",
-        "version": "v1.18.1",
-        "version_normalized": "1.18.1.0",
+        "version": "v1.22.0",
+        "version_normalized": "1.22.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/polyfill-mbstring.git",
-            "reference": "a6977d63bf9a0ad4c65cd352709e230876f9904a"
+            "reference": "f377a3dd1fde44d37b9831d68dc8dea3ffd28e13"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/a6977d63bf9a0ad4c65cd352709e230876f9904a",
-            "reference": "a6977d63bf9a0ad4c65cd352709e230876f9904a",
+            "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/f377a3dd1fde44d37b9831d68dc8dea3ffd28e13",
+            "reference": "f377a3dd1fde44d37b9831d68dc8dea3ffd28e13",
             "shasum": "",
             "mirrors": [
                 {
@@ -1349,16 +1419,16 @@
             ]
         },
         "require": {
-            "php": ">=5.3.3"
+            "php": ">=7.1"
         },
         "suggest": {
             "ext-mbstring": "For best performance"
         },
-        "time": "2020-07-14T12:35:20+00:00",
+        "time": "2021-01-07T16:49:33+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "1.18-dev"
+                "dev-main": "1.22-dev"
             },
             "thanks": {
                 "name": "symfony/polyfill",
@@ -1414,17 +1484,17 @@
     },
     {
         "name": "symfony/polyfill-php72",
-        "version": "v1.18.1",
-        "version_normalized": "1.18.1.0",
+        "version": "v1.22.0",
+        "version_normalized": "1.22.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/polyfill-php72.git",
-            "reference": "639447d008615574653fb3bc60d1986d7172eaae"
+            "reference": "cc6e6f9b39fe8075b3dabfbaf5b5f645ae1340c9"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/polyfill-php72/zipball/639447d008615574653fb3bc60d1986d7172eaae",
-            "reference": "639447d008615574653fb3bc60d1986d7172eaae",
+            "url": "https://api.github.com/repos/symfony/polyfill-php72/zipball/cc6e6f9b39fe8075b3dabfbaf5b5f645ae1340c9",
+            "reference": "cc6e6f9b39fe8075b3dabfbaf5b5f645ae1340c9",
             "shasum": "",
             "mirrors": [
                 {
@@ -1434,13 +1504,13 @@
             ]
         },
         "require": {
-            "php": ">=5.3.3"
+            "php": ">=7.1"
         },
-        "time": "2020-07-14T12:35:20+00:00",
+        "time": "2021-01-07T16:49:33+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "1.18-dev"
+                "dev-main": "1.22-dev"
             },
             "thanks": {
                 "name": "symfony/polyfill",
@@ -1495,17 +1565,17 @@
     },
     {
         "name": "symfony/polyfill-php80",
-        "version": "v1.18.1",
-        "version_normalized": "1.18.1.0",
+        "version": "v1.22.0",
+        "version_normalized": "1.22.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/polyfill-php80.git",
-            "reference": "d87d5766cbf48d72388a9f6b85f280c8ad51f981"
+            "reference": "dc3063ba22c2a1fd2f45ed856374d79114998f91"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/polyfill-php80/zipball/d87d5766cbf48d72388a9f6b85f280c8ad51f981",
-            "reference": "d87d5766cbf48d72388a9f6b85f280c8ad51f981",
+            "url": "https://api.github.com/repos/symfony/polyfill-php80/zipball/dc3063ba22c2a1fd2f45ed856374d79114998f91",
+            "reference": "dc3063ba22c2a1fd2f45ed856374d79114998f91",
             "shasum": "",
             "mirrors": [
                 {
@@ -1515,13 +1585,13 @@
             ]
         },
         "require": {
-            "php": ">=7.0.8"
+            "php": ">=7.1"
         },
-        "time": "2020-07-14T12:35:20+00:00",
+        "time": "2021-01-07T16:49:33+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "1.18-dev"
+                "dev-main": "1.22-dev"
             },
             "thanks": {
                 "name": "symfony/polyfill",
@@ -1583,17 +1653,17 @@
     },
     {
         "name": "symfony/process",
-        "version": "v4.4.15",
-        "version_normalized": "4.4.15.0",
+        "version": "v4.4.18",
+        "version_normalized": "4.4.18.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/process.git",
-            "reference": "9b887acc522935f77555ae8813495958c7771ba7"
+            "reference": "075316ff72233ce3d04a9743414292e834f2cb4a"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/process/zipball/9b887acc522935f77555ae8813495958c7771ba7",
-            "reference": "9b887acc522935f77555ae8813495958c7771ba7",
+            "url": "https://api.github.com/repos/symfony/process/zipball/075316ff72233ce3d04a9743414292e834f2cb4a",
+            "reference": "075316ff72233ce3d04a9743414292e834f2cb4a",
             "shasum": "",
             "mirrors": [
                 {
@@ -1605,13 +1675,8 @@
         "require": {
             "php": ">=7.1.3"
         },
-        "time": "2020-09-02T16:08:58+00:00",
+        "time": "2020-12-08T16:59:59+00:00",
         "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "4.4-dev"
-            }
-        },
         "installation-source": "dist",
         "autoload": {
             "psr-4": {
@@ -1654,17 +1719,17 @@
     },
     {
         "name": "symfony/translation",
-        "version": "v4.4.15",
-        "version_normalized": "4.4.15.0",
+        "version": "v4.4.18",
+        "version_normalized": "4.4.18.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/translation.git",
-            "reference": "8494fa1bbf9d77fe1e7d50ac8ccfb80a858a98bd"
+            "reference": "c1001b7d75b3136648f94b245588209d881c6939"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/translation/zipball/8494fa1bbf9d77fe1e7d50ac8ccfb80a858a98bd",
-            "reference": "8494fa1bbf9d77fe1e7d50ac8ccfb80a858a98bd",
+            "url": "https://api.github.com/repos/symfony/translation/zipball/c1001b7d75b3136648f94b245588209d881c6939",
+            "reference": "c1001b7d75b3136648f94b245588209d881c6939",
             "shasum": "",
             "mirrors": [
                 {
@@ -1703,13 +1768,8 @@
             "symfony/config": "",
             "symfony/yaml": ""
         },
-        "time": "2020-10-02T07:34:48+00:00",
+        "time": "2020-12-08T16:59:59+00:00",
         "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "4.4-dev"
-            }
-        },
         "installation-source": "dist",
         "autoload": {
             "psr-4": {
@@ -1835,17 +1895,17 @@
     },
     {
         "name": "symfony/var-dumper",
-        "version": "v4.4.15",
-        "version_normalized": "4.4.15.0",
+        "version": "v4.4.18",
+        "version_normalized": "4.4.18.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/var-dumper.git",
-            "reference": "0dc22bdf9d1197467bb04d505355180b6f20bcca"
+            "reference": "4f31364bbc8177f2a6dbc125ac3851634ebe2a03"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/var-dumper/zipball/0dc22bdf9d1197467bb04d505355180b6f20bcca",
-            "reference": "0dc22bdf9d1197467bb04d505355180b6f20bcca",
+            "url": "https://api.github.com/repos/symfony/var-dumper/zipball/4f31364bbc8177f2a6dbc125ac3851634ebe2a03",
+            "reference": "4f31364bbc8177f2a6dbc125ac3851634ebe2a03",
             "shasum": "",
             "mirrors": [
                 {
@@ -1875,16 +1935,11 @@
             "ext-intl": "To show region name in time zone dump",
             "symfony/console": "To use the ServerDumpCommand and/or the bin/var-dump-server script"
         },
-        "time": "2020-09-18T08:35:10+00:00",
+        "time": "2020-12-08T16:59:59+00:00",
         "bin": [
             "Resources/bin/var-dump-server"
         ],
         "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "4.4-dev"
-            }
-        },
         "installation-source": "dist",
         "autoload": {
             "files": [
@@ -1934,17 +1989,17 @@
     },
     {
         "name": "topthink/framework",
-        "version": "v6.0.4",
-        "version_normalized": "6.0.4.0",
+        "version": "v6.0.6",
+        "version_normalized": "6.0.6.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/framework.git",
-            "reference": "4b252d78562d4a51a501651f837c26cb9d91624f"
+            "reference": "dd265d9e962da2c033a45190b839d5538770a760"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/top-think/framework/zipball/4b252d78562d4a51a501651f837c26cb9d91624f",
-            "reference": "4b252d78562d4a51a501651f837c26cb9d91624f",
+            "url": "https://api.github.com/repos/top-think/framework/zipball/dd265d9e962da2c033a45190b839d5538770a760",
+            "reference": "dd265d9e962da2c033a45190b839d5538770a760",
             "shasum": "",
             "mirrors": [
                 {
@@ -1970,7 +2025,7 @@
             "mockery/mockery": "^1.2",
             "phpunit/phpunit": "^7.0"
         },
-        "time": "2020-09-29T02:19:59+00:00",
+        "time": "2021-01-10T15:35:54+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -2159,17 +2214,17 @@
     },
     {
         "name": "topthink/think-orm",
-        "version": "v2.0.34",
-        "version_normalized": "2.0.34.0",
+        "version": "v2.0.35",
+        "version_normalized": "2.0.35.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/think-orm.git",
-            "reference": "57f9b98895b0ff4ae7b7b75e51456fd8cb8fb629"
+            "reference": "f0bba0b15610d4015655ff6f07ea3d639212076f"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/top-think/think-orm/zipball/57f9b98895b0ff4ae7b7b75e51456fd8cb8fb629",
-            "reference": "57f9b98895b0ff4ae7b7b75e51456fd8cb8fb629",
+            "url": "https://api.github.com/repos/top-think/think-orm/zipball/f0bba0b15610d4015655ff6f07ea3d639212076f",
+            "reference": "f0bba0b15610d4015655ff6f07ea3d639212076f",
             "shasum": "",
             "mirrors": [
                 {
@@ -2185,7 +2240,7 @@
             "psr/simple-cache": "^1.0",
             "topthink/think-helper": "^3.1"
         },
-        "time": "2020-09-28T08:24:57+00:00",
+        "time": "2021-01-06T12:55:12+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -2277,17 +2332,17 @@
     },
     {
         "name": "topthink/think-template",
-        "version": "v2.0.7",
-        "version_normalized": "2.0.7.0",
+        "version": "v2.0.8",
+        "version_normalized": "2.0.8.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/think-template.git",
-            "reference": "e98bdbb4a4c94b442f17dfceba81e0134d4fbd19"
+            "reference": "abfc293f74f9ef5127b5c416310a01fe42e59368"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/top-think/think-template/zipball/e98bdbb4a4c94b442f17dfceba81e0134d4fbd19",
-            "reference": "e98bdbb4a4c94b442f17dfceba81e0134d4fbd19",
+            "url": "https://api.github.com/repos/top-think/think-template/zipball/abfc293f74f9ef5127b5c416310a01fe42e59368",
+            "reference": "abfc293f74f9ef5127b5c416310a01fe42e59368",
             "shasum": "",
             "mirrors": [
                 {
@@ -2300,7 +2355,7 @@
             "php": ">=7.1.0",
             "psr/simple-cache": "^1.0"
         },
-        "time": "2019-09-20T15:31:04+00:00",
+        "time": "2020-12-10T07:52:03+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

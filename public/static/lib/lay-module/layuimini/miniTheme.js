@@ -424,7 +424,7 @@ define(["jquery"], function ($) {
                 var bgColorHtml = miniTheme.buildBgColorHtml(options);
                 var html = '<div class="layuimini-color">\n' +
                     '<div class="color-title">\n' +
-                    '<span>AcShop配色方案</span>\n' +
+                    '<span>HaSog配色方案</span>\n' +
                     '</div>\n' +
                     '<div class="color-content">\n' +
                     '<ul>\n' + bgColorHtml + '</ul>\n' +

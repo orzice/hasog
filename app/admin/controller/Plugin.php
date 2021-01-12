@@ -47,9 +47,9 @@ class Plugin extends AdminController
         if (!$data) {
             return $this->error('插件不存在或未开启！', '','');
         }
-        // AcShop\plugin\<p1>\admin\<p2>\<p3>@<p4>
+        // HaSog\plugin\<p1>\admin\<p2>\<p3>@<p4>
         try {
-            $dic = 'AcShop\plugin\\'.$call[0].'\admin\\'.$call[1].'\\'.$call[2];
+            $dic = 'HaSog\plugin\\'.$call[0].'\admin\\'.$call[1].'\\'.$call[2];
             $dic2 = $call3[0];
             $test = new $dic($this->app);
             $test->$dic2();

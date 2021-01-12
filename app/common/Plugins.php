@@ -155,7 +155,7 @@ class Plugins
         $sep = self::$sep;
         $root = root_path();
         $dir = $root.'plugin'.$sep;
-
+        
         $plugins = PluginsData::where("state",1)->select();
 
         for ($i=0; $i < count($plugins); $i++) {
@@ -163,7 +163,7 @@ class Plugins
             if (is_file($file)){
                $node = new NodeService();
                $node->setDir($dir.$plugins[$i]["dir"].$sep.'admin');
-               $node->setNamespacePrefix("AcShop".$sep."plugin".$sep.$plugins[$i]["dir"].$sep."admin");
+               $node->setNamespacePrefix("HaSog".$sep."plugin".$sep.$plugins[$i]["dir"].$sep."admin");
                $nodeList = ($node)->getNodelist();
                //处理node数据
                for ($s=0; $s < count($nodeList); $s++) { 
@@ -199,7 +199,8 @@ class Plugins
     static public function PluginMenuDel($name = null)
     {
         if (!$name) {return false;}
-        $dir = 'plugins.'.$name.'-';
+        // $dir = 'plugins.'.$name.'-';
+        $dir = 'plugins.'.$name;
         SystemMenu::where("href",'like', $dir.'%')->delete();
         return true;
     }
@@ -216,6 +217,7 @@ class Plugins
         $dir = $root.'plugin'.$sep;
 
         $plugins = SystemNode::where("type",2)->where("node",'like','plugins.%')->select();
+
         for ($i=0; $i < count($plugins); $i++) {
             $code = SystemMenu::where('href',$plugins[$i]["node"])->find();
             if($code){
@@ -226,9 +228,35 @@ class Plugins
             if(!$data){
                 continue;
             }
+            $pid = 1;
+            //判断是否有父接口
+            $pids = SystemMenu::where('href','plugins.'.$dir)->find();
+            if ($pids) {
+                $pid = $pids['id'];
+            }else{
+                //如果有其他小伙伴但是没有父接口那么自动创建父接口
+                $plugs = SystemMenu::where('href','like','plugins.'.$dir.'-%')->select();
+                if (count($plugs) !== 0) {
+                    //创建父级别
+                    $sql = array(
+                        'pid' => 1,
+                        'title' => $data["name"],
+                        'icon' => "fa fa-code",
+                        'href' => 'plugins.'.$dir,
+                        'target' => "_self",
+                        'sort' => 10,
+                        'status' => 1,
+                        );
+                    $model = new SystemMenu();
+                    $pid = $model->insertGetId($sql);
+                    //给原来的子数据更改为父接口
+                    SystemMenu::where('href','like','plugins.'.$dir.'-%')->update(['pid'=>$pid]);
+                }
+            }
+
             $sql = array(
-                'pid' => 1,
-                'title' => $data["name"],
+                'pid' => $pid,
+                'title' => $plugins[$i]["title"],
                 'icon' => "fa fa-code",
                 'href' => $plugins[$i]["node"],
                 'target' => "_self",

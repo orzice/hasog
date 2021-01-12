@@ -33,6 +33,6 @@ class MenuConstant
     /**
      * 模块名前缀
      */
-    const MODULE_PREFIX = 'acshop_';
+    const MODULE_PREFIX = 'hasog_';
 
 }
