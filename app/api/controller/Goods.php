@@ -30,12 +30,9 @@ class Goods  extends ApiController
 {
     // 获取商品列表
     public function goods_list(){
-        // 可以通过 中间件 省略步骤
-//        $goods_list = GoodsModel::select();
         $get = $this->request->get();
         $category_id = isset($get['category_id']) ? $get['category_id'] : null;
         $msg = '获取分类下的商品失败，返回全部商品';
-        $goods_list = GoodsModel::select();
         if($category_id){
             $category = Category::where('id', '=', $category_id)->where('enabled', 1)->find();
             if(!empty($category)){
@@ -44,37 +41,52 @@ class Goods  extends ApiController
                 $goods_category = GoodsCategory::where('category_ids', 'like', $category_id . ',%')
                     ->whereOr('category_ids', 'like', '%,' . $category_id . ',%')
                     ->whereOr('category_ids', 'like', '%,' . $category_id);
-//                    ->order('sort', 'desc');
-//                ->paginateX([
-//                    'query'     => [], //url额外参数
-//                    'fragment'  => '', //url锚点
-//                    'var_page'  => 'page', //分页变量
-//                    'list_rows' => 1, //每页数量
-//                ]);
                 $goods_ids = $goods_category->column('goods_id');
-//                print_r($goods_ids);die();
-//                $goods_count = $goods_list->count();
                 $goods_list = GoodsModel::whereIn('id', $goods_ids)->where('status', 1)
-                    ->hidden(['cost_price','reduce_stock_method', 'real_sales', 'virtual_sales' ])
-//                    ->limit(0,1)
-                    ->paginatefront($get)
-                    ->select();
-//                    ->select();
-/*                foreach ($goods_list as &$goods){
-                    $category_goods = $goods_category->where('goods_id','=', $goods->id)->findOrEmpty();
-                    $goods['category'] = $category_goods;
-                }*/
+                    ->hidden(['cost_price','reduce_stock_method', 'real_sales', 'virtual_sales' ]);
+                $goods_count = $goods_list->count();
+                $goods_list = $goods_list->paginatefront($get)->select();
             }
             else{$this->error('分类不存在或暂时被禁用');}
+        }else{
+            $goods_list = GoodsModel::select();
+            $goods_count = $goods_list->count();
+            $goods_list = GoodsModel::paginatefront($get)->select();
         }
         foreach ($goods_list as &$goods){
             $category_goods = GoodsCategory::where('goods_id','=', $goods->id)->find();
             $goods['category'] = $category_goods;
         }
-        $goods_count = $goods_list->count();
-
-        $this->success($msg,['goods_count'=> $goods_count, 'goods_list'=> $goods_list]);
+        $list_count = $goods_list->count();
+        $this->success($msg,['goods_count'=> $goods_count,'list_count'=> $list_count, 'goods_list'=> $goods_list]);
     }
+
+
+    // 获取商品列表
+    public function goods_search(){
+        $get = $this->request->get();
+        $goods_title = isset($get['goods_title']) ? $get['goods_title'] : null;
+        $msg = '获取失败';
+        if($goods_title){
+                $msg = '获取商品成功';
+                // 这种方法 分类如果enabled 或者 delete 就还能查出
+                $goods_list = GoodsModel::where('title', 'like', '%'.$goods_title . '%')->where('status', 1)
+                    ->hidden(['cost_price','reduce_stock_method', 'real_sales', 'virtual_sales' ]);
+                $goods_count = $goods_list->count();
+                $goods_list = $goods_list->paginatefront($get)->select();
+                $list_count = $goods_list->count();
+        }else{
+            $goods_count = 0;
+            $goods_list = [];
+            $list_count = 0;
+        }
+        foreach ($goods_list as &$goods){
+            $category_goods = GoodsCategory::where('goods_id','=', $goods->id)->find();
+            $goods['category'] = $category_goods;
+        }
+        $this->success($msg,['goods_count'=> $goods_count,'list_count'=> $list_count, 'goods_list'=> $goods_list]);
+    }
+
 
     // 商品分类列表
     public function goods_category_list(){
@@ -100,15 +112,13 @@ class Goods  extends ApiController
         if($user_id){
             $user = Member::where('id', $user_id)->find();
             if (!empty($user)){
-//                $favor_obj = GoodsFavor::where('uid', $user_id)
                 $favor_obj = $user->favors()
-                    ->where('goods_id', $goods->id)
+                    ->where('goods_id', $goods->id)->whereNull('delete_time')
                     ->find();
                 !empty($favor_obj) && $is_favor = true;
             }
         }
         empty($goods) && $this->error('商品不存在');
-//        $goods->status === 0 && $this->error('商品已下架');
         $goods->status === 0 && $this->error('商品已下架');
         $this->success('获取商品信息成功', ['goods'=> $goods, 'is_favor'=> $is_favor]);
     }

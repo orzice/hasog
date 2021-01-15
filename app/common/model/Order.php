@@ -121,7 +121,8 @@ class Order extends TimeModel
             ];
             // 是否减库存
             if ($goods_item['goods_obj']->reduce_stock_method === 0){
-                $goods->stock -= 1;
+                $goods->stock -= $goods_item['goods_num'];
+                $goods->save();
             }
         }
         return $this->goods()->saveAll($goods_array);
@@ -145,5 +146,10 @@ class Order extends TimeModel
         $this->address = $order_address;
     }
 
+    public function address_string(){
+        $address = $this->address;
+        $address->area_name();
+        return $address;
+    }
 
 }

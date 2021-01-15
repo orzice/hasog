@@ -40,9 +40,11 @@ class Cart extends ApiController
         }
         $carts = $user->carts()->order('id', 'desc')
             ->hidden(['sku', 'title', 'thumb',])
-            ->order('id', 'desc')
-            ->paginatefront($get)
+            ->order('id', 'desc');
+        $carts_count = $carts->count();
+        $carts = $carts->paginatefront($get)
             ->select();
+        $list_count = $carts->count();
         foreach ($carts as &$item) {
             $goods = $item->goods
                 ->hidden(['cost_price', 'reduce_stock_method', 'real_sales', 'virtual_sales']);
@@ -50,7 +52,7 @@ class Cart extends ApiController
             $item->goods = $goods;
             $item->is_valid = $goods->status === 1 ? true : false ;
         }
-        $this->success('请求成功', ['carts' => $carts]);
+        $this->success('请求成功', ['carts_count'=>$carts_count, 'list_count'=>$list_count , 'carts' => $carts]);
     }
 
 
@@ -179,18 +181,14 @@ class Cart extends ApiController
             $this->error('用户信息异常请重新登录');
         }
         $post = $this->request->post();
-//        {"cart_goods_ids":[1,2,3,4]}
         $cart_goods_ids = isset($post['cart_goods_ids']) ? $post['cart_goods_ids'] : null;
-//        is_numeric();
         if(!is_array($cart_goods_ids) && count($cart_goods_ids)){
             $this->error('传输参数有误或没有选中要删除的商品');
         }
-//        print_r(implode(',', $cart_goods_ids));die();
         $cart_goods_objs = CartModel::where('uid', $user_id)->whereIn('id',implode(',', $cart_goods_ids))->select();
-
+        $cart_goods_objs->count()===0 && $this->error('购物车商品不存在');
         try{
             $result = $cart_goods_objs->delete();
-            print_r($result);
             if($result === false){
                 $this->error('删除失败请稍后重试');
             }

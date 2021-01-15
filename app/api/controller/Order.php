@@ -145,15 +145,14 @@ class Order extends ApiController
             'dispatch_price' => $dispatch_price,
             'goods_price' => $goods_price,       // 总现价
             'goods_total' => $goods_total,       // 总计数量
-            'discount_price' => $discount_price, // 总折扣价
+            'discount_price' => $discount_price, // 总折扣
             'order_goods_price' => $order_goods_price, // 总原价
-            'price' => $price,
+            'price' => $price,                      // 总价(带运费)
             'cost_amount' => $cost_amount,
             'member_remark'=> $member_remark
         ];
         try{
             $order = new OrderModel($order_data);
-//            $save_goods = $order->goods()->saveAll();
             $order_save = $order->save();
             Db::startTrans();
             $order->generate_address($request_address);
@@ -161,7 +160,6 @@ class Order extends ApiController
             $save_goods = $order->generate_goods($goods_objs);
             if ($order_save=== false || $save === false || $save_goods=== false){
                 $order->delete();
-//                $this->success('生成订单成功');
                 throw new \Exception('添加失败');
             }
             Db::commit();
@@ -172,14 +170,7 @@ class Order extends ApiController
             }
             $this->error('生成订单失败，请稍后重试');
         }
-/*        if ($order_save && $save && $save_goods){
-            Db::commit();
-            $this->success('生成订单成功');
-        }*/
         $this->success('生成订单成功');
-//        Db::rollback();
-//        $order->delete();
-//        $this->error('生成订单失败，请稍后重试');
     }
 
 
@@ -187,32 +178,21 @@ class Order extends ApiController
     public function cache_order()
     {
         $post = $this->request->post();
-//        print_r($post);die();
         $user_id = $this->MemberId();
         $user = Member::where('state', '0')->find($user_id);
-//        print_r($user->toArray());die();
         empty($user) && $this->error('用户数据错误');
         $order_sn = OrderModel::createOrderSn('AC');
-//        $price = 0;
         $goods_price = 0;
         $discount_price = 0;
         $order_goods_price = 0;
-//        $goods_price = 0;
-        // 初始化 订单商品列表 地址id  重量 运费 等数据
         $goods_data = isset($post['goods_data']) ? $post['goods_data'] : [];
         empty($goods_data) && $this->error('请提交商品');
-//        $user_address = $user->address();
         $request_address = isset($post['address_id']) ? $post['address_id'] : null ;
         $request_address = $user->address()->where('id', $request_address)->find();
-//        print_r($request_address);die();
         if (empty($request_address)){
             $default_address = $user->address()->where('is_default', 1)->find();
             empty($default_address) && $request_address =  $user->address()->select()->first();
-//            print_r($request_address->toArray());die();
         }
-        // 直接获取 goods 数组 但是还需要 计算相关东西 所以不使用whereIn
-//        $goods_objs = Goods::whereIn('id', array_column($goods_data, 'goods_id'));
-//        $dispatch_type_id = isset($post['dispatch_type_id']) ? $post['dispatch_type_id'] : null ;
         $weight = 0;
         $dispatch_price = 0;
         $goods_objs = [];
@@ -240,10 +220,7 @@ class Order extends ApiController
             $weight += $goods_weight;
             // 计算运费
             $dispatch_obj = $goods_obj->dispatch_obj;
-//            $dispatch_obj->dispatch_data;
             $dispatch_datas = DispatchData::where('did', $dispatch_obj->id)->order('display_order')->select();
-//            $dispatch_datas = !empty($dispatch_obj->dispatch_data) ? $dispatch_obj->dispatch_data()->order('display_order'): [] ;
-
             // 选出 收货地址 配对的 配送逻辑 并计算运费
             $goods_dispatch = 0;
             foreach ($dispatch_datas as $dispatch_data) {
@@ -301,7 +278,6 @@ class Order extends ApiController
             'goods_price' => $goods_price,       // 总现价
             'discount_price' => $discount_price, // 总折扣价
             'order_goods_price' => $order_goods_price, // 总原价
-//            'order_goods_price' => $user_id,
             'price' => $price,
         ];
         $this->success('请求成功', $data);
@@ -317,7 +293,6 @@ class Order extends ApiController
         empty($order_id) && $this->error('订单不存在');
         !array_key_exists($pay_type_id, OrderModel::PAY_TYPE_ID) && $this->error('请选择正确的支付方式');
         $user_id = $this->MemberId();
-//        $user_id = 1;
         $user = Member::find($user_id);
         $order = OrderModel::where('uid', $user_id)->where('id', $order_id)->find();
         empty($order) && $this->error('订单不存在');
@@ -357,11 +332,6 @@ class Order extends ApiController
                 $this->error('支付失败请稍后重试');
                 // $this->tuikuan() // 退款操作
             }
-//            if ($save){
-//                $this->success('支付成功');
-//            }
-//            Db::rollback();
-//            $this->error('支付失败请稍后重试');
             $this->success('支付成功');
 
         }
@@ -376,7 +346,6 @@ class Order extends ApiController
         $order_id = isset($post['order_id']) ? $post['order_id'] : null ;
         empty($order_id) && $this->error('订单不存在');
         $user_id = $this->MemberId();
-//        $user_id = 1;
         $user = Member::find($user_id);
         $order = OrderModel::where('uid', $user_id)->where('id', $order_id)->find();
         empty($order_id) && $this->error('订单不存在');
@@ -404,7 +373,6 @@ class Order extends ApiController
         $order_id = isset($post['order_id']) ? $post['order_id'] : null ;
         empty($order_id) && $this->error('订单不存在');
         $user_id = $this->MemberId();
-//        $user_id = 1;
         $user = Member::find($user_id);
         $order = OrderModel::where('uid', $user_id)->where('id', $order_id)->find();
         empty($order_id) && $this->error('订单不存在');
@@ -430,12 +398,6 @@ class Order extends ApiController
                 Db::rollback();
                 $this->error('申请失败');
             }
-//        $save ? $this->success('申请成功', ['status'=>Order::STATUS_ARRAY[$order->status]]) : $this->error('订单错误') ;
-/*            if ($save_refund && $save){
-                Db::rollback();
-                $this->success('申请成功');
-            }
-            $this->error('申请失败请稍后重试');*/
             $this->success('申请成功');
         }
         $this->error('该订单当前状态不能申请退款');
@@ -455,7 +417,6 @@ class Order extends ApiController
     // 用户地址列表及选择
     public function user_address(){
         $user_id = $this->MemberId();
-//        $user_id = 1;
         $user_address = MemberAddress::where('uid', $user_id)->select()
             ->hidden(['create_time', 'update_time', 'delete_time'])
             ->toArray();
@@ -467,27 +428,20 @@ class Order extends ApiController
     public function order_detail()
     {
         $user_id = $this->MemberId();
-//        $user_id = 1;
         $get = $this->request->get();
         $order_id = $get['order_id'];
         // 判断订单是否存在以及是否是该用户的订单
         $order = OrderModel::where('uid', $user_id)
             ->where('id', $order_id)
-/*            ->field([
-                'id',
-                'order_sn', // 订单号
-                'create_time', // 下单时间
-                'goods_price', // 订单价格
-                'price',   // 实际价格
-                'dispatch_price', // 运费
-                'discount_price',])*/
             ->find();
         empty($order) && $this->error('订单不存在');
         // 返回订单字段
 //        $order->   //折扣价格
         $order->address;
         $order->goods;
-        $this->success('返回订单成功', $order);
+        $order->address_string();
+        $order->status = OrderModel::STATUS_ARRAY[$order->status];
+        $this->success('返回订单成功', ['order'=>$order]);
 
     }
 
@@ -505,7 +459,10 @@ class Order extends ApiController
                 ->where('status', $request_status)
                 ->order('id', 'desc')
                 ->paginatefront($get)
-                ->select;
+                ->select();
+        }
+        foreach ($order_list as &$item){
+            $item->goods;
         }
         $this->success('请求成功', ['order_list'=>$order_list, 'status_array'=>OrderModel::STATUS_ARRAY]);
     }
@@ -513,7 +470,6 @@ class Order extends ApiController
     // 订单状态
     public function order_status()
     {
-//        $user_id = $this->MemberId();
         $user_id = 1;
         $status = OrderModel::STATUS_ARRAY;
         $this->success('请求成功', ['status'=>$status]);
@@ -523,7 +479,6 @@ class Order extends ApiController
     // 支付类型
     public function pay_type()
     {
-//        $user_id = $this->MemberId();
         $user_id = 1;
         $pay_type = OrderModel::PAY_TYPE_ID;
         $this->success('请求成功', ['pay_type'=>$pay_type]);

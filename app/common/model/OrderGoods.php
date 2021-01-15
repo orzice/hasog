@@ -22,8 +22,14 @@ use app\common\model\TimeModel;
 
 class OrderGoods extends TimeModel
 {
-	public function order()
+    protected $deleteTime = 'delete_time';
+	public function orderbelong()
 	{
 		return $this->belongsTo('app\common\model\Order','order_id');
+	}
+
+	public function goods()
+	{
+		return $this->belongsTo('app\common\model\Goods','goods_id');
 	}
 }

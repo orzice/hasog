@@ -22,7 +22,7 @@ use app\common\model\TimeModel;
 
 class OrderAddress extends TimeModel
 {
-	public function order()
+	public function orders()
     {
 		return $this->belongsTo('app\common\model\Order','order_id');
     }
@@ -48,7 +48,25 @@ class OrderAddress extends TimeModel
     }
 
 
+    public function area_name(){
+        $this->province = $this->find_area($this->province_id);
+        $this->city = $this->find_area($this->city_id);
+        $this->district = $this->find_area($this->district_id);
+        $this->street = $this->find_area($this->street_id);
 
+    }
+
+    public function find_area($id){
+        try{
+            $area_name = Area::where('id', $id)->find();
+            if(empty($area_name)){
+                throw new Exception('错误');
+            }
+            return $area_name->ext_name;
+        }catch (Exception $exception){
+            return '暂无';
+        }
+    }
 
 
 
