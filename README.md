@@ -1,4 +1,4 @@
-# 还在开发中！目前不能使用！
+# 还在开发中！目前不能使用！因为疫情和项目工期所以较慢！
 
 
 
@@ -10,14 +10,12 @@ HaSog（全名 幻神商城系统）基于TP6框架 的一套 开源的微信社
 
 公司曾因系统项目漏洞导致损失数十万，所以此项目安全是“变态级”，不相信任何用户传输的数据和请求！但性能稍低。
 
-> 预计 1.0.0 Bate 版本于 2021-1-15 日 发布。
->
 > 立项于 2020-10-13日，预计登录平台为：H5 + APP + 小程序（微信 QQ 百度 等..）。
 >
 > 开源！开源！开源！开源！
 >
 > 原名叫 AcShop 更名为 HaSog系统
-> 
+>
 > [![HaSog](https://img.shields.io/badge/license-AGPL--3.0-blue)](https://www.hasog.com)
 > [![HaSog](https://img.shields.io/badge/HaSog-开发中-brightgreen)](https://www.hasog.com)
 > [![star](https://gitee.com/orzice/hasog/badge/star.svg?theme=dark)](https://gitee.com/orzice/hasog/stargazers)
