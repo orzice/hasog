@@ -18,7 +18,7 @@
 namespace app\api\controller;
 
 use app\admin\model\SystemUploadfile;
-use app\common\controller\AdminController;
+use app\common\controller\ApiController;
 use app\common\service\MenuService;
 use Hasog\upload\Uploadfile;
 use think\db\Query;
