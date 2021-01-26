@@ -22,6 +22,43 @@ use think\facade\Cache;
 use think\facade\Config;
 
 
+if (!function_exists('UserUploadfile')) {
+    /**
+     *  标记 附件已使用 【用户端专用】
+     */
+    function UserUploadfile($url)
+    {
+        \app\admin\model\MemberUploadfile::where("uid",Sessions('id'))->where("state",0)->where("url",$url)->update(["state" => 1]);
+        return true;
+    }
+}
+if (!function_exists('UserUploadfileDelete')) {
+    /**
+     *  清除未使用附件  每一次上传 都会监控未使用的图片 进行删除处理【用户端专用】
+     */
+    function UserUploadfileDelete()
+    {
+        $row = \app\admin\model\MemberUploadfile::where('file','<>',"")->where('state',0)->select();
+        for ($i=0; $i < count($row); $i++) { 
+              if ($row[$i]['file'] == '') {
+                continue;
+              }
+            //进行删除文件操作
+             $wjm = root_path() . 'public/' . $row[$i]['file'];
+             $wjm = str_replace(DIRECTORY_SEPARATOR, '/', $wjm);
+             $wjm = str_replace(DIRECTORY_SEPARATOR, '\/', $wjm);
+
+            if(file_exists($wjm)){
+              unlink($wjm);
+            }
+        }
+        //删除数据库记录
+        \app\admin\model\SystemUploadfile::where('file','<>',"")->where('state',0)->delete();
+        return true;
+    }
+}
+
+
 if (!function_exists('http_query')) {
 function http_query($url, $post = null)
    {

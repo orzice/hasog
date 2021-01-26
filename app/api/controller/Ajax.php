@@ -20,7 +20,7 @@ namespace app\api\controller;
 use app\admin\model\SystemUploadfile;
 use app\common\controller\AdminController;
 use app\common\service\MenuService;
-use EasyAdmin\upload\Uploadfile;
+use Hasog\upload\Uploadfile;
 use think\db\Query;
 use think\facade\Cache;
 
