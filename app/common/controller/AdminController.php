@@ -126,6 +126,18 @@ class AdminController extends BaseController
     }
 
     /**
+     * 解析和获取模板内容 用于输出 [用于插件]
+     * @param string $name 插件目录名
+     * @param string $template
+     * @param array $vars
+     * @return mixed
+     */
+    public function pfetch($name='',$template = '', $vars = [])
+    {
+        return $this->app->view->fetch('../../../plugin/'.$name.'/view/'.$template, $vars);
+    }
+
+    /**
      * 重写验证规则
      * @param array $data
      * @param array|string $validate
