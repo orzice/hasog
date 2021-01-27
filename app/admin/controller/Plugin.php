@@ -62,14 +62,14 @@ class Plugin extends AdminController
             return $this->error('插件不存在或未开启！', '','');
         }
         // HaSog\plugin\<p1>\admin\<p2>\<p3>@<p4>
-        try {
+        // try {
             $dic = 'HaSog\plugin\\'.$call[0].'\admin\\'.$call[1].'\\'.$call[2];
             $dic2 = $call3[0];
             $test = new $dic($this->app);
-            $test->$dic2();
-        }  catch (\Throwable $e) {
-            return $this->error('插件报错，请联系技术支持！', '','');
-        }
+            return $test->$dic2();
+        // }  catch (\Throwable $e) {
+        //     return $this->error('插件报错，请联系技术支持！', '','');
+        // }
 
     }
 }

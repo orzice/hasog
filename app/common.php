@@ -21,7 +21,22 @@ use app\common\service\AuthService;
 use think\facade\Cache;
 use think\facade\Config;
 
-
+// 后台插件专用 获取路由
+if (!function_exists('RequestPlugin')) {
+    /**
+     *  清除未使用附件  每一次上传 都会监控未使用的图片 进行删除处理
+     */
+    function RequestPlugin($name,$dic,$con,$fun,$ls = false)
+    {
+        $http = app('http')->getName();
+        $http = '/'.$http.'/';
+        if ($ls) {
+            $http = '';
+        }
+        //plugins.a-index-index-index
+        return $http.'plugins.'.$name.'-'.$dic.'-'.$con.'-'.$fun;
+    }
+}
 if (!function_exists('Uploadfile')) {
     /**
      *  标记 附件已使用
