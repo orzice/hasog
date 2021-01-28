@@ -255,6 +255,20 @@ class Plugins
                 }
             }
 
+            // 部分插件函数 不计入前端模块
+            $pass = ['add','edit','delete'];
+            $pas = false;
+            for ($s=0; $s < count($pass); $s++) { 
+                if (strpos($plugins[$i]["node"], '/'.$pass[$s])) {
+                    $pas = true;
+                    break;
+                }
+            }
+            if ($pas) {
+                continue;
+            }
+
+
             $sql = array(
                 'pid' => $pid,
                 'title' => $plugins[$i]["title"],
