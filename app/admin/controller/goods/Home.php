@@ -145,7 +145,7 @@ class Home extends AdminController
             // 判断是否传入分类并且不能为0(无) 然后取出分类关系插入数据库
             $category_id = $post['category_id'] ? $post['category_id'] : 0;
             $category_id === 0 && $this->error('请选择商品分类');
-            $category = CategoryModel::where('id', $category_id)->findOrEmpty();
+            $category = CategoryModel::where('id', $category_id)->find();
             empty($category) && $this->error('分类不存在');
             $category['level'] != 3 && $this->error('请选择三级分类');
             // 可能存在的问题 如果以后 改成多级分类 一直加载parent_category 直到顶部
@@ -202,7 +202,7 @@ class Home extends AdminController
         event('GoodsEdit', $id);
         $old_goods_category = GoodsCategory::where('goods_id', $id)
             ->order('create_time', 'desc')
-            ->findOrEmpty();
+            ->find();
 
         if ($this->request->isAjax()) {
             $post = $this->request->post();
@@ -349,7 +349,7 @@ class Home extends AdminController
         $row->isEmpty() && $this->error('数据不存在');
         $old_goods_category = GoodsCategory::where('goods_id', $id)
             ->order('create_time', 'desc')
-            ->findOrEmpty();
+            ->find();
         try {
             $old_goods_category->delete();
             $save = $row->delete();

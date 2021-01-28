@@ -39,6 +39,9 @@ class WechatPay extends TimeModel
         'remark',
         'is_union',
         'is_login',
+        'is_jsapi',
+        'is_h5',
+        'is_app',
     ];
     protected $deleteTime = 'delete_time';
     protected $createTime = 'create_time';

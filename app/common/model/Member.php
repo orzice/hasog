@@ -41,7 +41,6 @@ class Member extends TimeModel
         foreach ($address as $item){
             $item->area_name();
         }
-//        print_r($address->toArray());die();
         return $address;
     }
 

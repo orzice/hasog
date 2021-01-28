@@ -19,43 +19,22 @@ namespace app\common\model;
 
 
 use app\common\model\TimeModel;
-use think\Exception;
 
-class MemberAddress extends TimeModel
+class OrderPay extends TimeModel
 {
 
-    const ALLOW_FIELDS = [
-//        'status',
-//        'change_price',
-//        'change_dispatch_price',
-//        'merchant_remark',
-//        'express_code',
-//        'express_company_name',
-//        'express_sn',
-//        'delete_time'
+    const PAY_TYPE_ID = [
+        1=> '微信支付',
+        2=> '支付宝支付',
+        3=> '线下支付',
     ];
 
-    public function member(){
-        return $this->belongsTo('app\common\model\Member', 'uid');
+	public function orders()
+    {
+		return $this->belongsTo('app\common\model\Order','order_id');
     }
 
-    public function area_name(){
-        $this->province = $this->find_area($this->province_id);
-        $this->city = $this->find_area($this->city_id);
-        $this->district = $this->find_area($this->district_id);
-        $this->street = $this->find_area($this->street_id);
-    }
 
-    public function find_area($id){
-        try{
-            $area_name = Area::where('id', $id)->find();
-            if(empty($area_name)){
-                throw new Exception('错误');
-            }
-            return $area_name->ext_name;
-        }catch (Exception $exception){
-            return '暂无';
-        }
-    }
+
 
 }

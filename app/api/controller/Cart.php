@@ -38,17 +38,17 @@ class Cart extends ApiController
             Sessions('member_id', null);
             $this->error('用户信息异常请重新登录');
         }
-        $carts = $user->carts()->order('id', 'desc')
-            ->hidden(['sku', 'title', 'thumb',])
-            ->order('id', 'desc');
+        $carts = $user->carts()
+                ->order('id', 'desc')
+                ->hidden(['sku', 'title', 'thumb',])
+                ->order('id', 'desc');
         $carts_count = $carts->count();
         $carts = $carts->paginatefront($get)
-            ->select();
+                ->select();
         $list_count = $carts->count();
         foreach ($carts as &$item) {
             $goods = $item->goods
                 ->hidden(['cost_price', 'reduce_stock_method', 'real_sales', 'virtual_sales']);
-//                ->select();
             $item->goods = $goods;
             $item->is_valid = $goods->status === 1 ? true : false ;
         }
@@ -66,24 +66,48 @@ class Cart extends ApiController
             $this->error('用户信息异常请重新登录');
         }
         $post = $this->request->post();
-//        $goods_data = isset($post['goods']) ? $post['goods'] : [] ;
-//        print_r(json_encode(['goods_id'=> 2,'goods_num'=> 10,]));die();
-//        {"goods_id":2,"goods_num":10}
         $goods_id = isset($post['goods_id']) ? $post['goods_id'] : null;
         $goods_num = isset($post['goods_num']) ? $post['goods_num'] : null;
         $goods_data = ['goods_id' => $goods_id, 'goods_num' => $goods_num];
         $message = [
-            'goods_id' => 'number|require',
-            'goods_num' => 'number|require',
-        ];
+                'goods_id' => 'number|require',
+                'goods_num' => 'number|require',
+            ];
         $validate_result = $this->validate($goods_data, $message);
+
         if ($validate_result !== true) {
             $this->error('请求参数有误请稍后重试');
         }
         $goods_obj = Goods::where('id', $goods_id)->where('status', 1)->find();
         empty($goods_obj) && $this->error('商品不存在或已下架');
-        $old_obj = CartModel::where('goods_id', $goods_id)->where('uid', $user_id)->find();
-//        !empty($old_obj) && $this->error('商品已在购物车中');
+        $old_objs = CartModel::where('goods_id', $goods_id)->where('uid', $user_id)->select();
+
+        $goods_description = isset($post['description']) && is_array(json_decode( $post['description'], true)) ? json_decode($post['description'], true): null;
+        $option = $goods_obj->isset_description($goods_description);
+        if($option === false){
+            $this->error('商品规格选择错误');
+        }
+
+        // 判断之前购物车是否存在相同规格的商品
+        $old_obj = null;
+        foreach ($old_objs as $item){
+            $goods_options = json_decode($item->goods_options, true);
+            // 判断 规格 是否相同
+            if($goods_options && count($option)==count($goods_options)){
+                $is_this = true;
+                foreach ($goods_options as $goods_option){
+                    if(!in_array($goods_option, $option)){
+                        $is_this = false;
+                        break;
+                    }
+                }
+                if($is_this){
+                    $old_obj = $item;
+                    break;
+                }
+            }
+        }
+
         if (!empty($old_obj)){
             $old_obj->stock = $old_obj->stock + $goods_num > 200 ? 200 : $old_obj->stock + $goods_num;
             try{
@@ -96,12 +120,12 @@ class Cart extends ApiController
             }
             $this->success('加入购物车成功');
         }
-//        if ($goods_obj->stock < $goods_num) {
-//            $this->error('购物车商品数量不得大于商品库存');
-//        }
         if ($goods_num > 200) {
             $goods_num = 200;
         }
+
+
+
         $cart_goods_data = [
             'uid'=> $user_id,
             'goods_id'=> $goods_id,
@@ -111,6 +135,7 @@ class Cart extends ApiController
             'price'=> $goods_obj->price,
             'stock'=> $goods_num,
             'sku'=> $goods_obj->sku,
+            'goods_options'=> json_encode($option),
         ];
         try{
             $cart_goods_obj = new CartModel;
@@ -135,14 +160,10 @@ class Cart extends ApiController
             $this->error('用户信息异常请重新登录');
         }
         $post = $this->request->post();
-//        $goods_data = isset($post['goods']) ? $post['goods'] : [] ;
-//        print_r(json_encode(['goods_id'=> 2,'goods_num'=> 10,]));die();
-//        {"goods_id":2,"goods_num":10}
         $cart_goods_id = isset($post['cart_goods_id']) ? $post['cart_goods_id'] : null;
         $cart_goods_obj = CartModel::where('id', $cart_goods_id)->find();
         $goods = $cart_goods_obj->goods;
         empty($cart_goods_obj) && $this->error('购物车商品已删除或不存在');
-//        empty($cart_goods_obj) && $this->error('不存在, 请稍后重试');
         $goods_num = isset($post['goods_num']) ? $post['goods_num'] : null;
         $goods_data = ['cart_goods_id' => $cart_goods_id, 'goods_num' => $goods_num];
         $message = [
@@ -153,9 +174,6 @@ class Cart extends ApiController
         if ($validate_result !== true ){
             $this->error('请求参数有误请稍后重试');
         }
-//        if ($goods->stock < $goods_num) {
-//            $this->error('购物车商品数量不得大于商品库存');
-//        }
         if ($goods_num > 200) {
             $goods_num = 200;
         }

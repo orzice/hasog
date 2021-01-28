@@ -32,4 +32,23 @@ class OrderGoods extends TimeModel
 	{
 		return $this->belongsTo('app\common\model\Goods','goods_id');
 	}
+
+    public function merge_options(){
+        $description = json_decode($this->goods_option, true);
+        $description_array = [];
+        $save_description = [];
+//        if (!empty($description)){
+        foreach ($description as $item){
+            if (in_array($item['title'], $description_array)){
+                $save_description[array_search($item['title'],$description_array)]['value'][]= $item['value'];
+            }else {
+                $save_description[] = ['title'=> $item['title'], 'value'=>[$item['value']]];
+                $description_array[] = $item['title'];
+            }
+        }
+        $this->goods_option = $save_description;
+//        }
+//        $this->goods_option = [];
+    }
+
 }

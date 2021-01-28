@@ -1,0 +1,67 @@
+<div class="layui-form-item">
+    <label class="layui-form-label">支付时间</label>
+    <div class="layui-input-block">
+        <div class="layui-form-label-col">
+            {if $row.pay_time}
+            {$row.pay_time|date='Y-m-d H:i'}
+            {else /}
+            暂无
+            {/if}
+        </div>
+    </div>
+</div>
+
+<div class="layui-form-item">
+    <label class="layui-form-label required">发货时间</label>
+    <div class="layui-input-block">
+        <div class="layui-form-label-col">
+            {if $row.send_time}
+            {$row.send_time|date='Y-m-d H:i'}
+            {else /}
+            暂无
+            {/if}
+        </div>
+    </div>
+</div>
+
+<div class="layui-form-item">
+    <label class="layui-form-label required">订单完成时间</label>
+    <div class="layui-input-block">
+        <div class="layui-form-label-col">
+            {if $row.finish_time}
+            {$row.finish_time|date='Y-m-d H:i'}
+            {else /}
+            暂无
+            {/if}
+        </div>
+    </div>
+</div>
+
+
+
+<div class="layui-form-item">
+    <label class="layui-form-label required">订单取消时间</label>
+    <div class="layui-input-block">
+        <div class="layui-form-label-col">
+            {if $row.cancel_time}
+            {$row.cancel_time|date='Y-m-d H:i'}
+            {else /}
+            暂无
+            {/if}
+        </div>
+    </div>
+</div>
+<!--        <div class="layui-form-item">-->
+<!--            <label class="layui-form-label required">取消支付时间</label>-->
+<!--            <div class="layui-input-block">-->
+<!--                <input name="cancel_pay_time" type="datetime-local" class="layui-input" readonly value="{$row.cancel_pay_time|default=''}">-->
+<!--                <tip></tip>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="layui-form-item">-->
+<!--            <label class="layui-form-label required">取消发货时间</label>-->
+<!--            <div class="layui-input-block">-->
+<!--                <input type="text" class="layui-input" readonly value="{$row.pay_time|default=''}">-->
+<!--                <tip></tip>-->
+<!--            </div>-->
+<!--        </div>-->

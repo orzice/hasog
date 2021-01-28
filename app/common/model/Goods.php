@@ -19,6 +19,7 @@ namespace app\common\model;
 
 
 use app\common\model\TimeModel;
+use Complex\Exception;
 
 class Goods extends TimeModel
 {
@@ -39,9 +40,7 @@ class Goods extends TimeModel
     }
 
     public function setIsHotAttr($value){
-//        print_r(111111);
 
-//        exit();
         if(!empty($value)){
             return 1;
         }
@@ -66,5 +65,47 @@ class Goods extends TimeModel
         return 0;
     }
 
+    // 判断商品属性是否存在并返回
+    public function isset_description($datas){
+        if(empty($datas)){
+            return false;
+        }
+        if(isset($datas['title']) && isset($datas['value'])){
+            $goods_description = json_decode($this->description, true);
+            foreach ($goods_description as $item){
+                if ($item['title'] == $datas['title'] && $item['value'] == $datas['value']){
+                    return [['title'=>$item['title'], 'value'=>$item['value']]];
+                }
+            }
+            return false;
+        }
+        $result = [];
+        $count = 0;
+        foreach ($datas as $item){
+            if (!isset($item['title']) || !isset($item['value'])){
+                return false;
+            }
+            $goods_description = json_decode($this->description, true);
+            foreach ($goods_description as $des){
+                if ($item['title'] == $des['title']){
+                    // 判断value是否是数组
+//                        if (is_array($item['value'])){
+//                            if ($item['title'] == $des['title'] && in_array($des['value'], $item['value'])){
+//                                $result[] = ['title'=>$des['title'], 'value'=>$des['value']];
+//                            }
+//                        }else{
+                    if ($item['value'] == $des['value']){
+                        $result[] = ['title'=>$des['title'], 'value'=>$des['value']];
+//                            }
+                    }
+                }
+            }
+        }
+        if(count($result) != count($datas)){
+            return false;
+        }
+        return $result;
+
+    }
 
 }

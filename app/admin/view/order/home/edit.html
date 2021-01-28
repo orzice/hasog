@@ -38,7 +38,10 @@ tip{
         <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief" >
             <ul class="layui-tab-title">
                 <li class="layui-this">基本信息</li>
-                {foreach $plugin as $key=>$vo } 
+<!--                <li class="layui-this">金额下</li>-->
+                <li>快递地址</li>
+                <li>时间相关</li>
+                {foreach $plugin as $key=>$vo }
                 <li>{$vo.name}<span class="layui-badge">插件</span></li>
                 {/foreach}
             </ul>
@@ -46,7 +49,13 @@ tip{
                 <div class="layui-tab-item layui-show layui-table-body layui-table-main" >
                     {include file="order/home/edit_1" /}
                 </div>
-                {foreach $plugin as $key=>$vo } 
+                <div class="layui-tab-item layui-show layui-table-body layui-table-main" >
+                    {include file="order/home/edit_2" /}
+                </div>
+                <div class="layui-tab-item layui-show layui-table-body layui-table-main" >
+                    {include file="order/home/edit_3" /}
+                </div>
+                {foreach $plugin as $key=>$vo }
                 <div class="layui-tab-item">
                     {plugins:include file="$vo['src']" /}
                 </div>
@@ -83,6 +92,23 @@ require(["jquery", "easy-admin", "vue"], function ($, ea, Vue) {
     ea.listen();
 
     $('#receive_money').click(function () {
+        // alert(1)
+        $.ajax({
+            url: './receive_money',
+            method: 'post',
+            dataType: 'json',
+            data: {'order_id': {$row.id}},
+            success: function(res) {
+                // 假如返回的 res.data 是需要导出的列表数据
+                console.log(res.data);// [{name: 'wang', age: 18}, {name: 'layui', age: 3}]
+                if (res.code == 1){
+                    // $('#status').html(res.data.status)
+                    window.location.reload()
+                }
+            }
+        });
+    })
+    $('#receive_money1').click(function () {
         // alert(1)
         $.ajax({
             url: './receive_money',

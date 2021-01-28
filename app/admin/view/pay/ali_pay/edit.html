@@ -61,6 +61,16 @@
             </div>
         </div>
 
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">可选支付方式</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="enable_app" value="1" title="开启app端支付" {eq name="$row.enable_app" value="1"}checked=""{/eq}>
+                <input type="checkbox" name="enable_wap" value="1" title="开启wap端支付" {eq name="$row.enable_wap" value="1"}checked=""{/eq}>
+                <input type="checkbox" name="enable_pc" value="1" title="开启pc端支付" {eq name="$row.enable_pc" value="1"}checked=""{/eq}>
+            </div>
+        </div>
+
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">备注</label>
             <div class="layui-input-block">

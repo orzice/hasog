@@ -37,9 +37,12 @@
         <div class="layui-form-item">
             <label class="layui-form-label required">商品属性</label>
             <div class="layui-input-block">
-                <input type="checkbox" name="goods[is_new]" value="1" lay-skin="primary" title="新上" {eq name="$row.is_new" value="1"}checked=""{/eq}>
-                <input type="checkbox" name="goods[is_hot]" value="1" lay-skin="primary" title="热卖" {eq name="$row.is_hot" value="1"}checked=""{/eq}>
-                <input type="checkbox" name="goods[is_discount]" value="1" lay-skin="primary" title="促销" {eq name="$row.is_discount" value="1"}checked=""{/eq}>
+<!--                <input type="checkbox" name="goods[is_new]" value="1" lay-skin="primary" title="新上" {eq name="$row.is_new" value="1"}checked=""{/eq}>-->
+<!--                <input type="checkbox" name="goods[is_hot]" value="1" lay-skin="primary" title="热卖" {eq name="$row.is_hot" value="1"}checked=""{/eq}>-->
+<!--                <input type="checkbox" name="goods[is_discount]" value="1" lay-skin="primary" title="促销" {eq name="$row.is_discount" value="1"}checked=""{/eq}>-->
+                <input type="checkbox" name="goods[is_new]" value="1" title="新上" {eq name="$row.is_new" value="1"}checked=""{/eq}>
+                <input type="checkbox" name="goods[is_hot]" value="1" title="热卖" {eq name="$row.is_hot" value="1"}checked=""{/eq}>
+                <input type="checkbox" name="goods[is_discount]" value="1" title="促销" {eq name="$row.is_discount" value="1"}checked=""{/eq}>
                 <tip></tip>
             </div>
         </div>
