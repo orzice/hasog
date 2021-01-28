@@ -21,10 +21,9 @@ use app\common\service\AuthService;
 use think\facade\Cache;
 use think\facade\Config;
 
-// 后台插件专用 获取路由
 if (!function_exists('RequestPlugin')) {
     /**
-     *  清除未使用附件  每一次上传 都会监控未使用的图片 进行删除处理
+     *  后台插件专用 获取路由
      */
     function RequestPlugin($name,$dic,$con,$fun,$ls = false)
     {
