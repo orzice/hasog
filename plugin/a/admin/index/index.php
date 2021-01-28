@@ -14,7 +14,7 @@
 // +----------------------------------------------------------------------
 // | DateTime：2021-01-04 17:21:00
 // +----------------------------------------------------------------------
-namespace AcShop\plugin\a\admin\index;
+namespace HaSog\plugin\a\admin\index;
 
 
 use app\common\controller\AdminController;

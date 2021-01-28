@@ -44,14 +44,14 @@ class Plugin extends ApiController
             return $this->error('未知请求', '','');
         }
         // AcShop\plugin\<p1>\api\<p2>\<p3>@<p4>
-        try {
+//        try {
             $dic = 'HaSog\plugin\\'.$call[0].'\api\\'.$call[1].'\\'.$call[2];
             $dic2 = $call3[0];
             $test = new $dic($this->app);
             $test->$dic2();
-        }  catch (\Throwable $e) {
-            return $this->error('未知请求', '','');
-        }
+//        }  catch (\Throwable $e) {
+//            return $this->error('未知请求', '','');
+//        }
 
     }
 }

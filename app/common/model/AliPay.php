@@ -36,6 +36,9 @@ class AliPay extends TimeModel
         'remark',
         'is_union',
         'is_login',
+        'enable_app',
+        'enable_wap',
+        'enable_pc',
     ];
     protected $deleteTime = 'delete_time';
     protected $createTime = 'create_time';

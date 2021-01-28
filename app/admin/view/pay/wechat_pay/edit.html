@@ -83,6 +83,16 @@
         </div>
 
         <div class="layui-form-item">
+            <label class="layui-form-label">可选支付方式</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="is_jsapi" value="1" title="jsapi支付" {eq name="$row.is_jsapi" value="1"}checked=""{/eq}>
+                <input type="checkbox" name="is_h5" value="1" title="h5支付" {eq name="$row.is_h5" value="1"}checked=""{/eq}>
+                <input type="checkbox" name="is_app" value="1" title="app支付" {eq name="$row.is_app" value="1"}checked=""{/eq}>
+                <tip>是否开启该支付</tip>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
             <label class="layui-form-label">是否登录</label>
             <div class="layui-input-block">
                 <input type="radio" name="is_login" value="1" title="开启" {eq name="$row.is_login" value="1"}checked=""{/eq}>

@@ -30,6 +30,9 @@ class Member extends ApiController
     public function index(){
         $id=$this->MemberId();
         $data = MemberAddresss::where('uid',$id)->where('delete_time','null')->order('is_default','desc')->order('create_time','desc')->select();
+        foreach ($data as $item){
+            $item->area_name();
+        }
         if (count($data) == 0) {
             return api_return(0,'没有数据');
         }

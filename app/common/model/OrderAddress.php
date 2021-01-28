@@ -60,10 +60,10 @@ class OrderAddress extends TimeModel
         try{
             $area_name = Area::where('id', $id)->find();
             if(empty($area_name)){
-                throw new Exception('错误');
+                throw new \Exception('错误');
             }
             return $area_name->ext_name;
-        }catch (Exception $exception){
+        }catch (\Exception $exception){
             return '暂无';
         }
     }

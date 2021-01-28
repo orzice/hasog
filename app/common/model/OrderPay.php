@@ -12,26 +12,29 @@
 // +----------------------------------------------------------------------
 // | Author：Orzice(小涛)  https://gitee.com/orzice
 // +----------------------------------------------------------------------
-// | DateTime：2021-01-12 15:53:49
+// | DateTime：2020-12-31 18:22:57
 // +----------------------------------------------------------------------
 
-use think\facade\Config;
-use think\facade\Event;
-use AcgCron\Cron;
+namespace app\common\model;
 
 
-return function () {
-	// 设置插件
-	Config::set(['hasog_view' => [
-        'name' => '幻神商城默认前端',
-        'version' => '1.0.0',
-        'description' => '幻神商城默认前端系统,包含PC,WAP页面',
-        'author' => '',
-        'url' => '',
-        'namespace' => 'HaSog\\plugin\\hasog_view',
-        'permit' => 1,//如果不设置则不会做权限检测
-        'menu' => 1,//如果不设置则不显示菜单，子菜单也将不显示
-        'parents' => [],
-        ]], 'plugins_menu');
+use app\common\model\TimeModel;
 
-};
+class OrderPay extends TimeModel
+{
+
+    const PAY_TYPE_ID = [
+        1=> '微信支付',
+        2=> '支付宝支付',
+        3=> '线下支付',
+    ];
+
+	public function orders()
+    {
+		return $this->belongsTo('app\common\model\Order','order_id');
+    }
+
+
+
+
+}

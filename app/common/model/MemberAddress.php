@@ -44,7 +44,6 @@ class MemberAddress extends TimeModel
         $this->city = $this->find_area($this->city_id);
         $this->district = $this->find_area($this->district_id);
         $this->street = $this->find_area($this->street_id);
-
     }
 
     public function find_area($id){

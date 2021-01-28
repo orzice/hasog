@@ -45,7 +45,8 @@
             {if $row.status === 0}<button id="receive_money" type="button" class="layui-btn layui-btn-primary layui-btn-sm">确认收款</button>{/if}
             {if $row.status === 1}<button id="send_goods" type="button" class="layui-btn layui-btn-primary layui-btn-sm">确认发货</button>{/if}
             {if $row.status === 2}<button id="receive_goods" type="button" class="layui-btn layui-btn-primary layui-btn-sm">确认收货</button>{/if}
-            {if $row.status === 1}<button id="apply_cancel" type="button" class="layui-btn layui-btn-primary layui-btn-sm">申请退款</button>{/if}
+            {if $row.status === 1 || $row.status === 2 || $row.status === 3}<button id="apply_cancel" type="button" class="layui-btn layui-btn-primary layui-btn-sm">申请退款</button>{/if}
+            {if $row.status === 4}<button id="receive_money1" type="button" class="layui-btn layui-btn-primary layui-btn-sm">确认收款</button>{/if}
         </div>
         <!--        <select name="status">
                     {foreach $status_array as $k=>$v}
@@ -55,21 +56,94 @@
     </div>
 </div>
 
+
+
+
 <div class="layui-form-item">
-    <label class="layui-form-label required">订单金额</label>
-    <div class="layui-input-block">
-        <div class="layui-form-label-col">
-            商品金额: {$row.goods_price}<br>
-            运费: {$row.dispatch_price}<br>
-            优惠金额: {$row.discount_price}<br>
-            商品订单总金额: {$row.order_goods_price}<br>
-            抵扣总金额: {$row.deduction_price}<br>
-            订单支付记录: {$row.order_pay_id}<br>
-            成本总价: {$row.cost_amount}<br>
-            是否虚拟订单: {$row.is_virtual}<br>
+<!--        <label class="layui-form-label required">订单金额</label>-->
+<!--        <div class="layui-input-block">-->
+            <div class="layui-inline">
+                <label class="layui-form-label">商品金额:</label>
+                <div class="layui-input-inline layui-form-label-col">
+                    {$row.goods_price}
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">运费:</label>
+                <div class="layui-input-inline layui-form-label-col">
+                    {$row.dispatch_price}
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">优惠金额:</label>
+                <div class="layui-input-inline layui-form-label-col">
+                    {$row.discount_price}
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">商品总金额:</label>
+                <div class="layui-input-inline layui-form-label-col">
+                    {$row.order_goods_price}
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">抵扣总金额:</label>
+                <div class="layui-input-inline layui-form-label-col">
+                    {$row.deduction_price}
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">订单支付记录:</label>
+                <div class="layui-input-inline layui-form-label-col">
+                    {$row.order_pay_id}
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">成本总价:</label>
+                <div class="layui-input-inline layui-form-label-col">
+                    {$row.cost_amount}
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">是否虚拟订单:</label>
+                <div class="layui-input-inline layui-form-label-col">
+                    {$row.is_virtual}
+                </div>
+            </div>
+
+
+<!--        </div>-->
+<!--    <label class="layui-form-label required">订单金额</label>-->
+<!--    <div class="layui-input-block">-->
+<!--        <div class="layui-form-label-col">-->
+<!--             <br>-->
+<!--            运费: {$row.dispatch_price}<br>-->
+<!--            优惠金额: {$row.discount_price}<br>-->
+<!--            商品订单总金额: {$row.order_goods_price}<br>-->
+<!--            抵扣总金额: {$row.deduction_price}<br>-->
+<!--            订单支付记录: {$row.order_pay_id}<br>-->
+<!--            成本总价: {$row.cost_amount}<br>-->
+<!--            是否虚拟订单: {$row.is_virtual}<br>-->
+<!--        </div>-->
+<!--    </div>-->
+</div>
+
+<div class="layui-form-item">
+    <div class="layui-inline">
+        <label class="layui-form-label">收货电话:</label>
+        <div class="layui-input-inline layui-form-label-col">
+            {$row.address.mobile}
+        </div>
+    </div>
+    <div class="layui-inline">
+        <label class="layui-form-label">收货人:</label>
+        <div class="layui-input-inline layui-form-label-col">
+            {$row.address.realname}
         </div>
     </div>
 </div>
+
+
 
 <div class="layui-form-item">
     <label class="layui-form-label required"> 订单改价金额
@@ -102,140 +176,6 @@
     {/if}
 </div>
 
-<div class="layui-form-item">
-    <label class="layui-form-label required">收货地址</label>
-    <div class="layui-input-block">
-        <div class="layui-form-label-col">
-            收货电话: {$row.address.mobile}<br>
-            收货人: {$row.address.realname}<br>
-            省: {$row.address.province.ext_name}<br>
-            市: {$row.address.city.ext_name}<br>
-            县(区): {$row.address.district.ext_name}<br>
-            街道: {$row.address.street.ext_name}<br>
-            详细地址: {$row.address.address}<br>
-        </div>
-    </div>
-</div>
-
-<div class="layui-form-item">
-    <label class="layui-form-label required">快递公司码</label>
-    {if $row.status === 1 || $row.status === 2}
-    <div class="layui-input-block">
-        <input type="text" name="express_code" class="layui-input" value="{$row.express_code|default=''}">
-        <tip></tip>
-    </div>
-    {else /}
-    <div class="layui-form-label-col">
-        {$row.express_code}
-    </div>
-    {/if}
-</div>
-
-<div class="layui-form-item">
-    <label class="layui-form-label required">快递公司名称</label>
-    {if $row.status === 1 || $row.status === 2}
-    <div class="layui-input-block">
-        <input type="text" name="express_company_name" class="layui-input"
-               value="{$row.express_company_name|default=''}">
-        <tip></tip>
-    </div>
-    {else /}
-    <div class="layui-form-label-col">
-        {$row.express_code}
-    </div>
-    {/if}
-</div>
-
-<div class="layui-form-item">
-
-    <label class="layui-form-label required">快递单号</label>
-    {if $row.status === 1 || $row.status === 2}
-    <div class="layui-form-label-col">
-        <button id="add-express" type="button" class="layui-btn layui-btn-sm layui-btn-normal ">添加快递单号</button>
-    </div>
-    <div id="add-express-div" class="layui-input-block">
-        {foreach $express_sns as $key=>$vo }
-        <div>
-            <input style="min-width: 300px;width: 80%; float: left" type="text" name="express_sn[]" class="layui-input" value="{$vo|default=''}">
-            {if $key !== 0}
-            <button style="display:inline-block;float: left; margin-left: 30px;" class="delete-express layui-btn layui-btn-sm layui-btn-danger" type="button">删除</button>
-            {/if}
-        </div>
-        {/foreach}
-    </div>
-    {else /}
-    <div class="layui-form-label-col">
-        {foreach $express_sns as $key=>$vo }
-        {$vo}<br>
-        {/foreach}
-
-    </div>
-    {/if}
-</div>
-
-<div class="layui-form-item">
-    <label class="layui-form-label">支付时间</label>
-    <div class="layui-input-block">
-        <div class="layui-form-label-col">
-            {$row.pay_time|date='Y-m-d H:i'|default=''}
-        </div>
-        <!--        <input name="pay_time" type="text" class="layui-input" readonly-->
-        <!--               value="{$row.pay_time|date='Y-m-d H:i'|default=''}">-->
-        <!--        <tip></tip>-->
-    </div>
-</div>
-
-<div class="layui-form-item">
-    <label class="layui-form-label required">订单完成时间</label>
-    <div class="layui-input-block">
-        <div class="layui-form-label-col">
-            {$row.finish_time|date='Y-m-d H:i'|default=''}
-        </div>
-        <!--        <input name="finish_time" type="text" class="layui-input" readonly-->
-        <!--               value="{$row.finish_time|date='Y-m-d H:i'|default=''}">-->
-        <!--        <tip></tip>-->
-    </div>
-</div>
-
-<div class="layui-form-item">
-    <label class="layui-form-label required">发货时间</label>
-    <div class="layui-input-block">
-        <div class="layui-form-label-col">
-            {$row.finish_time|date='Y-m-d H:i'|default=''}
-        </div>
-        <!--        <input name="finish_time" type="text" class="layui-input" readonly-->
-        <!--               value="{$row.finish_time|date='Y-m-d H:i'|default=''}">-->
-        <!--        <tip></tip>-->
-    </div>
-</div>
-
-<div class="layui-form-item">
-    <label class="layui-form-label required">订单取消时间</label>
-    <div class="layui-input-block">
-        <div class="layui-form-label-col">
-            {$row.cancel_time|date='Y-m-d H:i'|default=''}
-        </div>
-        <!--        <input name="cancel_time" type="text" class="layui-input" readonly-->
-        <!--               value="{$row.cancel_time|date='Y-m-d H:i'|default=''}">-->
-        <!--        <tip></tip>-->
-    </div>
-</div>
-
-<!--        <div class="layui-form-item">-->
-<!--            <label class="layui-form-label required">取消支付时间</label>-->
-<!--            <div class="layui-input-block">-->
-<!--                <input name="cancel_pay_time" type="datetime-local" class="layui-input" readonly value="{$row.cancel_pay_time|default=''}">-->
-<!--                <tip></tip>-->
-<!--            </div>-->
-<!--        </div>-->
-
-<!--        <div class="layui-form-item">-->
-<!--            <label class="layui-form-label required">取消发货时间</label>-->
-<!--            <div class="layui-input-block">-->
-<!--                <input type="text" class="layui-input" readonly value="{$row.pay_time|default=''}">-->
-<!--                <tip></tip>-->
-<!--            </div>-->
-<!--        </div>-->
 
 
 <div class="layui-form-item">

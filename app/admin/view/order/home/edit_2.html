@@ -1,0 +1,104 @@
+    <div class="layui-form-item">
+        <label class="layui-form-label">收货所在省:</label>
+        <div class="layui-input-inline layui-form-label-col">
+            {$row.address.province.ext_name}
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">收货所在市:</label>
+        <div class="layui-input-inline layui-form-label-col">
+            {$row.address.city.ext_name}
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">收货所在县(区):</label>
+        <div class="layui-input-inline layui-form-label-col">
+            {$row.address.district.ext_name}
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">收货所在街道:</label>
+        <div class="layui-input-inline layui-form-label-col">
+            {$row.address.street.ext_name}
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">收货详细地址:</label>
+        <div class="layui-input-inline layui-form-label-col">
+            {$row.address.address}
+        </div>
+    </div>
+
+
+
+    <div class="layui-form-item">
+        <label class="layui-form-label required">快递公司码</label>
+        {if $row.status === 1 || $row.status === 2}
+        <div class="layui-input-block">
+            <input type="text" name="express_code" class="layui-input" value="{$row.express_code|default=''}">
+            <tip></tip>
+        </div>
+        {else /}
+        <div class="layui-form-label-col">
+            {$row.express_code|default="暂时不能发货"}
+        </div>
+        {/if}
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label required">快递公司名称</label>
+        {if $row.status === 1 || $row.status === 2}
+        <div class="layui-input-block">
+            <input type="text" name="express_company_name" class="layui-input"
+                   value="{$row.express_company_name|default=''}">
+            <tip></tip>
+        </div>
+        {else /}
+        <div class="layui-form-label-col">
+            {$row.express_code|default="暂时不能发货"}
+        </div>
+        {/if}
+    </div>
+
+    <div class="layui-form-item">
+
+        <label class="layui-form-label required">快递单号</label>
+        {if $row.status === 1 || $row.status === 2}
+        <div class="layui-form-label-col">
+            <button id="add-express" type="button" class="layui-btn layui-btn-sm layui-btn-normal ">添加快递单号</button>
+        </div>
+        <div id="add-express-div" class="layui-input-block">
+            {foreach $express_sns as $key=>$vo }
+            <div>
+                <input style="min-width: 300px;width: 80%; float: left" type="text" name="express_sn[]" class="layui-input" value="{$vo|default=''}">
+                {if $key !== 0}
+                <button style="display:inline-block;float: left; margin-left: 30px;" class="delete-express layui-btn layui-btn-sm layui-btn-danger" type="button">删除</button>
+                {/if}
+            </div>
+            {/foreach}
+        </div>
+        {else /}
+        <div class="layui-form-label-col">
+            {if !empty($express_sns) }
+            {foreach $express_sns as $key=>$vo }
+            {$vo}<br>
+            {/foreach}
+            {else /}
+            暂无
+            {/if}
+        </div>
+        {/if}
+    </div>
+
+    <!--    <label class="layui-form-label required">收货地址</label>-->
+    <!--    <div class="layui-input-block">-->
+    <!--        <div class="layui-form-label-col">-->
+    <!--            收货电话: {$row.address.mobile}<br>-->
+    <!--            收货人: {$row.address.realname}<br>-->
+    <!--            省: {$row.address.province.ext_name}<br>-->
+    <!--            市: {$row.address.city.ext_name}<br>-->
+    <!--            县(区): {$row.address.district.ext_name}<br>-->
+    <!--            街道: {$row.address.street.ext_name}<br>-->
+    <!--            详细地址: {$row.address.address}<br>-->
+    <!--        </div>-->
+    <!--    </div>-->

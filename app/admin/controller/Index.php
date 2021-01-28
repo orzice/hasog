@@ -24,8 +24,6 @@ use app\common\Plugins;
 use app\admin\model\SystemAdmin;
 use app\admin\model\SystemQuick;
 
-use EasyAdmin\auth\Node as NodeService;
-
 class Index extends AdminController
 {
     /**

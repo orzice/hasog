@@ -27,7 +27,7 @@ use app\admin\model\SystemNode;
 use app\admin\model\SystemMenu;
 use app\admin\service\TriggerService;
 
-class Plugins 
+class Plugins
 {
     private static $sep= DIRECTORY_SEPARATOR;
     /**
@@ -44,11 +44,11 @@ class Plugins
 
         $plugins = PluginsData::where("state",1)->select();
 
-        for ($i=0; $i < count($plugins); $i++) { 
+        for ($i=0; $i < count($plugins); $i++) {
             $file = $dir.$plugins[$i]["dir"].$sep."package.php";
             if (is_file($file)){
-               $hook = include $file;
-               $hook();
+                $hook = include $file;
+                $hook();
             }
         }
     }
@@ -123,7 +123,7 @@ class Plugins
             'namespace' => $json['namespace'],
             'state' => 0,
             'create_time' => time(),
-            );
+        );
         try {
             $save = PluginsData::insert($sql);
         } catch (\Exception $e) {
@@ -155,23 +155,23 @@ class Plugins
         $sep = self::$sep;
         $root = root_path();
         $dir = $root.'plugin'.$sep;
-        
+
         $plugins = PluginsData::where("state",1)->select();
 
         for ($i=0; $i < count($plugins); $i++) {
             $file = $dir.$plugins[$i]["dir"].$sep."package.php";
             if (is_file($file)){
-               $node = new NodeService();
-               $node->setDir($dir.$plugins[$i]["dir"].$sep.'admin');
-               $node->setNamespacePrefix("HaSog".$sep."plugin".$sep.$plugins[$i]["dir"].$sep."admin");
-               $nodeList = ($node)->getNodelist();
-               //处理node数据
-               for ($s=0; $s < count($nodeList); $s++) { 
-                   $nodeList[$s]['node'] = 'plugins.'.$plugins[$i]["dir"].'-'.str_replace(['.'],'-' ,$nodeList[$s]['node']);
-               }
-               if(empty($nodeList)){
-                 continue;
-               }
+                $node = new NodeService();
+                $node->setDir($dir.$plugins[$i]["dir"].$sep.'admin');
+                $node->setNamespacePrefix("HaSog".$sep."plugin".$sep.$plugins[$i]["dir"].$sep."admin");
+                $nodeList = ($node)->getNodelist();
+                //处理node数据
+                for ($s=0; $s < count($nodeList); $s++) {
+                    $nodeList[$s]['node'] = 'plugins.'.$plugins[$i]["dir"].'-'.str_replace(['.'],'-' ,$nodeList[$s]['node']);
+                }
+                if(empty($nodeList)){
+                    continue;
+                }
                 $model = new SystemNode();
                 try {
                     $existNodeList = $model->field('node,title,type,is_auth')->select();
@@ -243,10 +243,10 @@ class Plugins
                     'target' => "_self",
                     'sort' => 10,
                     'status' => 1,
-                    );
+                );
                 $model = new SystemMenu();
                 $pid = $model->insertGetId($sql);
-                    
+
                 //如果有其他小伙伴但是没有父接口那么自动创建父接口
                 $plugs = SystemMenu::where('href','like','plugins.'.$dir.'-%')->select();
                 if (count($plugs) !== 0) {
@@ -254,6 +254,20 @@ class Plugins
                     SystemMenu::where('href','like','plugins.'.$dir.'-%')->update(['pid'=>$pid]);
                 }
             }
+
+            // 部分插件函数 不计入前端模块
+            $pass = ['add','edit','delete'];
+            $pas = false;
+            for ($s=0; $s < count($pass); $s++) {
+                if (strpos($plugins[$i]["node"], '/'.$pass[$s])) {
+                    $pas = true;
+                    break;
+                }
+            }
+            if ($pas) {
+                continue;
+            }
+
 
             $sql = array(
                 'pid' => $pid,
@@ -263,7 +277,7 @@ class Plugins
                 'target' => "_self",
                 'sort' => 10,
                 'status' => 1,
-                );
+            );
             $model = new SystemMenu();
             try {
                 $save = $model->save($sql);
@@ -292,7 +306,7 @@ class Plugins
             $plugins = $plugins->where("state",$state);
         }
         $plugins = $plugins->select();
-    	return $plugins;
+        return $plugins;
     }
     /**
      * 获取已安装的插件列表信息
@@ -322,7 +336,7 @@ class Plugins
             }
         }
         closedir($str);
-        for ($i=0; $i < count($dir_array); $i++) { 
+        for ($i=0; $i < count($dir_array); $i++) {
             $file = $dir.$dir_array[$i].$sep."package.json";
             if (is_file($file)){
                 $handle = fopen($file, 'r');

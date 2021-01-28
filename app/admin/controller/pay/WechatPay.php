@@ -105,6 +105,9 @@ class WechatPay extends AdminController
                 'is_login|是否登录' => 'require',
             ];
             // 上级分类是否存在 并且存入id
+            foreach (['is_jsapi', 'is_h5', 'is_app'] as $item){
+                $post[$item] = isset($post[$item]) ? $post[$item] : 0;
+            }
             try {
                 $save = $this->model->save($post);
             } catch (\Exception $e) {
@@ -144,6 +147,9 @@ class WechatPay extends AdminController
             $this->validate($post, $rule);
             $is_exists = $this->model->whereExists(['name', '=', $post['name']]);
             !$is_exists && $this->error('保存失败,名称已存在');
+            foreach (['is_jsapi', 'is_h5', 'is_app'] as $item){
+                $post[$item] = isset($post[$item]) ? $post[$item] : 0;
+            }
             try {
                 $save = $this->model->find($id)->allowField($this->model::ALLOW_FIELDS)->save($post);
             }

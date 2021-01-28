@@ -66,11 +66,9 @@ class Home extends AdminController
             $action_model = $this->model;
             switch ($action) {
                 case 'paid':
-//                    $action_model = $this->model->whereNotNull('apply_time');
                     $this->model = $this->model->where('status', '=',1);
                     break;
                 case 'send_goods':
-//                    $action_model = $this->model->whereNotNull('content_time');
                     $this->model = $this->model->where('status', '=', 2);
                     break;
             }
@@ -133,7 +131,6 @@ class Home extends AdminController
             $post = $this->request->post();
             $status_str = implode(',', array_keys($this->model::STATUS_ARRAY));
             $rule = [
-//                'status|订单状态' => 'number|in:' . $status_str,
                 'change_price|订单改价金额' => 'float|between: 0,99999999',
                 'change_dispatch_price|运费改价金额' => 'float|between: 0,99999999',
                 'merchant_remark|商家备注' => 'max:255',
@@ -156,7 +153,6 @@ class Home extends AdminController
             // 上级分类是否存在 并且存入id
             $this->validate($post, $rule);
             try {
-//                $save = $this->model->find($id)->allowField($this->model::ALLOW_FIELDS)->save($post);
                 if($price!=$order->price){
                     $order->price = $price;
                 }
@@ -164,7 +160,6 @@ class Home extends AdminController
                     $order->status = 2;
                     $order->send_time = time();
                 }
-//                print_r($post['express_sn']);die();
                 $post['express_sn'] = json_encode(array_filter($post['express_sn']));
                 $order->save();
                 $save = $order->allowField($this->model::ALLOW_FIELDS)->save($post);
@@ -177,20 +172,12 @@ class Home extends AdminController
             }
             $this->error('保存失败');
         }
-        // 判断是否是json字符串
-//        $first_str = !empty($order->express_sn)?substr($order->express_sn, 0, 1 ):[];
-//        print_r(json_decode($order->express_sn));die();
-//        $express_sns = ($first_str == '[' || $first_str == '{') ? json_decode($order->express_sn) : $order->express_sn;
-//        print_r(json_encode(['23','321',3]));die();
-//        $express_sns = json_decode();
-        $express_sns = empty($order->express_sn) ? [''] : json_decode($order->express_sn);
+        $express_sns = empty($order->express_sn) ? [] : json_decode($order->express_sn);
         $this->assign('express_sns', $express_sns);
         $this->assign('status_array', Order::STATUS_ARRAY);
         $this->assign('plugin', []);
         $order->goods;
         $order->status_zh = Order::STATUS_ARRAY[$order->status];
-//        $order->member = $order->member->field('mobile', 'head_img', 'id')->select();
-////        print_r($order->member);die();
         $this->assign('row', $order);
         return $this->fetch();
     }
@@ -200,25 +187,17 @@ class Home extends AdminController
     public function batch_delivery()
     {
         $is_ajax = $this->request->isAjax();
-//        !$is_ajax && return json(['msg'=>'错误']);
         $get = $this->request->get();
         $ids = $get['ids'];
         $ids = explode(',', $ids);
-//        $results = $this->model->whereIn('id', $ids)->field('order_sn')->select();
         $results = $this->model->whereIn('id', $ids)
             ->field('order_sn, express_company_name, express_code, express_sn')
             ->select()->toArray();
-//        $head = ['订单号', '快递公司名', '快递公司码', $results];
         $head = ['订单号', '快递单号', '快递公司名', '快递公司码'];
-//        $head = ['订单号-order_sn', '快递公司名-express_company_name', '快递公司码-express_code', '快递单号-express_sn'];
-//        $orders = [
-//            ['a'=>1,'b'=>2,'c'=>3,'d'=>4,'e'=>5,]
-//        ];
         $keys = ['order_sn', 'express_sn', 'express_company_name', 'express_code'];
         $exp = new \app\common\Excel();
         $file_name = date('Y-m-d H：i：s', time());
         $exp->export($file_name, $results, $head, $keys, 'xlsx');
-//        $exp->export('测试1', [], $head, $keys,'xlsx');
     }
 
 
@@ -239,7 +218,6 @@ class Home extends AdminController
         }else{
             $this->error('订单错误') ;
         }
-        // $save ? $this->success('收款成功', ['status'=>Order::STATUS_ARRAY[$order->status]]) : $this->error('订单错误') ;
     }
 
     public function send_goods(){
@@ -260,7 +238,6 @@ class Home extends AdminController
         }else{
             $this->error('订单错误') ;
         }
-        // $save ? $this->success('发货成功', ['status'=>Order::STATUS_ARRAY[$order->status]]) : $this->error('订单错误') ;
     }
 
     public function receive_goods(){
@@ -270,6 +247,7 @@ class Home extends AdminController
         (empty($order) || $order->status !== 2)  && $this->error('订单错误');
         try{
             $order->status = 3;
+            $order->finish_time = time();
             $save = $order->save();
         }catch (\Exception $e){
             $this->error('订单错误');
@@ -280,14 +258,33 @@ class Home extends AdminController
         }else{
             $this->error('订单错误') ;
         }
-        // $save ? $this->success('收货成功', ['status'=>Order::STATUS_ARRAY[$order->status]]) : $this->error('订单错误') ;
+    }
+
+    public function refund_order(){
+        $post = $this->request->post();
+        $order_id = isset($post['order_id'])? $post['order_id'] : '';
+        $order = Order::where('id', $order_id)->find();
+        (empty($order) || $order->status !== 2)  && $this->error('订单错误');
+        try{
+            $order->status = 3;
+            $order->finish_time = time();
+            $save = $order->save();
+        }catch (\Exception $e){
+            $this->error('订单错误');
+        }
+        if ($save) {
+            event('OrderReceiving',$order_id);
+            $this->success('收货成功', ['status'=>Order::STATUS_ARRAY[$order->status]]);
+        }else{
+            $this->error('订单错误') ;
+        }
     }
 
     public function apply_cancel(){
         $post = $this->request->post();
         $order_id = isset($post['order_id'])? $post['order_id'] : '';
         $order = Order::where('id', $order_id)->find();
-        (empty($order) || $order->status !== 1)  && $this->error('订单错误');
+        (empty($order) || !in_array($order->status, [1, 2, 3]))  && $this->error('订单错误');
         Db::startTrans();
         try{
             $data = [
@@ -301,7 +298,6 @@ class Home extends AdminController
             $order->status = -2;
             $save = $order->save();
             if ($save === false || $save_refund === false){
-//                    $this->success('支付成功');
                 throw new \Exception('添加失败');
             }
             Db::commit();
@@ -309,25 +305,16 @@ class Home extends AdminController
             Db::rollback();
             $this->error('订单错误');
         }
-//        $save ? $this->success('申请成功', ['status'=>Order::STATUS_ARRAY[$order->status]]) : $this->error('订单错误') ;
-//        if ($save_refund && $save){
-//            Db::commit();
-//            event('OrderRefund',$order_id);
-//            $this->success('申请成功', ['status'=>Order::STATUS_ARRAY[$order->status]]);
-//        }
         event('OrderRefund',$order_id);
         $this->success('申请成功', ['status'=>Order::STATUS_ARRAY[$order->status]]);
-//        $this->error('订单错误');
     }
 
     // 批量发货
     public function batch_delivery_data()
     {
-//        $file = $this->request->file();
         $files = $this->request->file();
         $file = $files['file'];
         $exp = new \app\common\Excel();
-//        print_r($file->getPath().'\\'.$file->getFilename());die();
         $content = $exp->import($file->getPath() . '\\' . $file->getFilename(), $file->getOriginalExtension());
         unset($content[0]);
         $msg = '成功';

@@ -23,6 +23,7 @@ use app\common\model\Category;
 use app\common\model\GoodsCategory;
 use app\common\model\Member;
 use app\common\model\Goods as GoodsModel;
+use Complex\Exception;
 use think\facade\Config;
 use think\facade\Event;
 
@@ -107,6 +108,7 @@ class Goods  extends ApiController
         $get = $this->request->get();
         $goods_id = isset($get['goods_id']) ? $get['goods_id'] : null;
         $goods = GoodsModel::where('id', '=', $goods_id)->hidden(['cost_price','reduce_stock_method', 'real_sales', 'virtual_sales' ])->find();
+        empty($goods) && $this->error('商品不存在');
         $user_id = $this->MemberId();
         $is_favor = false;
         if($user_id){
@@ -118,13 +120,22 @@ class Goods  extends ApiController
                 !empty($favor_obj) && $is_favor = true;
             }
         }
-        empty($goods) && $this->error('商品不存在');
+        $description = json_decode($goods->description, true);
+        $description_array = [];
+        $save_description = [];
+        foreach ($description as $item){
+            if (in_array($item['title'], $description_array)){
+                $save_description[array_search($item['title'],$description_array)]['value'][]= $item['value'];
+            }else {
+                $save_description[] = ['title'=> $item['title'], 'value'=>[$item['value']]];
+                $description_array[] = $item['title'];
+            }
+        }
+        $goods->description = $save_description;
+//        print_r($description_array);die();
+//        empty($goods) && $this->error('商品不存在');
         $goods->status === 0 && $this->error('商品已下架');
         $this->success('获取商品信息成功', ['goods'=> $goods, 'is_favor'=> $is_favor]);
     }
-
-
-
-
 
 }
