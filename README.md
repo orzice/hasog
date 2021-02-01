@@ -223,11 +223,11 @@ php think cron
 [Nginx配置]
 
 ```
-location / {
-    if (!-e $request_filename) {
-    	rewrite  ^(.*)$  /index.php?s=/$1  last;
-    }
+
+if (!-e $request_filename) {
+	rewrite  ^(.*)$  /index.php?s=/$1  last;
 }
+
 ```
 
 
