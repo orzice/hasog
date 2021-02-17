@@ -32,7 +32,9 @@ class Login extends ApiController
     {
         $user_id = $this->MemberId();
         $user_id === false && $this->error('请先登录');
-        $user = Member::where('state', '0')->find($user_id)->hidden(['password', 'salt', '']);
+        $user = Member::where('state', '0')->find($user_id);
+        empty($user) && $this->error('该用户不存在或被冻结');
+        $user = $user->hidden(['password', 'salt', '']);
         $orders = $user->orders();
         $order_paid = $user->orders()->where('status', 1)->select()->count();  //待发货(已付款)
         $order_daifukuan = $user->orders()->where('status', 0)->select()->count();// 待付款

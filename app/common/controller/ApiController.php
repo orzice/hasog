@@ -52,17 +52,17 @@ class ApiController extends BaseController
     {
     	$member_id = Sessions("member_id");
     	if (empty($member_id)) {
-    		return api_return(0,'请先登录账号', 'login','login');
-    		// return false;
+    		// return api_return(0,'请先登录账号', 'login','login');
+    		return false;
     	}
         return $member_id;
 //        return 1;
     }
     /**
-     * 获取用户是否登录
+     * 获取用户是否登录 [插件API专用]
      * @return bool
      */
-    public function SetMemberId()
+    public function PluginMemberId()
     {
     	$member_id = Sessions("member_id");
     	if (empty($member_id)) {
