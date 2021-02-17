@@ -52,7 +52,8 @@ class ApiController extends BaseController
     {
     	$member_id = Sessions("member_id");
     	if (empty($member_id)) {
-    		return false;
+    		return api_return(0,'请先登录账号', 'login','login');
+    		// return false;
     	}
         return $member_id;
 //        return 1;
@@ -65,7 +66,8 @@ class ApiController extends BaseController
     {
     	$member_id = Sessions("member_id");
     	if (empty($member_id)) {
-    		return false;
+    		return api_return(0,'请先登录账号', 'login','login');
+    		// return false;
     	}
         return $member_id;
     }
