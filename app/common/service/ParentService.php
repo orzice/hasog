@@ -93,6 +93,11 @@ class ParentService
 
         while(!$return) {
             $parent = $this->model->where('id',$uid)->find();
+
+            if(!$parent){
+                return $parent_ids;
+            }
+
             if ($parent_ids == '') {
                 $parent_ids = '/'.$parent['id'].'/'.$parent_ids;
             }else{
@@ -107,7 +112,7 @@ class ParentService
             $uid = $parent['parent_id'];
             $x++;
         }
-        return '';
+        return $parent_ids;
     }
     /**
      *  移动上下级关系【修改上级】 进行处理 只针对自己的下级进行排除 不针对自己
