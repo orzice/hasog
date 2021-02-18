@@ -141,18 +141,18 @@ class TransferCredit extends AdminController
                 return $this->selectList();
             }
             list($page, $limit, $where) = $this->buildTableParames();
-            $count = TransferCreditMode::where($where)
+            $count = TransferCreditMode::where($where)->where('type', 1)
                 ->count();
-            $list = TransferCreditMode::where($where)
+            $list = TransferCreditMode::where($where)->where('type', 1)
                 ->page($page, $limit)
                 ->order($this->sort)
                 ->select();
             foreach ($list as $item){
-                $item->credit_type = TransferCreditMode::where('id', $item->credit_type)->find();
-                $item->credit_type = isset($item->credit_type)? $item->credit_type->title : '暂无';
+                $item->credit_type = CreditType::find($item->credit_type);
+                $item->credit_type = isset($item->credit_type) ? $item->credit_type->title : '暂无';
                 if($item->type == 1){
                     $item->type = '积分转余额';
-                    $item->umobile = Member::where('id', $item->credit_type)->find();
+                    $item->umobile = Member::where('id', $item->uid)->find();
                     $item->umobile = isset($item->umobile)? $item->umobile->mobile : '暂无';
                 }else{
                     $item->type = '积分转账';

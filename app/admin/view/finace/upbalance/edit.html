@@ -14,11 +14,24 @@
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label required">余额</label>
+            <label class="layui-form-label required">积分类型</label>
             <div class="layui-input-block">
-                <input type="text" name="goods[credit2]" readonly="readonly" class="layui-input"  lay-reqtext="余额" placeholder="余额" value="{$row.credit2}">
+                <select class="form-control tpl-category-parent" name="goods[credit_type]">
+                    {foreach $credit_types as $vo}
+                    <option value="{$vo.id}">{$vo['title']}</option>
+                    {/foreach}
+                </select>
+
             </div>
         </div>
+        {foreach $credit_types as $vo}
+        <div class="layui-form-item">
+            <label class="layui-form-label required">{$vo.title}</label>
+            <div class="layui-input-block">
+                <input type="text" name="goods[credit2]" readonly="readonly" class="layui-input"  lay-reqtext="余额" placeholder="余额" value="{$row[$vo.value]}">
+            </div>
+        </div>
+        {/foreach}
 
         <div class="layui-form-item">
             <label class="layui-form-label required">充值金额</label>

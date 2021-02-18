@@ -16,6 +16,7 @@
 // +----------------------------------------------------------------------
 
 namespace app\admin\controller\finace;
+use app\common\model\CreditType;
 use app\common\model\Member;
 
 use app\common\controller\AdminController;
@@ -82,6 +83,7 @@ class Upbalance extends AdminController
             $rule=[
                 'id|id'=>'require|number',
                 'credit2s'=>['^[\+\-]?\d+(\.\d+)?$'],
+                'credit_type|积分类型'=>'require|number',
             ];
             $this->validate($post['goods'], $rule);
             $credit = $this->model::where('id',$post['goods']['id'])->find();
@@ -97,6 +99,10 @@ class Upbalance extends AdminController
             $uprecord['money'] = $post['goods']['credit2s'];
             $uprecord['state'] =1;
             $uprecord['create_time'] =time();
+            $allow_credit = CreditType::where('id', $post['goods']['credit_type'])->find();
+            empty($allow_credit) && $this->error('积分类型错误');
+            $uprecord['credit_type'] =$allow_credit->id;
+            $balancesub['credit_type'] =$allow_credit->id;
             try {
                 if ($b == '-'){
                     $balancesub['state'] = 0;
@@ -105,7 +111,7 @@ class Upbalance extends AdminController
                     $balancesub['state'] = 1;
                     $save = FinaceBalancesub::insert($balancesub);
                 }
-                $save = $this->model->where('id',$post['goods']['id'])->update(['credit2'=>$credit]);
+                Member::where('id', $post['goods']['id'])->inc($allow_credit->value, $post['goods']['credit2s'])->update();
                 $save = FinaceUprecord::insert($uprecord);
             } catch (\Exception $e) {
                 $this->error('保存失败:'.$e->getMessage());
@@ -113,6 +119,8 @@ class Upbalance extends AdminController
             $save ? $this->success('保存成功') : $this->error('保存失败');
 
         }
+        $credit_types = CreditType::select()->all();
+        $this->assign('credit_types', $credit_types);
         $this->assign('row',$row);
         return $this->fetch();
     }
