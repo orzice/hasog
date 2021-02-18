@@ -33,7 +33,7 @@ class admins extends ApiController
         $post = $this->request->post();
         $id=$this->MemberId();
         $rule = [
-            'text|内容'      => 'require|chsDash|max:3',
+            'text|内容'      => 'require|chsDash|max:300',
         ];
         $validate = $this->validate($post, $rule);
         //验证失败

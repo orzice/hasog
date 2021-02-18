@@ -20,11 +20,15 @@ namespace app\api\controller;
 
 use app\BaseController;
 use app\common\controller\ApiController;
+use app\common\model\FinaceOfflinepayment;
 use think\facade\Config;
 use think\facade\Event;
 use app\common\model\FinaceUprecord;
 use app\common\model\FinaceIncome;
+use app\common\model\FinaceBalanceset;
 use app\common\model\FinaceWithdrawalrecord;
+use app\common\model\FinaceBalancesub;
+use app\common\model\Member;
 
 class Finace extends ApiController
 {
@@ -57,5 +61,92 @@ class Finace extends ApiController
         }
         $data = $data->toArray();
         return api_return(1,'查询成功',$data);
+    }
+    //余额充值
+    public function topup(){
+        // type 0微信 1支付宝 2线下
+        $post = $this->request->post();
+//        $id=$this->MemberId();
+        $id = 1;
+        $rule = [
+            'money|金额'      => 'require|float',
+            'type|支付类型'   => 'require|in:0,1,2'
+        ];
+        $validate = $this->validate($post, $rule);
+        //验证失败
+        if($validate !== true){
+            return api_return(0,$validate);
+        }
+        $set = FinaceBalanceset::select()->toArray();
+        if ($set[0]['recharge'] !== 1){
+            return api_return(0,'账户充值已关闭');
+        }
+        $money = explode('.',$post['money']);
+        if (isset($money['1'])){
+            $money =strlen(explode('.',$post['money'])[1]);
+            if ($money>3){
+                return api_return(0,'金额小数点最多三位数');
+            };
+        }
+        if (strpos($post['money'],'-')!==false){
+                 return api_return(0,'金额必须为正整数');
+        }
+        if (substr($post['money'],0,1)==0){
+            return api_return(0,'金额输入有误');
+        }
+        if ($post['type'] == 2){
+            $rule = [
+                'thumb|成功图片' =>'require|url',
+                'pay_id|线下支付方式'      => 'require|number',
+            ];
+            $validate = $this->validate($post, $rule);
+            //验证失败
+            if($validate !== true){
+                return api_return(0,$validate);
+            }
+            $time = time();
+            $a = FinaceOfflinepayment::insert(['uid'=>$id,'money'=>$post['money'],'state'=>0,'pay_id'=>$post['pay_id'],'a_state'=>0,'thumb'=>$post['thumb'],'create_time'=>$time]);
+            if ($a){
+                return api_return(1,'成功');
+            }else{
+                return api_return(0,'失败');
+            }
+        }
+        //充值返回
+        $up = true;
+        if ($up !== true){
+            return api_return(0,'充值失败');
+        }
+        $s = json_decode($set[0]['sole'],true);
+        $moneys = 0;
+        $money = array();
+        foreach ($s as $k=>$v){
+            if ($post['money']>=$v['enough']){
+                $money[$k]['money'] = $v['give'];
+            }
+        }
+        if (!empty($money)){
+            $money = max($money);
+            if ($set[0]['proportion_status'] == 0){
+                $moneys = $money['money'];
+            }else{
+                $moneys = $post['money']*$money['money']/100;
+            }
+        }
+        $momber = Member::find($id);
+        $post['money'] = $moneys+$post['money'];
+        $balance = $momber['credit2']+$post['money'];
+        $create_time = time();
+        try {
+            $save = FinaceBalancesub::insert(['uid'=>$id,'balance'=>$balance,'state'=>2,'money'=>$post['money'],'create_time'=>$create_time]);
+            $save = Member::update(['id'=>$id,'credit2'=>$balance]);
+            $save = FinaceUprecord::insert(['uid'=>$id,'way'=>1,'money'=>$post['money'],'state'=>1,'create_time'=>$create_time]);
+        } catch (\Exception $e) {
+            return api_return(0,'提交失败:'.$e->getMessage());
+        }
+        if ($save){return api_return(1,'提交成功');}else{return api_return(0,'提交失败');}
+    }
+    public function xx_topup(){
+
     }
 }

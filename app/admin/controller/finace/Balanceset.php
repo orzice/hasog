@@ -46,6 +46,14 @@ class Balanceset extends AdminController
      */
     public function edit(){
         $res = $this->model->limit(1)->select()->toArray();
+        if (empty($res)){
+            $res = array([
+                'recharge'=>0,
+                'proportion_status'=>0,
+                'sole'=>'[]',
+                'transfer'=>0,
+            ]);
+        }
         $row='';
         foreach($res as $k=>$v){
             $row = $v;
@@ -91,14 +99,15 @@ class Balanceset extends AdminController
                 unset($post['balance']['give']);
                 $this->validate($post['balance'], $rule);
             }
-            $res = $this->model->limit(1)->select();
-            $post['balance']['id'] = $res['0']['id'];
 //            print_r($post['balance']);die;
+            $res = $this->model->limit(1)->select()->toArray();
             try {
-                if ($res){
-                    $save = $this->model->update($post['balance']);
-                }else{
+                if (empty($res)){
+
                     $save = $this->model->insert($post['balance']);
+                }else{
+                    $post['balance']['id'] = $res['0']['id'];
+                    $save = $this->model->update($post['balance']);
                 }
             } catch (\Exception $e) {
                 $this->error('保存失败:'.$e->getMessage());

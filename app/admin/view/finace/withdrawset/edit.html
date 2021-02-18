@@ -1,7 +1,8 @@
 <style type="text/css">
-    tip{
-        width: 100px;
+    p{
         color: #737373;
+        font-size:15px;
+        font-weight:bold;
     }
 </style>
 <div class="layuimini-container">
@@ -12,7 +13,13 @@
                 <input type="radio" name="balance[recharge]" lay-filter="balance[recharge]" value="1" title="开启" {eq name="$res.recharge" value="1"}checked=""{/eq}>
                 <input type="radio" name="balance[recharge]" lay-filter="balance[recharge]" value="0" title="关闭" {eq name="$res.recharge" value="0"}checked=""{/eq}>
             </div>
-            <tip>是否允许用户将余额提出</tip>
+            <div style="margin-left: 130px">
+                <blockquote class="site-text layui-elem-quote" style="color: #737373">
+                    <p style="font-size:15px; color: #737373;font-weight:bold;">是否允许用户将余额提出</p>
+                </blockquote>
+            </div>
+
+<!--            <tip>是否允许用户将余额提出</tip>-->
         </div>
         <div id="recharge"  {eq name="$res.recharge" value="0"}style="display:none"{/eq}>
             <div class="layui-form-item">
@@ -30,8 +37,13 @@
                 <div class="layui-input-inline">
                     单笔最高金额<input type="text" name="balance[wechatmax]" value="{$res.wechatmax}" autocomplete="off" class="layui-input">
                 </div>
-                <div style="margin-left: 130px"><tip> 可设置区间0.3-20000，设置为0为空则不限制，请参考微信商户平台--产品中心--企业付款到零钱--产品设置--额度设置中设置
-                </tip></div>
+        <div style="margin-left: 130px">
+            <blockquote class="site-text layui-elem-quote" style="color: #737373">
+                <p style="font-size:15px; color: #737373;font-weight:bold;">可设置区间0.3-20000，设置为0为空则不限制，请参考微信商户平台&#45;&#45;产品中心&#45;&#45;企业付款到零钱&#45;&#45;产品设置&#45;&#45;额度设置中设置</p>
+            </blockquote>
+        </div>
+<!--                <div style="margin-left: 130px"><tip> 可设置区间0.3-20000，设置为0为空则不限制，请参考微信商户平台&#45;&#45;产品中心&#45;&#45;企业付款到零钱&#45;&#45;产品设置&#45;&#45;额度设置中设置-->
+<!--                </tip></div>-->
                 <div class="layui-form-item" style="margin-left: 100px">
                     <div class="layui-inline">
                         <label class="layui-form-label">每日向同一用户付款不允许超过</label>
@@ -39,8 +51,13 @@
                             <input type="tel" name="balance[wechatnum]" value="{$res.wechatnum}"  autocomplete="off" class="layui-input">
                         </div>次
                     </div>
-                    <div style="margin-left: 30px"><tip> 可设置1-10次,不设置或为空默认为10
-                    </tip></div>
+                    <div style="margin-left: 30px">
+                        <blockquote class="site-text layui-elem-quote" style="color: #737373">
+                            <p style="font-size:15px; color: #737373;font-weight:bold;">可设置1-10次,不设置或为空默认为10</p>
+                        </blockquote>
+                    </div>
+<!--                    <div style="margin-left: 30px"><tip> 可设置1-10次,不设置或为空默认为10-->
+<!--                    </tip></div>-->
                 </div>
             </div>
             <div class="layui-form-item">
@@ -58,8 +75,11 @@
                 <div class="layui-input-inline">
                     单笔最高金额<input type="text" name="balance[alipaymax]" value="{$res.alipaymax}" autocomplete="off" class="layui-input">
                 </div>
-                <div style="margin-left: 130px"><tip>不设置或为空,则不限制
-                </tip></div>
+<div style="margin-left: 130px">
+    <blockquote class="site-text layui-elem-quote" style="color: #737373">
+        <p style="font-size:15px; color: #737373;font-weight:bold;">不设置或为空,则不限制</p>
+    </blockquote>
+</div>
                 <div class="layui-form-item" style="margin-left: 100px">
                     <div class="layui-inline">
                         <label class="layui-form-label">每日向同一用户付款不允许超过</label>
@@ -67,8 +87,11 @@
                             <input type="tel" name="balance[alipaynum]" value="{$res.alipaynum}"  autocomplete="off" class="layui-input">
                         </div>次
                     </div>
-                    <div style="margin-left: 30px"><tip> 不设置或为空,则不限制
-                    </tip></div>
+                    <div style="margin-left: 30px">
+                        <blockquote class="site-text layui-elem-quote" style="color: #737373">
+                            <p style="font-size:15px; color: #737373;font-weight:bold;">不设置或为空,则不限制</p>
+                        </blockquote>
+                    </div>
                 </div>
         </div>
             <div class="layui-form-item">
@@ -77,7 +100,12 @@
                     <input type="radio" name="balance[manual]" lay-filter="balance[manual]" value="1" title="开启" {eq name="$res.manual" value="1"}checked=""{/eq}>
                     <input type="radio" name="balance[manual]" lay-filter="balance[manual]" value="0" title="关闭" {eq name="$res.manual" value="0"}checked=""{/eq}>
                 </div>
-                <tip>手动提现包含 银行卡、微信号、支付宝等三种类型，会员需要完善对应资料才可以提现</tip>
+                <div style="margin-left: 130px">
+                    <blockquote class="site-text layui-elem-quote" style="color: #737373">
+                        <p style="font-size:15px; color: #737373;font-weight:bold;">手动提现包含 银行卡、微信号、支付宝等三种类型，会员需要完善对应资料才可以提现</p>
+                    </blockquote>
+                </div>
+<!--                <tip>手动提现包含 银行卡、微信号、支付宝等三种类型，会员需要完善对应资料才可以提现</tip>-->
             </div>
             <div id="manual" {eq name="$res.manual" value="0"}style="display:none"{/eq}>
                 <div class="layui-form-item">
