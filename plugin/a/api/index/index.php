@@ -14,7 +14,7 @@
 // +----------------------------------------------------------------------
 // | DateTime：2021-01-04 17:21:06
 // +----------------------------------------------------------------------
-namespace AcShop\plugin\a\api\index;
+namespace HaSog\plugin\a\api\index;
 
 
 use app\common\controller\ApiController;

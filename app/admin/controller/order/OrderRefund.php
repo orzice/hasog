@@ -18,6 +18,8 @@
 namespace app\admin\controller\order;
 
 
+use app\common\model\FinaceBalancesub;
+use app\common\model\OrderPay;
 use think\App;
 use think\facade\Config;
 use app\common\controller\AdminController;
@@ -107,7 +109,35 @@ class OrderRefund extends AdminController
                 }
                 $order_save = $order->save();
                 $save = $order_refund->allowField($this->model::ALLOW_FIELDS)->save($post);
-                if($save === false)
+                $order_pay = OrderPay::where('order_id', $order->id)->where('status', 1)->find();
+                if(empty($order_pay)){
+                    Db::rollback();
+                    $this->error('支付记录不存在');
+                }
+                $order_pay->status = 0;
+                $user = $order->member;
+                switch ($order_pay->pay_type_id){
+                    case 4:
+                        $user->credit2 += $order_pay->amount;
+                        $balance_change = new FinaceBalancesub([
+                            'uid'=> $user->id,
+                            'balance'=> $user->credit2,
+                            'state'=> 1,
+                            'money'=> $order->price,
+                        ]);
+                        $change_save = $balance_change->save();
+                        if ($change_save === false){
+                            Db::rollback();
+                            throw new \Exception('添加失败');
+                        }
+                        break;
+                    case 3;
+                        break;
+                }
+
+                $pay_save = $order_pay->save();
+
+                if($save === false || $order_save === false || $pay_save === false)
                 {
                     throw new \Exception('添加失败');
                 }
@@ -116,19 +146,12 @@ class OrderRefund extends AdminController
                 DB::rollback();
                 $this->error('保存失败了' . $e);
             }
-/*            if ($save) {
-                DB::commit();
-                $this->success('保存成功');
-            }*/
             $this->success('保存成功');
-//            DB::rollback();
-//            $this->error('保存失败');
         }
         $this->assign('status_array', $this->model::STATUS_ARRAY);
         $this->assign('status_zh', $this->model::STATUS_ARRAY[$order_refund->status]);
         $this->assign('plugin', []);
         $this->assign('row', $order_refund);
-//        print_r($order);die();
         return $this->fetch();
     }
 

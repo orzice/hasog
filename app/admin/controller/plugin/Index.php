@@ -74,13 +74,13 @@ class Index extends AdminController
         if (!$name) {
             $this->error('请输入插件名称！', [], __url('admin/plugin.index/index'));
         }
-        // try {
+//        try {
             PluginsData::where("dir",$name)->update(['state' => 1]);
             Plugins::PluginNode();
             Plugins::PluginMenu();
-        // } catch (\Exception $e) {
-        //     $this->error('开启插件失败！', [], __url('admin/plugin.index/index')); 
-        // }
+//        } catch (\Exception $e) {
+//            $this->error('开启插件失败！', [], __url('admin/plugin.index/index'));
+//        }
         
         $this->success('开启插件成功！', [], __url('admin/plugin.index/index'));
      }

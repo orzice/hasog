@@ -19,6 +19,10 @@
 
             </div>
         </div>
+        {if $row->a_state === 1}<div class="layui-form-item">
+            <label class="layui-form-label">所属订单</label>
+            <div class="layui-input-block"><a href="/admin/order.home/edit?id={$row.order_id}">{$row.order_sn}</a></div>
+        </div>{/if}
 
         <div class="layui-form-item">
             <label class="layui-form-label">收款状态</label>
