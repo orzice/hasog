@@ -8,9 +8,13 @@ use app\common\model\FinaceBalanceset;
 use app\common\controller\AdminController;
 use app\common\model\FinaceUprecord;
 use app\common\model\Member;
+use app\common\model\Order;
+use app\common\model\OrderPay;
 use think\App;
 use EasyAdmin\annotation\ControllerAnnotation;
 use EasyAdmin\annotation\NodeAnotation;
+use think\facade\Db;
+
 /**
  * Class Test
  * @package app\admin\controller\page
@@ -75,6 +79,29 @@ class Offlinepayment extends AdminController
             ];
             $this->validate($post, $rule);
             $moneys = 0;
+            if($row->a_state === 1 && $post['state']==1 && !$row->state ==  1)
+            {
+                Db::startTrans();
+                $order = Order::where('id', $row->order_id)->where('status', 4)->find();
+                empty($order) && $this->error('订单不存在');
+                $order->status = 1;
+                $order_pay = new OrderPay([
+                    'uid'=> $row->uid,
+                    'order_id'=> $order->id,
+                    'order_sn'=> $order->order_sn,
+                    'status'=> 1,
+                    'pay_type_id'=> 3,
+                    'pay_time'=> time(),
+                    'amount'=> $order->price,
+                ]);
+                $pay_save = $order_pay->save();
+                $order_save = $order->save();
+                if($pay_save===false || $order_save===false){
+                    Db::rollback();
+                    $this->error('保存失败');
+                }
+                Db::commit();
+            }
 
             if ($post['state']==1 && !$post['states']==1 &&$post['a_state']==0){
                $set =  FinaceBalanceset::select()->toArray();
