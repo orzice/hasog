@@ -135,6 +135,9 @@ class Order extends TimeModel
             // 是否减库存
             if ($goods_item['goods_obj']->reduce_stock_method === 0){
                 $goods->stock -= $goods_item['goods_num'];
+                $goods->show_sales += $goods_item['goods_num'];
+                $goods->real_sales += $goods_item['goods_num'];
+                $goods->virtual_sales += $goods_item['goods_num'];
                 $goods->save();
             }
         }

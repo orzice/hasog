@@ -1,0 +1,54 @@
+<div class="layuimini-container">
+    <form id="app-form" class="layui-form layuimini-form">
+
+        <input type="hidden" name="id" value="{$row.id}">
+        <input type="hidden" name="states" value="{$row.state}">
+        <input type="hidden" name="a_state" value="{$row.a_state}">
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">会员ID</label>
+            <div class="layui-input-block">
+                <input type="text" name="uid" readonly=“readonly class="layui-input" lay-reqtext="请输入会员id" placeholder="请输入会员id" value="{$row.uid}">
+
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">收款金额</label>
+            <div class="layui-input-block">
+                <input type="text" name="money" readonly=“readonly class="layui-input" lay-reqtext="请输入收款金额" placeholder="请输入收款金额" value="{$row.money}">
+
+            </div>
+        </div>
+        {if $row->a_state === 1}<div class="layui-form-item">
+            <label class="layui-form-label">所属订单</label>
+            <div class="layui-input-block"><a href="/admin/order.home/edit?id={$row.order_id}">{$row.order_sn}</a></div>
+        </div>{/if}
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">收款状态</label>
+            <div class="layui-input-block">
+                <input type="radio" name="state" value="0" title="未审核" {eq name="$row.state" value="0"}checked=""{/eq}>
+                <input type="radio" name="state" value="1" title="收款成功" {eq name="$row.state" value="1"}checked=""{/eq}>
+                <input type="radio" name="state" value="2" title="收款失败" {eq name="$row.state" value="2"}checked=""{/eq}>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">付款截图</label>
+            <div class="layui-input-block">
+                <img src="{$row.thumb}" alt="">
+            </div>
+        </div>
+
+        <div class="hr-line"></div>
+        <div class="layui-form-item text-center">
+            <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit>确认</button>
+            <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">重置</button>
+        </div>
+
+    </form>
+</div>
+<script type="text/javascript">
+    require(["jquery", "easy-admin"], function ($, ea) {
+        ea.listen();
+    });
+</script>

@@ -1,0 +1,60 @@
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <table id="currentTable" class="layui-table layui-hide"
+               data-auth-preview="{:auth('finace.offlinepayment/preview')}"
+               data-auth-edit="{:auth('admins.feedback/edit')}"
+               lay-filter="currentTable">
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    require(["jquery", "easy-admin"], function ($, ea) {
+
+        var init = {
+            table_elem: '#currentTable',
+            table_render_id: 'currentTableRenderId',
+            index_url: 'finace.offlinepayment/index',
+            edit_url: 'finace.offlinepayment/edit',
+            modify_url: 'finace.offlinepayment/modify',
+            export_url: 'finace.offlinepayment/export',
+            preview_url: 'finace.offlinepayment/preview'
+        };
+
+
+        ea.table.render({
+            init: init,
+            toolbar: ['refresh', 'export',],
+            cols: [[
+                {field: 'id', minWidth: 200, title: 'ID',sort: true},
+                {field: 'uid', minWidth: 200, title: '会员id'},
+                {field: 'pay_id', minWidth: 200, title: '线下支付方式'},
+                {field: 'a_state', minWidth: 80, title: '收款路径',search: 'select', selectList: { 0: '充值余额',1:'购物支付'}},
+                {field: 'money', minWidth: 200, title: '收款金额'},
+                {field: 'state', minWidth: 80, title: '收款状态',search: 'select', selectList: { 0: '待审核',1:'收款成功',2:'收款失败'}},
+                {field: 'thumb', minWidth: 80, title: '图片', search: false, templet: ea.table.image},
+                {field: 'create_time', minWidth: 80, title: '创建时间', search: 'range',sort: true},
+                {
+                    width: 180,
+                    title: '操作',
+                    templet: ea.table.tool,
+                    operat: [
+                        [{
+                            text: '查看',
+                            url: init.edit_url,
+                            method: 'open',
+                            auth: 'edit',
+                            class: 'layui-btn layui-btn-xs layui-btn-success',
+                            extend: 'data-full="true"',
+                        }],
+                    ]
+                }
+
+            ]],
+        });
+
+        ea.listen();
+
+    });
+</script>

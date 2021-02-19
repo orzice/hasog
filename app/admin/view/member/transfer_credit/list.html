@@ -1,0 +1,41 @@
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <table id="currentTable" class="layui-table layui-hide"
+               data-auth-add="{:auth('member.user/add')}"
+               data-auth-edit="{:auth('member.user/edit')}"
+               data-auth-delete="{:auth('member.user/delete')}"
+               data-auth-password="{:auth('member.user/password')}"
+               lay-filter="currentTable">
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    require(["jquery", "easy-admin"], function ($, ea) {
+
+        var init = {
+            table_elem: '#currentTable',
+            table_render_id: 'currentTableRenderId',
+            index_url: 'member.transfer_credit/list',
+        };
+
+
+        ea.table.render({
+            init: init,
+            cols: [[
+                {type: "checkbox"},
+                {field: 'id', width: 120, title: 'ID'},
+                {field: 'uid', width: 160, title: '转账用户ID'},
+                // {field: 'type', width: 160, title: '转账类型'},
+                {field: 'umobile', width: 160, title: '转账用户账号'},
+                {field: 'target_mobile', title: '转账目标账号', width: 200},
+                {field: 'credit_type', title: '转账积分类型', width: 200},
+                {field: 'amount', title: '转账金额', width: 200},
+            ]],
+        });
+
+        ea.listen();
+
+    });
+</script>

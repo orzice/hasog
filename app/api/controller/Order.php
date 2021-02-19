@@ -20,11 +20,13 @@ namespace app\api\controller;
 
 
 use app\common\controller\ApiController;
+use app\common\model\AdminsPayment;
 use app\common\model\Dispatch;
 use app\common\model\DispatchData;
 use app\common\model\FinaceBalancesub;
 use app\common\model\Member;
 use app\common\model\MemberAddress;
+use app\common\model\FinaceOfflinepayment;
 use app\common\model\Goods;
 use app\common\model\Order as OrderModel;
 
@@ -184,9 +186,7 @@ class Order extends ApiController
             Db::commit();
         } catch (\Exception $e) {
             Db::rollback();
-            if ($order_save===false) {
-                $order->delete();
-            }
+            $order->delete();
             $this->error('生成订单失败，请稍后重试');
         }
         $this->success('生成订单成功', ['order_id'=>$order->id,'pay_type' => OrderModel::PAY_TYPE_FRONT,]);
@@ -366,8 +366,10 @@ class Order extends ApiController
                     'state'=> 0,
                     'money'=> $order->price,
                 ]);
+                $user->credit2 -= $order->price;
+                $user_save = $user->save();
                 $change_save = $balance_change->save();
-                if ($change_save === false){
+                if ($change_save === false || $user_save === false){
                     Db::rollback();
                     $this->error('支付失败请稍后重试');
                 }
@@ -375,7 +377,35 @@ class Order extends ApiController
             }
             // 线下支付
             elseif ($pay_type_id == 3){
+                $rule = [
+                    'thumb|付款图片' =>'require|url',
+                    'pay_id|线下付款方式' =>'require|number',
+                ];
+                $validate = $this->validate($post, $rule);
+                //验证失败
+                if($validate !== true){
+                    $this->error($validate);
+                }
+//                $pay_obj = AdminsPayment::where('id',$post['pay_id'])->where('state',1)->find();
+//                empty($pay_obj) && $this->error('该付款方式暂不可用');
                 $order->status = 4;
+                // 生成线下审核
+                $balance_change = new FinaceOfflinepayment([
+                    'uid'=> $user->id,
+                    'order_id'=> $order->id,
+                    'order_sn'=> $order->order_sn,
+                    'money'=> $order->price,
+                    'a_state'=> 1,
+                    'state'=> 0,
+                    'pay_id'=> $post['pay_id'],
+                    'thumb'=> $post['thumb'],
+                    'create_time'=>time(),
+                ]);
+                $change_save = $balance_change->save();
+                if ($change_save === false){
+                    Db::rollback();
+                    $this->error('支付失败请稍后重试');
+                }
             }
             else {
                 $this->error('暂时只支持余额付款和线下支付');
@@ -401,6 +431,9 @@ class Order extends ApiController
                     $goods = $goods_obj->goods;
                     if ($goods->reduce_stock_method === 1) {
                         $goods->stock -= $goods_obj->total;
+                        $goods->show_sales += $goods_obj->total;
+                        $goods->real_sales += $goods_obj->total;
+                        $goods->virtual_sales += $goods_obj->total;
                         $goods_result = $goods->save();
                         if (!$goods_result) {
                             break;
