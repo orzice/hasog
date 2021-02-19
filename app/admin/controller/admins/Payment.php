@@ -78,15 +78,17 @@ class Payment extends AdminController
         if ($this->request->isAjax()) {
             $post = $this->request->post();
             $rule = [
-                'accnumber|权重' => 'require|number',
+                'accnumber|开户卡号' => 'require|number',
                 'thumb|二维码' => 'require|url',
                 'accname|开户名' => 'require',
+                'name|名称' => 'require',
                 'bankdeposit|开户行' => 'require',
                 'bankdeposits|开户支行' => 'require',
                 'state|状态' => 'require|number|in:0,1',
             ];
             $this->validate($post, $rule);
             $post['qrcode'] = $post['thumb'];
+            Uploadfile($post['qrcode']);
             unset($post['thumb']);
             unset($post['file']);
             try {

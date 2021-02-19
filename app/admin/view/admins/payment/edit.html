@@ -3,6 +3,13 @@
 
         <input type="hidden" name="id" value="{$row.id}">
         <div class="layui-form-item">
+            <label class="layui-form-label">名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" class="layui-input" lay-reqtext="请输入名称" placeholder="请输入名称" value="{$row.name}">
+
+            </div>
+        </div>
+        <div class="layui-form-item">
             <label class="layui-form-label required">付款二维码</label>
             <div class="layui-input-block layuimini-upload">
                 <input name="thumb" class="layui-input layui-col-xs6" lay-verify="required" placeholder="付款二维码" value="{$row.qrcode}">
@@ -10,6 +17,14 @@
                     <span><a class="layui-btn" data-upload="thumb" data-upload-number="one" data-upload-exts="png|jpg|ico|jpeg" data-upload-icon="image"><i class="fa fa-upload"></i> 上传</a></span>
                     <span><a class="layui-btn layui-btn-normal" id="select_thumb" data-upload-select="thumb" data-upload-number="one" data-upload-mimetype="image/*"><i class="fa fa-list"></i> 选择</a></span>
                 </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">二维码/银行卡</label>
+            <div class="layui-input-block">
+                <input type="radio" name="a_state" value="1" title="二维码" {eq name="$row.a_state" value="1"}checked=""{/eq}>
+                <input type="radio" name="a_state" value="0" title="银行卡" {eq name="$row.a_state" value="0"}checked=""{/eq}>
             </div>
         </div>
 

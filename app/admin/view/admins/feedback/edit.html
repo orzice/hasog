@@ -28,6 +28,12 @@
             </div>
         </div>
         <div class="layui-form-item">
+            <label class="layui-form-label required">客服回复</label>
+            <div class="layui-input-block">
+                <textarea  class="layui-textarea" name="kf_text">{$row.kf_text|default=''}</textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
             <label class="layui-form-label">是否解决</label>
             <div class="layui-input-block">
                 <input type="radio" name="state" value="1" title="已解决" {eq name="$row.state" value="1"}checked=""{/eq}>
