@@ -30,6 +30,7 @@ use app\admin\service\TriggerService;
 class Plugins 
 {
     private static $sep= DIRECTORY_SEPARATOR;
+    private static $sepx = '\\';
     /**
      * 初始化方法 【新】使用数据库操作注入
      */
@@ -153,6 +154,7 @@ class Plugins
         //      获取已开启的插件
         //==================================
         $sep = self::$sep;
+        $sepx = self::$sepx;
         $root = root_path();
         $dir = $root.'plugin'.$sep;
         
@@ -163,7 +165,7 @@ class Plugins
             if (is_file($file)){
                $node = new NodeService();
                $node->setDir($dir.$plugins[$i]["dir"].$sep.'admin');
-               $node->setNamespacePrefix("HaSog".$sep."plugin".$sep.$plugins[$i]["dir"].$sep."admin");
+               $node->setNamespacePrefix("HaSog".$sepx."plugin".$sepx.$plugins[$i]["dir"].$sepx."admin");
                $nodeList = ($node)->getNodelist();
                //处理node数据
                for ($s=0; $s < count($nodeList); $s++) { 

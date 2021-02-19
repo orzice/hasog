@@ -26,6 +26,8 @@ use app\common\controller\AdminController;
 use EasyAdmin\annotation\ControllerAnnotation;
 use EasyAdmin\annotation\NodeAnotation;
 
+use app\common\service\ParentService;
+
 /**
  * Class User
  * @package app\admin\controller\member
@@ -163,9 +165,19 @@ class User extends AdminController
                 'new' => $rows['id'],
                 ));
 
+
+            $data = new ParentService();
+            if ($row['parent_id'] !== 0) {
+                $data->ParentEdit($row['id'],$row['parent_id']);
+            }
+            $parent_ids = $data->ParentInit($rows['id']);
+
+
             try {
                 $save = $row->save([
                     'parent_id' => $rows['id'],
+                    'parent_ids' => $parent_ids,
+                    'parent_ids_s' => 1,
                 ]);
             } catch (\Exception $e) {
                 $this->error('保存失败');

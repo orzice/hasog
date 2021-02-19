@@ -19,6 +19,7 @@
 namespace app\api\controller;
 use app\BaseController;
 use app\common\controller\ApiController;
+use app\common\model\AdminsPayment;
 use think\facade\Config;
 use think\facade\Event;
 use app\common\model\AdminsFeedback;
@@ -32,7 +33,7 @@ class admins extends ApiController
         $post = $this->request->post();
         $id=$this->MemberId();
         $rule = [
-            'text|内容'      => 'require|chsDash|max:3',
+            'text|内容'      => 'require|chsDash|max:300',
         ];
         $validate = $this->validate($post, $rule);
         //验证失败
@@ -73,6 +74,15 @@ class admins extends ApiController
     //获取微信配置
     public function wechatpay(){
         $data =WechatPay::where('open_status',1)->select();
+        if (count($data) == 0) {
+            return api_return(0,'没有数据');
+        }
+        $data = $data->toArray();
+        return api_return(1,'查询成功',$data);
+    }
+    //获取线下支付配置
+    public function payment(){
+        $data = AdminsPayment::where('state',1)->select();
         if (count($data) == 0) {
             return api_return(0,'没有数据');
         }

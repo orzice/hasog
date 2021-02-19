@@ -103,9 +103,11 @@ class Offlinepayment extends AdminController
                 Db::commit();
             }
 
-
             if ($post['state']==1 && !$post['states']==1 &&$post['a_state']==0){
                $set =  FinaceBalanceset::select()->toArray();
+               if (empty($set)){
+                   $this->error('用户充值已关闭');
+               }
                 if ($set[0]['recharge'] !== 1){
                     $this->error('用户充值已关闭');
                 }
@@ -129,7 +131,7 @@ class Offlinepayment extends AdminController
             if (empty($momber)){$this->error('用户不存在');};
             $moneys = $post['money']+$moneys;
             $time = time();
-//            try {
+            try {
                 $save = FinaceOfflinepayments::update($post);
                 if ($post['state'] == 1 && !$post['states']==1&&$post['a_state']==0){
                     $balance = $momber['credit2']+$moneys;
@@ -137,9 +139,9 @@ class Offlinepayment extends AdminController
                     $save = FinaceBalancesub::insert(['uid'=>$post['uid'],'balance'=>$balance,'state'=>2,'money'=>$moneys,'create_time'=>$time]);
                     $save = FinaceUprecord::insert(['uid'=>$post['uid'],'way'=>1,'money'=>$moneys,'state'=>1,'create_time'=>$time]);
                 }
-//            } catch (\Exception $e) {
-//                $this->error('保存失败:'.$e->getMessage());
-//            }
+            } catch (\Exception $e) {
+                $this->error('保存失败:'.$e->getMessage());
+            }
             $save ? $this->success('保存成功') : $this->error('保存失败');
         }
         $this->assign('row', $row);

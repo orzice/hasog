@@ -1,7 +1,8 @@
 <style type="text/css">
-    tip{
-        width: 100px;
+    p{
         color: #737373;
+        font-size:15px;
+        font-weight:bold;
     }
 </style>
 <div class="layuimini-container">
@@ -13,7 +14,13 @@
                 <input type="radio" name="balance[recharge]" lay-filter="balance[recharge]" value="1" title="开启" {eq name="$row.recharge" value="1"}checked=""{/eq}>
                 <input type="radio" name="balance[recharge]" lay-filter="balance[recharge]" value="0" title="关闭" {eq name="$row.recharge" value="0"}checked=""{/eq}>
             </div>
-            <tip>是否允许用户对账户余额进行充值</tip>
+            <div style="margin-left: 130px">
+                <blockquote class="site-text layui-elem-quote" style="color: #737373">
+                    <p style="font-size:15px; color: #737373;font-weight:bold;">是否允许用户对账户余额进行充值</p>
+                </blockquote>
+            </div>
+
+<!--            <tip>是否允许用户对账户余额进行充值</tip>-->
         </div>
         <div id="recharge" {eq name="$row.recharge" value="0"}style="display:none"{/eq} >
             <div class="layui-form-item">
@@ -53,11 +60,18 @@
                         {/foreach}
                         </div>
                 </div>
-                <tip style="margin-left: 130px">两项都填写才能生效</tip>
-                <br>
-                <tip style="margin-left: 130px">赠送固定金额：充值满100，赠送10元,实际赠送10元</tip>
-                <br>
-                <tip style="margin-left: 130px">赠送充值比例：充值满200，赠送15%，实际赠送30【200*15%】元</tip>
+                <div style="margin-left: 130px">
+                    <blockquote class="site-text layui-elem-quote" style="color: #737373">
+                        <p>两项都填写才能生效</p>
+                        <p>赠送固定金额：充值满100，赠送10元,实际赠送10元</p>
+                        <p>赠送充值比例：充值满200，赠送15%，实际赠送30【200*15%】元</p>
+                    </blockquote>
+                </div>
+<!--                <tip style="margin-left: 130px">两项都填写才能生效</tip>-->
+<!--                <br>-->
+<!--                <tip style="margin-left: 130px">赠送固定金额：充值满100，赠送10元,实际赠送10元</tip>-->
+<!--                <br>-->
+<!--                <tip style="margin-left: 130px">赠送充值比例：充值满200，赠送15%，实际赠送30【200*15%】元</tip>-->
             </div>
         </div>
         <div class="layui-form-item">
@@ -66,7 +80,12 @@
                 <input type="radio" name="balance[transfer]"  value="1" title="开启" {eq name="$row.transfer" value="1"}checked=""{/eq}>
                 <input type="radio" name="balance[transfer]"  value="0" title="关闭" {eq name="$row.transfer" value="0"}checked=""{/eq}>
             </div>
-            <tip>是否允许用户对账户余额进行转账</tip>
+            <div style="margin-left: 130px">
+                <blockquote class="site-text layui-elem-quote" style="color: #737373">
+                    <p>是否允许用户对账户余额进行转账</p>
+                </blockquote>
+            </div>
+<!--            <tip>是否允许用户对账户余额进行转账</tip>-->
         </div>
         <div class="hr-line"></div>
         <div class="layui-form-item text-center">

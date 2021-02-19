@@ -112,6 +112,7 @@ ETO;
 
     function __construct() {
         $data = explode(PHP_EOL, $this->mimeType);
+
         //创建快捷数组，=A= 只能for循环了
         $this->Type = array();
 
@@ -121,6 +122,7 @@ ETO;
             }
             $ls = explode(' ', $data[$i]);
             $ls = $this->where_data($ls);
+         
             for ($s=0; $s < count($ls); $s++) { 
                 if ($s == 0) {
                     continue;
@@ -146,6 +148,9 @@ ETO;
        $new = array();
        foreach ($data_array as $key => $value) {
           if(!empty($value)){
+
+           $value = trim($value);//首先去掉头尾空格
+           $value = str_replace(["\r\n","\n","\r"], "", $value); 
            $new[] = str_replace(';','',$value);
           }
        }

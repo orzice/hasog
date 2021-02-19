@@ -24,6 +24,12 @@ use app\common\Plugins;
 use app\admin\model\SystemAdmin;
 use app\admin\model\SystemQuick;
 
+use EasyAdmin\auth\Node as NodeService;
+
+
+use app\common\model\Member;
+use app\common\service\ParentService;
+
 class Index extends AdminController
 {
     /**
@@ -33,6 +39,12 @@ class Index extends AdminController
      */
     public function index()
      {
+
+        // $data = new ParentService();
+
+        // print_r($data->ParentGet(4));
+        // // // print_r($data->ParentEdit(3,2,1));
+        // exit;
         // 触发UserLogin事件 用于执行用户登录后的一系列操作
         event('AdminHome');
 

@@ -10,9 +10,9 @@
 // +----------------------------------------------------------------------
 // | github开源项目：https://github.com/orzice/hasog
 // +----------------------------------------------------------------------
-// | Author：Orzice(小涛)  https://gitee.com/orzice
+// | Author：Orzice(小涛)  https://gitee.com/orzice / 王火火(王琰豪)  https://gitee.com/w321
 // +----------------------------------------------------------------------
-// | DateTime：2021-01-04 17:44:47
+// | DateTime：2021-02-17 15:12:21
 // +----------------------------------------------------------------------
 
 namespace app\api\controller;
@@ -32,7 +32,9 @@ class Login extends ApiController
     {
         $user_id = $this->MemberId();
         $user_id === false && $this->error('请先登录');
-        $user = Member::where('state', '0')->find($user_id)->hidden(['password', 'salt', '']);
+        $user = Member::where('state', '0')->find($user_id);
+        empty($user) && $this->error('该用户不存在或被冻结');
+        $user = $user->hidden(['password', 'salt', '']);
         $orders = $user->orders();
         $order_paid = $user->orders()->where('status', 1)->select()->count();  //待发货(已付款)
         $order_daifukuan = $user->orders()->where('status', 0)->select()->count();// 待付款
@@ -120,7 +122,12 @@ class Login extends ApiController
             $post['password'] = U_password($post['password']);
             $parent_id = isset($post['parent_id'])? $post['parent_id'] : null;
             $array = ['mobile'=> $post['mobile'], 'password'=>$post['password']];
-            !empty($parent_id) && $array['parent_id'] = $parent_id;
+            //请判断推荐人是否存在！
+            if (!empty($parent_id)) {
+               $parent = Member::where('id', $parent_id)->find();
+               !empty($parent) && $array['parent_id'] = $parent_id;
+            }
+            // !empty($parent_id) && $array['parent_id'] = $parent_id;
             try {
                 $user = new Member();
                 $result = $user->save($array);

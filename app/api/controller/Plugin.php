@@ -24,33 +24,50 @@ use app\common\Plugins;
 
 class Plugin extends ApiController
 {
+    //获取开启插件列表
+    public function list()
+    {
+        $return = [];
+        $data = Plugins::GetPluginList()->ToArray();
+        for ($i=0; $i < count($data); $i++) { 
+            $return['name'][] = $data[$i]['dir'];
+            $return['list'][$data[$i]['dir']] = $data[$i];
+            unset($return['list'][$data[$i]['dir']]['id']);
+            unset($return['list'][$data[$i]['dir']]['state']);
+            unset($return['list'][$data[$i]['dir']]['dir']);
+            unset($return['list'][$data[$i]['dir']]['update_time']);
+            unset($return['list'][$data[$i]['dir']]['delete_time']);
+        }
+
+        return api_return(1,'查询成功',$return);
+    }
     public function call()
     {
         //plugin.b_2-index-index-index
         $name = 'plugin.';
         $info = Request::pathinfo();
         if (substr ($info, 0,strlen($name)) !== $name) {
-            return $this->error('未知请求1', '','');
+            return $this->error('未知请求', '','');
         }
         $plugin = str_replace($name, '', $info);
         $call = explode('-', $plugin);
         if(count($call) !== 4){
-            return $this->error('未知请求2', '','');
+            return $this->error('未知请求', '','');
         }
         $data = Plugins::GetPluginState($call[0]);
         $call3 = explode('.', $call[3]);
         // print_r($data);
         if (!$data) {
-            return $this->error('未知请求3', '','');
+            return $this->error('未知请求', '','');
         }
         // AcShop\plugin\<p1>\api\<p2>\<p3>@<p4>
         // try {
             $dic = 'HaSog\plugin\\'.$call[0].'\api\\'.$call[1].'\\'.$call[2];
             $dic2 = $call3[0];
             $test = new $dic($this->app);
-            $test->$dic2();
+            return $test->$dic2();
         // }  catch (\Throwable $e) {
-        //     return $this->error('未知请求4', '','');
+        //     return $this->error('未知请求', '','');
         // }
 
     }

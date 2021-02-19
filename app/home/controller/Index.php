@@ -21,11 +21,11 @@ namespace app\home\controller;
 use app\HomeController;
 use Hasog\Response;
 
-
 class Index extends HomeController
 {
     protected $view;
     protected $source;
+    protected $fg = DIRECTORY_SEPARATOR;
 
     // 分为 PC APP WAP WX 界面配置，权重 APP > WX > WAP > PC，APP和WX都有先决条件。
     // 注：微信不存在但是WAP存在！那么默认WAP！如果都不存在 那么 只能返回PC了
@@ -33,7 +33,8 @@ class Index extends HomeController
     // 2020-12-24 Orzice 平安夜~~
     public function GetSource()
     {
-      $dic  = public_path().'config\\';
+      $dic  = public_path().'config'.$this->fg;
+      
       //===========判断来源=============
       //APP内
       if (is_app()) {
@@ -74,6 +75,7 @@ class Index extends HomeController
     public function GetView()
     {
       $file = $this->GetSource();
+
       if(!$file){
         return abort(404, '文件不存在');
       }
@@ -84,8 +86,10 @@ class Index extends HomeController
       if (!$handle) {
         return false;
       }
+
       $buffer = fread($handle, filesize($file));
       fclose($handle);
+
       $json = json_decode($buffer,true);
       if (!$json) {
         return false;
@@ -119,14 +123,15 @@ class Index extends HomeController
       $pathinfo = $this->request->pathinfo();
       $ext = $this->request->ext();
       // $file = root_path().'plugin\\'.$this->view['namespace'].'\page\\'.$this->source.'\\';
-      $file = root_path().'plugin\\'.$this->view['namespace'].'\page\\'.$this->view['dir'].'\\';
+      $file = root_path().'plugin'.$this->fg.$this->view['namespace'].$this->fg.'page'.$this->fg.$this->view['dir'].$this->fg;
+
 
       if ($ext == '') {
-        $pathinfo .= '\index.html';
+        $pathinfo .= 'index.html';
         $ext = 'html';
       }
       $dir = $file.$pathinfo;
-      $dir = str_replace(["/\\","\\\\",'/'],"\\",$dir);
+      $dir = str_replace(["/\\","\\\\",'/'],$this->fg,$dir);
 
       if(!file_exists($dir)){
         return abort(404, '文件不存在');
