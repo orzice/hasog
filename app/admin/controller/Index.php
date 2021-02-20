@@ -26,7 +26,7 @@ use app\admin\model\SystemQuick;
 
 use EasyAdmin\auth\Node as NodeService;
 
-use HaSog\plugin\hasog_pintuan\services\SetService;
+// use HaSog\plugin\hasog_pintuan\services\SetService;
 
 class Index extends AdminController
 {
@@ -37,9 +37,9 @@ class Index extends AdminController
      */
     public function index()
      {
-        $set = new SetService();
-        $set->order(1);
-        exit;
+        // $set = new SetService();
+        // $set->order(1);
+        // exit;
 
         // 触发UserLogin事件 用于执行用户登录后的一系列操作
         event('AdminHome');
