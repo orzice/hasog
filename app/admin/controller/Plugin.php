@@ -78,8 +78,6 @@ class Plugin extends AdminController
         $adminId = Sessions("id");
         $authService = new AuthService($adminId);
         // 验证权限
-        print_r('plugins.'.$call[0].'-'.$call[1].'-'.$call[2].'/'.$call[3]);
-        exit;
         $check = $authService->checkNode('plugins.'.$call[0].'-'.$call[1].'-'.$call[2].'/'.$call[3]);
         if (!$check) {
             $this->error('无权限访问');
