@@ -123,6 +123,9 @@ class Home extends AdminController
         return $this->fetch();
     }
 
+    /**
+     * @NodeAnotation(title="订单编辑")
+     */
     public function edit($id)
     {
         $order = Order::where('id', $id)->find();
@@ -183,7 +186,9 @@ class Home extends AdminController
     }
 
 
-    // 获取批量发货模版
+    /**
+     * @NodeAnotation(title="获取批量发货模版")
+     */
     public function batch_delivery()
     {
         $is_ajax = $this->request->isAjax();
@@ -200,7 +205,9 @@ class Home extends AdminController
         $exp->export($file_name, $results, $head, $keys, 'xlsx');
     }
 
-
+    /**
+     * @NodeAnotation(title="确认收款")
+     */
     public function receive_money(){
         $post = $this->request->post();
         $order_id = isset($post['order_id'])? $post['order_id'] : '';
@@ -220,6 +227,9 @@ class Home extends AdminController
         }
     }
 
+    /**
+     * @NodeAnotation(title="发货")
+     */
     public function send_goods(){
         $post = $this->request->post();
         $order_id = isset($post['order_id'])? $post['order_id'] : '';
@@ -240,6 +250,9 @@ class Home extends AdminController
         }
     }
 
+    /**
+     * @NodeAnotation(title="确认收货")
+     */
     public function receive_goods(){
         $post = $this->request->post();
         $order_id = isset($post['order_id'])? $post['order_id'] : '';
@@ -260,6 +273,9 @@ class Home extends AdminController
         }
     }
 
+    /**
+     * @NodeAnotation(title="退款订单")
+     */
     public function refund_order(){
         $post = $this->request->post();
         $order_id = isset($post['order_id'])? $post['order_id'] : '';
@@ -280,6 +296,9 @@ class Home extends AdminController
         }
     }
 
+    /**
+     * @NodeAnotation(title="申请退款")
+     */
     public function apply_cancel(){
         $post = $this->request->post();
         $order_id = isset($post['order_id'])? $post['order_id'] : '';
@@ -313,7 +332,9 @@ class Home extends AdminController
         $this->success('申请成功', ['status'=>Order::STATUS_ARRAY[$order->status]]);
     }
 
-    // 批量发货
+    /**
+     * @NodeAnotation(title="批量发货")
+     */
     public function batch_delivery_data()
     {
         $files = $this->request->file();

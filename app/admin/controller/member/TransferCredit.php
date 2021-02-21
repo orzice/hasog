@@ -132,7 +132,7 @@ class TransferCredit extends AdminController
     }
 
     /**
-     * @NodeAnotation(title="数据列表")
+     * @NodeAnotation(title="转账数据列表")
      */
     public function list()
     {

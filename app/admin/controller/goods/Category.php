@@ -86,7 +86,7 @@ class Category extends AdminController
     }
 
     /**
-     * @NodeAnotation(title="添加")
+     * @NodeAnotation(title="添加商品分类")
      */
     public function add($id = null)
     {
@@ -129,7 +129,7 @@ class Category extends AdminController
     }
 
     /**
-     * @NodeAnotation(title="编辑")
+     * @NodeAnotation(title="编辑商品分类")
      */
     public function edit($id)
     {
@@ -177,7 +177,7 @@ class Category extends AdminController
     }
 
     /**
-     * @NodeAnotation(title="删除")
+     * @NodeAnotation(title="删除商品分类")
      */
     public function delete($id)
     {
