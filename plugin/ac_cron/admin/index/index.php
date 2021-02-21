@@ -35,9 +35,7 @@ class Index extends AdminController
      */
 	public function index()
 	{
-        print_r("=============<br>");
-        print_r("[计划任务]插件列表<br>");
-        print_r("=============<br>");
+        print_r("不要关闭！不要关闭！不要关闭！不要关闭！");
 	}
 
 
