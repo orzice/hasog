@@ -43,7 +43,7 @@ class Payment extends AdminController
         $this->model = new Payments();
     }
     /**
-     * @NodeAnotation(title="列表")
+     * @NodeAnotation(title="线下付款配置列表")
      */
     public function index()
     {
@@ -71,7 +71,7 @@ class Payment extends AdminController
         return $this->fetch();
     }
     /**
-     * @NodeAnotation(title="添加")
+     * @NodeAnotation(title="线下付款配置添加")
      */
     public function add()
     {
@@ -101,7 +101,7 @@ class Payment extends AdminController
         return $this->fetch();
     }
     /**
-     * @NodeAnotation(title="修改")
+     * @NodeAnotation(title="线下付款配置修改")
      */
     public function edit($id)
     {
