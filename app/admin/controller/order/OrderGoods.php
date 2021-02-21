@@ -29,7 +29,11 @@ use EasyAdmin\annotation\ControllerAnnotation;
 use EasyAdmin\annotation\NodeAnotation;
 use think\queue\command\Retry;
 
-
+/**
+ * Class Home
+ * @package app\admin\controller\goods
+ * @ControllerAnnotation(title="订单商品")
+ */
 class OrderGoods extends AdminController
 {
 
@@ -44,7 +48,7 @@ class OrderGoods extends AdminController
     }
 
     /**
-     * @NodeAnotation(title="订单列表")
+     * @NodeAnotation(title="订单商品列表")
      */
     public function index()
     {
@@ -100,7 +104,10 @@ class OrderGoods extends AdminController
         return $this->fetch();
     }
 
-    public function get_goods()
+    /**
+     * @NodeAnotation(title="订单商品列表")
+     */
+/*    public function get_goods()
     {
 //        if ($this->request->isAjax()) {
 
@@ -137,7 +144,7 @@ class OrderGoods extends AdminController
         return $this->fetch();
 //        }
 //        return $this->fetch();
-    }
+    }*/
 
 
     public function edit($id)

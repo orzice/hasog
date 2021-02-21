@@ -494,7 +494,7 @@ class Order extends ApiController
         $order = OrderModel::where('uid', $user_id)->where('id', $order_id)
             ->where('type', 0)
             ->find();
-        empty($order) && $this->error('订单不存在或该订单不支持退款');
+        empty($order) && $this->error('订单不存在或该订单类型不支持退款');
         if (in_array($order->status, [1, 2, 3,])) {
             $order->status = -2;
             Db::startTrans();

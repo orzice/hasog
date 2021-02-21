@@ -33,7 +33,7 @@ use EasyAdmin\annotation\NodeAnotation;
 /**
  * Class Category
  * @package app\admin\controller\goods
- * @ControllerAnnotation(title="商品管理")
+ * @ControllerAnnotation(title="微信支付")
  */
 class WechatPay extends AdminController
 {
@@ -56,7 +56,7 @@ class WechatPay extends AdminController
     }
 
     /**
-     * @NodeAnotation(title="列表")
+     * @NodeAnotation(title="微信支付列表")
      */
     public function index()
     {

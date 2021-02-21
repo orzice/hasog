@@ -33,7 +33,7 @@ use EasyAdmin\annotation\NodeAnotation;
 /**
  * Class Category
  * @package app\admin\controller\goods
- * @ControllerAnnotation(title="商品管理")
+ * @ControllerAnnotation(title="阿里支付")
  */
 class AliPay extends AdminController
 {
@@ -60,7 +60,7 @@ class AliPay extends AdminController
     }
 
     /**
-     * @NodeAnotation(title="列表")
+     * @NodeAnotation(title="阿里支付列表")
      */
     public function index()
     {
