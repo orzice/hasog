@@ -43,7 +43,7 @@ class Withdrawsts extends AdminController
         $this->model = new Withdrawalrecords();
     }
     /**
-     * @NodeAnotation(title="列表")
+     * @NodeAnotation(title="提现统计列表")
      */
     public function index(){
         if ($this->request->isAjax()){

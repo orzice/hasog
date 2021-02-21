@@ -43,7 +43,7 @@ class Feedback extends AdminController
         $this->model = new Feedbacks();
     }
     /**
-     * @NodeAnotation(title="列表")
+     * @NodeAnotation(title="用户回馈列表")
      */
     public function index(){
         if ($this->request->isAjax()){
@@ -70,7 +70,7 @@ class Feedback extends AdminController
         return $this->fetch();
     }
     /**
-     * @NodeAnotation(title="查看")
+     * @NodeAnotation(title="用户回馈查看")
      */
     public function edit($id)
     {

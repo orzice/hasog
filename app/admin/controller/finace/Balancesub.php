@@ -41,7 +41,7 @@ class Balancesub extends AdminController
         $this->model = new Balancesubs();
     }
     /**
-     * @NodeAnotation(title="列表")
+     * @NodeAnotation(title="余额明细列表")
      */
     public function index(){
         if ($this->request->isAjax()){

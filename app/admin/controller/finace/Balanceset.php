@@ -42,7 +42,7 @@ class Balanceset extends AdminController
         $this->model = new Balancesets();
     }
     /**
-     * @NodeAnotation(title="修改")
+     * @NodeAnotation(title="余额设置修改")
      */
     public function edit(){
         $res = $this->model->limit(1)->select()->toArray();

@@ -41,7 +41,7 @@ class Withdrawset extends AdminController
         $this->model = new Withdrawsets();
     }
     /**
-     * @NodeAnotation(title="修改")
+     * @NodeAnotation(title="提现设置修改")
      */
     public function edit(){
         $res = $this->model->limit(1)->select()->toArray();

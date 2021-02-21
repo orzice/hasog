@@ -34,7 +34,7 @@ class Offlinepayment extends AdminController
         $this->model = new FinaceOfflinepayments();
     }
     /**
-     * @NodeAnotation(title="列表")
+     * @NodeAnotation(title="线下收款记录列表")
      */
     public function index(){
         if ($this->request->isAjax()){
@@ -61,7 +61,7 @@ class Offlinepayment extends AdminController
         return $this->fetch();
     }
     /**
-     * @NodeAnotation(title="查看")
+     * @NodeAnotation(title="线下收款记录查看")
      */
     public function edit($id)
     {

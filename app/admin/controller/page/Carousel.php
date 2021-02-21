@@ -42,7 +42,7 @@ class Carousel extends AdminController
         $this->model = new Carousels();
     }
     /**
-     * @NodeAnotation(title="列表")
+     * @NodeAnotation(title="轮播图管理列表")
      */
     public function index()
     {
@@ -70,7 +70,7 @@ class Carousel extends AdminController
         return $this->fetch();
     }
     /**
-     * @NodeAnotation(title="添加")
+     * @NodeAnotation(title="轮播图管理添加")
      */
     public function add()
     {
@@ -96,7 +96,7 @@ class Carousel extends AdminController
         return $this->fetch();
     }
     /**
-     * @NodeAnotation(title="修改")
+     * @NodeAnotation(title="轮播图管理修改")
      */
     public function edit($id)
     {

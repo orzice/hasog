@@ -41,7 +41,7 @@ class Uprecord extends AdminController
         $this->model = new Uprecords();
     }
     /**
-     * @NodeAnotation(title="列表")
+     * @NodeAnotation(title="充值记录列表")
      */
     public function index()
     {

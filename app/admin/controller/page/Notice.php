@@ -36,7 +36,7 @@ class Notice extends AdminController
         $this->model = new Notices();
     }
     /**
-     * @NodeAnotation(title="列表")
+     * @NodeAnotation(title="公告管理列表")
      */
     public function index()
     {
@@ -64,7 +64,7 @@ class Notice extends AdminController
         return $this->fetch();
     }
     /**
-     * @NodeAnotation(title="添加")
+     * @NodeAnotation(title="公告管理添加")
      */
     public function add(){
         if ($this->request->isAjax()) {
@@ -85,7 +85,7 @@ class Notice extends AdminController
         return $this->fetch();
     }
     /**
-     * @NodeAnotation(title="修改")
+     * @NodeAnotation(title="公告管理修改")
      */
     public function edit($id){
         $row = $this->model->find($id);

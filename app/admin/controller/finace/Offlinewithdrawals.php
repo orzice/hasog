@@ -32,7 +32,7 @@ class Offlinewithdrawals extends AdminController
         $this->model = new FinaceOfflinewithdrawalss();
     }
     /**
-     * @NodeAnotation(title="列表")
+     * @NodeAnotation(title="线下提现记录列表")
      */
     public function index()
     {
@@ -60,7 +60,7 @@ class Offlinewithdrawals extends AdminController
         return $this->fetch();
     }
     /**
-     * @NodeAnotation(title="修改")
+     * @NodeAnotation(title="线下提现记录修改")
      */
     public function edit($id)
     {

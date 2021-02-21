@@ -41,7 +41,7 @@ class Income extends AdminController
         $this->model = new Incomes();
     }
     /**
-     * @NodeAnotation(title="列表")
+     * @NodeAnotation(title="收入明细列表")
      */
     public function index()
     {

@@ -45,7 +45,7 @@ class Upbalance extends AdminController
     }
 
     /**
-     * @NodeAnotation(title="列表")
+     * @NodeAnotation(title="充值余额列表")
      */
     public function index(){
         if ($this->request->isAjax()){
@@ -72,7 +72,7 @@ class Upbalance extends AdminController
         return $this->fetch();
     }
     /**
-     * @NodeAnotation(title="修改")
+     * @NodeAnotation(title="充值余额修改")
      */
     public function edit($id)
     {
