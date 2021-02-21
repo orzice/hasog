@@ -50,7 +50,7 @@ class Ajax extends ApiController
             'upload_type|指定上传类型有误' => "in:{$uploadConfig['upload_allow_type']}",
             'file|文件'              => "require|file|fileExt:{$uploadConfig['upload_allow_ext']}|fileSize:{$uploadConfig['upload_allow_size']}",
         ];
-        $validate_result = $this->validate($data, $rule);
+        $validate = $this->validate($data, $rule);
 
         if ($validate !== true) {
             $this->error('此类文件不允许上传');
