@@ -18,6 +18,9 @@
 namespace app\admin\controller\member;
 
 
+use app\common\model\CreditType;
+use app\common\model\FinaceBalancesub;
+use app\common\model\FinaceUprecord;
 use think\App;
 use think\facade\Config;
 use app\common\model\Member;
@@ -195,6 +198,61 @@ class User extends AdminController
         $this->assign('row', $row);
         return $this->fetch();
     }
+
+    /**
+     * @NodeAnotation(title="修改")
+     */
+    public function recharge_balance($id)
+    {
+        $row = $this->model->find($id);
+        $row->isEmpty() && $this->error('数据不存在');
+        if ($this->request->isAjax()){
+            $post = $this->request->post();
+            $rule=[
+                'id|id'=>'require|number',
+                'credit2s'=>['^[\+\-]?\d+(\.\d+)?$'],
+                'credit_type|积分类型'=>'require|number',
+            ];
+            $this->validate($post['goods'], $rule);
+            $credit = $this->model::where('id',$post['goods']['id'])->find();
+            $credit=$credit['credit2'];
+            $credit = $credit+$post['goods']['credit2s'];
+            $b = substr($post['goods']['credit2s'], 0,1);
+            $balancesub['money'] =$post['goods']['credit2s'];
+            $balancesub['uid']   =$post['goods']['id'];
+            $balancesub['balance'] = $credit;
+            $balancesub['create_time'] = time();
+            $uprecord['uid'] = $post['goods']['id'];
+            $uprecord['way'] = 0;
+            $uprecord['money'] = $post['goods']['credit2s'];
+            $uprecord['state'] =1;
+            $uprecord['create_time'] =time();
+            $allow_credit = CreditType::where('id', $post['goods']['credit_type'])->find();
+            empty($allow_credit) && $this->error('积分类型错误');
+            $uprecord['credit_type'] =$allow_credit->id;
+            $balancesub['credit_type'] =$allow_credit->id;
+            try {
+                if ($b == '-'){
+                    $balancesub['state'] = 0;
+                    $save = FinaceBalancesub::insert($balancesub);
+                }else{
+                    $balancesub['state'] = 1;
+                    $save = FinaceBalancesub::insert($balancesub);
+                }
+                Member::where('id', $post['goods']['id'])->inc($allow_credit->value, $post['goods']['credit2s'])->update();
+                $save = FinaceUprecord::insert($uprecord);
+            } catch (\Exception $e) {
+                $this->error('保存失败:'.$e->getMessage());
+            }
+            $save ? $this->success('保存成功') : $this->error('保存失败');
+
+        }
+        $credit_types = CreditType::select()->all();
+        $this->assign('credit_types', $credit_types);
+        $this->assign('row',$row);
+        return $this->fetch();
+    }
+
     /**
      * @NodeAnotation(title="修改密码")
      */
