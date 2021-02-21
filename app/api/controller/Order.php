@@ -656,6 +656,9 @@ class Order extends ApiController
     {
         $user_id = 1;
         $pay_type = OrderModel::PAY_TYPE_FRONT;
+        $pay_type = [
+            ['id'=>3,'name'=> '线下支付','icon'=>'/static/common/images/xianxia.png'],
+        ];
         $this->success('请求成功', ['pay_type' => $pay_type]);
     }
 }

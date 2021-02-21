@@ -66,6 +66,21 @@ HaSog（全名 幻神商城系统）基于TP6框架 的一套 开源的微信社
 
 
 
+## [常见问题]
+
+
+
+### 1. 不能注册，提示 没有默认值【需修改Mysql配置】
+
+```
+sql-mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
+
+改为↓
+sql-mode=NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+```
+
+
+
 
 
 ## [开发进度]
