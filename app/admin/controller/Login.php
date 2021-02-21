@@ -57,7 +57,7 @@ class Login extends AdminController
                 'username|用户名'      => 'require|alphaNum|length:4,20',
                 'password|密码'       => 'require|alphaNum|length:4,20',
                 'keep_login|是否保持登录' => 'require|number',
-                // 'captcha|验证码' => 'require|captcha',
+                'captcha|验证码' => 'require|captcha',
             ];
             $this->validate($post, $rule);
             $admin = SystemAdmin::where(['username' => $post['username']])->find();

@@ -98,30 +98,30 @@ class Withdrawalrecord extends AdminController
     /**
      * @NodeAnotation(title="修改")
      */
-    public function edit($id)
-    {
-        $row = $this->model->find($id);
-        $row->isEmpty() && $this->error('数据不存在');
-        if ($this->request->isAjax()){
-            $post = $this->request->post();
-            $rule = [
-                'id'=>'require|number',
-                'uid'=>'require|number',
-                'number'=>'require|number',
-                'money'=>['^[1-9]\d*\.\d*|0\.\d*[1-9]\d*|0?\.0+|0$'],
-                'numstatus'=>'require|number|in:0,1,2,3',
-                'status'=>'require|number|in:0,1,2,3,4,5',
-            ];
-            $this->validate($post['goods'], $rule);
-            try {
-                $save = $this->model->where('id',$post['goods']['id'])->update($post['goods']);
-            } catch (\Exception $e) {
-                $this->error('保存失败:'.$e->getMessage());
-            }
-            $save ? $this->success('保存成功') : $this->error('保存失败');
-        }
-        $this->assign('row',$row);
-        return $this->fetch();
-    }
+//    public function edit($id)
+//    {
+//        $row = $this->model->find($id);
+//        $row->isEmpty() && $this->error('数据不存在');
+//        if ($this->request->isAjax()){
+//            $post = $this->request->post();
+//            $rule = [
+//                'id'=>'require|number',
+//                'uid'=>'require|number',
+//                'number'=>'require|number',
+//                'money'=>['^[1-9]\d*\.\d*|0\.\d*[1-9]\d*|0?\.0+|0$'],
+//                'numstatus'=>'require|number|in:0,1,2,3',
+//                'status'=>'require|number|in:0,1,2,3,4,5',
+//            ];
+//            $this->validate($post['goods'], $rule);
+//            try {
+//                $save = $this->model->where('id',$post['goods']['id'])->update($post['goods']);
+//            } catch (\Exception $e) {
+//                $this->error('保存失败:'.$e->getMessage());
+//            }
+//            $save ? $this->success('保存成功') : $this->error('保存失败');
+//        }
+//        $this->assign('row',$row);
+//        return $this->fetch();
+//    }
 
 }

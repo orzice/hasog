@@ -59,6 +59,7 @@ class Withdrawsts extends AdminController
                 $save[0]['wechat']=$this->model->whereTime('create_time','between',[$stime,$etime])->where('status',3)->where('numstatus',0)->count();
                 $save[0]['alipay']=$this->model->whereTime('create_time','between',[$stime,$etime])->where('status',3)->where('numstatus',1)->count();
                 $save[0]['balance']=$this->model->whereTime('create_time','between',[$stime,$etime])->where('status',3)->where('numstatus',2)->count();
+                $save[0]['manual']=$this->model->whereTime('create_time','between',[$stime,$etime])->where('status',3)->where('numstatus',3)->count();
                 $save[0]['create_time']="搜索时间";
                 $data = [
                     'code' => 0,
@@ -75,6 +76,7 @@ class Withdrawsts extends AdminController
                 $save[$i]['wechat']=$this->model->whereTime('create_time','between',[$stime,$etime])->where('status',3)->where('numstatus',0)->count();
                 $save[$i]['alipay']=$this->model->whereTime('create_time','between',[$stime,$etime])->where('status',3)->where('numstatus',1)->count();
                 $save[$i]['balance']=$this->model->whereTime('create_time','between',[$stime,$etime])->where('status',3)->where('numstatus',2)->count();
+                $save[$i]['manual']=$this->model->whereTime('create_time','between',[$stime,$etime])->where('status',3)->where('numstatus',3)->count();
                 $save[$i]['create_time']=date("Y-m-d",$stime) ;
             }
             $data = [
