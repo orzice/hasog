@@ -159,7 +159,7 @@ class Finace extends ApiController
         $post = $this->request->post();
         $rule = [
             'money|金额'      => 'require|float',
-            'thumb|成功图片'  => 'require|url',
+            'thumb|收款码'  => 'require|url',
             'pay_id|线下支付方式' => 'require|number',
         ];
         $validate = $this->validate($post, $rule);

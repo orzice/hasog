@@ -78,13 +78,17 @@ class Offlinewithdrawals extends AdminController
                 'cord_id'=>'require|number'
             ];
             $this->validate($post, $rule);
+            $off = FinaceOfflinewithdrawalss::find($post['id']);
+            if ($off['state'] !==0){
+                $this->error('非未审核状态不可更改');
+            }
             if ($post['state']==1 && !$post['states']==1){
                 $set = FinaceWithdrawset::select()->toArray();
                 if (empty($set)){
-                    return api_return(0,'账户提现已关闭');
+                    $this->error('账户提现已关闭');
                 }
                 if ($set[0]['recharge'] !== 1){
-                    return api_return(0,'账户提现已关闭');
+                    $this->error('账户提现已关闭');
                 }
             }
             $momber = Member::find($post['uid']);
@@ -97,7 +101,7 @@ class Offlinewithdrawals extends AdminController
                 }elseif ($post['state']==3 && !$post['states']!==3){
                     $credit2 = $momber['credit2']+$post['money'];
                     $save = FinaceWithdrawalrecord::update(['id'=>$post['cord_id'],'status'=>4]);
-                    $save = Member::where(['id'=>$id])->update(['credit2'=>$credit2]);
+                    $save = Member::update(['id'=>$post['uid'],'credit2'=>$credit2]);
                     $save = FinaceBalancesub::insert(['uid'=>$id,'balance'=>$credit2,'state'=>3,'money'=>$post['money'],'create_time'=>$time]);
                 }elseif ($post['state']==2 && $post['states']!==2){
                     $save = FinaceWithdrawalrecord::update(['id'=>$post['cord_id'],'status'=>5]);
