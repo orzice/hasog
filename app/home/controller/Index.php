@@ -117,6 +117,9 @@ class Index extends HomeController
     }
     public function index()
     {
+      $data = config_plus("hasog");
+      header('Server: HaSog Server '.$data['version']);
+      header('X-Powered-By: HaSog/'.$data['version']);
       if (!$this->GetView()) {
         return abort(404, '文件不存在');
       }

@@ -12,7 +12,7 @@
 // +----------------------------------------------------------------------
 // | Author：Orzice(小涛)  https://gitee.com/orzice
 // +----------------------------------------------------------------------
-// | DateTime：2021-01-04 17:21:56
+// | DateTime：2021-02-21 14:03:52
 // +----------------------------------------------------------------------
 
 use think\facade\Config;
@@ -25,12 +25,20 @@ return function () {
 	Config::set(['ac_cron' => [
         'name' => '计划任务模块',
         'version' => '1.0.0',
-        'description' => '常用计划任务管理模块',
-        'author' => 'AcShop官方',
-        'url' => 'https://oauth.acgice.com',
+        'description' => '常用计划任务管理模块，请勿关闭！',
+        'author' => '幻神科技',
+        'url' => 'https://www.hasog.com',
         'namespace' => 'HaSog\\plugin\\ac_cron',
         'admin' => 'index-index-index',//后台管理页面 留空就是没有
         ]], 'plugins_menu');
+
+
+    Event::listen('cron.collectJobs', function ($user) {
+        Cron::add('Hasog-cron-userparent', '*/1 * * * * *', function () {
+            (new \HaSog\plugin\ac_cron\services\UserParentService)->handle();
+            return;
+        });
+    });
 
     // 例子：定时任务
     // Event::listen('cron.collectJobs', function($user) {
