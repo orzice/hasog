@@ -22,8 +22,21 @@ use app\common\controller\AdminController;
 use think\facade\Request;
 use app\common\Plugins;
 
+use EasyAdmin\annotation\ControllerAnnotation;
+use EasyAdmin\annotation\NodeAnotation;
+
+use app\common\service\AuthService;
+
+/**
+ * Class Category
+ * @package app\admin\controller\goods
+ * @ControllerAnnotation(title="插件开启权限")
+ */
 class Plugin extends AdminController
 {
+    /**
+     * @NodeAnotation(title="插件详情")
+     */
     //插件详情  待开发
     public function default()
     {
@@ -34,14 +47,19 @@ class Plugin extends AdminController
         }
         $plugin = str_replace($name, '', $info);
         $plugin = str_replace('.html', '', $plugin);
-        print_r($plugin);
-        exit;
 
     }
+    /**
+     * @NodeAnotation(title="插件HOOK")
+     */
     public function call()
     {
         // plugins.a-index-index-index
         // plugins.a-index-index/index
+
+        //plugins.ac_cron-index-index/index
+
+
         $name = 'plugins.';
         $info = Request::pathinfo();
         if (substr ($info, 0,strlen($name)) !== $name) {
@@ -55,6 +73,19 @@ class Plugin extends AdminController
             return $this->error('插件不存在', '','');
         }
         $call3 = explode('.', $call[3]);
+
+        //判断 
+        $adminId = Sessions("id");
+        $authService = new AuthService($adminId);
+        // 验证权限
+        print_r('plugins.'.$call[0].'-'.$call[1].'-'.$call[2].'/'.$call[3]);
+        exit;
+        $check = $authService->checkNode('plugins.'.$call[0].'-'.$call[1].'-'.$call[2].'/'.$call[3]);
+        if (!$check) {
+            $this->error('无权限访问');
+        }
+
+
 
         $data = Plugins::GetPluginState($call[0]);
 
