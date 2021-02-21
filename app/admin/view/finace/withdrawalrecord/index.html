@@ -36,22 +36,6 @@
                 {field: 'numstatus', minWidth: 80, title: '提现方式',search: 'select', selectList: { 0: '微信',1: '支付宝',2: '余额',3: '手动'}},
                 {field: 'status', minWidth: 80, title: '提现状态',search: 'select', selectList: { 0: '待审核',1: '待打款',2: '打款中',3: '已打款',4: '已驳回',5: '无效提现'}},
                 {field: 'create_time', minWidth: 80, title: '创建时间', search: 'range'},
-                {
-                    width: 180,
-                    title: '操作',
-                    templet: ea.table.tool,
-                    operat: [
-                        [{
-                            text: '编辑',
-                            url: init.edit_url,
-                            method: 'open',
-                            auth: 'edit',
-                            class: 'layui-btn layui-btn-xs layui-btn-success',
-                            extend: 'data-full="true"',
-                        }],
-                        'delete'
-                    ]
-                }
             ]],
         });
 

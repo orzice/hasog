@@ -6,7 +6,6 @@
     }
 </style>
 <div class="layuimini-container">
-    <div class="layuimini-main">
     <form id="app-form" class="layui-form layuimini-form">
         <div class="layui-form-item">
             <label class="layui-form-label">开启余额提现</label>
@@ -103,20 +102,20 @@
                 </div>
                 <div style="margin-left: 130px">
                     <blockquote class="site-text layui-elem-quote" style="color: #737373">
-                        <p style="font-size:15px; color: #737373;font-weight:bold;">手动提现包含 银行卡、微信号、支付宝等三种类型，会员需要完善对应资料才可以提现</p>
+                        <p style="font-size:15px; color: #737373;font-weight:bold;">手动提现包含微信号、支付宝两种类型</p>
                     </blockquote>
                 </div>
 <!--                <tip>手动提现包含 银行卡、微信号、支付宝等三种类型，会员需要完善对应资料才可以提现</tip>-->
             </div>
             <div id="manual" {eq name="$res.manual" value="0"}style="display:none"{/eq}>
-                <div class="layui-form-item">
-                    <label class="layui-form-label"></label>
-                    <div class="layui-input-block">
-                        <input type="radio" name="balance[manuals]"  value="0" title="银行卡" {eq name="$res.manuals" value="0"}checked=""{/eq}>
-                        <input type="radio" name="balance[manuals]"  value="1" title="微信" {eq name="$res.manuals" value="1"}checked=""{/eq}>
-                        <input type="radio" name="balance[manuals]"  value="2" title="支付宝" {eq name="$res.manuals" value="2"}checked=""{/eq}>
-                    </div>
-                </div>
+<div class="layui-form-item" pane="">
+    <div class="layui-input-block">
+        <input type="hidden" name="balance[manual_wechat]" value="0">
+        <input type="checkbox" name="balance[manual_wechat]" value="1" lay-skin="primary" title="微信" {eq name="$res.manual_wechat" value="1"}checked=""{/eq}>
+        <input type="hidden" name="balance[manual_alipay]" value="0">
+        <input type="checkbox" name="balance[manual_alipay]" value="1" lay-skin="primary" title="支付宝"{eq name="$res.manual_alipay" value="1"}checked=""{/eq}>
+    </div>
+</div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">提现手续费</label>
@@ -151,7 +150,7 @@
 </div>
 
     </form>
-</div>
+
 </div>
 <script type="text/javascript">
     require(["jquery", "easy-admin"], function ($, ea) {
