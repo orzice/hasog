@@ -32,6 +32,7 @@
                 {field: 'pay_id', minWidth: 200, title: '线下提现方式',search: 'select', selectList: { 0: '微信',1:'支付宝'}},
                 {field: 'money', minWidth: 200, title: '提现金额'},
                 {field: 'procedure', minWidth: 200, title: '手续费'},
+                {field: 'alipaystates', minWidth: 80, title: '收款码/账号名称',search: 'select', selectList: { 0: '收款码',1:'账号名称'}},
                 {field: 'state', minWidth: 80, title: '提现状态',search: 'select', selectList: { 0: '待审核',1:'提现成功',2:'提现失败',3:'退款'}},
                 {field: 'thumb', minWidth: 80, title: '图片', search: false, templet: ea.table.image},
                 {field: 'create_time', minWidth: 80, title: '创建时间', search: 'range',sort: true},

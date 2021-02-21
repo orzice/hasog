@@ -156,10 +156,10 @@ class Finace extends ApiController
     }
     public function withdrawal(){
         $id=$this->MemberId();
+//        $id = 1;
         $post = $this->request->post();
         $rule = [
             'money|金额'      => 'require|float',
-            'thumb|收款码'  => 'require|url',
             'pay_id|线下支付方式' => 'require|number',
         ];
         $validate = $this->validate($post, $rule);
@@ -167,6 +167,7 @@ class Finace extends ApiController
         if($validate !== true){
             return api_return(0,$validate);
         }
+
         $set = FinaceWithdrawset::select()->toArray();
         if (empty($set)){
             return api_return(0,'账户提现已关闭');
@@ -187,7 +188,54 @@ class Finace extends ApiController
         if (substr($post['money'],0,1)==0){
             return api_return(0,'金额输入有误');
         }
+        if ($post['pay_id'] == 0){
+            $rule = [
+                'thumb|收款码'  => 'require|url',
+            ];
+            $validate = $this->validate($post, $rule);
+            //验证失败
+            if($validate !== true){
+                return api_return(0,$validate);
+            }
+        }else{
+            $rule = [
+                'alipaystates|支付宝类型'  => 'require|number',
+            ];
+            $validate = $this->validate($post, $rule);
+            //验证失败
+            if($validate !== true){
+                return api_return(0,$validate);
+            }
+            if ($post['alipaystates'] == 0){
+                $rule = [
+                    'thumb|收款码'  => 'require|url',
+                ];
+                $validate = $this->validate($post, $rule);
+                //验证失败
+                if($validate !== true){
+                    return api_return(0,$validate);
+                }
+            }else{
+                $rule = [
+                    'alipaynumber|支付宝账号'  => 'require|email',
+                    'alipayname|支付宝姓名'  => 'require|max:10',
+                ];
+                $validate = $this->validate($post, $rule);
+                //验证失败
+                if($validate !== true){
+                    $rule = [
+                        'alipayname|支付宝姓名'  => 'require|max:5',
+                        'alipaynumber|支付宝账号'  => 'require|mobile',
+                    ];
+                    $validate = $this->validate($post, $rule);
+                    //验证失败
+                    if($validate !== true){
+                        return api_return(0,$validate);
+                    }
+                }
 
+            }
+        }
         if ($set['0']['service'] == 1){
             $post['services'] = $set['0']['services'];
         }else{
@@ -204,7 +252,16 @@ class Finace extends ApiController
         $number = time().rand(99999,1000000);
         $cord_id=FinaceWithdrawalrecord::insertGetId(['uid'=>$id,'number'=>$number,'money'=>$post['money'],'numstatus'=>3,'status'=>0,'create_time'=>$time]);
         FinaceBalancesub::insert(['uid'=>$id,'balance'=>$mn,'state'=>3,'money'=>$mu,'create_time'=>$time]);
-        $a = FinaceOfflinewithdrawals::insert(['uid'=>$id,'money'=>$post['money'],'procedure'=>$post['services'],'state'=>0,'pay_id'=>$post['pay_id'],'thumb'=>$post['thumb'],'create_time'=>$time,'cord_id'=>$cord_id]);
+        if ($post['pay_id'] == 0){
+            $a = FinaceOfflinewithdrawals::insert(['uid'=>$id,'money'=>$post['money'],'procedure'=>$post['services'],'state'=>0,'pay_id'=>$post['pay_id'],'thumb'=>$post['thumb'],'create_time'=>$time,'cord_id'=>$cord_id,'alipaystates'=>0]);
+        }else{
+            if ($post['alipaystates'] == 0){
+                $a = FinaceOfflinewithdrawals::insert(['uid'=>$id,'money'=>$post['money'],'procedure'=>$post['services'],'state'=>0,'pay_id'=>$post['pay_id'],'thumb'=>$post['thumb'],'create_time'=>$time,'cord_id'=>$cord_id,'alipaystates'=>0]);
+            }else{
+                $a = FinaceOfflinewithdrawals::insert(['uid'=>$id,'money'=>$post['money'],'procedure'=>$post['services'],'state'=>0,'pay_id'=>$post['pay_id'],'alipaynumber'=>$post['alipaynumber'],'alipayname'=>$post['alipayname'],'alipaystates'=>1,'thumb'=>0,'create_time'=>$time,'cord_id'=>$cord_id]);
+            }
+        }
+
         if ($a){
             return api_return(1,'提交成功,等待审核');
         }else{
