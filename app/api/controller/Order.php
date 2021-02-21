@@ -491,8 +491,10 @@ class Order extends ApiController
         empty($order_id) && $this->error('订单不存在');
         $user_id = $this->MemberId();
         $user = Member::find($user_id);
-        $order = OrderModel::where('uid', $user_id)->where('id', $order_id)->find();
-        empty($order) && $this->error('订单不存在');
+        $order = OrderModel::where('uid', $user_id)->where('id', $order_id)
+            ->where('type', 0)
+            ->find();
+        empty($order) && $this->error('订单不存在或该订单类型不支持退款');
         if (in_array($order->status, [1, 2, 3,])) {
             $order->status = -2;
             Db::startTrans();
@@ -617,14 +619,23 @@ class Order extends ApiController
         $order_list = OrderModel::where('uid', $user_id)->order('id', 'desc')
             ->select();
         if (array_key_exists($request_status, OrderModel::STATUS_ARRAY)) {
-            $order_list = OrderModel::where('uid', $user_id)
-                ->where('status', $request_status)
-                ->order('id', 'desc')
-                ->paginatefront($get)
-                ->select();
+//            if (!key_exists($request_status,[-3,-2])){
+            if ($request_status != -1){
+                $order_list = OrderModel::where('uid', $user_id)
+                    ->where('status', $request_status)
+                    ->order('id', 'desc')
+                    ->paginatefront($get)
+                    ->select();
+            }else{
+                $order_list = OrderModel::where('uid', $user_id)
+                    ->whereIn('status', [-2, -3])
+                    ->order('id', 'desc')
+                    ->paginatefront($get)
+                    ->select();
+            }
         }
         foreach ($order_list as &$item) {
-            $item->enable_refund = in_array($item->status, [1,2,3]) ? true : false ;
+            $item->enable_refund = in_array($item->status, [1,2,3]) && $item->type === 0  ? true : false ;
             $item->enable_cancel = $item->status === 0 ? true : false ;
             $item->enable_delete = in_array($item->status, [-1, 3]) ? true : false ;
             $item->goods;

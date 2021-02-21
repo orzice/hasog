@@ -284,7 +284,11 @@ class Home extends AdminController
         $post = $this->request->post();
         $order_id = isset($post['order_id'])? $post['order_id'] : '';
         $order = Order::where('id', $order_id)->find();
-        (empty($order) || !in_array($order->status, [1, 2, 3]))  && $this->error('订单错误');
+        $order = Order::where('id', $order_id)
+            ->where('type', 0)
+            ->find();
+//        empty($order) && $this->error('订单不存在或该订单类型不支持退款');
+        (empty($order) || !in_array($order->status, [1, 2, 3]))  && $this->error('该订单暂不支持退款');
         Db::startTrans();
         try{
             $data = [

@@ -37,7 +37,7 @@ class Order extends TimeModel
         ];
 
     protected $deleteTime = 'delete_time';
-    const STATUS_ARRAY = [-2 => '申请退款', -1 => '已取消', 0 => '待付款', 1 => '已付款', 2 => '已发货', 3 => '已完成', 4=>'线下待审核'];
+    const STATUS_ARRAY = [-3 => '已退款', -2 => '申请退款', -1 => '已取消', 0 => '待付款', 1 => '已付款', 2 => '已发货', 3 => '已完成', 4=>'线下待审核'];
     const PAY_TYPE_ID = [
             1=> '微信支付',
             2=> '支付宝支付',
@@ -141,6 +141,31 @@ class Order extends TimeModel
                 $goods->save();
             }
         }
+        return $this->goods()->saveAll($goods_array);
+    }
+
+    public function generate_pintuan_goods($goods_item){
+//        $goods_array = [];
+//        foreach ($goods_objs as &$goods_item){
+            $goods = $goods_item['goods_obj'];
+            $option = $goods->option;
+            $goods_array[] = [
+                'goods_id'=> $goods->id,
+                'total'=> $goods_item['goods_num'],
+                'type' => 1,  // 类型为拼团类型
+                'price'=> $goods->price, //真实价格
+                'goods_sn'=> '', //商品码
+                'thumb'=> $goods->pic,   // 商品图片
+                'title'=> $goods->title,  // 商品标题
+                'goods_price'=> $goods->price,  // 快照价格
+                'payment_amount'=> 0, //实际支付总金额
+                'deduction_amount'=> 0, // 优惠总金额
+                'goods_option_title'=> '', // 规格标题
+                'goods_market_price'=> 0, // 商品总市场价
+                'goods_cost_price'=> 0, //商品成功总价
+                'goods_option'=> '',  // 商品规格
+            ];
+//        }
         return $this->goods()->saveAll($goods_array);
     }
 
