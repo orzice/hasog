@@ -101,7 +101,7 @@ class TransferCredit extends ApiController
         $rule = [
             'amount|转账金额' => 'require|float',
             'credit_type|转账类型' => 'require|length: 1,100',
-            'target_mobile|转账目标手机号' => 'require|number',
+            'target_mobile|转账目标Uid' => 'require|number',
             'remark|备注' => 'length: 0,255',
         ];
         $validate = $this->validate($post, $rule);
@@ -111,7 +111,7 @@ class TransferCredit extends ApiController
         }
 //        $tar_user = Member::where('mobile', $post['target_mobile'])->where('state', 0)->find();
         $tar_user = Member::where('id', $post['target_mobile'])->where('state', 0)->find();
-        empty($tar_user) && $this->error('目标手机号未注册或被冻结');
+        empty($tar_user) && $this->error('目标用户未注册或被冻结');
         $tar_user->id === $user->id && $this->error('暂不支持给自己转账');
         $allow_credit = CreditType::where('id', $post['credit_type'])->where('is_transfer', 1)->find();
         empty($allow_credit) && $this->error('该类型暂不支持转账');
