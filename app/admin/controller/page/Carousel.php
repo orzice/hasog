@@ -79,7 +79,7 @@ class Carousel extends AdminController
             $rule = [
                 'weight|权重' => 'require|number',
                 'thumb|轮播图片' => 'require|url',
-                'link|链接' => 'require|url',
+                'link|链接' => 'require',
                 'state|状态' => 'require|number|in:0,1',
             ];
             $this->validate($post, $rule);
@@ -107,7 +107,7 @@ class Carousel extends AdminController
             $rule = [
                 'weight|权重' => 'require|number',
                 'thumb|轮播图片' => 'require|url',
-                'link|链接' => 'require|url',
+                'link|链接' => 'require',
                 'state|状态' => 'require|number|in:0,1',
             ];
             $this->validate($post, $rule);
