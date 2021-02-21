@@ -83,7 +83,7 @@ class TransferCredit extends AdminController
 
 
     /**
-     * @NodeAnotation(title="提现配置")
+     * @NodeAnotation(title="积分配置列表")
      */
     public function credit_set()
     {

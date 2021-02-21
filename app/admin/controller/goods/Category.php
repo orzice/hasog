@@ -33,7 +33,7 @@ use EasyAdmin\annotation\NodeAnotation;
 /**
  * Class Category
  * @package app\admin\controller\goods
- * @ControllerAnnotation(title="商品管理")
+ * @ControllerAnnotation(title="商品分类管理")
  */
 class Category extends AdminController
 {
@@ -55,7 +55,7 @@ class Category extends AdminController
     }
 
     /**
-     * @NodeAnotation(title="列表")
+     * @NodeAnotation(title="商品分类列表")
      */
     public function index()
     {
