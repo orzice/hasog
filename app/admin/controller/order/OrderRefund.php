@@ -97,7 +97,8 @@ class OrderRefund extends AdminController
                 if(isset($post['status'])){
                     switch ($post['status']){
                         case 1:
-                            $order->status = -1;
+//                            $order->status = -1;
+                            $order->status = -3;
                             $order->cancel_time = time();
                             break;
                         case 2:

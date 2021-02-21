@@ -40,12 +40,16 @@ class Login extends ApiController
         $order_daifukuan = $user->orders()->where('status', 0)->select()->count();// 待付款
         $order_receive = $user->orders()->where('status', 2)->select()->count(); // 待收货(已发货)
         $order_apply = $user->orders()->where('status', -2)->select()->count(); //申请退款
+        $order_applied = $user->orders()->where('status', -3)->select()->count(); //申请退款
         $order_complete = $user->orders()->where('status', 3)->select()->count(); //已完成
         $order_cancel = $user->orders()->where('status', -1)->select()->count(); //已取消
         $order_all_amount = $user->orders()->select()->count();
+        $order_merge = $user->orders()->whereIn('status', [-2, -3])->select()->count(); // 合并申请退款和已退款状态
         $order_count = [
+            -3=>['name'=>'已退款', 'amount'=>$order_apply],
             -2=>['name'=>'申请退款', 'amount'=>$order_apply],
-            -1=>['name'=>'已取消', 'amount'=>$order_cancel],
+//            -1=>['name'=>'已取消', 'amount'=>$order_cancel],
+            -1=>['name'=>'已取消', 'amount'=>$order_merge], // 暂时使用合并退款，等前台抽空将状态改为-2
             0=>['name'=>'待付款', 'amount'=>$order_daifukuan],
             1=>['name'=>'待发货', 'amount'=>$order_paid],
             2=>['name'=>'待收货', 'amount'=>$order_receive],

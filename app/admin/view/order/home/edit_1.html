@@ -35,6 +35,17 @@
     </div>
 </div>
 
+<div class="layui-form-item">
+    <label class="layui-form-label">订单类型</label>
+    <div class="layui-input-block">
+        <!--        <input type="text" class="layui-input" readonly value="{$row.order_sn|default=''}">-->
+        <div class="layui-form-label-col">
+            {if $row.type===0} 普通订单 {else /} 拼团订单{/if}
+        </div>
+        <tip></tip>
+    </div>
+</div>
+
 
 <div class="layui-form-item">
     <label class="layui-form-label">订单状态</label>
@@ -45,7 +56,7 @@
             {if $row.status === 0}<button id="receive_money" type="button" class="layui-btn layui-btn-primary layui-btn-sm">确认收款</button>{/if}
             {if $row.status === 1}<button id="send_goods" type="button" class="layui-btn layui-btn-primary layui-btn-sm">确认发货</button>{/if}
             {if $row.status === 2}<button id="receive_goods" type="button" class="layui-btn layui-btn-primary layui-btn-sm">确认收货</button>{/if}
-            {if $row.status === 1 || $row.status === 2 || $row.status === 3}<button id="apply_cancel" type="button" class="layui-btn layui-btn-primary layui-btn-sm">申请退款</button>{/if}
+            {if $row.type === 0 && ($row.status === 1 || $row.status === 2 || $row.status === 3)}<button id="apply_cancel" type="button" class="layui-btn layui-btn-primary layui-btn-sm">申请退款</button>{/if}
             {if $row.status === 4}<button id="receive_money1" type="button" class="layui-btn layui-btn-primary layui-btn-sm">确认收款</button>{/if}
         </div>
         <!--        <select name="status">

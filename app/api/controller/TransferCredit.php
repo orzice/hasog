@@ -101,7 +101,7 @@ class TransferCredit extends ApiController
         $rule = [
             'amount|转账金额' => 'require|float',
             'credit_type|转账类型' => 'require|length: 1,100',
-            'target_mobile|转账目标手机号' => 'require|mobile',
+            'target_mobile|转账目标手机号' => 'require|number',
             'remark|备注' => 'length: 0,255',
         ];
         $validate = $this->validate($post, $rule);
@@ -109,7 +109,8 @@ class TransferCredit extends ApiController
         if ($validate !== true) {
             $this->error($validate);
         }
-        $tar_user = Member::where('mobile', $post['target_mobile'])->where('state', 0)->find();
+//        $tar_user = Member::where('mobile', $post['target_mobile'])->where('state', 0)->find();
+        $tar_user = Member::where('id', $post['target_mobile'])->where('state', 0)->find();
         empty($tar_user) && $this->error('目标手机号未注册或被冻结');
         $tar_user->id === $user->id && $this->error('暂不支持给自己转账');
         $allow_credit = CreditType::where('id', $post['credit_type'])->where('is_transfer', 1)->find();
@@ -121,7 +122,7 @@ class TransferCredit extends ApiController
             $transfer_obj = new TransferCreditModel([
                 'uid'=> $user->id,
                 'type'=> 1,
-                'target_mobile'=> $post['target_mobile'],
+                'target_mobile'=> $tar_user->mobile,
                 'target_uid'=> $tar_user->id,
                 'credit_type'=> $post['credit_type'],
                 'amount'=> $post['amount'],
@@ -138,6 +139,24 @@ class TransferCredit extends ApiController
         }
         $this->success('转账成功');
     }
+
+    // 订单列表 get status
+    public function transfer_list()
+    {
+        $user_id = $this->MemberId();
+        $get = $this->request->get();
+        $request_status = isset($get['status']) ? $get['status'] : null;
+        $order_list = TransferCreditModel::where('uid', $user_id)
+            ->where('type', 1)
+            ->order('id', 'desc')
+            ->select()->hidden(['status', 'type']);
+        foreach ($order_list as &$item) {
+            $credit_type = CreditType::find($item->credit_type);
+            $item->credit_type = $credit_type ? $credit_type->title : null;
+        }
+        $this->success('请求成功', ['order_list' => $order_list]);
+    }
+
 
 
 }

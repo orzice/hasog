@@ -34,15 +34,25 @@ require(["jquery", "easy-admin"], function ($, ea) {
                     {field: 'parent_id', width: 80, title: '推荐人'},
                     {field: 'mobile', minWidth: 80, title: '手机'},
                     {field: 'fname', minWidth: 80, title: '真实姓名'},
-                    {field: 'invite_code', minWidth: 80, title: '邀请码'},
+                    // {field: 'invite_code', minWidth: 80, title: '邀请码'},
+                    {field: 'credit2', minWidth: 120, title: '余额'},
+                    {field: 'credit4', minWidth: 120, title: '创业金'},
+                    {field: 'credit5', minWidth: 120, title: '拼团券'},
                     {field: 'state', title: '黑名单', width: 85, search: 'select', selectList: {0: '禁用', 1: '启用'}, templet: ea.table.switch},
-                    {field: 'create_time', minWidth: 80, title: '创建时间', search: 'range'},
+                    {field: 'create_time', minWidth: 120, title: '创建时间', search: 'range'},
                     {
-                        width: 400,
+                        width: 320,
                         title: '操作',
                         templet: ea.table.tool,
                         operat: [
                             'edit',
+                            [{
+                                text: '充值',
+                                url: 'member.user/recharge_balance',
+                                method: 'open',
+                                auth: 'parent',
+                                class: 'layui-btn layui-btn-success layui-btn-xs',
+                            }],
                             [{
                                 text: '重置密码',
                                 url: 'member.user/password',
@@ -57,6 +67,7 @@ require(["jquery", "easy-admin"], function ($, ea) {
                                 auth: 'parent',
                                 class: 'layui-btn layui-btn-danger layui-btn-xs',
                             }],
+
                             'delete'
                         ]
                     }

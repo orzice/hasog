@@ -37,7 +37,7 @@ class Order extends TimeModel
         ];
 
     protected $deleteTime = 'delete_time';
-    const STATUS_ARRAY = [-2 => '申请退款', -1 => '已取消', 0 => '待付款', 1 => '已付款', 2 => '已发货', 3 => '已完成', 4=>'线下待审核'];
+    const STATUS_ARRAY = [-3 => '已退款', -2 => '申请退款', -1 => '已取消', 0 => '待付款', 1 => '已付款', 2 => '已发货', 3 => '已完成', 4=>'线下待审核'];
     const PAY_TYPE_ID = [
             1=> '微信支付',
             2=> '支付宝支付',
