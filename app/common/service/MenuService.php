@@ -72,7 +72,12 @@ class MenuService
         $authServer = (new AuthService($this->adminId));
 
         foreach ($menuList as &$v) {
-            $check = empty($v['href']) ? true : $authServer->checkNode($v['href']);
+            //插件系统调优
+            if ($v['pid'] !== 1) {
+               $check = empty($v['href']) ? true : $authServer->checkNode($v['href']);
+            }else{
+                $check = true;
+            }
         
 
             $controller = app('http')->getName();

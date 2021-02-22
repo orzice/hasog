@@ -116,8 +116,8 @@ class Index extends AdminController
         if ($this->request->isAjax()) {
             $post = $this->request->post();
             $rule = [
-                'password|登录密码'       => 'require',
-                'password_again|确认密码' => 'require',
+                'password|登录密码'       => 'require|alphaNum|length:4,20',
+                'password_again|确认密码' => 'require|alphaNum|length:4,20',
             ];
             $this->validate($post, $rule);
             if ($post['password'] != $post['password_again']) {
