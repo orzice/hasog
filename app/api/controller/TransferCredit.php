@@ -149,7 +149,8 @@ class TransferCredit extends ApiController
         $order_list = TransferCreditModel::where('uid', $user_id)
             ->where('type', 1)
             ->order('id', 'desc')
-            ->select()->hidden(['status', 'type']);
+            ->hidden(['status', 'type'])
+            ->select();
         foreach ($order_list as &$item) {
             $credit_type = CreditType::find($item->credit_type);
             $item->credit_type = $credit_type ? $credit_type->title : null;
