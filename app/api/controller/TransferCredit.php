@@ -140,7 +140,7 @@ class TransferCredit extends ApiController
         $this->success('转账成功');
     }
 
-    // 订单列表 get status
+    // 积分转账记录
     public function transfer_list()
     {
         $user_id = $this->MemberId();
@@ -150,6 +150,7 @@ class TransferCredit extends ApiController
             ->where('type', 1)
             ->order('id', 'desc')
             ->hidden(['status', 'type'])
+            ->paginatefront($get)
             ->select();
         foreach ($order_list as &$item) {
             $credit_type = CreditType::find($item->credit_type);

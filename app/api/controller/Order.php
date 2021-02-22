@@ -617,6 +617,7 @@ class Order extends ApiController
         $get = $this->request->get();
         $request_status = isset($get['status']) ? $get['status'] : null;
         $order_list = OrderModel::where('uid', $user_id)->order('id', 'desc')
+            ->paginatefront($get)
             ->select();
         if (array_key_exists($request_status, OrderModel::STATUS_ARRAY)) {
 //            if (!key_exists($request_status,[-3,-2])){

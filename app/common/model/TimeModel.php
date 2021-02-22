@@ -59,17 +59,20 @@ class TimeModel extends Model
 //    public function scopePaginatefront($query, $page=1, $limit=10)
     public function scopePaginatefront($query, $get)
     {
-        $page = isset($get['page']) ? $get['page'] : 1;
+//        $page = isset($get['page']) ? $get['page'] : 1;
+        $page = isset($get['page']) ? $get['page'] : 0;
         $limit = isset($get['limit']) ? $get['limit'] : 15;
         if((is_numeric($page)) && is_numeric($limit)){
-            $page = $page<=0 ? 1 : $page;
+            $page = $page < 0 ? 0 : $page;
             if ($limit >=60){
                 $limit=60;
             }
-            $offset = ($page-1) * $limit;
+//            $offset = ($page-1) * $limit;
+            $offset = $page === 0 ? 0 : $page * $limit;
 //            $limit = $limit;
             return $query->limit($offset, $limit);
         }
+        print_r(1);die();
         return $query->limit(0, 15);;
     }
 
