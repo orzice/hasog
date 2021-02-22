@@ -200,7 +200,7 @@ class User extends AdminController
     }
 
     /**
-     * @NodeAnotation(title="修改")
+     * @NodeAnotation(title="余额充值")
      */
     public function recharge_balance($id)
     {
