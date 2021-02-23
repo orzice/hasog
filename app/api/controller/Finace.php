@@ -247,8 +247,11 @@ class Finace extends ApiController
         }
         $time = time();
         $mn = $momber['credit2']-$post['money'];
+
+
         $mu = -$post['money'];
-        Member::where(['id'=>$id])->update(['credit2'=>$mn]);
+        Member::where('id',$id)->dec('credit2',$mn)->update();
+        // Member::where(['id'=>$id])->update(['credit2'=>$mn]);
         $number = time().rand(99999,1000000);
         $cord_id=FinaceWithdrawalrecord::insertGetId(['uid'=>$id,'number'=>$number,'money'=>$post['money'],'numstatus'=>3,'status'=>0,'create_time'=>$time]);
         FinaceBalancesub::insert(['uid'=>$id,'balance'=>$mn,'state'=>3,'money'=>$mu,'create_time'=>$time]);
