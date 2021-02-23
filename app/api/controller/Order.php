@@ -366,10 +366,12 @@ class Order extends ApiController
                     'state'=> 0,
                     'money'=> $order->price,
                 ]);
-                $user->credit2 -= $order->price;
-                $user_save = $user->save();
+//                $user->credit2 -= $order->price;
+//                $user_save = $user->save();
+                $user_save = Member::where('id', $user->id)->dec('credit2', $order->price)->update();
                 $change_save = $balance_change->save();
-                if ($change_save === false || $user_save === false){
+//                if ($change_save === false || $user_save === false){
+                if ($change_save === false){
                     Db::rollback();
                     $this->error('支付失败请稍后重试');
                 }
