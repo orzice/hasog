@@ -55,6 +55,8 @@ class Login extends ApiController
             2=>['name'=>'待收货', 'amount'=>$order_receive],
             3=>['name'=>'已完成', 'amount'=>$order_complete],
             ];
+        $user->credit2 = floor($user->credit2 * 100)/100;
+        $user->credit4 = floor($user->credit4 * 100)/100;
         $this->success('获取用户信息成功', ['user_info'=> $user->toArray(), 'order_count'=>$order_count, 'order_all_count'=>$order_all_amount]);
     }
 
