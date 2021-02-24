@@ -38,11 +38,14 @@ class Page extends ApiController
     }
     //公告列表
     public function noticelist(){
-        $data = PageNotice::where('state',1)->order('create_time','desc')->select();
+        $post = $this->request->post();
+        $data = PageNotice::where('state',1)->paginatefront($post)->order('create_time','desc')->select();
         if (count($data) == 0) {
             return api_return(0,'没有数据');
         }
         $data = $data->toArray();
+
+
         return api_return(1,'查询成功',$data);
     }
     //公告详情
