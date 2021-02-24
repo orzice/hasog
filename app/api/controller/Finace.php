@@ -37,9 +37,10 @@ class Finace extends ApiController
     //充值记录
     public function uprecord(){
         $id=$this->MemberId();
-        $data = FinaceUprecord::where('uid',$id)->order('create_time','desc')->select();
+        $post = $this->request->post();
+        $data = FinaceUprecord::where('uid',$id)->paginatefront($post)->order('create_time','desc')->select();
         if (count($data) == 0) {
-            return api_return(0,'没有数据');
+            return api_return(1,'查询成功',[]);
         }
         $data = $data->toArray();
         return api_return(1,'查询成功',$data);
@@ -47,9 +48,10 @@ class Finace extends ApiController
     //收入明细
     public function income(){
         $id=$this->MemberId();
-        $data = FinaceIncome::where('uid',$id)->order('create_time','desc')->select();
+        $post = $this->request->post();
+        $data = FinaceIncome::where('uid',$id)->paginatefront($post)->order('create_time','desc')->select();
         if (count($data) == 0) {
-            return api_return(0,'没有数据');
+            return api_return(1,'查询成功',[]);
         }
         $data = $data->toArray();
         return api_return(1,'查询成功',$data);
@@ -57,9 +59,10 @@ class Finace extends ApiController
     //提现记录
     public function withdrawalrecord(){
         $id=$this->MemberId();
-        $data = FinaceWithdrawalrecord::where('uid',$id)->order('create_time','desc')->select();
+        $post = $this->request->post();
+        $data = FinaceWithdrawalrecord::where('uid',$id)->paginatefront($post)->order('create_time','desc')->select();
         if (count($data) == 0) {
-            return api_return(0,'没有数据');
+            return api_return(1,'查询成功',[]);
         }
         $data = $data->toArray();
         return api_return(1,'查询成功',$data);
