@@ -380,7 +380,8 @@ class Home extends AdminController
             Db::commit();
         } catch (\Exception $e) {
             Db::rollback();
-            $msg = '批量发货失败, 请检查格式以及订单号是否正确, 且订单已付款';
+//            $msg = '批量发货失败, 请检查格式以及订单号是否正确, 且订单已付款';
+            $msg = '批量发货失败, 请检查数据格式以及数据顺序否正确';
         }
         return json(['code' => 0, 'msg' => $msg, 'data' => []]);
     }

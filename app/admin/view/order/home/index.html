@@ -203,9 +203,11 @@
             ,accept: 'file'
             ,done: function(res){
                 //上传完毕回调
+                alert(res.data)
             }
             ,error: function(){
                 //请求异常回调
+                alert('批量发货失败，请检查数据格式以及数据顺序否正确,')
             }
         });
 
