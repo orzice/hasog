@@ -116,8 +116,8 @@ class Home extends AdminController
                 'thumb|商品图片' => 'require|url',
                 'thumb_url|其他图片' => 'require|url',
 
-                'goods.dt|商品属性' => 'array',
-                'goods.dv|商品属性' => 'array',
+                'goods.dt|商品属性' => 'require|array',
+                'goods.dv|商品属性' => 'require|array',
             ];
             $this->validate($post, $rule);
             $post['goods']['thumb'] = $post['thumb'];
@@ -139,7 +139,12 @@ class Home extends AdminController
                         'value' => $post['goods']['dv'][$i],
                     );
                 }
+                if (empty($post['goods']['descriptions'])){
+                    $this->error('商品属性不能为空');
+                }
                 $post['goods']['description'] = json_encode($post['goods']['descriptions']);
+            }else{
+                $this->error('商品属性不能为空');
             }
 
             // 判断是否传入分类并且不能为0(无) 然后取出分类关系插入数据库
@@ -166,8 +171,7 @@ class Home extends AdminController
                 $goodsCategory['goods_id'] = $model_obj->id;
                 $result = $goods_category->save($goodsCategory);
                 Db::commit();
-                ($post['goods']['thumUploadfileb']);
-
+                Uploadfile($post['goods']['thumb']);
                 Uploadfile($post['goods']['thumb_url']);
             } catch (\Exception $e) {
                 Db::rollback();
@@ -232,8 +236,8 @@ class Home extends AdminController
                 'thumb|商品图片' => 'require|url',
                 'thumb_url|其他图片' => 'require|url',
 
-                'goods.dt|商品属性' => 'array',
-                'goods.dv|商品属性' => 'array',
+                'goods.dt|商品属性' => 'require|array',
+                'goods.dv|商品属性' => 'require|array',
             ];
             $this->validate($post, $rule);
             $post['goods']['thumb'] = $post['thumb'];
@@ -254,10 +258,12 @@ class Home extends AdminController
                         'value' => $post['goods']['dv'][$i],
                     );
                 }
+                if (empty($post['goods']['descriptions'])){
+                    $this->error('商品不能为空');
+                }
                 $post['goods']['description'] = json_encode($post['goods']['descriptions']);
             }
             event('GoodsEditPost', $post);
-
 
             // 判断分类是否更改如果修改则软删除之前的记录，并新增
             $category_id = $post['category_id'] ? $post['category_id'] : 0;

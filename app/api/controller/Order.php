@@ -56,15 +56,19 @@ class Order extends ApiController
         $goods_data = isset($post['goods_data']) ? $post['goods_data'] : [];
         $member_remark = isset($post['member_remark']) ? $post['member_remark'] : '';
         $request_address = isset($post['address_id']) ? $post['address_id'] : null;
+
         $request_address = $user->address()->where('id', $request_address)->find();
-        if (empty($request_address)) {
+        if (empty($request_address)){
+            $this->error("收货地址选择有误");
+        }
+/*        if (empty($request_address)) {
             $default_address = $user->address()->where('is_default', 1)->find();
             if(empty($default_address)){
                 $request_address = $user->address()->select()->first();
             }else {
                 $request_address = $default_address;
             }
-        }
+        }*/
         empty($request_address) && $this->error('没有收货地址请先添加收货地址');
         $weight = 0;
         $dispatch_price = 0;
@@ -206,8 +210,10 @@ class Order extends ApiController
         $order_goods_price = 0;
         $goods_data = isset($post['goods_data']) ? $post['goods_data'] : [];
         empty($goods_data) && $this->error('请提交商品');
+        // 请求的收货地址
         $request_address = isset($post['address_id']) ? $post['address_id'] : null;
         $request_address = $user->address()->where('id', $request_address)->find();
+        // 如果没选择收货地址
         if (empty($request_address)) {
             $default_address = $user->address()->where('is_default', 1)->find();
             if(empty($default_address)){

@@ -107,8 +107,9 @@ class Category extends AdminController
                 $post['level'] = $parent_category['level'] + 1;
             }
             $this->validate($post, $rule);
-            $is_exists = $this->model->whereExists(['name', '=', $post['name']]);
-            !$is_exists && $this->error('保存失败,分类名已存在');
+//            $is_exists = $this->model->whereExists(['name', '=', $post['name']]);
+            $is_exists = $this->model->where('name', $post['name'])->find();
+            !empty($is_exists) && $this->error('保存失败,分类名已存在');
             try {
                 $save = $this->model->save($post);
             } catch (\Exception $e) {

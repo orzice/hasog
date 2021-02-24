@@ -1,3 +1,17 @@
+    <div class="layuimini-main">
+        <button class="layui-btn layui-btn-normal layui-btn-sm" data-open="" data-title="获取批量发货模板" data-full="false"
+                data-table="currentTableRenderId"><i class="fa fa-download "></i> 获取批量发货模板
+        </button>
+
+
+        <button class="layui-btn layui-btn-normal layui-btn-sm" data-open="" data-title="批量发货" data-full="false"
+                data-table="currentTableRenderId"><i class="fa fa-upload"></i> 批量发货
+        </button>
+    </div>
+
+
+
+
 <div class="layuimini-container">
     <div class="layuimini-main">
         <table id="currentTable" class="layui-table layui-hide"
@@ -18,30 +32,32 @@
             index_url: 'order.home/index{if $action}?action={$action}{/if}',
             edit_url: 'order.home/edit',
             batch_url: 'batch_delivery',
+            export_url: 'order.home/export',
         };
 
 
         ea.table.render({
             init: init,
             toolbar: ['refresh',
-                [{
-                    text: '获取批量发货模板',
-                    url: '',
-                    method: 'open',
-                    auth: 'add',
-                    class: 'layui-btn layui-btn-normal layui-btn-sm',
-                    icon: 'fa fa-download ',
-                    extend: 'data-full="false"',
-                }],
-                [{
-                    text: '批量发货',
-                    url: '',
-                    method: 'open',
-                    auth: 'add',
-                    class: 'layui-btn layui-btn-normal layui-btn-sm',
-                    icon: 'fa fa-upload',
-                    extend: 'data-full="false"',
-                }]
+                // [{
+                //     text: '获取批量发货模板',
+                //     url: '',
+                //     method: 'open',
+                //     auth: 'add',
+                //     class: 'layui-btn layui-btn-normal layui-btn-sm',
+                //     icon: 'fa fa-download ',
+                //     extend: 'data-full="false"',
+                // }],
+                // [{
+                //     text: '批量发货',
+                //     url: '',
+                //     method: 'open',
+                //     auth: 'add',
+                //     class: 'layui-btn layui-btn-normal layui-btn-sm',
+                //     icon: 'fa fa-upload',
+                //     extend: 'data-full="false"',
+                // }],
+                'export'
             ],
             // toolbar: '#batch_delivery',
             cols: [[
@@ -74,7 +90,7 @@
                     title: '状态',
                     width: 85,
                     search: 'select',
-                    selectList: {"-2": '申请退款', "-1": '取消状态', 0: '待付款', 1: '已付款', 2: '已发货', 3: '已完成'}
+                    selectList: {"-2": '申请退款', "-1": '取消状态', 0: '待付款', 1: '已付款', 2: '已发货', 3: '已完成', 4:'线下付款审核中'}
                 },
 
                 {field: 'create_time', minWidth: 80, title: '创建时间', search: 'range'},
@@ -177,7 +193,6 @@
 
         // 上传批量发货excel
         batch_data = $('button[data-title=批量发货]')
-        // alert(batch.attr('data-title'))
 
         // 绑定上传文件事件
         var upload = layui.upload;

@@ -70,7 +70,7 @@ class Goods  extends ApiController
         $msg = '获取失败';
         if($goods_title){
                 $msg = '获取商品成功';
-                // 这种方法 分类如果enabled 或者 delete 就还能查出
+                // 这种方法 分类如果enabled
                 $goods_list = GoodsModel::where('title', 'like', '%'.$goods_title . '%')->where('status', 1)
                     ->hidden(['cost_price','reduce_stock_method', 'real_sales', 'virtual_sales' ]);
                 $goods_count = $goods_list->count();

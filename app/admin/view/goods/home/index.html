@@ -41,7 +41,7 @@ require(["jquery", "easy-admin"], function ($, ea) {
                     {field: 'id', minWidth: 80, title: 'ID'},
                     {field: 'thumb', minWidth: 80, title: '封面', search: false, templet: ea.table.image},
                     {field: 'title', minWidth: 200, title: '标题', edit: 'text'},
-                    {field: 'price', minWidth: 80,search: false, title: '价格', edit: 'text', templet: ea.table.price},
+                    {field: 'price', minWidth: 80,search: false, title: '价格', templet: ea.table.price},
                     {field: 'stock', minWidth: 80, search: false,title: '库存', edit: 'text'},
                     {field: 'real_sales', minWidth: 80,search: false, title: '出售数量'},
                     {field: 'type', title: '是否实体商品', minWidth: 85, search: 'select', selectList: {1: '实体商品', 2: '虚拟商品'}, templet: ea.table.switch},

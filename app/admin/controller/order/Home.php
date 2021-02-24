@@ -19,6 +19,8 @@ namespace app\admin\controller\order;
 
 
 use app\common\components\Excel;
+use app\common\model\FinaceOfflinepayment;
+use EasyAdmin\tool\CommonTool;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use think\App;
 use think\facade\Config;
@@ -38,6 +40,7 @@ use think\facade\Db;
  */
 class Home extends AdminController
 {
+    private static $sep= DIRECTORY_SEPARATOR;
 
     protected $sort = [
         'id' => 'desc',
@@ -142,6 +145,7 @@ class Home extends AdminController
                 'express_sn|快递单号' => 'max:1000',
             ];
             $price = 0;
+            $post['express_sn'] = isset($post['express_sn']) ? $post['express_sn'] : [] ;
             if ($order->status!==0){
                 unset($post['change_price']);
                 unset($post['change_dispatch_price']);
@@ -162,23 +166,28 @@ class Home extends AdminController
                 if(!empty($post['express_sn'])){
                     $order->status = 2;
                     $order->send_time = time();
+                    $post['express_sn'] = json_encode(array_filter($post['express_sn']));
                 }
-                $post['express_sn'] = json_encode(array_filter($post['express_sn']));
                 $order->save();
                 $save = $order->allowField($this->model::ALLOW_FIELDS)->save($post);
-
             } catch (\Exception $e) {
-                $this->error('保存失败' . $e);
+                $this->error('保存失败'.$e);
             }
             if ($save) {
                 $this->success('保存成功');
             }
             $this->error('保存失败');
         }
+        $order_xianxia = FinaceOfflinepayment::where('a_state', 1)
+        ->where('order_id', $order->id)
+            ->order('create_time', 'desc')->find();
+        $order_xianxia_id = !empty($order_xianxia) ? $order_xianxia->id : null;
+
         $express_sns = empty($order->express_sn) ? [] : json_decode($order->express_sn);
         $this->assign('express_sns', $express_sns);
         $this->assign('status_array', Order::STATUS_ARRAY);
         $this->assign('plugin', []);
+        $this->assign('order_xianxia_id', $order_xianxia_id);
         $order->goods;
         $order->status_zh = Order::STATUS_ARRAY[$order->status];
         $this->assign('row', $order);
@@ -193,7 +202,11 @@ class Home extends AdminController
     {
         $is_ajax = $this->request->isAjax();
         $get = $this->request->get();
+//        $post = $this->request->post();
+//        print_r($post['id']);die();
+
         $ids = $get['ids'];
+
         $ids = explode(',', $ids);
         $results = $this->model->whereIn('id', $ids)
             ->field('order_sn, express_company_name, express_code, express_sn')
@@ -202,7 +215,7 @@ class Home extends AdminController
         $keys = ['order_sn', 'express_sn', 'express_company_name', 'express_code'];
         $exp = new \app\common\Excel();
         $file_name = date('Y-m-d H：i：s', time());
-        $exp->export($file_name, $results, $head, $keys, 'xlsx');
+        $exp->export($file_name, $results, $head, $keys, 'xlsx');die();
     }
 
     /**
@@ -212,7 +225,7 @@ class Home extends AdminController
         $post = $this->request->post();
         $order_id = isset($post['order_id'])? $post['order_id'] : '';
         $order = Order::where('id', $order_id)->find();
-        (empty($order) || $order->status !== 0)  && $this->error('订单错误');
+        (empty($order) || $order->status !== 0)  && $this->error('订单错误或状态不存在');
         try{
             $order->status = 1;
             $save = $order->save();
@@ -337,16 +350,28 @@ class Home extends AdminController
      */
     public function batch_delivery_data()
     {
+        $root = root_path();
+        $sep = self::$sep;
+        $dir = $root.'runtime'.$sep.'storage'.$sep;
+
         $files = $this->request->file();
         $file = $files['file'];
+        $savename = \think\facade\Filesystem::putFile( 'topic', $file);
+
         $exp = new \app\common\Excel();
-        $content = $exp->import($file->getPath() . '\\' . $file->getFilename(), $file->getOriginalExtension());
+//        $content = $exp->import($file->getPath() . '\\' . $file->getFilename(), $file->getOriginalExtension());
+
+//        print_r($dir.$savename);die();
+        $content = $exp->import($dir.$savename, $file->getOriginalExtension());
         unset($content[0]);
         $msg = '成功';
         Db::startTrans();
         try {
             foreach ($content as $item) {
-                $order = $this->model::where('order_sn', $item[0])->where('status', '=', 1)
+                $order = $this->model::where('order_sn', $item[0])
+                    ->whereIn('status', [1,2])
+//                    ->where('status', 1)
+//                    ->whereOr('status', 2)
                     ->select()->first();
                 !empty($order) && $order->save(['status' => 2, 'express_sn' => json_encode([$item[1]]),
                     'express_company_name' => $item[2], 'express_code' => $item[3],
@@ -358,6 +383,72 @@ class Home extends AdminController
             $msg = '批量发货失败, 请检查格式以及订单号是否正确, 且订单已付款';
         }
         return json(['code' => 0, 'msg' => $msg, 'data' => []]);
+    }
+
+
+    protected $noExportFileds = ['delete_time', 'update_time'];
+
+    /**
+     * @NodeAnotation(title="导出")
+     */
+    public function export()
+    {
+        list($page, $limit, $where) = $this->buildTableParames();
+        $tableName = $this->model->getName();
+        $tableName = CommonTool::humpToLine(lcfirst($tableName));
+        $prefix = config('database.connections.mysql.prefix');
+        $dbList = Db::query("show full columns from {$prefix}{$tableName}");
+        $header = [];
+        foreach ($dbList as $vo) {
+            $comment = !empty($vo['Comment']) ? $vo['Comment'] : $vo['Field'];
+            if (!in_array($vo['Field'], $this->noExportFileds)) {
+                $header[] = [$comment, $vo['Field']];
+            }
+        }
+        $header[] = ['订单商品', 'order_goods'];
+        $header[] = ['收货地址', 'area_address'];
+        $header[] = ['详细地址', 'address_detail'];
+        $header[] = ['收货姓名', 'address_name'];
+        $header[] = ['收货电话', 'address_mobile'];
+
+
+        $list = $this->model
+            ->where($where)
+            ->limit(100000)
+            ->order('id', 'desc')
+            ->select();
+//            ->toArray();
+        $fileName = time();
+        foreach ($list as &$item){
+            $address = $item->address;
+//            print_r($address);die();
+            if (!empty($address)){
+                $address->area_name();
+                $item->area_address = $address->province .$address->city .$address->district .$address->street ;
+                $item->address_detail = $address->address;
+                $item->address_name = $address->realname;
+                $item->address_mobile = $address->mobile;
+            }else{
+                $item->area_address = '数据错误,暂无';
+                $item->address = '数据错误,暂无';
+                $item->address_name = '数据错误,暂无';
+                $item->address_mobile ='数据错误,暂无';
+            }
+            $order_goods_list = $item->goods;
+            $order_goods_str = '';
+            foreach ($order_goods_list as $order_goods){
+                $order_goods_str .= '商品名称:'.$order_goods->title.',' ;
+                $order_goods_str .= '商品价格:'.$order_goods->price.',' ;
+//                $order_goods_str .= '商品数量:'.$order_goods->total.',' ;
+                $order_goods_str .= '商品数量:'.$order_goods->total ;
+                $order_goods_str .= "\n";
+            }
+            $item->order_goods = $order_goods_str;
+        }
+
+        $list = $list->toArray();
+//        print_r($list[0]);die();
+        return \jianyan\excel\Excel::exportData($list, $header, $fileName, 'xlsx');
     }
 
 
