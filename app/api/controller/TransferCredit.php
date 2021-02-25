@@ -109,8 +109,8 @@ class TransferCredit extends ApiController
         if ($validate !== true) {
             $this->error($validate);
         }
-        $amount = isset($post['amount']) && $post['amount'] <= 0 ? $post['amount'] : null;
-        if (empty($amount)){
+        $amount = $post['amount'];
+        if ($amount <= 0 ){
             $this->error('请输入正确的转账金额');
         }
 //        $tar_user = Member::where('mobile', $post['target_mobile'])->where('state', 0)->find();
