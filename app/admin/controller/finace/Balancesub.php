@@ -16,6 +16,7 @@
 // +----------------------------------------------------------------------
 
 namespace app\admin\controller\finace;
+use app\common\model\CreditType;
 use app\common\model\FinaceBalancesub as Balancesubs;
 use app\common\controller\AdminController;
 use think\App;
@@ -44,6 +45,7 @@ class Balancesub extends AdminController
      * @NodeAnotation(title="余额明细列表")
      */
     public function index(){
+        $credits = CreditType::field('id,title')->select();
         if ($this->request->isAjax()){
             if (input('selectFields')) {
                 return $this->selectList();
@@ -65,6 +67,7 @@ class Balancesub extends AdminController
             ];
             return json($data);
         }
+        $this->assign('credits', $credits);
         return $this->fetch();
     }
 }

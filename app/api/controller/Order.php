@@ -418,6 +418,7 @@ class Order extends ApiController
             else {
                 $this->error('暂时只支持余额付款和线下支付');
             }
+            $this->PluginApiCD('pay_order'.$user_id);
 
             // 记录的统一操作
             try {
@@ -609,7 +610,8 @@ class Order extends ApiController
         $order->goods;
         $order->address_string();
 //        $order->status = OrderModel::STATUS_ARRAY[$order->status];
-        $order->enable_refund = in_array($order->status, [1,2,3,]) ? true : false ;
+//        $order->enable_refund = in_array($order->status, [1,2,3,]) ? true : false ;
+        $order->enable_refund = in_array($order->status, [1,2,3]) && $order->type === 0  ? true : false ;
         $order->enable_cancel = $order->status === 0 ? true : false ;
         $order->enable_delete = in_array($order->status, [-1, 3]) ? true : false ;
         $this->success('返回订单成功', ['order' => $order, 'status_array' => OrderModel::STATUS_ARRAY,]);

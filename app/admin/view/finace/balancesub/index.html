@@ -28,6 +28,7 @@
                 {field: 'id', minWidth: 200, title: 'ID',sort: true},
                 {field: 'uid', minWidth: 200, title: '会员id'},
                 {field: 'balance', minWidth: 200, title: '余额'},
+                {field: 'credit_type', minWidth: 200, title: '积分类型', search:'select',selectList: {{foreach $credits as $item} {$item.id}:"{$item.title}", {/foreach}}  },
                 {field: 'state', minWidth: 80, title: '业务类型',search: 'select', selectList: { 0: '平台扣款',1: '后台充值',2:'用户充值'}},
                 {field: 'money', minWidth: 200, title: '金额'},
                 {field: 'create_time', minWidth: 80, title: '创建时间', search: 'range'},
@@ -35,6 +36,6 @@
         });
 
         ea.listen();
-
+5
     });
 </script>

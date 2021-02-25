@@ -109,6 +109,10 @@ class TransferCredit extends ApiController
         if ($validate !== true) {
             $this->error($validate);
         }
+        $amount = isset($post['amount']) && $post['amount'] <= 0 ? $post['amount'] : null;
+        if (empty($amount)){
+            $this->error('请输入正确的转账金额');
+        }
 //        $tar_user = Member::where('mobile', $post['target_mobile'])->where('state', 0)->find();
         $tar_user = Member::where('id', $post['target_mobile'])->where('state', 0)->find();
         empty($tar_user) && $this->error('目标用户未注册或被冻结');
@@ -118,6 +122,7 @@ class TransferCredit extends ApiController
         if($user->getAttr($allow_credit->value) < $post['amount']){
             $this->error('转账失败,'.$allow_credit->title.'不足');
         }
+        $this->PluginApiCD('credit_transfer'.$user_id);
         try{
             $transfer_obj = new TransferCreditModel([
                 'uid'=> $user->id,

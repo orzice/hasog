@@ -16,6 +16,7 @@
 // +----------------------------------------------------------------------
 
 namespace app\admin\controller\finace;
+use app\common\model\CreditType;
 use app\common\model\FinaceUprecord as Uprecords;
 use app\common\controller\AdminController;
 use think\App;
@@ -45,6 +46,7 @@ class Uprecord extends AdminController
      */
     public function index()
     {
+        $credits = CreditType::field('id,title')->select();
         if ($this->request->isAjax()){
             if (input('selectFields')) {
                 return $this->selectList();
@@ -66,6 +68,8 @@ class Uprecord extends AdminController
             ];
             return json($data);
         }
+        $this->assign('credits', $credits);
+//        print_r($credits);die();
         return $this->fetch();
     }
 }
