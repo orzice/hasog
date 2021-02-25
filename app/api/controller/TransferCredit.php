@@ -159,6 +159,25 @@ class TransferCredit extends ApiController
         $this->success('请求成功', ['order_list' => $order_list]);
     }
 
+    // 积分被转账记录
+    public function be_transfer_list()
+    {
+        $user_id = $this->MemberId();
+        $get = $this->request->get();
+        $request_status = isset($get['status']) ? $get['status'] : null;
+        $order_list = TransferCreditModel::where('target_uid', $user_id)
+            ->where('type', 1)
+            ->order('id', 'desc')
+            ->hidden(['status', 'type'])
+            ->paginatefront($get)
+            ->select();
+        foreach ($order_list as &$item) {
+            $credit_type = CreditType::find($item->credit_type);
+            $item->credit_type = $credit_type ? $credit_type->title : null;
+        }
+        $this->success('请求成功', ['order_list' => $order_list]);
+    }
+
 
 
 }
