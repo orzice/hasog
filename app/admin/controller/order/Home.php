@@ -425,7 +425,7 @@ class Home extends AdminController
 //            print_r($address);die();
             if (!empty($address)){
                 $address->area_name();
-                $item->area_address = $address->province .$address->city .$address->district .$address->street ;
+                $item->area_address = $address->province .$address->city .$address->district;
                 $item->address_detail = $address->address;
                 $item->address_name = $address->realname;
                 $item->address_mobile = $address->mobile;
