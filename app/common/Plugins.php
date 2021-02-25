@@ -258,7 +258,7 @@ class Plugins
             }
 
             // 部分插件函数 不计入前端模块
-            $pass = ['add','edit','delete'];
+            $pass = ['add','edit','delete','preview','modify'];
             $pas = false;
             for ($s=0; $s < count($pass); $s++) { 
                 if (strpos($plugins[$i]["node"], '/'.$pass[$s])) {

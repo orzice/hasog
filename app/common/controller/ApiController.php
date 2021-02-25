@@ -71,6 +71,20 @@ class ApiController extends BaseController
     	}
         return $member_id;
     }
+    /**
+     * 延迟 API
+     * @return bool
+     */
+    public function PluginApiCD($name,$num=3)
+    {
+      // ================ 3秒内只能允许一次！ ==================
+      $hc = Cache::get($name);
+      if (!$hc) {
+        return api_return(0,'点击太快啦！稍后再试！');
+      }
+      Cache::set($name, 1, $num);
+      // ================ 3秒内只能允许一次！ ==================
+    }
 
     /**
      * 模板变量赋值
