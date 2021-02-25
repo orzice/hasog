@@ -22,6 +22,7 @@ use think\Model;
 
 use think\exception\HttpResponseException;
 use think\Response;
+use think\facade\Cache;
 
 use app\common\Plugins;
 
