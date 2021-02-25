@@ -80,7 +80,7 @@ class ApiController extends BaseController
     {
       // ================ 3秒内只能允许一次！ ==================
       $hc = Cache::get($name);
-      if (!$hc) {
+      if ($hc) {
         return api_return(0,'点击太快啦！稍后再试！');
       }
       Cache::set($name, 1, $num);
