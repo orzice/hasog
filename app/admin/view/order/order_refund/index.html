@@ -25,9 +25,9 @@
             init: init,
             // toolbar: '#batch_delivery',
             cols: [[
-                {field: 'id', minWidth: 30, title: 'ID'},
-                {field: 'order_sn', minWidth: 80, title: '订单号'},
-                {field: 'uid', minWidth: 30, title: '购买人ID'},
+                {field: 'id', minWidth: 30, title: 'ID', searchOp:'='},
+                {field: 'order_sn', minWidth: 80, title: '订单号', searchOp:'='},
+                {field: 'uid', minWidth: 30, title: '购买人ID', searchOp:'='},
                 {
                     field: 'status',
                     title: '状态',

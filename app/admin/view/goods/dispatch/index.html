@@ -28,7 +28,7 @@ require(["jquery", "easy-admin",'miniTab'], function ($, ea,miniTab) {
                 init: init,
                 cols: [[
                     {type: "checkbox"},
-                    {field: 'id', minWidth: 80, title: 'ID'},
+                    {field: 'id', minWidth: 80, title: 'ID',searchOp:'='},
                     {field: 'dispatch_name', minWidth: 200, title: '配送模板名称'},
                     {field: 'calculate_type', minWidth: 80,search: false, selectList: {0: '根据重量计算', 1: '根据数量计算'}, title: '计费方式（0：记重；1：记件）'},
                     {field: 'state', title: '是否启用', minWidth: 85, search: 'select', selectList: {0: '关闭', 1: '启用'}, templet: ea.table.switch},

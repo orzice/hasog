@@ -170,6 +170,8 @@ class TransferCredit extends AdminController
             ];
             return json($data);
         }
+        $credits = CreditType::field('id,title')->select();
+        $this->assign('credits', $credits);
         return $this->fetch();
     }
 

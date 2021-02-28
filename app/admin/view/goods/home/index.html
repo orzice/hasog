@@ -38,7 +38,7 @@ require(["jquery", "easy-admin"], function ($, ea) {
                         extend: 'data-full="true"',
                     }], 'export'],
                 cols: [[
-                    {field: 'id', minWidth: 80, title: 'ID'},
+                    {field: 'id', minWidth: 80, title: 'ID', searchOp:'='},
                     {field: 'thumb', minWidth: 80, title: '封面', search: false, templet: ea.table.image},
                     {field: 'title', minWidth: 200, title: '标题', edit: 'text'},
                     {field: 'price', minWidth: 80,search: false, title: '价格', templet: ea.table.price},
