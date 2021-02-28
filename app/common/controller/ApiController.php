@@ -79,11 +79,12 @@ class ApiController extends BaseController
     public function PluginApiCD($name,$num=3)
     {
       // ================ 3秒内只能允许一次！ ==================
-      $hc = Cache::get($name);
+		$cache = Cache::store('redis');
+      $hc = $cache->get($name);
       if ($hc) {
         return api_return(0,'点击太快啦！稍后再试！');
       }
-      Cache::set($name, 1, $num);
+      $cache->set($name, 1, $num);
       // ================ 3秒内只能允许一次！ ==================
     }
 

@@ -74,6 +74,11 @@ class Index extends HomeController
     }
     public function GetView()
     {
+      //html 页面不缓存！
+      header('Cache-Control:no-cache,must-revalidate');   
+      header('Pragma:no-cache');   
+      header("Expires:0");
+      
       $file = $this->GetSource();
 
       if(!$file){

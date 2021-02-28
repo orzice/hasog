@@ -25,5 +25,20 @@ return [
             'serialize'  => [],
         ],
         // 更多的缓存连接
+        // 配置Reids
+        'redis'    =>    [
+            'type'     => 'redis',
+            'host'     => '127.0.0.1',
+            'port'     => '6379',
+            // 密码
+            'password' => '',
+            // 库
+            'select'   => 8,
+            // 全局缓存有效期（0为永久有效）
+            'expire'   => 0,
+            // 缓存前缀
+            'prefix'   => 'hasog_',
+            'timeout'  => 0,
+        ],
     ],
 ];
