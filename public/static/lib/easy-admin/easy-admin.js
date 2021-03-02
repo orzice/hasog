@@ -344,9 +344,9 @@ define(["jquery", "tableSelect", "ckeditor"], function ($, tableSelect, undefine
                 });
                 if (formHtml !== '') {
 
-                    $(elem).before('<fieldset id="searchFieldset_' + tableId + '" class="table-search-fieldset layui-hide">\n' +
+                    $(elem).before('<fieldset id="searchFieldset_' + tableId + '"  class="table-search-fieldset layui-hide">\n' +
                         '<legend>条件搜索</legend>\n' +
-                        '<form class="layui-form layui-form-pane form-search">\n' +
+                        '<form class="layui-form layui-form-pane form-search" id="' + tableId + '">\n' +
                         formHtml +
                         '<div class="layui-form-item layui-inline" style="margin-left: 115px">\n' +
                         '<button type="submit" class="layui-btn layui-btn-normal" data-type="tableSearch" data-table="' + tableId + '" lay-submit lay-filter="' + tableId + '_filter"> 搜 索</button>\n' +
@@ -695,6 +695,7 @@ define(["jquery", "tableSelect", "ckeditor"], function ($, tableSelect, undefine
             },
             listenTableSearch: function (tableId) {
                 form.on('submit(' + tableId + '_filter)', function (data) {
+                    //搜索按钮
                     var dataField = data.field;
                     var formatFilter = {},
                         formatOp = {};
@@ -706,6 +707,7 @@ define(["jquery", "tableSelect", "ckeditor"], function ($, tableSelect, undefine
                             formatOp[key] = op;
                         }
                     });
+                    // console.log(JSON.stringify(formatFilter),JSON.stringify(formatOp));
                     table.reload(tableId, {
                         page: {
                             curr: 1
@@ -715,6 +717,7 @@ define(["jquery", "tableSelect", "ckeditor"], function ($, tableSelect, undefine
                             op: JSON.stringify(formatOp)
                         }
                     }, 'data');
+
                     return false;
                 });
             },
@@ -968,6 +971,7 @@ define(["jquery", "tableSelect", "ckeditor"], function ($, tableSelect, undefine
 
             // 监听动态表格刷新
             $('body').on('click', '[data-table-refresh]', function () {
+
                 var tableId = $(this).attr('data-table-refresh');
                 if (tableId === undefined || tableId === '' || tableId == null) {
                     tableId = init.table_render_id;
@@ -977,6 +981,7 @@ define(["jquery", "tableSelect", "ckeditor"], function ($, tableSelect, undefine
 
             // 监听搜索表格重置
             $('body').on('click', '[data-table-reset]', function () {
+
                 var tableId = $(this).attr('data-table-reset');
                 if (tableId === undefined || tableId === '' || tableId == null) {
                     tableId = init.table_render_id;
@@ -1038,6 +1043,26 @@ define(["jquery", "tableSelect", "ckeditor"], function ($, tableSelect, undefine
             $('body').on('click', '[data-table-export]', function () {
                 var tableId = $(this).attr('data-table-export'),
                     url = $(this).attr('data-url');
+
+                var data = $('#searchFieldset_currentTableRenderId').serializeArray();
+
+                    var dataField = data;
+                    var formatFilter = {},
+                        formatOp = {};
+                    $.each(dataField, function (key, val) {
+                        if (val.value !== '') {
+                            formatFilter[val.name] = val.value;
+                            var op = $('#c-' + val.name).attr('data-search-op');
+                            op = op || '%*%';
+                            formatOp[val.name] = op;
+                        }
+                    });
+                    var filter = encodeURI(JSON.stringify(formatFilter));
+                    var op = encodeURI(JSON.stringify(formatOp));
+                     url = url+'?filter='+filter+'&op='+op;
+
+
+
                 var index = admin.msg.confirm('根据查询进行导出，确定导出？', function () {
                     window.location = admin.url(url);
                     layer.close(index);
