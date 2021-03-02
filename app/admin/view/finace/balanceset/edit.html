@@ -22,6 +22,17 @@
 <!--            <tip>是否允许用户对账户余额进行充值</tip>-->
         </div>
         <div id="recharge" {eq name="$row.recharge" value="0"}style="display:none"{/eq} >
+        <div class="layui-form-item" pane="">
+            <label class="layui-form-label">余额充值方式</label>
+            <div class="layui-input-block">
+                <input type="hidden" name="balance[manual_wechat]" value="0">
+                <input type="checkbox" name="balance[manual_wechat]" value="1" lay-skin="primary" title="微信" {eq name="$row.manual_wechat" value="1"}checked=""{/eq}>
+                <input type="hidden" name="balance[manual_alipay]" value="0">
+                <input type="checkbox" name="balance[manual_alipay]" value="1" lay-skin="primary" title="支付宝"{eq name="$row.manual_alipay" value="1"}checked=""{/eq}>
+                <input type="hidden" name="balance[manual_offline]" value="0">
+                <input type="checkbox" name="balance[manual_offline]" value="1" lay-skin="primary" title="线下"{eq name="$row.manual_offline" value="1"}checked=""{/eq}>
+            </div>
+        </div>
             <div class="layui-form-item">
                 <div class="layui-input-block">
                     <input type="radio" name="balance[proportion_status]" lay-filter="balance[proportion_status]" value="0" title="赠送固定金额" {eq name="$row.proportion_status" value="0"}checked=""{/eq} >
@@ -66,6 +77,7 @@
                         <p>赠送充值比例：充值满200，赠送15%，实际赠送30【200*15%】元</p>
                     </blockquote>
                 </div>
+
 <!--                <tip style="margin-left: 130px">两项都填写才能生效</tip>-->
 <!--                <br>-->
 <!--                <tip style="margin-left: 130px">赠送固定金额：充值满100，赠送10元,实际赠送10元</tip>-->

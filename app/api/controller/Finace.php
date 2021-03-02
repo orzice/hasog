@@ -96,7 +96,7 @@ class Finace extends ApiController
             };
         }
         if (strpos($post['money'],'-')!==false){
-                 return api_return(0,'金额必须为正整数');
+                 return api_return(0,'金额必须为正数');
         }
         if (substr($post['money'],0,1)==0){
             return api_return(0,'金额输入有误');
@@ -149,9 +149,9 @@ class Finace extends ApiController
         $balance = $momber['credit2']+$post['money'];
         $create_time = time();
         try {
-            $save = FinaceBalancesub::insert(['uid'=>$id,'balance'=>$balance,'state'=>2,'money'=>$post['money'],'create_time'=>$create_time]);
+            $save = FinaceBalancesub::insert(['uid'=>$id,'balance'=>$balance,'state'=>2,'money'=>$post['money'],'create_time'=>$create_time,'credit_type'=>'1']);
             $save = Member::update(['id'=>$id,'credit2'=>$balance]);
-            $save = FinaceUprecord::insert(['uid'=>$id,'way'=>1,'money'=>$post['money'],'state'=>1,'create_time'=>$create_time]);
+            $save = FinaceUprecord::insert(['uid'=>$id,'way'=>1,'money'=>$post['money'],'state'=>1,'create_time'=>$create_time,'credit_type'=>'1']);
         } catch (\Exception $e) {
             return api_return(0,'提交失败:'.$e->getMessage());
         }
@@ -159,7 +159,6 @@ class Finace extends ApiController
     }
     public function withdrawal(){
         $id=$this->MemberId();
-//        $id = 1;
         $post = $this->request->post();
         $rule = [
             'money|金额'      => 'require|float',
@@ -250,14 +249,16 @@ class Finace extends ApiController
         }
         $time = time();
         $mn = $momber['credit2']-$post['money'];
-
-
         $mu = -$post['money'];
+        $this->PluginApiCD('withdrawal'.$id);
         Member::where('id',$id)->dec('credit2',$post['money'])->update();
         // Member::where(['id'=>$id])->update(['credit2'=>$mn]);
         $number = time().rand(99999,1000000);
-        $cord_id=FinaceWithdrawalrecord::insertGetId(['uid'=>$id,'number'=>$number,'money'=>$post['money'],'numstatus'=>3,'status'=>0,'create_time'=>$time]);
-        FinaceBalancesub::insert(['uid'=>$id,'balance'=>$mn,'state'=>3,'money'=>$mu,'create_time'=>$time]);
+        $remark = '提现前余额:'.$momber['credit2'].'->提现后余额:'.$mn;
+
+
+        $cord_id=FinaceWithdrawalrecord::insertGetId(['remark'=>$remark,'before_balance'=>$momber['credit2'],'after_balance'=>$mn,'uid'=>$id,'number'=>$number,'money'=>$post['money'],'numstatus'=>3,'status'=>0,'create_time'=>$time]);
+        FinaceBalancesub::insert(['credit_type'=>'1','uid'=>$id,'balance'=>$mn,'state'=>3,'money'=>$mu,'create_time'=>$time,'before_balance'=>$momber['credit2'],'remark'=>$remark]);
         if ($post['pay_id'] == 0){
             $a = FinaceOfflinewithdrawals::insert(['uid'=>$id,'money'=>$post['money'],'procedure'=>$post['services'],'state'=>0,'pay_id'=>$post['pay_id'],'thumb'=>$post['thumb'],'create_time'=>$time,'cord_id'=>$cord_id,'alipaystates'=>0]);
         }else{
@@ -292,6 +293,27 @@ class Finace extends ApiController
         }
         $data['service'] = $set[0]['service'];
         $data['services'] = $set[0]['services'];
+        return api_return(1,'查询成功',$data);
+    }
+    //充值余额设置
+    public function topupset(){
+        $set = FinaceBalanceset::select()->toArray();
+        if (empty($set)){
+            return api_return(0,'账户充值已关闭');
+        }
+        if ($set[0]['recharge'] !== 1){
+            return api_return(0,'账户充值已关闭');
+        }
+        $data = array();
+        if ($set[0]['manual_wechat']==1){
+            $data['manual'][] = ['id' => 1,'name'=>'微信'];
+        }
+        if ($set[0]['manual_alipay'] ==1){
+            $data['manual'][] = ['id' => 2,'name'=>'支付宝'];
+        }
+        if ($set[0]['manual_offline'] ==1){
+            $data['manual'][] = ['id' => 3,'name'=>'线下'];
+        }
         return api_return(1,'查询成功',$data);
     }
 }

@@ -25,6 +25,7 @@ use think\facade\Event;
 use app\common\model\AdminsFeedback;
 use app\common\model\AliPay;
 use app\common\model\WechatPay;
+use app\common\model\AdminsFeedbackset;
 
 class admins extends ApiController
 {
@@ -39,6 +40,10 @@ class admins extends ApiController
         //验证失败
         if($validate !== true){
             return api_return(0,$validate);
+        }
+        $a = AdminsFeedbackset::find(['uid'=>$id]);
+        if ($a){
+            return api_return(0,'抱歉当前您不能提交反馈');
         }
         $post['uid']=$id;
         $post['state']=0;

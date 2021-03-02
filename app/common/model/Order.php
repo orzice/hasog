@@ -112,33 +112,47 @@ class Order extends TimeModel
         return $value === 0 ? '未评论' : '已评论';
     }
 
-    public function generate_goods(&$goods_objs){
+    public function generate_goods(&$goods_objs, $use_deduction){
         $goods_array = [];
+        // 总计使用积分,总计兑换的余额
+        $user = $this->user;
+//        $total_credit_amount = 0;
+//        $total_transfer_amount = 0;
         foreach ($goods_objs as &$goods_item){
             $goods = $goods_item['goods_obj'];
             $option = $goods->option;
-            $goods_array[] = [
+            $array_item = [
                 'goods_id'=> $goods->id,
                 'total'=> $goods_item['goods_num'],
                 'price'=> $goods->price,
                 'goods_sn'=> $goods->goods_sn,
                 'thumb'=> $goods->thumb,
                 'title'=> $goods->title,
-                'goods_price'=> $goods->price,
+                'goods_price'=> $goods->old_price,
                 'payment_amount'=> $goods->price,
-                'deduction_amount'=> $goods->marcket_price - $goods->price,
+                'deduction'=> $goods->deduction,
+                'deduction_rate'=> $goods->deduction_rate,
+                'deduction_most_amount'=> $goods->deduction_amount,
+//                'deduction_amount'=> $goods->marcket_price - $goods->price,
                 'goods_option_title'=> $goods->sku,
                 'goods_market_price'=> $goods->marcket_price * $goods_item['goods_num'] ,
                 'goods_cost_price'=> $goods->cost_price * $goods_item['goods_num'] ,
                 'goods_option'=> json_encode($option),
+                'create_time'=> time(),
             ];
+            if ($use_deduction === 1){
+                $array_item['credit_amount'] = $goods->credit_amount; //使用积分数量
+                $array_item['deduction_amount'] = $goods->transfer_amount; // 积分抵扣的总金额
+                $array_item['is_deduction'] = 1; // 是否使用抵扣
+            }
             // 是否减库存
+            $goods_array[] = $array_item;
             if ($goods_item['goods_obj']->reduce_stock_method === 0){
                 $goods->stock -= $goods_item['goods_num'];
-                $goods->show_sales += $goods_item['goods_num'];
+//                $goods->show_sales += $goods_item['goods_num'];
                 $goods->real_sales += $goods_item['goods_num'];
-                $goods->virtual_sales += $goods_item['goods_num'];
-                $goods->save();
+//                $goods->virtual_sales += $goods_item['goods_num'];
+                $goods->allowField(['stock', 'real_sales'])->save();
             }
         }
         return $this->goods()->saveAll($goods_array);

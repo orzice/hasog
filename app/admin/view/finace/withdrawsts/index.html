@@ -1,38 +1,38 @@
-<div class="layuimini-container">
-    <div class="layuimini-main">
-        <table id="currentTable" class="layui-table layui-hide"
-               data-auth-preview="{:auth('finace.income/preview')}"
-               lay-filter="currentTable">
-        </table>
-    </div>
-</div>
-<script type="text/javascript">
-
-    require(["jquery", "easy-admin"], function ($, ea) {
-
-        var init = {
-            table_elem: '#currentTable',
-            table_render_id: 'currentTableRenderId',
-            index_url: 'finace.withdrawsts/index',
-        };
-
-
-        ea.table.render({
-            init: init,
-            toolbar: ['refresh',],
-            page: false,
-            cols: [[
-                {field: 'create_time', minWidth: 80, title: '时间', search: 'range'},
-                {field: 'money', minWidth: 200, title: '金额',search:'false'},
-                {field: 'wechat', minWidth: 200, title: '微信',search:'false'},
-                {field: 'alipay', minWidth: 80, title: '支付宝',search:'false'},
-                {field: 'balance', minWidth: 80, title: '余额',search:'false'},
-                {field: 'manual', minWidth: 80, title: '手动',search:'false'},
-
-            ]],
-        });
-
-        ea.listen();
-
-    });
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <table id="currentTable" class="layui-table layui-hide"
+               data-auth-preview="{:auth('finace.income/preview')}"
+               lay-filter="currentTable">
+        </table>
+    </div>
+</div>
+<script type="text/javascript">
+
+    require(["jquery", "easy-admin"], function ($, ea) {
+
+        var init = {
+            table_elem: '#currentTable',
+            table_render_id: 'currentTableRenderId',
+            index_url: 'finace.withdrawsts/index',
+        };
+
+
+        ea.table.render({
+            init: init,
+            toolbar: ['refresh',],
+            page: false,
+            cols: [[
+                {field: 'create_time', minWidth: 80, title: '时间', search: 'range'},
+                {field: 'money', minWidth: 200, title: '金额',search:'false'},
+                {field: 'wechat', minWidth: 200, title: '微信',search:'false'},
+                {field: 'alipay', minWidth: 80, title: '支付宝',search:'false'},
+                {field: 'balance', minWidth: 80, title: '余额',search:'false'},
+                {field: 'manual', minWidth: 80, title: '手动',search:'false'},
+
+            ]],
+        });
+
+        ea.listen();
+
+    });
 </script>

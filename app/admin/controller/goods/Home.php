@@ -18,6 +18,7 @@
 namespace app\admin\controller\goods;
 
 
+use app\common\model\CreditType;
 use app\common\model\GoodsCategory;
 use think\App;
 use think\facade\Config;
@@ -107,6 +108,9 @@ class Home extends AdminController
                 'goods.weight|重量' => 'require|number',
                 'goods.stock|库存' => 'require|number',
                 'goods.reduce_stock_method|减库存方式' => 'require|number|in:0,1,2',
+                'goods.deduction|积分抵扣' => 'number',
+                'goods.deduction_rate|积分抵扣比率' => 'float|between: 0,100',
+                'goods.deduction_amount|积分抵扣数值' => 'float',
 
                 'goods.no_refund|不可退货退款' => 'require|number|in:0,1',
                 'goods.status|是否上架' => 'require|number|in:0,1',
@@ -124,7 +128,18 @@ class Home extends AdminController
             $post['goods']['thumb_url'] = $post['thumb_url'];
             $post['goods']['content'] = $post['describe'];
 
-            //
+
+            $deduction_amount = isset($post['deduction_amount']) ? $post['deduction_amount'] : 0 ;
+            $price = isset($post['price']) ? $post['price'] : 0 ;
+            if ($deduction_amount > $price){
+                $this->error('抵扣金额不得大于现价');
+            }
+            $market_amount = isset($post['goods']['market_amount']) ? $post['goods']['market_amount'] : 0 ;
+            $price = isset($post['goods']['price']) ? $post['goods']['price'] : 0 ;
+            if ($market_amount < $price){
+                $this->error('市场价不得小于现价');
+            }
+
             if (key_exists('dt', $post['goods']) && key_exists('dv', $post['goods'])) {
                 if (count($post['goods']['dt']) !== count($post['goods']['dv'])) {
                     $this->error('商品属性格式错误');
@@ -186,6 +201,9 @@ class Home extends AdminController
         $goodsadd = Config::get('goodsadd');
 //        print_r($goodsadd);
 //        exit();
+        $credit_types = CreditType::select()->all();
+
+        $this->assign('credit_types', $credit_types);
         $dispatch = Dispatch::where('state', 1)->select();
         $category_model = new CategoryModel();
         $pidMenuList = $category_model->getCategoryList();
@@ -226,6 +244,9 @@ class Home extends AdminController
                 'goods.virtual_sales|虚拟销量' => 'require|number',
                 'goods.weight|重量' => 'require|number',
                 'goods.stock|库存' => 'require|number',
+                'goods.deduction|积分抵扣' => 'number',
+                'goods.deduction_rate|积分抵扣比率' => 'float|between: 0,100',
+                'goods.deduction_amount|积分抵扣数值' => 'float',
                 'goods.reduce_stock_method|减库存方式' => 'require|number|in:0,1,2',
 
                 'goods.no_refund|不可退货退款' => 'require|number|in:0,1',
@@ -243,6 +264,18 @@ class Home extends AdminController
             $post['goods']['thumb'] = $post['thumb'];
             $post['goods']['thumb_url'] = $post['thumb_url'];
             $post['goods']['content'] = $post['describe'];
+
+            $deduction_amount = isset($post['goods']['deduction_amount']) ? $post['goods']['deduction_amount'] : 0 ;
+            $price = isset($post['goods']['price']) ? $post['goods']['price'] : 0 ;
+            if ($deduction_amount > $price){
+                $this->error('抵扣金额不得大于现价');
+            }
+            $market_amount = isset($post['goods']['market_amount']) ? $post['goods']['market_amount'] : 0 ;
+            $price = isset($post['goods']['price']) ? $post['goods']['price'] : 0 ;
+            if ($market_amount < $price){
+                $this->error('市场价不得小于现价');
+            }
+
             if (key_exists('dt', $post['goods']) && key_exists('dv', $post['goods'])) {
 
                 if (count($post['goods']['dt']) !== count($post['goods']['dv'])) {
@@ -302,17 +335,24 @@ class Home extends AdminController
                 $goodsCategory && $old_goods_category->delete();
                 Uploadfile($post['goods']['thumb']);
                 Uploadfile($post['goods']['thumb_url']);
+                // 没有修改分类
+                if($goodsCategory === false){
+                    if($save === false){
+                        Db::rollback();
+                        $this->error('保存失败');
+                    }
+                }else{
+                    if($save === false || $result === false){
+                        Db::rollback();
+                        $this->error('保存失败');
+                    }
+                }
                 Db::commit();
             } catch (\Exception $e) {
                 $this->error('保存失败:' . $e->getMessage());
                 Db::rollback();
             }
-            // 没有修改分类
-            if(!$goodsCategory){
-                $save ? $this->success('保存成功') : Db::rollback() && $this->error('保存失败');
-            }else{
-                $save && $result ? $this->success('保存成功') : Db::rollback() && $this->error('保存失败');
-            }
+            $this->success('保存成功');
         }
 
 
@@ -326,6 +366,8 @@ class Home extends AdminController
         // 传入分类选项
         $category_model = new CategoryModel();
         $pidMenuList = $category_model->getCategoryList();
+        $credit_types = CreditType::select()->all();
+        $this->assign('credit_types', $credit_types);
         $this->assign('pidMenuList', $pidMenuList);
 
         $this->assign('category_id', $old_goods_category->category_id);

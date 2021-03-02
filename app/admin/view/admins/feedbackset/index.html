@@ -1,0 +1,50 @@
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <table id="currentTable" class="layui-table layui-hide"
+               data-auth-add="{:auth('admins.feedbackset/add')}"
+               data-auth-edit="{:auth('admins.feedbackset/edit')}"
+               data-auth-delete="{:auth('admins.feedbackset/delete')}"
+               data-auth-preview="{:auth('admins.feedbackset/preview')}"
+               lay-filter="currentTable">
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    require(["jquery", "easy-admin"], function ($, ea) {
+
+        var init = {
+            table_elem: '#currentTable',
+            table_render_id: 'currentTableRenderId',
+            index_url: 'admins.feedbackset/index',
+            add_url: 'admins.feedbackset/add',
+            edit_url: 'admins.feedbackset/edit',
+            delete_url: 'admins.feedbackset/delete',
+            modify_url: 'admins.feedbackset/modify',
+            export_url: 'admins.feedbackset/export',
+            preview_url: 'admins.feedbackset/preview'
+        };
+
+
+        ea.table.render({
+            init: init,
+            toolbar: ['refresh','add', 'export'],
+            cols: [[
+                {field: 'uid', minWidth: 200, title: '用户id'},
+                {field: 'create_time', minWidth: 80, title: '创建时间', search: 'range'},
+                {
+                    width: 180,
+                    title: '操作',
+                    templet: ea.table.tool,
+                    operat: [
+                        'delete'
+                    ]
+                }
+            ]],
+        });
+
+        ea.listen();
+
+    });
+</script>

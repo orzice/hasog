@@ -21,6 +21,7 @@ namespace app\api\controller;
 
 use app\common\controller\ApiController;
 use app\common\model\AdminsPayment;
+use app\common\model\CreditType;
 use app\common\model\Dispatch;
 use app\common\model\DispatchData;
 use app\common\model\FinaceBalancesub;
@@ -52,6 +53,8 @@ class Order extends ApiController
         $order_goods_price = 0;
         $goods_total = 0;
         $cost_amount = 0;
+        // 是否使用积分抵扣 默认否
+        $is_deduction = isset($post['is_deduction']) ? $post['is_deduction'] : false;
         // 初始化 订单商品列表 地址id  重量 运费 等数据
         $goods_data = isset($post['goods_data']) ? $post['goods_data'] : [];
         $member_remark = isset($post['member_remark']) ? $post['member_remark'] : '';
@@ -61,14 +64,6 @@ class Order extends ApiController
         if (empty($request_address)){
             $this->error("收货地址选择有误");
         }
-/*        if (empty($request_address)) {
-            $default_address = $user->address()->where('is_default', 1)->find();
-            if(empty($default_address)){
-                $request_address = $user->address()->select()->first();
-            }else {
-                $request_address = $default_address;
-            }
-        }*/
         empty($request_address) && $this->error('没有收货地址请先添加收货地址');
         $weight = 0;
         $dispatch_price = 0;
@@ -81,10 +76,12 @@ class Order extends ApiController
         }else {
             $this->error($result['msg']);
         }
-
+        // 初始化积分抵扣数据
+        $credit_type_array = [];
         // 计算 重量运费 等数据
         foreach ($goods_data as $goods_item) {
             $rule = [
+                'goods_id|商品id' => 'require|number',
                 'goods_num|商品数量' => 'number|between: 1,999999',
             ];
             $validate = $this->validate($goods_item, $rule);
@@ -96,21 +93,55 @@ class Order extends ApiController
             $goods_obj = Goods::where('id', $goods_item['goods_id'])
                 ->where('status', 1)->find();
             empty($goods_obj) && $this->error('部分商品不存在或已下架');
-            $discount_price += ($goods_obj->market_price - $goods_obj->price) * $goods_item['goods_num'];
+            if($is_deduction === false){
+//                $goods_obj->use_deduction = 1;
+                $use_deduction = 1;
+                $credit_result = $goods_obj->calculate_credit($user, $credit_type_array, $goods_item['goods_num']);
+                $credit_type_array = $credit_result['credit_type_array'];
+                if ($credit_result === -1){
+                    $this->error('商品积分类型已下架');
+                }
+                // 如果积分数据不存在则不能使用积分请联系技术支
+//                if (in_array($credit_result['msg'], [1,2])){
+//                if (in_array($credit_result['msg'], [1,2])){
+//                }
+            }else{
+                // 不使用积分就 赋值不使用积分
+//                $goods_obj->use_deduction = 0;
+                $use_deduction = 0;
+            }
+
+
+            // 优惠价计算
+//            $discount_price += ($goods_obj->market_price - $goods_obj->price) * $goods_item['goods_num'];
+            $discount_price += $goods_obj->total_discount;
+            // 商品价总计
             $order_goods_price += ($goods_obj->market_price) * $goods_item['goods_num'];
+//            $goods_price += round($goods_obj->price * $goods_item['goods_num'],2);
+            // 折扣价后总计
+            $goods_price += round($goods_obj->price,2);
+
+//            $discount_price += ($goods_obj->market_price - $goods_obj->price) * $goods_item['goods_num'];
+//            $order_goods_price += ($goods_obj->market_price) * $goods_item['goods_num'];
+            // 库存处理
             $goods_obj->stock === 0 && $this->error($goods_obj->title . '暂时无货');
             $goods_obj->stock < $goods_item['goods_num'] && $this->error($goods_obj->title . '拍下数量大于库存');
-            $goods_price += $goods_obj->price * $goods_item['goods_num'];
+            // 是否使用抵扣积分
+
+
+            // 计算商品价格
+//            $goods_price += $goods_obj->price * $goods_item['goods_num'];
 
             $goods_description = isset($goods_item['description']) ? $goods_item['description']: null;
             $option = $goods_obj->isset_description($goods_description);
             if($option === false){
-                $this->error('商品规格选择错误');
+                $this->error('商品规格选择错误或改规格已下架');
             }
             $goods_obj->option = $option;
 
             $goods_objs[] = ['goods_obj' => $goods_obj, 'goods_num' => $goods_item['goods_num']];
             $goods_total += $goods_item['goods_num'];
+            // 成本价总计
             $cost_amount += $goods_obj['cost_price'] * $goods_item['goods_num'];
             // 计算重量
             $goods_weight = $goods_obj->weight * $goods_item['goods_num'];
@@ -178,12 +209,21 @@ class Order extends ApiController
             'member_remark' => $member_remark
         ];
         try {
+
             $order = new OrderModel($order_data);
             $order_save = $order->save();
             Db::startTrans();
+            // 积分扣除
+            foreach ($credit_type_array as $credit_item=>$credit_item_value){
+                if($user->getAttr($credit_item) >= $credit_item_value['amount']){
+                    Member::where('id', $user->id)->dec($credit_item, $credit_item_value['amount'])->update();
+                }else{
+                    $this->error('积分扣除失败');
+                }
+            }
             $order_address = $order->generate_address($request_address);
             $address_save = $order_address->save();
-            $save_goods = $order->generate_goods($goods_objs);
+            $save_goods = $order->generate_goods($goods_objs, $use_deduction);
             if ($order_save === false || $address_save === false || $save_goods === false) {
                 throw new \Exception('添加失败');
             }
@@ -212,6 +252,8 @@ class Order extends ApiController
         empty($goods_data) && $this->error('请提交商品');
         // 请求的收货地址
         $request_address = isset($post['address_id']) ? $post['address_id'] : null;
+        // 是否使用积分抵扣 默认否
+        $is_deduction = isset($post['is_deduction']) ? $post['is_deduction'] : false;
         $request_address = $user->address()->where('id', $request_address)->find();
         // 如果没选择收货地址
         if (empty($request_address)) {
@@ -233,12 +275,12 @@ class Order extends ApiController
         }else {
             $this->error($result['msg']);
         }
-
-
-        // 计算 重量运费 等数据a
-        foreach ($goods_data as $goods_item) {
+        // 初始化积分抵扣数据
+        $credit_type_array = [];
+        // 计算 重量运费 等数据
+        foreach ($goods_data as $goods_item) {// 操作商品信息
             $rule = [
-                'goods_id|商品数量' => 'require|number',
+                'goods_id|商品id' => 'require|number',
                 'goods_num|商品数量' => 'require|number|between: 1,999999',
             ];
             $validate = $this->validate($goods_item, $rule);
@@ -249,16 +291,47 @@ class Order extends ApiController
             $goods_obj = Goods::where('id', $goods_item['goods_id'])
                 ->where('status', 1)->hidden(['cost_price', 'reduce_stock_method', 'real_sales', 'virtual_sales'])->find();
             empty($goods_obj) && $this->error('部分商品不存在或已下架');
-            $discount_price += ($goods_obj->market_price - $goods_obj->price) * $goods_item['goods_num'];
+            // 折扣价计算
+            // 是否使用抵扣积分
+            if($is_deduction === false){
+                $credit_result = $goods_obj->calculate_credit($user, $credit_type_array, $goods_item['goods_num']);
+                $credit_type_array = $credit_result['credit_type_array'];
+                if ($credit_result === -1){
+                    $this->error('商品积分类型已下架');
+                }
+                // 如果积分数据不存在则不能使用积分请联系技术支
+//                if (in_array($credit_result['msg'], [1,2])){
+//                if (in_array($credit_result['msg'], [1,2])){
+//                }
+            }
+/*            // 判断数组中是否存在这个玩意 存在 相加不存在赋值
+            if (empty($credit_type_array[$goods_obj->credit_type_value])){
+                $credit_type_array[$goods_obj->credit_type_value] = ['amount'=>$goods_obj->credit_amount * $goods_item['goods_num'], 'title'=>$goods_obj->credit_type_title,
+                    'id'=>$goods_obj->credit_type_id, 'could_amount'=>$goods_obj->transfer_amount * $goods_item['goods_num']];
+            }else{
+                $credit_type_array[$goods_obj->credit_type_value]['amount'] = $credit_type_array[$goods_obj->credit_type_value]['amount'] + ($goods_obj->credit_amount * $goods_item['goods_num']);
+                $credit_type_array[$goods_obj->credit_type_value]['could_amount'] = $credit_type_array[$goods_obj->credit_type_value]['could_amount'] + ($goods_obj->transfer_amount * $goods_item['goods_num']);
+            }*/
+
+            // 优惠价计算
+//            $discount_price += ($goods_obj->market_price - $goods_obj->price) * $goods_item['goods_num'];
+            $discount_price += $goods_obj->total_discount;
+            // 商品价总计
             $order_goods_price += ($goods_obj->market_price) * $goods_item['goods_num'];
+//            $goods_price += round($goods_obj->price * $goods_item['goods_num'],2);
+            // 折扣价后总计
+            $goods_price += round($goods_obj->price,2);
+            // 库存计算
             $goods_obj->stock === 0 && $this->error($goods_obj->title . '暂时无货');
             $goods_obj->stock < $goods_item['goods_num'] && $this->error($goods_obj->title . '拍下数量大于库存');
-            $goods_price += $goods_obj->price * $goods_item['goods_num'];
 
+
+
+            // 商品规格拆分 及判断
             $goods_description = isset($goods_item['description']) ? $goods_item['description']: null;
             $option = $goods_obj->isset_description($goods_description);
             if($option === false){
-                $this->error('商品规格选择错误');
+                $this->error('商品规格选择错误，或该规格已下架');
             }
             $goods_obj->option = $option;
 
@@ -314,6 +387,9 @@ class Order extends ApiController
             }
             // 返回配送类型---
         }
+        // 浮点数取两位小数
+        $goods_price = round($goods_price, 2);
+        $dispatch_price = round($dispatch_price, 2);
         // 要返回的数据
         $price = $dispatch_price + $goods_price;
         $request_address_id =null;
@@ -329,6 +405,7 @@ class Order extends ApiController
             'discount_price' => $discount_price, // 总折扣价
             'order_goods_price' => $order_goods_price, // 总原价
             'price' => $price,
+            'credit_type_array' => $credit_type_array,  // 商品积分
         ];
         $this->success('请求成功', $data);
     }
@@ -440,9 +517,9 @@ class Order extends ApiController
                     $goods = $goods_obj->goods;
                     if ($goods->reduce_stock_method === 1) {
                         $goods->stock -= $goods_obj->total;
-                        $goods->show_sales += $goods_obj->total;
+//                        $goods->show_sales += $goods_obj->total;
                         $goods->real_sales += $goods_obj->total;
-                        $goods->virtual_sales += $goods_obj->total;
+//                        $goods->virtual_sales += $goods_obj->total;
                         $goods_result = $goods->save();
                         if (!$goods_result) {
                             break;
@@ -547,6 +624,14 @@ class Order extends ApiController
         if ($order->status === 0 ) {
             $order->status = -1;
             try {
+                // 积分退款
+                $goods_objs = $order->goods;
+                foreach ($goods_objs as $goods_obj){
+                    if ($goods_obj->is_deduction === 1 ){
+                        $credit_type = CreditType::find($goods_obj->deduction);
+                        Member::where('id', $user->id)->inc($credit_type->value, $goods_obj->credit_amount)->update();
+                    };
+                }
                 $save = $order->save();
                 if ($save === false) {
                     throw new \Exception('取消订单失败');
@@ -672,4 +757,8 @@ class Order extends ApiController
         ];
         $this->success('请求成功', ['pay_type' => $pay_type]);
     }
+
+
+
+
 }

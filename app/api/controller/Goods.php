@@ -44,7 +44,7 @@ class Goods  extends ApiController
                     ->whereOr('category_ids', 'like', '%,' . $category_id);
                 $goods_ids = $goods_category->column('goods_id');
                 $goods_list = GoodsModel::whereIn('id', $goods_ids)->where('status', 1)
-                    ->hidden(['cost_price','reduce_stock_method', 'real_sales', 'virtual_sales' ]);
+                    ->hidden(['cost_price','reduce_stock_method', 'show_sales' ]);
                 $goods_count = $goods_list->count();
                 $goods_list = $goods_list->paginatefront($get)->select();
             }
@@ -57,6 +57,8 @@ class Goods  extends ApiController
         foreach ($goods_list as &$goods){
             $category_goods = GoodsCategory::where('goods_id','=', $goods->id)->find();
             $goods['category'] = $category_goods;
+            $goods->show_sales = $goods->real_sales + $goods->virtual_sales;
+            $goods->hidden(['real_sales', 'virtual_sales']);
         }
         $list_count = $goods_list->count();
         $this->success($msg,['goods_count'=> $goods_count,'list_count'=> $list_count, 'goods_list'=> $goods_list]);
@@ -72,7 +74,7 @@ class Goods  extends ApiController
                 $msg = '获取商品成功';
                 // 这种方法 分类如果enabled
                 $goods_list = GoodsModel::where('title', 'like', '%'.$goods_title . '%')->where('status', 1)
-                    ->hidden(['cost_price','reduce_stock_method', 'real_sales', 'virtual_sales' ]);
+                    ->hidden(['cost_price','reduce_stock_method', 'show_sales']);
                 $goods_count = $goods_list->count();
                 $goods_list = $goods_list->paginatefront($get)->select();
                 $list_count = $goods_list->count();
@@ -84,6 +86,8 @@ class Goods  extends ApiController
         foreach ($goods_list as &$goods){
             $category_goods = GoodsCategory::where('goods_id','=', $goods->id)->find();
             $goods['category'] = $category_goods;
+            $goods->show_sales = $goods->real_sales + $goods->virtual_sales;
+            $goods->hidden(['real_sales', 'virtual_sales']);
         }
         $this->success($msg,['goods_count'=> $goods_count,'list_count'=> $list_count, 'goods_list'=> $goods_list]);
     }
@@ -107,8 +111,10 @@ class Goods  extends ApiController
     public function goods_detail(){
         $get = $this->request->get();
         $goods_id = isset($get['goods_id']) ? $get['goods_id'] : null;
-        $goods = GoodsModel::where('id', '=', $goods_id)->hidden(['cost_price','reduce_stock_method', 'real_sales', 'virtual_sales' ])->find();
+        $goods = GoodsModel::where('id', '=', $goods_id)->hidden(['cost_price','reduce_stock_method', 'show_sales'])->find();
         empty($goods) && $this->error('商品不存在');
+        $goods->show_sales = $goods->real_sales + $goods->virtual_sales;
+        $goods->hidden(['real_sales', 'virtual_sales']);
         $user_id = $this->MemberId();
         $is_favor = false;
         if($user_id){

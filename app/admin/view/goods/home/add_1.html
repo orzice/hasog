@@ -110,6 +110,30 @@
             </div>
         </div>
         <div class="layui-form-item">
+            <label class="layui-form-label">积分抵扣</label>
+            <div class="layui-input-block">
+                <select name="goods[deduction]">
+                    {foreach $credit_types as $vo}
+                    <option value="{$vo.id}">{$vo['title']}</option>
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">积分抵扣金额</label>
+            <div class="layui-input-block">
+                <input type="text" name="goods[deduction_amount]" class="layui-input" lay-verify="required" placeholder="" value="0">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">积分抵扣余额比例</label>
+            <div class="layui-input-block">
+                <input type="text" name="goods[deduction_rate]" class="layui-input" lay-verify="required" placeholder="" value="100">
+                <tip>积分/余额 单位%(默认100)</tip>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
             <label class="layui-form-label">减库存方式</label>
             <div class="layui-input-block">
                 <input type="radio" name="goods[reduce_stock_method]" value="0" title="拍下减库存" checked="">

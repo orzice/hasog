@@ -20,9 +20,12 @@ namespace app\admin\controller;
 use app\common\controller\AdminController;
 use think\facade\Config;
 use app\common\Plugins;
-
+use think\facade\Db;
 use app\admin\model\SystemAdmin;
 use app\admin\model\SystemQuick;
+use app\common\model\Member;
+use app\common\model\Goods;
+use app\common\model\Order;
 
 use EasyAdmin\auth\Node as NodeService;
 
@@ -59,7 +62,64 @@ class Index extends AdminController
 
         $mysqlinfo = \think\facade\Db::query("select VERSION()");
         $dbversion = $mysqlinfo[0]['VERSION()'];
+        $res['member'] = Member::where('delete_time','NULL')->count();
+        $res['goods'] = Goods::where('delete_time','NULL')->count();
+         $res['order'] = Order::where('delete_time','NULL')->count();
+         $res['list'] = Db::name('member')->whereDay('create_time')->count();
 
+         $member = Member::where('delete_time','NULL')->order('credit2','desc')->limit(4)->select()->toArray();
+         if (empty($member)){
+             for ($i=0;$i<4;$i++){
+                 $member[$i]['id'] = '无';
+                 $member[$i]['credit2'] = '无';
+             }
+         }
+         for ($i=0;$i<4;$i++){
+             if ($i<count($member)){
+                 $a = $i+1;
+                 $member[$i]['ph']="第"."$a"."名";
+             }else{
+                 $a = $i+1;
+                 $member[$i]['id'] = '无';
+                 $member[$i]['credit2'] = '无';
+                 $member[$i]['ph']="第"."$a"."名";
+             }
+         }
+         $data = array();
+         $list=Db::name("member")
+             ->alias('a')
+             ->where('a.delete_time','NULL')
+             ->join('order b','a.id=b.uid')
+             ->where('b.delete_time','NULL')
+             ->where('b.status','3')
+             ->field(['a.id,count(*) as count'])
+             ->group('a.id')
+             ->order('count','desc')
+             ->limit('4')
+             ->select()->toArray();
+         if (empty($list)){
+             for ($i=0;$i<4;$i++){
+                 $list[$i]['id'] = '无';
+                 $list[$i]['count'] = '无';
+             }
+         }
+         for ($i=0;$i<4;$i++){
+             if ($i<count($list)){
+                 $a = $i+1;
+                 $data[$i] = $list[$i];
+                 $data[$i]['ph']="第"."$a"."名";
+             }else{
+                 $a = $i+1;
+                 $data[$i]['id'] = '无';
+                 $data[$i]['count'] = '无';
+                 $data[$i]['ph']="第"."$a"."名";
+             }
+
+
+         }
+         $this->assign('list',$data);
+         $this->assign('member',$member);
+        $this->assign('res',$res);
         $this->assign('serverinfo', $serverinfo);
         $this->assign('serversoft', $serversoft);
         $this->assign('dbversion', $dbversion);

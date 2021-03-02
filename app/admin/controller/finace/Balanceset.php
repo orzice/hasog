@@ -52,6 +52,9 @@ class Balanceset extends AdminController
                 'proportion_status'=>0,
                 'sole'=>'[]',
                 'transfer'=>0,
+                'manual_wechat'=>0,
+                'manual_alipay'=>0,
+                'manual_offline'=>0,
             ]);
         }
         $row='';
@@ -67,6 +70,9 @@ class Balanceset extends AdminController
                 'recharge'=>'require|number|in:0,1',
                 'proportion_status' => 'require|number|in:0,1',
                 'transfer' =>'require|number|in:0,1',
+                'manual_wechat' =>'require|number|in:0,1',
+                'manual_alipay' =>'require|number|in:0,1',
+                'manual_offline' =>'require|number|in:0,1',
             ];
             $this->validate($post['balance'], $rule);
             if ($post['balance']['enough']){

@@ -213,22 +213,28 @@ class User extends AdminController
                 'credit2s'=>['^[\+\-]?\d+(\.\d+)?$'],
                 'credit_type|积分类型'=>'require|number',
             ];
+            $allow_credit = CreditType::where('id', $post['goods']['credit_type'])->find();
+            empty($allow_credit) && $this->error('积分类型错误');
             $this->validate($post['goods'], $rule);
             $credit = $this->model::where('id',$post['goods']['id'])->find();
-            $credit=$credit['credit2'];
-            $credit = $credit+$post['goods']['credit2s'];
+            $old_credit=$credit['credit2'];
+            $credit = $credit['credit2']+$post['goods']['credit2s'];
             $b = substr($post['goods']['credit2s'], 0,1);
             $balancesub['money'] =$post['goods']['credit2s'];
             $balancesub['uid']   =$post['goods']['id'];
-            $balancesub['balance'] = $credit;
+            $balancesub['before_balance'] = $old_credit; // 修改前积分
+            $balancesub['balance'] = $credit; // 修改后的积分
+            $balancesub['remark'] = '后台充值'.$allow_credit->title.$post['goods']['credit2s'];
             $balancesub['create_time'] = time();
             $uprecord['uid'] = $post['goods']['id'];
             $uprecord['way'] = 0;
+            $uprecord['before_balance'] = $old_credit; // 修改前积分
+            $uprecord['after_balance'] = $credit; // 修改后的积分
+            $uprecord['remark'] = '后台充值'.$allow_credit->title.$post['goods']['credit2s'];
             $uprecord['money'] = $post['goods']['credit2s'];
             $uprecord['state'] =1;
             $uprecord['create_time'] =time();
-            $allow_credit = CreditType::where('id', $post['goods']['credit_type'])->find();
-            empty($allow_credit) && $this->error('积分类型错误');
+
             $uprecord['credit_type'] =$allow_credit->id;
             $balancesub['credit_type'] =$allow_credit->id;
             try {

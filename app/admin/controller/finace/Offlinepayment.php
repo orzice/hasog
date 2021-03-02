@@ -2,6 +2,7 @@
 
 
 namespace app\admin\controller\finace;
+use app\common\model\CreditType;
 use app\common\model\FinaceBalancesub;
 use app\common\model\FinaceOfflinepayment as FinaceOfflinepayments;
 use app\common\model\FinaceBalanceset;
@@ -135,9 +136,11 @@ class Offlinepayment extends AdminController
                 $save = FinaceOfflinepayments::update($post);
                 if ($post['state'] == 1 && !$post['states']==1&&$post['a_state']==0){
                     $balance = $momber['credit2']+$moneys;
-                    $save = Member::where('id',$post['uid'])->update(['credit2'=>$balance]);
-                    $save = FinaceBalancesub::insert(['uid'=>$post['uid'],'balance'=>$balance,'state'=>2,'money'=>$moneys,'create_time'=>$time]);
-                    $save = FinaceUprecord::insert(['uid'=>$post['uid'],'way'=>1,'money'=>$moneys,'state'=>1,'create_time'=>$time]);
+                    $remark = '充值前余额:'.$momber['credit2'].'->充值后余额:'.$balance;
+//                    $save = Member::where('id',$post['uid'])->update(['credit2'=>$balance]);
+                    $save = Member::where('id',$post['uid'])->inc('credit2',$moneys)->update();
+                    $save = FinaceBalancesub::insert(['credit_type'=>'1','remark'=>$remark,'before_balance'=>$momber['credit2'],'uid'=>$post['uid'],'balance'=>$balance,'state'=>2,'money'=>$moneys,'create_time'=>$time]);
+                    $save = FinaceUprecord::insert(['credit_type'=>'1','remark'=>$remark,'before_balance'=>$momber['credit2'],'after_balance'=>$balance,'uid'=>$post['uid'],'way'=>1,'money'=>$moneys,'state'=>1,'create_time'=>$time]);
                 }
             } catch (\Exception $e) {
                 $this->error('保存失败:'.$e->getMessage());

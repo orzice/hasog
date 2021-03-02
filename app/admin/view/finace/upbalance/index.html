@@ -1,56 +1,56 @@
-<div class="layuimini-container">
-    <div class="layuimini-main">
-        <table id="currentTable" class="layui-table layui-hide"
-               data-auth-edit="{:auth('finace.upbalance/edit')}"
-               data-auth-preview="{:auth('finace.upbalance/preview')}"
-               lay-filter="currentTable">
-        </table>
-    </div>
-</div>
-
-<script type="text/javascript">
-
-    require(["jquery", "easy-admin"], function ($, ea) {
-
-        var init = {
-            table_elem: '#currentTable',
-            table_render_id: 'currentTableRenderId',
-            index_url: 'finace.upbalance/index',
-            edit_url: 'finace.upbalance/edit',
-            modify_url: 'finace.upbalance/modify',
-            export_url: 'finace.upbalance/export',
-            preview_url: 'finace.upbalance/preview'
-        };
-
-
-        ea.table.render({
-            init: init,
-            toolbar: ['refresh', 'export',],
-            cols: [[
-                {field: 'id', minWidth: 200, title: 'ID',sort: true},
-                {field: 'mobile', minWidth: 200, title: '手机号'},
-                {field: 'fname', minWidth: 200, title: '真实姓名'},
-                {field: 'credit2', minWidth: 200, title: '余额'},
-                {field: 'create_time', minWidth: 80, title: '创建时间', search: 'range'},
-                {
-                    width: 180,
-                    title: '操作',
-                    templet: ea.table.tool,
-                    operat: [
-                        [{
-                            text: '充值余额',
-                            url: init.edit_url,
-                            method: 'open',
-                            auth: 'edit',
-                            class: 'layui-btn layui-btn-xs layui-btn-success',
-                            extend: 'data-full="true"',
-                        }],
-                    ]
-                }
-            ]],
-        });
-
-        ea.listen();
-
-    });
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <table id="currentTable" class="layui-table layui-hide"
+               data-auth-edit="{:auth('finace.upbalance/edit')}"
+               data-auth-preview="{:auth('finace.upbalance/preview')}"
+               lay-filter="currentTable">
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    require(["jquery", "easy-admin"], function ($, ea) {
+
+        var init = {
+            table_elem: '#currentTable',
+            table_render_id: 'currentTableRenderId',
+            index_url: 'finace.upbalance/index',
+            edit_url: 'finace.upbalance/edit',
+            modify_url: 'finace.upbalance/modify',
+            export_url: 'finace.upbalance/export',
+            preview_url: 'finace.upbalance/preview'
+        };
+
+
+        ea.table.render({
+            init: init,
+            toolbar: ['refresh', 'export',],
+            cols: [[
+                {field: 'id', minWidth: 200, title: 'ID',sort: true},
+                {field: 'mobile', minWidth: 200, title: '手机号'},
+                {field: 'fname', minWidth: 200, title: '真实姓名'},
+                {field: 'credit2', minWidth: 200, title: '余额'},
+                {field: 'create_time', minWidth: 80, title: '创建时间', search: 'range'},
+                {
+                    width: 180,
+                    title: '操作',
+                    templet: ea.table.tool,
+                    operat: [
+                        [{
+                            text: '充值余额',
+                            url: init.edit_url,
+                            method: 'open',
+                            auth: 'edit',
+                            class: 'layui-btn layui-btn-xs layui-btn-success',
+                            extend: 'data-full="true"',
+                        }],
+                    ]
+                }
+            ]],
+        });
+
+        ea.listen();
+
+    });
 </script>

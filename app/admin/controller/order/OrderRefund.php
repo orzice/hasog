@@ -18,7 +18,9 @@
 namespace app\admin\controller\order;
 
 
+use app\common\model\CreditType;
 use app\common\model\FinaceBalancesub;
+use app\common\model\Member;
 use app\common\model\OrderPay;
 use think\App;
 use think\facade\Config;
@@ -54,7 +56,26 @@ class OrderRefund extends AdminController
     public function index()
     {
         if ($this->request->isAjax()) {
-            if (input('selectFieds')) {
+            if (input('selectFields')) {
+                return $this->selectList();
+            }
+            list($page, $limit, $where) = $this->buildTableParames();
+            $count = $this->model
+                ->where($where)
+                ->count();
+            $list = $this->model
+                ->where($where)
+                ->page($page, $limit)
+                ->order($this->sort)
+                ->select();
+            $data = [
+                'code' => 0,
+                'msg' => '',
+                'count' => $count,
+                'data' => $list,
+            ];
+            return json($data);
+/*            if (input('selectFieds')) {
                 return $this->selectList();
             }
             $count = $this->model->count();
@@ -65,7 +86,7 @@ class OrderRefund extends AdminController
                 'count' => $count,
                 'data' => $list,
             ];
-            return json($data);
+            return json($data);*/
         }
         return $this->fetch();
     }
@@ -137,6 +158,16 @@ class OrderRefund extends AdminController
                 }
 
                 $pay_save = $order_pay->save();
+
+                // 积分退款
+                $goods_objs = $order->goods;
+                foreach ($goods_objs as $goods_obj){
+                    if ($goods_obj->is_deduction === 1 ){
+                        $credit_type = CreditType::find($goods_obj->deduction);
+                        Member::where('id', $user->id)->inc($credit_type->value, $goods_obj->credit_amount)->update();
+                    };
+                }
+
 
                 if($save === false || $order_save === false || $pay_save === false)
                 {

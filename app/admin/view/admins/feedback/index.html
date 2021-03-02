@@ -1,58 +1,58 @@
-<div class="layuimini-container">
-    <div class="layuimini-main">
-        <table id="currentTable" class="layui-table layui-hide"
-               data-auth-add="{:auth('admins.feedback/add')}"
-               data-auth-edit="{:auth('admins.feedback/edit')}"
-               data-auth-delete="{:auth('admins.feedback/delete')}"
-               data-auth-preview="{:auth('admins.feedback/preview')}"
-               lay-filter="currentTable">
-        </table>
-    </div>
-</div>
-
-<script type="text/javascript">
-
-    require(["jquery", "easy-admin"], function ($, ea) {
-
-        var init = {
-            table_elem: '#currentTable',
-            table_render_id: 'currentTableRenderId',
-            index_url: 'admins.feedback/index',
-            add_url: 'admins.feedback/add',
-            edit_url: 'admins.feedback/edit',
-            delete_url: 'admins.feedback/delete',
-            modify_url: 'admins.feedback/modify',
-            export_url: 'admins.feedback/export',
-            preview_url: 'admins.feedback/preview'
-        };
-
-
-        ea.table.render({
-            init: init,
-            toolbar: ['refresh', 'export'],
-            cols: [[
-                {field: 'uid', minWidth: 200, title: '用户id'},
-                {field: 'state', minWidth: 200, title: '是否解决',search: 'select', selectList: { 1: '已解决',0: '未解决'}},
-                {field: 'create_time', minWidth: 80, title: '创建时间', search: 'range'},
-                {
-                    width: 180,
-                    title: '操作',
-                    templet: ea.table.tool,
-                    operat: [
-                        [{
-                            text: '查看',
-                            url: init.edit_url,
-                            method: 'open',
-                            auth: 'edit',
-                            class: 'layui-btn layui-btn-xs layui-btn-success',
-                            extend: 'data-full="true"',
-                        }],
-                    ]
-                }
-            ]],
-        });
-
-        ea.listen();
-
-    });
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <table id="currentTable" class="layui-table layui-hide"
+               data-auth-add="{:auth('admins.feedback/add')}"
+               data-auth-edit="{:auth('admins.feedback/edit')}"
+               data-auth-delete="{:auth('admins.feedback/delete')}"
+               data-auth-preview="{:auth('admins.feedback/preview')}"
+               lay-filter="currentTable">
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    require(["jquery", "easy-admin"], function ($, ea) {
+
+        var init = {
+            table_elem: '#currentTable',
+            table_render_id: 'currentTableRenderId',
+            index_url: 'admins.feedback/index',
+            add_url: 'admins.feedback/add',
+            edit_url: 'admins.feedback/edit',
+            delete_url: 'admins.feedback/delete',
+            modify_url: 'admins.feedback/modify',
+            export_url: 'admins.feedback/export',
+            preview_url: 'admins.feedback/preview'
+        };
+
+
+        ea.table.render({
+            init: init,
+            toolbar: ['refresh', 'export'],
+            cols: [[
+                {field: 'uid', minWidth: 200, title: '用户id'},
+                {field: 'state', minWidth: 200, title: '是否解决',search: 'select', selectList: { 1: '已解决',0: '未解决'}},
+                {field: 'create_time', minWidth: 80, title: '创建时间', search: 'range'},
+                {
+                    width: 180,
+                    title: '操作',
+                    templet: ea.table.tool,
+                    operat: [
+                        [{
+                            text: '查看',
+                            url: init.edit_url,
+                            method: 'open',
+                            auth: 'edit',
+                            class: 'layui-btn layui-btn-xs layui-btn-success',
+                            extend: 'data-full="true"',
+                        }],
+                    ]
+                }
+            ]],
+        });
+
+        ea.listen();
+
+    });
 </script>

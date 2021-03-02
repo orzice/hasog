@@ -1,55 +1,55 @@
-<div class="layuimini-container">
-    <form id="app-form" class="layui-form layuimini-form">
-        <input type="hidden" name="goods[id]" value="{$row.id}">
-        <div class="layui-form-item">
-            <label class="layui-form-label required">会员id</label>
-            <div class="layui-input-block">
-                <input type="text" name="goods[uid]" readonly="readonly" class="layui-input" lay-verify="required" lay-reqtext="会员id" placeholder="会员id" value="{$row.uid}">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label required">提现编号</label>
-            <div class="layui-input-block">
-                <input type="text" name="goods[number]" readonly="readonly" class="layui-input" lay-verify="required" lay-reqtext="提现编号" placeholder="提现编号" value="{$row.number}">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label required">金额</label>
-            <div class="layui-input-block">
-                <input type="text" name="goods[money]" class="layui-input" lay-verify="required" lay-reqtext="金额" placeholder="金额" value="{$row.money}">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">提现方式</label>
-            <div class="layui-input-block">
-                <input type="radio" name="goods[numstatus]" value="0" title="微信" {eq name="$row.numstatus" value="0"}checked=""{/eq}>
-                <input type="radio" name="goods[numstatus]" value="1" title="支付宝" {eq name="$row.numstatus" value="1"}checked=""{/eq}>
-                <input type="radio" name="goods[numstatus]" value="2" title="余额" {eq name="$row.numstatus" value="2"}checked=""{/eq}>
-                <input type="radio" name="goods[numstatus]" value="3" title="手动" {eq name="$row.numstatus" value="3"}checked=""{/eq}>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">提现方式</label>
-            <div class="layui-input-block">
-                <input type="radio" name="goods[status]" value="0" title="待审核" {eq name="$row.status" value="0"}checked=""{/eq}>
-                <input type="radio" name="goods[status]" value="1" title="待打款" {eq name="$row.status" value="1"}checked=""{/eq}>
-                <input type="radio" name="goods[status]" value="2" title="打款中" {eq name="$row.status" value="2"}checked=""{/eq}>
-                <input type="radio" name="goods[status]" value="3" title="已打款" {eq name="$row.status" value="3"}checked=""{/eq}>
-                <input type="radio" name="goods[status]" value="4" title="已驳回" {eq name="$row.status" value="4"}checked=""{/eq}>
-                <input type="radio" name="goods[status]" value="5" title="无效提现" {eq name="$row.status" value="5"}checked=""{/eq}>
-            </div>
-        </div>
-
-        <div class="hr-line"></div>
-        <div class="layui-form-item text-center">
-            <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit>确认</button>
-            <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">重置</button>
-        </div>
-
-    </form>
-</div>
-<script type="text/javascript">
-    require(["jquery", "easy-admin"], function ($, ea) {
-        ea.listen();
-    });
+<div class="layuimini-container">
+    <form id="app-form" class="layui-form layuimini-form">
+        <input type="hidden" name="goods[id]" value="{$row.id}">
+        <div class="layui-form-item">
+            <label class="layui-form-label required">会员id</label>
+            <div class="layui-input-block">
+                <input type="text" name="goods[uid]" readonly="readonly" class="layui-input" lay-verify="required" lay-reqtext="会员id" placeholder="会员id" value="{$row.uid}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required">提现编号</label>
+            <div class="layui-input-block">
+                <input type="text" name="goods[number]" readonly="readonly" class="layui-input" lay-verify="required" lay-reqtext="提现编号" placeholder="提现编号" value="{$row.number}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required">金额</label>
+            <div class="layui-input-block">
+                <input type="text" name="goods[money]" class="layui-input" lay-verify="required" lay-reqtext="金额" placeholder="金额" value="{$row.money}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">提现方式</label>
+            <div class="layui-input-block">
+                <input type="radio" name="goods[numstatus]" value="0" title="微信" {eq name="$row.numstatus" value="0"}checked=""{/eq}>
+                <input type="radio" name="goods[numstatus]" value="1" title="支付宝" {eq name="$row.numstatus" value="1"}checked=""{/eq}>
+                <input type="radio" name="goods[numstatus]" value="2" title="余额" {eq name="$row.numstatus" value="2"}checked=""{/eq}>
+                <input type="radio" name="goods[numstatus]" value="3" title="手动" {eq name="$row.numstatus" value="3"}checked=""{/eq}>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">提现方式</label>
+            <div class="layui-input-block">
+                <input type="radio" name="goods[status]" value="0" title="待审核" {eq name="$row.status" value="0"}checked=""{/eq}>
+                <input type="radio" name="goods[status]" value="1" title="待打款" {eq name="$row.status" value="1"}checked=""{/eq}>
+                <input type="radio" name="goods[status]" value="2" title="打款中" {eq name="$row.status" value="2"}checked=""{/eq}>
+                <input type="radio" name="goods[status]" value="3" title="已打款" {eq name="$row.status" value="3"}checked=""{/eq}>
+                <input type="radio" name="goods[status]" value="4" title="已驳回" {eq name="$row.status" value="4"}checked=""{/eq}>
+                <input type="radio" name="goods[status]" value="5" title="无效提现" {eq name="$row.status" value="5"}checked=""{/eq}>
+            </div>
+        </div>
+
+        <div class="hr-line"></div>
+        <div class="layui-form-item text-center">
+            <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit>确认</button>
+            <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">重置</button>
+        </div>
+
+    </form>
+</div>
+<script type="text/javascript">
+    require(["jquery", "easy-admin"], function ($, ea) {
+        ea.listen();
+    });
 </script>

@@ -41,8 +41,8 @@
                                                         <h5>用户统计</h5>
                                                     </div>
                                                     <div class="panel-content">
-                                                        <h1 class="no-margins">1234</h1>
-                                                        <small>当前分类总记录数</small>
+                                                        <h1 class="no-margins">{$res.member}</h1>
+                                                        <small>当前用户总记录数</small>
                                                     </div>
                                                 </div>
                                             </div>
@@ -55,8 +55,8 @@
                                                         <h5>商品统计</h5>
                                                     </div>
                                                     <div class="panel-content">
-                                                        <h1 class="no-margins">1234</h1>
-                                                        <small>当前分类总记录数</small>
+                                                        <h1 class="no-margins">{$res.goods}</h1>
+                                                        <small>当前商品总记录数</small>
                                                     </div>
                                                 </div>
                                             </div>
@@ -66,11 +66,11 @@
                                                 <div class="panel-body">
                                                     <div class="panel-title">
                                                         <span class="label pull-right layui-bg-orange">实时</span>
-                                                        <h5>浏览统计</h5>
+                                                        <h5>今日注册</h5>
                                                     </div>
                                                     <div class="panel-content">
-                                                        <h1 class="no-margins">1234</h1>
-                                                        <small>当前分类总记录数</small>
+                                                        <h1 class="no-margins">{$res.list}</h1>
+                                                        <small>今日注册总记录数</small>
                                                     </div>
                                                 </div>
                                             </div>
@@ -83,8 +83,8 @@
                                                         <h5>订单统计</h5>
                                                     </div>
                                                     <div class="panel-content">
-                                                        <h1 class="no-margins">1234</h1>
-                                                        <small>当前分类总记录数</small>
+                                                        <h1 class="no-margins">{$res.order}</h1>
+                                                        <small>当前订单总记录数</small>
                                                     </div>
                                                 </div>
                                             </div>
@@ -101,51 +101,51 @@
                                 <div class="welcome-module">
                                     <div class="layui-row layui-col-space10 layuimini-qiuck">
                                         <div class="layui-col-xs3 layuimini-qiuck-module">
-                                            <a href="javascript:;" layuimini-content-href="page/menu.html" data-title="菜单管理" data-icon="fa fa-window-maximize">
-                                                <i class="fa fa-window-maximize"></i>
-                                                <cite>菜单管理</cite>
+                                            <a href="javascript:;" layuimini-content-href="member.user/index" data-title="会员列表" data-icon="fa fa-list">
+                                                <i class="fa fa-list"></i>
+                                                <cite>会员列表</cite>
                                             </a>
                                         </div>
                                         <div class="layui-col-xs3 layuimini-qiuck-module">
-                                            <a href="javascript:;" layuimini-content-href="page/setting.html" data-title="系统设置" data-icon="fa fa-gears">
-                                                <i class="fa fa-gears"></i>
-                                                <cite>系统设置</cite>
+                                            <a href="javascript:;" layuimini-content-href="goods.home/index" data-title="商品管理" data-icon="fa fa-shopping-cart">
+                                                <i class="fa fa-shopping-cart"></i>
+                                                <cite>商品管理</cite>
                                             </a>
                                         </div>
                                         <div class="layui-col-xs3 layuimini-qiuck-module">
-                                            <a href="javascript:;" layuimini-content-href="page/table.html" data-title="表格示例" data-icon="fa fa-file-text">
+                                            <a href="javascript:;" layuimini-content-href="order.home/index" data-title="订单列表" data-icon="fa fa-file-text">
                                                 <i class="fa fa-file-text"></i>
-                                                <cite>表格示例</cite>
+                                                <cite>订单列表</cite>
                                             </a>
                                         </div>
                                         <div class="layui-col-xs3 layuimini-qiuck-module">
-                                            <a href="javascript:;" layuimini-content-href="page/icon.html" data-title="图标列表" data-icon="fa fa-dot-circle-o">
+                                            <a href="javascript:;" layuimini-content-href="page.notice/index" data-title="公告管理" data-icon="fa fa-dot-circle-o">
                                                 <i class="fa fa-dot-circle-o"></i>
-                                                <cite>图标列表</cite>
+                                                <cite>公告管理</cite>
                                             </a>
                                         </div>
                                         <div class="layui-col-xs3 layuimini-qiuck-module">
-                                            <a href="javascript:;" layuimini-content-href="page/form.html" data-title="表单示例" data-icon="fa fa-calendar">
+                                            <a href="javascript:;" layuimini-content-href="finace.uprecord/index" data-title="充值记录" data-icon="fa fa-calendar">
                                                 <i class="fa fa-calendar"></i>
-                                                <cite>表单示例</cite>
+                                                <cite>充值记录</cite>
                                             </a>
                                         </div>
                                         <div class="layui-col-xs3 layuimini-qiuck-module">
-                                            <a href="javascript:;" layuimini-content-href="page/404.html" data-title="404页面" data-icon="fa fa-hourglass-end">
-                                                <i class="fa fa-hourglass-end"></i>
-                                                <cite>404页面</cite>
+                                            <a href="javascript:;" layuimini-content-href="plugin.index/index" data-title="我的插件" data-icon="fa fa-cogs">
+                                                <i class="fa fa-cogs"></i>
+                                                <cite>我的插件</cite>
                                             </a>
                                         </div>
                                         <div class="layui-col-xs3 layuimini-qiuck-module">
-                                            <a href="javascript:;" layuimini-content-href="page/button.html" data-title="按钮示例" data-icon="fa fa-snowflake-o">
-                                                <i class="fa fa-snowflake-o"></i>
-                                                <cite>按钮示例</cite>
+                                            <a href="javascript:;" layuimini-content-href="plugin.cloud/index" data-title="插件市场" data-icon="fa fa-puzzle-piece">
+                                                <i class="fa fa-puzzle-piece"></i>
+                                                <cite>插件市场</cite>
                                             </a>
                                         </div>
                                         <div class="layui-col-xs3 layuimini-qiuck-module">
-                                            <a href="javascript:;" layuimini-content-href="https://www.baidu.com" data-title="百度搜索" data-icon="fa fa-search">
-                                                <i class="fa fa-search"></i>
-                                                <cite>百度搜索</cite>
+                                            <a href="javascript:;" layuimini-content-href="finace.withdrawsts/index" data-title="提现统计" data-icon="fa fa-area-chart">
+                                                <i class="fa fa-area-chart"></i>
+                                                <cite>提现统计</cite>
                                             </a>
                                         </div>
                                     </div>
@@ -155,11 +155,73 @@
 
                     </div>
                 </div>
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md6">
+                        <div class="layui-card">
+                            <div class="layui-card-header"><i class="fa fa-warning icon"></i>余额排行</div>
+                            <div class="layui-card-body layui-text">
+                                <table class="layui-table">
+                                    <colgroup>
+                                        <col width="180">
+                                        <col>
+                                    </colgroup>
+                                    <tbody>
+                                    <tr>
+                                        <td>排名</td>
+                                        <td>用户ID</td>
+                                        <td>
+                                            余额
+                                        </td>
+                                    </tr>
+                                    {foreach $member as $key=>$vo }
+                                    <tr>
+                                        <td>{$vo.ph}</td>
+                                        <td>{$vo.id}</td>
+                                        <td>{$vo.credit2}</td>
+                                    </tr>
+                                    {/foreach}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-col-md6">
+                        <div class="layui-card">
+                            <div class="layui-card-header"><i class="fa fa-credit-card icon icon-blue"></i>订单排行</div>
+                            <div class="layui-card-body layui-text">
+                                <table class="layui-table">
+                                    <colgroup>
+                                        <col width="180">
+                                        <col>
+                                    </colgroup>
+                                    <tbody>
+                                    <tr>
+                                        <td>排名</td>
+                                        <td>用户ID</td>
+                                        <td>
+                                            订单总数
+                                        </td>
+                                    </tr>
+                                    {foreach $list as $key=>$vo }
+                                    <tr>
+                                        <td>{$vo.ph}</td>
+                                        <td>{$vo.id}</td>
+                                        <td>{$vo.count}</td>
+                                    </tr>
+                                    {/foreach}
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
             </div>
 
             <div class="layui-col-md4">
                 <div class="layui-card">
-                    <div class="layui-card-header"><i class="fa fa-fire icon"></i>版本信息</div>
+                    <div class="layui-card-header"><i class="fa fa-fire icon"></i>订单排行</div>
                     <div class="layui-card-body layui-text">
                         <table class="layui-table">
                             <colgroup>
@@ -238,6 +300,7 @@
                 </div>
 
             </div>
+
         </div>
     </div>
 </div>
