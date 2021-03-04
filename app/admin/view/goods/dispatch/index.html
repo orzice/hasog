@@ -39,7 +39,7 @@ require(["jquery", "easy-admin",'miniTab'], function ($, ea,miniTab) {
                         title: '配置逻辑',
                         templet: function(d) {
                             //return '<a class="layui-btn layui-btn-normal layui-btn-xs" data-width="100%"  data-height="100%" data-open="goods.dispatch/data?id='+d.id+'" data-title="配置逻辑">配置逻辑</a>';
-                            return '<a class="layui-btn layui-btn-normal layui-btn-xs" data-width="100%"  data-height="100%" layuimini-content-href="goods.dispatch/data?id='+d.id+'" data-title="【'+d.dispatch_name+'】的配置逻辑">配置逻辑</a>';
+                            return '<a class="layui-btn layui-btn-normal layui-btn-xs" data-width="100%"  data-height="100%" layuimini-content-href="/admin/goods.dispatch/data?id='+d.id+'" data-title="【'+d.dispatch_name+'】的配置逻辑">配置逻辑</a>';
                         }
                     },
                     {
