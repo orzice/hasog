@@ -737,25 +737,26 @@ class Order extends ApiController
     // 删除订单
     public function delete_order()
     {
-        $post = $this->request->post();
-        $order_id = isset($post['order_id']) ? $post['order_id'] : null;
-        empty($order_id) && $this->error('订单不存在');
-        $user_id = $this->MemberId();
-        $user = Member::find($user_id);
-        $order = OrderModel::where('uid', $user_id)->where('id', $order_id)->find();
-        empty($order) && $this->error('订单不存在');
-        if ($order->status === -1 || $order->status === 3) {
-            try {
-                $save = $order->delete();
-                if ($save === false) {
-                    throw new \Exception('删除订单失败');
-                }
-            } catch (\Exception $e) {
-                $this->error('删除订单失败');
-            }
-            $this->success('删除订单成功');
-        }
-        $this->error('该订单当前状态不能删除订单');
+//        $post = $this->request->post();
+//        $order_id = isset($post['order_id']) ? $post['order_id'] : null;
+//        empty($order_id) && $this->error('订单不存在');
+//        $user_id = $this->MemberId();
+//        $user = Member::find($user_id);
+//        $order = OrderModel::where('uid', $user_id)->where('id', $order_id)->find();
+//        empty($order) && $this->error('订单不存在');
+//        if ($order->status === -1 || $order->status === 3) {
+//            try {
+//                $save = $order->delete();
+//                if ($save === false) {
+//                    throw new \Exception('删除订单失败');
+//                }
+//            } catch (\Exception $e) {
+//                $this->error('删除订单失败');
+//            }
+//            $this->success('删除订单成功');
+//        }
+//        $this->error('该订单当前状态不能删除订单');
+        $this->error('当前订单不能删除');
     }
 
     // 用户地址列表及选择
