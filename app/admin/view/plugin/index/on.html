@@ -17,7 +17,7 @@
 
 <tr>
       <td>
-        <img src="https://addon.dismall.com/static/img/admin_plugin_logo.png" width="40" height="40" align="left">
+        <img src="/static/images/admin_plugin_logo.png" width="40" height="40" align="left">
       </td>
       <td>
         <span class="bold">{$vo.name} {$vo.version}</span> 
@@ -32,7 +32,7 @@
       </td>
     <td>
         <div class="layui-btn-container">
-            <a href="###" class="layui-btn layui-btn-normal">更新插件</a>
+            <a href="{:__url('admin/plugin.index/update_dir',['name'=>$vo.namespace])}" class="layui-btn layui-btn-normal">更新插件</a>
             <a href="{:__url('admin/plugin.index/off',['name'=>$vo.namespace])}" target="_self" onclick="layer.open({type: 2,shadeClose: false,content: '插件关闭中，请稍后...'});" class="layui-btn layui-btn-danger">关闭插件</a>
         </div>
     </td>

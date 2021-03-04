@@ -412,11 +412,11 @@ class Home extends AdminController
                     ->whereIn('status', [1,2])
 //                    ->where('status', 1)
 //                    ->whereOr('status', 2)
-                    ->select()->first();;
+                    ->select()->first();
                 !empty($order) && $order->save(['status' => 2, 'express_sn' => json_encode([$item[1]]),
                     'express_company_name' => $item[2], 'express_code' => $item[3],
                     ]);
-                event('OrderDelivers', $item[0])
+                event('OrderDelivers', $item[0]);
             }
             Db::commit();
         } catch (\Exception $e) {

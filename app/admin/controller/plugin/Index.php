@@ -85,6 +85,25 @@ class Index extends AdminController
         $this->success('开启插件成功！', [], __url('admin/plugin.index/index'));
      }
     /**
+     * @NodeAnotation(title="更新本地插件")
+     */
+    public function update_dir($name=null)
+     {
+        if (!$name) {
+            $this->error('请输入插件名称！', [], __url('admin/plugin.index/index'));
+        }
+        // try {
+            $a = Plugins::Update($name);
+        // } catch (\Exception $e) {
+        //     $this->error('插件更新失败！', [], __url('admin/plugin.index/index')); 
+        // }
+        if($a){
+            $this->success('插件更新成功！', [], __url('admin/plugin.index/index'));
+        }else{
+            $this->error('插件更新失败！', [], __url('admin/plugin.index/index')); 
+        }
+     }
+    /**
      * @NodeAnotation(title="关闭插件")
      */
     public function off($name=null)
