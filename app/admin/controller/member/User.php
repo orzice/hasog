@@ -155,11 +155,12 @@ class User extends AdminController
         if ($this->request->isAjax()) {
             $post = $this->request->post();
             $rule = [
-                'mobile|手机'       => 'require|mobile|length:4,20',
+                // 'mobile|手机'       => 'require|mobile|length:4,20',
+                'mobile|推荐人UID'       => 'require|number',
             ];
             $this->validate($post, $rule);
-            if($post['mobile'] == $row['mobile']){$this->error('不能设置自己为自己的上级');}
-            $rows = $this->model->where('mobile',$post['mobile'])->find();
+            if($post['mobile'] == $row['id']){$this->error('不能设置自己为自己的上级');}
+            $rows = $this->model->where('id',$post['mobile'])->find();
             $rows->isEmpty() && $this->error('数据不存在');
 
             event('MemberParent',array(

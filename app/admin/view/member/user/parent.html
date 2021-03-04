@@ -2,6 +2,12 @@
     <form id="app-form" class="layui-form layuimini-form">
 
         <div class="layui-form-item">
+            <label class="layui-form-label required">用户UID</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" readonly value="{$row.id|default=''}">
+            </div>
+        </div>
+        <div class="layui-form-item">
             <label class="layui-form-label required">用户手机号</label>
             <div class="layui-input-block">
                 <input type="text" class="layui-input" readonly value="{$row.mobile|default=''}">
@@ -9,10 +15,10 @@
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label">推荐人手机号</label>
+            <label class="layui-form-label">推荐人UID</label>
             <div class="layui-input-block">
-                <input type="text" name="mobile" class="layui-input" lay-verify="required" lay-reqtext="请输入新的推荐人手机号" placeholder="请输入新的推荐人手机号" value="">
-                <tip>填写新的推荐人手机号。</tip>
+                <input type="text" name="mobile" class="layui-input" lay-verify="required" lay-reqtext="请输入新的推荐人UID" placeholder="填写新的推荐人UID。" value="">
+                <tip>填写新的推荐人UID。</tip>
             </div>
         </div>
 

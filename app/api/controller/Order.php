@@ -612,6 +612,7 @@ class Order extends ApiController
                 $this->error('支付失败请稍后重试');
                 // $this->tuikuan() // 退款操作
             }
+            event('OrderPay',$order_id);
             $this->success('支付成功');
 
         }else{
@@ -634,6 +635,7 @@ class Order extends ApiController
         $order->status = 3;
         $order->finish_time = time();
         try {
+            event('OrderReceiving',$order_id);
             $save = $order->save();
         } catch (\Exception $e) {
             $this->error('确认收货失败请稍后重试');
@@ -678,6 +680,7 @@ class Order extends ApiController
                 Db::rollback();
                 $this->error('申请失败');
             }
+            event('OrderRefund',$order_id);
             $this->success('申请成功');
         }
         $this->error('该订单当前状态不能申请退款');
@@ -714,6 +717,7 @@ class Order extends ApiController
             } catch (\Exception $e) {
                 $this->error('取消订单失败');
             }
+            event('OrderDelete',$order_id);
             $this->success('取消订单成功');
         }
         $this->error('该订单当前状态不能申请退款');
