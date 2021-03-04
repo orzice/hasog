@@ -124,15 +124,17 @@ class Order extends TimeModel
             $array_item = [
                 'goods_id'=> $goods->id,
                 'total'=> $goods_item['goods_num'],
-                'price'=> $goods->price,
+//                'price'=> $goods->price,
+                'price'=> $goods->price * $goods_item['goods_num'],
                 'goods_sn'=> $goods->goods_sn,
                 'thumb'=> $goods->thumb,
                 'title'=> $goods->title,
-                'goods_price'=> $goods->old_price,
-                'payment_amount'=> $goods->price,
+                'payment_amount'=> $goods->price * $goods_item['goods_num'],
+                'goods_price'=> $goods->price,
                 'deduction'=> $goods->deduction,
                 'deduction_rate'=> $goods->deduction_rate,
                 'deduction_most_amount'=> $goods->deduction_amount,
+                'deduction_status'=> $goods->deduction_status,
 //                'deduction_amount'=> $goods->marcket_price - $goods->price,
                 'goods_option_title'=> $goods->sku,
                 'goods_market_price'=> $goods->marcket_price * $goods_item['goods_num'] ,
@@ -140,10 +142,13 @@ class Order extends TimeModel
                 'goods_option'=> json_encode($option),
                 'create_time'=> time(),
             ];
-            if ($use_deduction === 1){
+            if ($use_deduction === 1 && $goods->deduction_status === 1){
                 $array_item['credit_amount'] = $goods->credit_amount; //使用积分数量
                 $array_item['deduction_amount'] = $goods->transfer_amount; // 积分抵扣的总金额
                 $array_item['is_deduction'] = 1; // 是否使用抵扣
+                $array_item['price'] = $goods->old_price * $goods_item['goods_num']; // 商品未抵扣应得总价
+                $array_item['goods_price'] = $goods->old_price; // 商品快照单价
+                $array_item['payment_amount'] = $goods->price; // 支付价格(抵扣后价格)
             }
             // 是否减库存
             $goods_array[] = $array_item;

@@ -1,0 +1,83 @@
+<style>
+    .layui-iconpicker-body.layui-iconpicker-body-page .hide {
+        display: none;
+    }
+</style>
+<link rel="stylesheet" href="__STATIC__/lib/lay-module/autocomplete/autocomplete.css?v={$version}" media="all">
+<div class="layuimini-container">
+    <form id="app-form" class="layui-form layuimini-form">
+
+        <div class="layui-form-item">
+            <label class="layui-form-label required">名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" class="layui-input" lay-verify="required" lay-reqtext="请输入微信支付名称" placeholder="请输入菜单名称" >
+                <tip>支付宝支付名称</tip>
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label required">图标</label>
+            <div class="layui-input-block layuimini-upload">
+                <input name="thumb" class="layui-input layui-col-xs6" lay-verify="required" placeholder="请上传图标" value="">
+                <div class="layuimini-upload-btn">
+                    <span><a class="layui-btn" data-upload="icon" data-upload-number="one" data-upload-exts="png|jpg|ico|jpeg" data-upload-icon="image"><i class="fa fa-upload"></i> 上传</a></span>
+                    <span><a class="layui-btn layui-btn-normal" id="select_icon" data-upload-select="icon" data-upload-number="one" data-upload-mimetype="image/*"><i class="fa fa-list"></i> 选择</a></span>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">是否开启</label>
+            <div class="layui-input-block">
+                <input type="radio" name="status" value="1" title="开启" >
+                <input type="radio" name="status" value="0" title="关闭" checked="">
+            </div>
+        </div>
+
+
+        <div class="hr-line"></div>
+        <div class="layui-form-item text-center">
+            <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit>确认</button>
+            <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">重置</button>
+        </div>
+
+    </form>
+</div>
+<script type="text/javascript">
+
+require(["jquery", "easy-admin", "treetable", "iconPickerFa", "autocomplete"], function ($, ea) {
+
+    var table = layui.table,
+        treetable = layui.treetable,
+        iconPickerFa = layui.iconPickerFa,
+        autocomplete = layui.autocomplete;
+        
+
+
+  iconPickerFa.render({
+                elem: '#icon',
+                url: PATH_CONFIG.iconLess,
+                limit: 12,
+                click: function (data) {
+                    $('#icon').val('fa ' + data.icon);
+                },
+                success: function (d) {
+                    console.log(d);
+                }
+            });
+            autocomplete.render({
+                elem: $('#href')[0],
+                url: ea.url('system.menu/getMenuTips'),
+                template_val: '{{d.node}}',
+                template_txt: '{{d.node}} <span class=\'layui-badge layui-bg-gray\'>{{d.name}}</span>',
+                onselect: function (resp) {
+                }
+            });
+
+            ea.listen();
+    
+});
+</script>

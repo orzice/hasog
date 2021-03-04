@@ -1,0 +1,17 @@
+
+
+  <div class="layui-form-item">
+    <ul class='poster'>
+        <li style="margin: 0;">属性名称</li>
+        <li style="margin: 0;">属性值</li> 
+    </ul>
+
+    <ul class='poster' v-for='(item,index) in poster' :key=index>
+        <li><input type="text" name="goods[dt][]" v-model='item.key' required lay-verify="required" placeholder="请输入属性名称" autocomplete="off" class="layui-input">
+        </li>
+        <li><input type="text" name="goods[dv][]" v-model='item.val' required lay-verify="required" placeholder="请输入属性值" autocomplete="off" class="layui-input">
+        </li> 
+        <div @click='delInfo(index)' style="cursor: pointer;">X</div>
+    </ul>
+</div>
+<div @click='setInfo()'class="layui-btn layui-btn-normal">添加属性</div>

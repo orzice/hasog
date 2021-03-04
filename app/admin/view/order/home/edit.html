@@ -176,6 +176,23 @@ require(["jquery", "easy-admin", "vue"], function ($, ea, Vue) {
             }
         });
     })
+    $('#cancel_order').click(function () {
+        // alert(1)
+        $.ajax({
+            url: './cancel_order',
+            method: 'post',
+            dataType: 'json',
+            data: {'order_id': {$row.id}},
+            success: function(res) {
+                // 假如返回的 res.data 是需要导出的列表数据
+                console.log(res.data);// [{name: 'wang', age: 18}, {name: 'layui', age: 3}]
+                if (res.code == 1){
+                    // $('#status').html(res.data.status)
+                    window.location.reload()
+                }
+            }
+        });
+    })
     $('#add-express').click(function () {
         $('#add-express-div').append('        <div>\n' +
             '            <input style="min-width: 300px;width: 80%; float: left" type="text" name="express_sn[]" class="layui-input" value="">\n' +

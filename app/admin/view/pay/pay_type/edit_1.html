@@ -7,18 +7,6 @@
             </div>
         </div>
 
-        <div class="layui-form-item  layui-row layui-col-xs12">
-            <label class="layui-form-label required" >所属分类</label>
-            <div class="layui-input-block">
-                <select name="category_id" lay-search>
-                    {foreach $pidMenuList as $vo}
-                    <option value="{$vo.id}" {if $category_id==$vo.id}selected=""{/if}>{$vo.name|raw}</option>
-                    {/foreach}
-                </select>
-            </div>
-        </div>
-
-
         <div class="layui-form-item">
             <label class="layui-form-label required">商品类型</label>
             <div class="layui-input-block">
@@ -37,12 +25,9 @@
         <div class="layui-form-item">
             <label class="layui-form-label required">商品属性</label>
             <div class="layui-input-block">
-<!--                <input type="checkbox" name="goods[is_new]" value="1" lay-skin="primary" title="新上" {eq name="$row.is_new" value="1"}checked=""{/eq}>-->
-<!--                <input type="checkbox" name="goods[is_hot]" value="1" lay-skin="primary" title="热卖" {eq name="$row.is_hot" value="1"}checked=""{/eq}>-->
-<!--                <input type="checkbox" name="goods[is_discount]" value="1" lay-skin="primary" title="促销" {eq name="$row.is_discount" value="1"}checked=""{/eq}>-->
-                <input type="checkbox" name="goods[is_new]" value="1" title="新上" {eq name="$row.is_new" value="1"}checked=""{/eq}>
-                <input type="checkbox" name="goods[is_hot]" value="1" title="热卖" {eq name="$row.is_hot" value="1"}checked=""{/eq}>
-                <input type="checkbox" name="goods[is_discount]" value="1" title="促销" {eq name="$row.is_discount" value="1"}checked=""{/eq}>
+                <input type="checkbox" name="goods[is_new]" value="1" lay-skin="primary" title="新上" {eq name="$row.is_new" value="1"}checked=""{/eq}>
+                <input type="checkbox" name="goods[is_hot]" value="1" lay-skin="primary" title="热卖" {eq name="$row.is_hot" value="1"}checked=""{/eq}>
+                <input type="checkbox" name="goods[is_discount]" value="1" lay-skin="primary" title="促销" {eq name="$row.is_discount" value="1"}checked=""{/eq}>
                 <tip></tip>
             </div>
         </div>
@@ -110,48 +95,9 @@
             <label class="layui-form-label">库存</label>
             <div class="layui-input-block">
                 <input type="text" name="goods[stock]" class="layui-input" lay-verify="required" placeholder="" value="{$row.stock}">
+                <tip>商品的剩余数量</tip>
             </div>
         </div>
-
-        <div class="layui-form-item">
-            <label class="layui-form-label">是否开启积分抵扣</label>
-            <div class="layui-input-block">
-                <input type="radio" name="goods[deduction_status]" value="1" title="是" {if $row.deduction_status == 1}checked=""{/if}>
-                <input type="radio" name="goods[deduction_status]" value="0" title="否"   {if $row.deduction_status == 0}checked=""{/if}>
-            </div>
-        </div>
-
-
-        <div class="layui-form-item">
-            <label class="layui-form-label">积分抵扣</label>
-            <div class="layui-input-block">
-                <select name="goods[deduction]">
-                    {foreach $credit_types as $vo}
-                    <option value="{$vo.id}"{if $vo.id == $row.deduction }selected{/if}>{$vo['title']}</option>
-                    {/foreach}
-                </select>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">积分抵扣金额</label>
-            <div class="layui-input-block">
-                <input type="text" name="goods[deduction_amount]" class="layui-input" lay-verify="required" placeholder="" value="{$row.deduction_amount}">
-            </div>
-        </div>
-<!--        <div class="layui-form-item">-->
-<!--            <label class="layui-form-label">积分抵扣余额比例</label>-->
-<!--            <div class="layui-input-block">-->
-<!--                <input type="text" name="goods[deduction_rate]" class="layui-input" lay-verify="required" placeholder="" value="{$row.deduction_rate}">-->
-<!--                <tip>积分/余额 单位%(默认100)</tip>-->
-<!--            </div>-->
-<!--        </div>-->
-        <div class="layui-form-item">
-            <label class="layui-form-label">1积分换算余额</label>
-            <div class="layui-input-block">
-                <input type="text" name="goods[deduction_rate]" class="layui-input" lay-verify="required" placeholder="" value="{$deduction_rate}">
-            </div>
-        </div>
-
         <div class="layui-form-item">
             <label class="layui-form-label">减库存方式</label>
             <div class="layui-input-block">

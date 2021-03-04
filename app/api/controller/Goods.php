@@ -20,6 +20,7 @@ namespace app\api\controller;
 
 use app\common\controller\ApiController;
 use app\common\model\Category;
+use app\common\model\CreditType;
 use app\common\model\GoodsCategory;
 use app\common\model\Member;
 use app\common\model\Goods as GoodsModel;
@@ -138,6 +139,9 @@ class Goods  extends ApiController
             }
         }
         $goods->description = $save_description;
+        $credit_type = CreditType::find($goods->deduction);
+//        $goods->credit_type = $credit_type;
+        $goods->credit_title = $credit_type->title;
 //        print_r($description_array);die();
 //        empty($goods) && $this->error('商品不存在');
         $goods->status === 0 && $this->error('商品已下架');

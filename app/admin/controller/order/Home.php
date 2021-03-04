@@ -19,7 +19,10 @@ namespace app\admin\controller\order;
 
 
 use app\common\components\Excel;
+use app\common\model\CreditType;
 use app\common\model\FinaceOfflinepayment;
+use app\common\model\Member;
+use app\common\model\Order as OrderModel;
 use EasyAdmin\tool\CommonTool;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use think\App;
@@ -343,6 +346,42 @@ class Home extends AdminController
         }
         event('OrderRefund',$order_id);
         $this->success('申请成功', ['status'=>Order::STATUS_ARRAY[$order->status]]);
+    }
+
+
+    /**
+     * @NodeAnotation(title="取消订单")
+     */
+    public function cancel_order(){
+        $post = $this->request->post();
+        $order_id = isset($post['order_id'])? $post['order_id'] : '';
+        $order = Order::where('id', $order_id)->find();
+        $order = Order::where('id', $order_id)
+            ->where('type', 0)
+            ->find();
+        empty($order_id) && $this->error('订单不存在');
+        $user = Member::find($order->uid);
+        if ($order->status === 0 ) {
+            $order->status = -1;
+            try {
+                // 积分退款
+                $goods_objs = $order->goods;
+                foreach ($goods_objs as $goods_obj){
+                    if ($goods_obj->is_deduction == 1 ){
+                        $credit_type = CreditType::find($goods_obj->deduction);
+                        Member::where('id', $user->id)->inc($credit_type->value, $goods_obj->credit_amount)->update();
+                    };
+                }
+                $save = $order->save();
+                if ($save === false) {
+                    throw new \Exception('取消订单失败');
+                }
+            } catch (\Exception $e) {
+                $this->error('取消订单失败');
+            }
+            $this->success('取消订单成功');
+        }
+        $this->error('该订单当前状态不能申请退款');
     }
 
     /**

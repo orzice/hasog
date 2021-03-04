@@ -32,6 +32,8 @@ use app\common\model\Goods;
 use app\common\model\Order as OrderModel;
 
 use app\common\model\OrderPay;
+use app\common\model\PayType;
+use Carbon\Traits\Test;
 use think\Exception;
 use think\facade\Config;
 use think\facade\Db;
@@ -93,10 +95,11 @@ class Order extends ApiController
             $goods_obj = Goods::where('id', $goods_item['goods_id'])
                 ->where('status', 1)->find();
             empty($goods_obj) && $this->error('部分商品不存在或已下架');
-            if($is_deduction === false){
+            // 是否使用抵扣积分
+            if($is_deduction === 1){
 //                $goods_obj->use_deduction = 1;
                 $use_deduction = 1;
-                $credit_result = $goods_obj->calculate_credit($user, $credit_type_array, $goods_item['goods_num']);
+                $credit_result = $goods_obj->calculate_credit($user, $credit_type_array,$goods_item['goods_num']);
                 $credit_type_array = $credit_result['credit_type_array'];
                 if ($credit_result === -1){
                     $this->error('商品积分类型已下架');
@@ -106,15 +109,17 @@ class Order extends ApiController
 //                if (in_array($credit_result['msg'], [1,2])){
 //                }
             }else{
-                // 不使用积分就 赋值不使用积分
-//                $goods_obj->use_deduction = 0;
                 $use_deduction = 0;
+                $credit_result = $goods_obj->calculate_credit($user, $credit_type_array, $goods_item['goods_num'], 0 );
+                $credit_type_array = $credit_result['credit_type_array'];
             }
 
 
             // 优惠价计算
 //            $discount_price += ($goods_obj->market_price - $goods_obj->price) * $goods_item['goods_num'];
-            $discount_price += $goods_obj->total_discount;
+//            $discount_price += $goods_obj->total_discount;
+            $discount_price += $goods_obj->transfer_amount;
+
             // 商品价总计
             $order_goods_price += ($goods_obj->market_price) * $goods_item['goods_num'];
 //            $goods_price += round($goods_obj->price * $goods_item['goods_num'],2);
@@ -126,7 +131,6 @@ class Order extends ApiController
             // 库存处理
             $goods_obj->stock === 0 && $this->error($goods_obj->title . '暂时无货');
             $goods_obj->stock < $goods_item['goods_num'] && $this->error($goods_obj->title . '拍下数量大于库存');
-            // 是否使用抵扣积分
 
 
             // 计算商品价格
@@ -148,49 +152,78 @@ class Order extends ApiController
             $weight += $goods_weight;
             // 计算运费
             $dispatch_obj = $goods_obj->dispatch_obj;
-            $dispatch_datas = DispatchData::where('did', $dispatch_obj->id)->order('display_order')->select();
+            $dispatch_datas = DispatchData::where('did', $dispatch_obj->id)->order('display_order')->select()->toArray();
             // 选出 收货地址 配对的 配送逻辑 并计算运费
-            $goods_dispatch = null;
+            // 全国的优先权最小   其他的按照 优先权
+            $goods_dispatch = 0;
             if (isset($request_address)) {
-                foreach ($dispatch_datas as $dispatch_data) {
-                    $dispatch_address = json_decode($dispatch_data->area);
-                    if ($dispatch_address[0]['id'] == 91) {
-                        $goods_dispatch = $dispatch_data;
-                        break;
-                    } elseif ($dispatch_address[0]['id'] == $request_address->province_id) {
-                        if (isset($dispatch_address[1]['id'])) {
-                            if ($dispatch_address[1]['id'] == $request_address->city_id) {
-                                if (isset($dispatch_address[2]['id'])) {
-                                    if ($dispatch_address[2]['id'] == $request_address->district_id) {
-                                        if (isset($dispatch_address[3]['id'])) {
-                                            if ($dispatch_address[3]['id'] == $request_address->street_id) {
-                                            } else {
-                                                $request_address = $dispatch_address;
-                                                break;
-                                            }
-                                        }
-                                    } else {
-                                        $goods_dispatch = $dispatch_data;
-                                        break;
-                                    }
-                                }
-                            } else {
-                                $goods_dispatch = $dispatch_data;
+                // Orzice 重写配送费计算逻辑
+                $yes_dis = false;
+                $yes_dis_lj = [];
+
+                for ($t=0; $t < count($dispatch_datas); $t++) {
+                    $disp = $dispatch_datas[$t];
+                    $disp_add = json_decode($disp['areas'],true);
+
+                    $yes_dq = '';
+                    //全国权限最低
+                    if ($disp['areas_txt'] == '全国') {
+                        if (!$yes_dis) {
+                            $yes_dis = true;
+                            $yes_dis_lj = $disp;
+                        }
+                    }else{
+                        for ($s=0; $s < count($disp_add); $s++) {
+                            $disp_addp = $disp_add[$s];
+                            $disp_addp_lv = $disp_addp['lv'];
+
+                            if ($disp_addp_lv == 0) {
+                                $disp_addp_id = $request_address['province_id'];
+                            }else if($disp_addp_lv == 1) {
+                                $disp_addp_id = $request_address['city_id'];
+                            }else if($disp_addp_lv == 2) {
+                                $disp_addp_id = $request_address['district_id'];
+                            }else if($disp_addp_lv == 3) {
+                                $disp_addp_id = $request_address['street_id'];
+                            }else{
+                                $disp_addp_id = '';
+                            }
+                            if ($disp_addp_id == '' || $disp_addp_id == 0) {
                                 break;
+                            }
+                            $yes_dq .= $disp_addp['name'];
+
+                            if ($disp_addp['id'] == $disp_addp_id) {
+                                $yes_dis = true;
+                                $yes_dis_lj = $disp;
                             }
                         }
                     }
-                }
-                // 计算运费
-                if ($goods_dispatch) {
-//                $dispatch_price += $first ;
-                    if ($goods_item['goods_num'] > $goods_dispatch->first_piece) {
-                        $remain_goods = $goods_item['goods_num'] - $goods_dispatch->first_piece;
-                        $dispatch_price += $goods_dispatch->first_piece_price;
-                        $remain_price = $goods_dispatch->another_piece === 0 ? 0 : ceil($remain_goods / $goods_dispatch->another_piece) * $goods_dispatch->another_piece_price;
-                        $dispatch_price += $remain_price;
+
+                    //黑名单
+                    if ($disp['state'] == 1 && $yes_dis) {
+                        $this->error($yes_dq.' 该区域禁止配送！');
                     }
                 }
+                if (!$yes_dis) {
+                    $this->error('请更换收货地址，此收货地址不能发货！');
+                }
+                // 计算运费
+                if (count($yes_dis_lj) !== 0) {
+                    //默认价格
+                    $dispatch_price += $yes_dis_lj['first_piece_price'];
+                    if ($goods_item['goods_num'] > $yes_dis_lj['first_piece']) {
+                        $sl = $goods_item['goods_num'] - $yes_dis_lj['first_piece'];
+                        $zsl = $sl / $yes_dis_lj['another_piece'];
+                        //不是整数则加一
+                        if(!is_int($zsl)){
+                            $zsl = intval($zsl)+1;
+                        }
+                        $dispatch_price += $zsl * $yes_dis_lj['another_piece_price'];
+                    }
+
+                }
+
             }
         }
         // 要返回的数据
@@ -206,19 +239,22 @@ class Order extends ApiController
             'order_goods_price' => $order_goods_price, // 总原价
             'price' => $price,                      // 总价(带运费)
             'cost_amount' => $cost_amount,
-            'member_remark' => $member_remark
+            'member_remark' => $member_remark,
+            'is_deduction' => $use_deduction
         ];
         try {
-
+            $msg = true;
             $order = new OrderModel($order_data);
             $order_save = $order->save();
             Db::startTrans();
             // 积分扣除
+            $new_user = Member::where('id', $user->id)->find($user->id);
             foreach ($credit_type_array as $credit_item=>$credit_item_value){
-                if($user->getAttr($credit_item) >= $credit_item_value['amount']){
+                if($new_user->getAttr($credit_item) >= $credit_item_value['amount']){
                     Member::where('id', $user->id)->dec($credit_item, $credit_item_value['amount'])->update();
                 }else{
-                    $this->error('积分扣除失败');
+                    $msg = $credit_item_value['title'].'不足';
+                    break;
                 }
             }
             $order_address = $order->generate_address($request_address);
@@ -232,6 +268,9 @@ class Order extends ApiController
             Db::rollback();
             $order->delete();
             $this->error('生成订单失败，请稍后重试');
+        }
+        if($msg!==true){
+            $this->error($msg);
         }
         $this->success('生成订单成功', ['order_id'=>$order->id,'pay_type' => OrderModel::PAY_TYPE_FRONT,]);
     }
@@ -293,8 +332,8 @@ class Order extends ApiController
             empty($goods_obj) && $this->error('部分商品不存在或已下架');
             // 折扣价计算
             // 是否使用抵扣积分
-            if($is_deduction === false){
-                $credit_result = $goods_obj->calculate_credit($user, $credit_type_array, $goods_item['goods_num']);
+            if($is_deduction === 1){
+                $credit_result = $goods_obj->calculate_credit($user, $credit_type_array, $goods_item['goods_num'], 1);
                 $credit_type_array = $credit_result['credit_type_array'];
                 if ($credit_result === -1){
                     $this->error('商品积分类型已下架');
@@ -303,6 +342,9 @@ class Order extends ApiController
 //                if (in_array($credit_result['msg'], [1,2])){
 //                if (in_array($credit_result['msg'], [1,2])){
 //                }
+            }else{
+                $credit_result = $goods_obj->dont_calculate_credit($user, $credit_type_array, $goods_item['goods_num']);
+                $credit_type_array = $credit_result['credit_type_array'];
             }
 /*            // 判断数组中是否存在这个玩意 存在 相加不存在赋值
             if (empty($credit_type_array[$goods_obj->credit_type_value])){
@@ -315,7 +357,8 @@ class Order extends ApiController
 
             // 优惠价计算
 //            $discount_price += ($goods_obj->market_price - $goods_obj->price) * $goods_item['goods_num'];
-            $discount_price += $goods_obj->total_discount;
+//            $discount_price += $goods_obj->total_discount;
+            $discount_price += $goods_obj->transfer_amount;
             // 商品价总计
             $order_goods_price += ($goods_obj->market_price) * $goods_item['goods_num'];
 //            $goods_price += round($goods_obj->price * $goods_item['goods_num'],2);
@@ -341,49 +384,78 @@ class Order extends ApiController
             $weight += $goods_weight;
             // 计算运费
             $dispatch_obj = $goods_obj->dispatch_obj;
-            $dispatch_datas = DispatchData::where('did', $dispatch_obj->id)->order('display_order')->select();
+            $dispatch_datas = DispatchData::where('did', $dispatch_obj->id)->order('display_order')->select()->toArray();
             // 选出 收货地址 配对的 配送逻辑 并计算运费
+            // 全国的优先权最小   其他的按照 优先权
             $goods_dispatch = 0;
             if (isset($request_address)) {
-                foreach ($dispatch_datas as $dispatch_data) {
-                    $dispatch_address = json_decode($dispatch_data->area);
-                    if ($dispatch_address[0]['id'] == 91) {
-                        $goods_dispatch = $dispatch_data;
-                        break;
-                    } elseif ($dispatch_address[0]['id'] == $request_address->province_id) {
-                        if (isset($dispatch_address[1]['id'])) {
-                            if ($dispatch_address[1]['id'] == $request_address->city_id) {
-                                if (isset($dispatch_address[2]['id'])) {
-                                    if ($dispatch_address[2]['id'] == $request_address->district_id) {
-                                        if (isset($dispatch_address[3]['id'])) {
-                                            if ($dispatch_address[3]['id'] == $request_address->street_id) {
-                                            } else {
-                                                $request_address = $dispatch_address;
-                                                break;
-                                            }
-                                        }
-                                    } else {
-                                        $goods_dispatch = $dispatch_data;
-                                        break;
-                                    }
-                                }
-                            } else {
-                                $goods_dispatch = $dispatch_data;
+                // Orzice 重写配送费计算逻辑
+                $yes_dis = false;
+                $yes_dis_lj = [];
+
+                for ($t=0; $t < count($dispatch_datas); $t++) {
+                    $disp = $dispatch_datas[$t];
+                    $disp_add = json_decode($disp['areas'],true);
+
+                    $yes_dq = '';
+                    //全国权限最低
+                    if ($disp['areas_txt'] == '全国') {
+                        if (!$yes_dis) {
+                            $yes_dis = true;
+                            $yes_dis_lj = $disp;
+                        }
+                    }else{
+                        for ($s=0; $s < count($disp_add); $s++) {
+                            $disp_addp = $disp_add[$s];
+                            $disp_addp_lv = $disp_addp['lv'];
+
+                            if ($disp_addp_lv == 0) {
+                                $disp_addp_id = $request_address['province_id'];
+                            }else if($disp_addp_lv == 1) {
+                                $disp_addp_id = $request_address['city_id'];
+                            }else if($disp_addp_lv == 2) {
+                                $disp_addp_id = $request_address['district_id'];
+                            }else if($disp_addp_lv == 3) {
+                                $disp_addp_id = $request_address['street_id'];
+                            }else{
+                                $disp_addp_id = '';
+                            }
+                            if ($disp_addp_id == '' || $disp_addp_id == 0) {
                                 break;
+                            }
+                            $yes_dq .= $disp_addp['name'];
+
+                            if ($disp_addp['id'] == $disp_addp_id) {
+                                $yes_dis = true;
+                                $yes_dis_lj = $disp;
                             }
                         }
                     }
-                }
-                // 计算运费
-                if ($goods_dispatch) {
-//                $dispatch_price += $first ;
-                    if ($goods_item['goods_num'] > $goods_dispatch->first_piece) {
-                        $remain_goods = $goods_item['goods_num'] - $goods_dispatch->first_piece;
-                        $dispatch_price += $goods_dispatch->first_piece_price;
-                        $remain_price = $goods_dispatch->another_piece === 0 ? 0 : ceil($remain_goods / $goods_dispatch->another_piece) * $goods_dispatch->another_piece_price;
-                        $dispatch_price += $remain_price;
+
+                    //黑名单
+                    if ($disp['state'] == 1 && $yes_dis) {
+                        $this->error($yes_dq.' 该区域禁止配送！');
                     }
                 }
+                if (!$yes_dis) {
+                    $this->error('请更换收货地址，此收货地址不能发货！');
+                }
+                // 计算运费
+                if (count($yes_dis_lj) !== 0) {
+                    //默认价格
+                    $dispatch_price += $yes_dis_lj['first_piece_price'];
+                    if ($goods_item['goods_num'] > $yes_dis_lj['first_piece']) {
+                        $sl = $goods_item['goods_num'] - $yes_dis_lj['first_piece'];
+                        $zsl = $sl / $yes_dis_lj['another_piece'];
+                        //不是整数则加一
+                        if(!is_int($zsl)){
+                            $zsl = intval($zsl)+1;
+                        }
+                        $dispatch_price += $zsl * $yes_dis_lj['another_piece_price'];
+                    }
+
+                }
+
             }
             // 返回配送类型---
         }
@@ -394,6 +466,7 @@ class Order extends ApiController
         $price = $dispatch_price + $goods_price;
         $request_address_id =null;
         !empty($request_address) && $request_address_id = $request_address->id;
+        $credit_type_list = array_values($credit_type_array);
         $data = [
             'goods' => $goods_objs,
             'weight' => $weight,
@@ -405,7 +478,9 @@ class Order extends ApiController
             'discount_price' => $discount_price, // 总折扣价
             'order_goods_price' => $order_goods_price, // 总原价
             'price' => $price,
-            'credit_type_array' => $credit_type_array,  // 商品积分
+//            'credit_type_array' => $credit_type_array,  // 商品积分
+//            'credit_type_list' => $credit_type_list,  // 商品积分
+            'credit_type_array' => $credit_type_list,  // 商品积分
         ];
         $this->success('请求成功', $data);
     }
@@ -627,7 +702,7 @@ class Order extends ApiController
                 // 积分退款
                 $goods_objs = $order->goods;
                 foreach ($goods_objs as $goods_obj){
-                    if ($goods_obj->is_deduction === 1 ){
+                    if ($goods_obj->is_deduction == 1 ){
                         $credit_type = CreditType::find($goods_obj->deduction);
                         Member::where('id', $user->id)->inc($credit_type->value, $goods_obj->credit_amount)->update();
                     };
@@ -692,7 +767,29 @@ class Order extends ApiController
         empty($order) && $this->error('订单不存在');
         // 返回订单字段
         $order->address;
-        $order->goods;
+        // 判断所有的积分
+        $credit_type_array = [];
+        if ($order->is_deduction){
+            $goods_objs = $order->goods;
+            foreach ($goods_objs as $goods_obj){
+                if($goods_obj->is_deduction === 1){
+                    $credit_type = CreditType::find($goods_obj->deduction);
+                    $goods_obj->credit_title = $credit_type->title;
+                    if (empty($credit_type_array[$credit_type->value])){
+                        $credit_type_array[$credit_type->value] = ['amount'=>$goods_obj->credit_amount, 'title'=>$credit_type->title,
+                            'id'=>$credit_type->id, 'could_amount'=>$goods_obj->deduction_amount];
+                    }else{
+                        $credit_type_array[$credit_type->value]['amount'] = $credit_type_array[$credit_type->value]['amount'] + $goods_obj->credit_amount;
+                        $credit_type_array[$credit_type->value]['could_amount'] = $credit_type_array[$credit_type->value]['could_amount'] + $goods_obj->deduction_amount;
+                    }
+                }
+            }
+            $order->goods = $goods_objs;
+        }else{
+            $order->goods;
+        }
+        $order->credit_type_array = array_values($credit_type_array);
+
         $order->address_string();
 //        $order->status = OrderModel::STATUS_ARRAY[$order->status];
 //        $order->enable_refund = in_array($order->status, [1,2,3,]) ? true : false ;
@@ -751,10 +848,11 @@ class Order extends ApiController
     public function pay_type()
     {
         $user_id = 1;
-        $pay_type = OrderModel::PAY_TYPE_FRONT;
-        $pay_type = [
-            ['id'=>3,'name'=> '线下支付','icon'=>'/static/common/images/xianxia.png'],
-        ];
+//        $pay_type = OrderModel::PAY_TYPE_FRONT;
+//        $pay_type = [
+//            ['id'=>3,'name'=> '线下支付','icon'=>'/static/common/images/xianxia.png'],
+//        ];
+        $pay_type = PayType::where('status', 1)->select();
         $this->success('请求成功', ['pay_type' => $pay_type]);
     }
 

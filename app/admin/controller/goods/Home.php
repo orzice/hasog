@@ -109,11 +109,13 @@ class Home extends AdminController
                 'goods.stock|库存' => 'require|number',
                 'goods.reduce_stock_method|减库存方式' => 'require|number|in:0,1,2',
                 'goods.deduction|积分抵扣' => 'number',
-                'goods.deduction_rate|积分抵扣比率' => 'float|between: 0,100',
+//                'goods.deduction_rate|积分抵扣比率' => 'float|between: 0,100',
+                'goods.deduction_rate|积分转余额' => 'float',
                 'goods.deduction_amount|积分抵扣数值' => 'float',
 
                 'goods.no_refund|不可退货退款' => 'require|number|in:0,1',
                 'goods.status|是否上架' => 'require|number|in:0,1',
+                'goods.status|是否开启积分抵扣' => 'require|number|in:0,1',
 
                 'goods.dispatch|配送模板' => 'require|number',
 
@@ -129,14 +131,25 @@ class Home extends AdminController
             $post['goods']['content'] = $post['describe'];
 
 
+            $deduction_rate = isset($post['goods']['deduction_rate']) ? $post['goods']['deduction_rate'] : 0 ;
+            $deduction_amount = isset($post['goods']['deduction_amount']) ? $post['goods']['deduction_amount'] : 0 ;
+//            if ($deduction_rate <= 0){
+//                $this->error('抵扣比率不能小于等于0');
+//            }
+            if ($deduction_rate <= 0.01){
+                $this->error('积分转余额不能小于等于0且有效数字为两位');
+            }
+            if ($deduction_amount < 0){
+                $this->error('抵扣金额不能小于0');
+            }
             $deduction_amount = isset($post['deduction_amount']) ? $post['deduction_amount'] : 0 ;
             $price = isset($post['price']) ? $post['price'] : 0 ;
             if ($deduction_amount > $price){
                 $this->error('抵扣金额不得大于现价');
             }
-            $market_amount = isset($post['goods']['market_amount']) ? $post['goods']['market_amount'] : 0 ;
+            $market_price = isset($post['goods']['market_price']) ? $post['goods']['market_price'] : 0 ;
             $price = isset($post['goods']['price']) ? $post['goods']['price'] : 0 ;
-            if ($market_amount < $price){
+            if ($market_price < $price){
                 $this->error('市场价不得小于现价');
             }
 
@@ -201,7 +214,7 @@ class Home extends AdminController
         $goodsadd = Config::get('goodsadd');
 //        print_r($goodsadd);
 //        exit();
-        $credit_types = CreditType::select()->all();
+        $credit_types = CreditType::where('value', '<>', 'credit2')->select()->all();
 
         $this->assign('credit_types', $credit_types);
         $dispatch = Dispatch::where('state', 1)->select();
@@ -225,7 +238,6 @@ class Home extends AdminController
         $old_goods_category = GoodsCategory::where('goods_id', $id)
             ->order('create_time', 'desc')
             ->find();
-
         if ($this->request->isAjax()) {
             $post = $this->request->post();
 //            print_r($post);
@@ -245,12 +257,14 @@ class Home extends AdminController
                 'goods.weight|重量' => 'require|number',
                 'goods.stock|库存' => 'require|number',
                 'goods.deduction|积分抵扣' => 'number',
-                'goods.deduction_rate|积分抵扣比率' => 'float|between: 0,100',
+//                'goods.deduction_rate|积分抵扣比率' => 'float|between: 0,100',
+                'goods.deduction_rate|积分转余额' => 'float',
                 'goods.deduction_amount|积分抵扣数值' => 'float',
                 'goods.reduce_stock_method|减库存方式' => 'require|number|in:0,1,2',
 
                 'goods.no_refund|不可退货退款' => 'require|number|in:0,1',
                 'goods.status|是否上架' => 'require|number|in:0,1',
+                'goods.status|是否开启积分抵扣' => 'require|number|in:0,1',
 
                 'goods.dispatch|配送模板' => 'require|number',
 
@@ -265,14 +279,25 @@ class Home extends AdminController
             $post['goods']['thumb_url'] = $post['thumb_url'];
             $post['goods']['content'] = $post['describe'];
 
+            $deduction_rate = isset($post['goods']['deduction_rate']) ? $post['goods']['deduction_rate'] : 0 ;
+            $deduction_amount = isset($post['goods']['deduction_amount']) ? $post['goods']['deduction_amount'] : 0 ;
+//            if ($deduction_rate <= 0){
+//                $this->error('抵扣比率不能小于等于0');
+//            }
+            if ($deduction_rate <= 0.01){
+                $this->error('积分转余额不能小于等于0且有效数字为两位');
+            }
+            if ($deduction_amount < 0){
+                $this->error('抵扣金额不能小于0');
+            }
             $deduction_amount = isset($post['goods']['deduction_amount']) ? $post['goods']['deduction_amount'] : 0 ;
             $price = isset($post['goods']['price']) ? $post['goods']['price'] : 0 ;
             if ($deduction_amount > $price){
                 $this->error('抵扣金额不得大于现价');
             }
-            $market_amount = isset($post['goods']['market_amount']) ? $post['goods']['market_amount'] : 0 ;
+            $market_price = isset($post['goods']['market_price']) ? $post['goods']['market_price'] : 0 ;
             $price = isset($post['goods']['price']) ? $post['goods']['price'] : 0 ;
-            if ($market_amount < $price){
+            if ($market_price < $price){
                 $this->error('市场价不得小于现价');
             }
 
@@ -355,7 +380,6 @@ class Home extends AdminController
             $this->success('保存成功');
         }
 
-
         $goodsadd = Config::get('goodsedit');
         $dispatch = Dispatch::where('state', 1)->select();
         $row['descriptions'] = json_decode($row['description'], true);
@@ -366,11 +390,12 @@ class Home extends AdminController
         // 传入分类选项
         $category_model = new CategoryModel();
         $pidMenuList = $category_model->getCategoryList();
-        $credit_types = CreditType::select()->all();
+        $credit_types = CreditType::where('value', '<>', 'credit2')->select()->all();
         $this->assign('credit_types', $credit_types);
         $this->assign('pidMenuList', $pidMenuList);
 
         $this->assign('category_id', $old_goods_category->category_id);
+        $this->assign('deduction_rate', round($row->deduction_rate/100,2));
 
         $this->assign('dispatch', $dispatch);
         $this->assign('goodsadd', $goodsadd);
