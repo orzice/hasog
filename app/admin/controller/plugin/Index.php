@@ -92,11 +92,11 @@ class Index extends AdminController
         if (!$name) {
             $this->error('请输入插件名称！', [], __url('admin/plugin.index/index'));
         }
-        // try {
+        try {
             $a = Plugins::Update($name);
-        // } catch (\Exception $e) {
-        //     $this->error('插件更新失败！', [], __url('admin/plugin.index/index')); 
-        // }
+        } catch (\Exception $e) {
+            $this->error('插件更新失败！', [], __url('admin/plugin.index/index')); 
+        }
         if($a){
             $this->success('插件更新成功！', [], __url('admin/plugin.index/index'));
         }else{
