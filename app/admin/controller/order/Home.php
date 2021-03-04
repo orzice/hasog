@@ -295,7 +295,7 @@ class Home extends AdminController
     public function refund_order(){
         $post = $this->request->post();
         $order_id = isset($post['order_id'])? $post['order_id'] : '';
-        $order = Order::where('id', $order_id)->find();
+        $order = Order::where('id', $order_id)->where('is_refund', 1)->find();
         (empty($order) || $order->status !== 2)  && $this->error('订单错误');
         try{
             $order->status = 3;

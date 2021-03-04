@@ -55,6 +55,7 @@ class Order extends ApiController
         $order_goods_price = 0;
         $goods_total = 0;
         $cost_amount = 0;
+        $is_refund = 0;// 是否不能退款
         // 是否使用积分抵扣 默认否
         $is_deduction = isset($post['is_deduction']) ? $post['is_deduction'] : false;
         // 初始化 订单商品列表 地址id  重量 运费 等数据
@@ -96,6 +97,9 @@ class Order extends ApiController
                 ->where('status', 1)->find();
             empty($goods_obj) && $this->error('部分商品不存在或已下架');
             // 是否使用抵扣积分
+            if($goods_obj->no_refund === 1){
+                $is_refund = 1;
+            }
             if($is_deduction === 1){
 //                $goods_obj->use_deduction = 1;
                 $use_deduction = 1;
@@ -240,6 +244,7 @@ class Order extends ApiController
             'price' => $price,                      // 总价(带运费)
             'cost_amount' => $cost_amount,
             'member_remark' => $member_remark,
+            'is_refund' => $is_refund,
             'is_deduction' => $use_deduction
         ];
         try {
@@ -279,6 +284,7 @@ class Order extends ApiController
     // 订单生成页面
     public function cache_order()
     {
+        $is_refund = 0;
         $post = $this->request->post();
         $user_id = $this->MemberId();
         $user = Member::where('state', '0')->find($user_id);
@@ -332,6 +338,10 @@ class Order extends ApiController
             empty($goods_obj) && $this->error('部分商品不存在或已下架');
             // 折扣价计算
             // 是否使用抵扣积分
+            if($goods_obj->no_refund === 1){
+                $is_refund = 1;
+            }
+
             if($is_deduction === 1){
                 $credit_result = $goods_obj->calculate_credit($user, $credit_type_array, $goods_item['goods_num'], 1);
                 $credit_type_array = $credit_result['credit_type_array'];
@@ -478,6 +488,7 @@ class Order extends ApiController
             'discount_price' => $discount_price, // 总折扣价
             'order_goods_price' => $order_goods_price, // 总原价
             'price' => $price,
+            'is_refund' => $is_refund, // 是否不能退款
 //            'credit_type_array' => $credit_type_array,  // 商品积分
 //            'credit_type_list' => $credit_type_list,  // 商品积分
             'credit_type_array' => $credit_type_list,  // 商品积分
@@ -654,7 +665,7 @@ class Order extends ApiController
         empty($order_id) && $this->error('订单不存在');
         $user_id = $this->MemberId();
         $user = Member::find($user_id);
-        $order = OrderModel::where('uid', $user_id)->where('id', $order_id)
+        $order = OrderModel::where('uid', $user_id)->where('id', $order_id)->where('is_refund', 0)
             ->where('type', 0)
             ->find();
         empty($order) && $this->error('订单不存在或该订单类型不支持退款');
@@ -797,7 +808,7 @@ class Order extends ApiController
         $order->address_string();
 //        $order->status = OrderModel::STATUS_ARRAY[$order->status];
 //        $order->enable_refund = in_array($order->status, [1,2,3,]) ? true : false ;
-        $order->enable_refund = in_array($order->status, [1,2,3]) && $order->type === 0  ? true : false ;
+        $order->enable_refund = in_array($order->status, [1,2,3]) && $order->type === 0 && $order->is_refund === 0 ? true : false ;
         $order->enable_cancel = $order->status === 0 ? true : false ;
         $order->enable_delete = in_array($order->status, [-1, 3]) ? true : false ;
         $this->success('返回订单成功', ['order' => $order, 'status_array' => OrderModel::STATUS_ARRAY,]);
@@ -832,7 +843,7 @@ class Order extends ApiController
             }
         }
         foreach ($order_list as &$item) {
-            $item->enable_refund = in_array($item->status, [1,2,3]) && $item->type === 0  ? true : false ;
+            $item->enable_refund = in_array($item->status, [1,2,3]) && $item->type === 0 && $item->is_refund === 0  ? true : false ;
             $item->enable_cancel = $item->status === 0 ? true : false ;
             $item->enable_delete = in_array($item->status, [-1, 3]) ? true : false ;
             $item->goods;
