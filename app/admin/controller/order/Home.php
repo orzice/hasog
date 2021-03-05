@@ -485,6 +485,12 @@ class Home extends AdminController
             foreach ($order_goods_list as $order_goods){
                 $order_goods_str .= '商品名称:'.$order_goods->title.',' ;
                 $order_goods_str .= '商品价格:'.$order_goods->price.',' ;
+                $goods_option = !empty($order_goods->goods_option) ? json_decode($order_goods->goods_option, true) : [];
+                $order_goods_str .= '商品规格:(';
+                foreach ($goods_option as $option){
+                    $order_goods_str .= $option['title'].':'.$option['value'].';';
+                }
+                $order_goods_str .= ')';
 //                $order_goods_str .= '商品数量:'.$order_goods->total.',' ;
                 $order_goods_str .= '商品数量:'.$order_goods->total ;
                 $order_goods_str .= "\n";
