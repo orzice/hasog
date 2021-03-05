@@ -473,7 +473,7 @@ class Order extends ApiController
         $goods_price = round($goods_price, 2);
         $dispatch_price = round($dispatch_price, 2);
         // 要返回的数据
-        $price = $dispatch_price + $goods_price;
+        $price = round($dispatch_price + $goods_price, 2);
         $request_address_id =null;
         !empty($request_address) && $request_address_id = $request_address->id;
         $credit_type_list = array_values($credit_type_array);

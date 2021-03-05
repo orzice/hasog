@@ -191,7 +191,11 @@ class Home extends AdminController
         $this->assign('status_array', Order::STATUS_ARRAY);
         $this->assign('plugin', []);
         $this->assign('order_xianxia_id', $order_xianxia_id);
-        $order->goods;
+        $goods = $order->goods;
+        foreach ($goods as $item){
+            $item->goods_option = !empty($item->goods_option)?json_decode($item->goods_option, true): [];
+        }
+        $order->goods = $goods;
         $order->status_zh = Order::STATUS_ARRAY[$order->status];
         $this->assign('row', $order);
         return $this->fetch();

@@ -249,7 +249,7 @@
                 <th>商品标题</th>
                 <th>订单商品数</th>
                 <th>真实价格</th>
-                <th>商品编码</th>
+                <th>商品规格</th>
                 <th>商品快照价格</th>
                 <!--                <th>改价金额</th>-->
                 <!--                <th>确定改价</th>-->
@@ -262,7 +262,11 @@
                 <td><a href="/admin/goods.home/edit?id={$goods.goods_id}">{$goods.title}</a></td>
                 <td>{$goods.total}</td>
                 <td>{$goods.price}</td>
-                <td>{$goods.goods_sn}</td>
+<!--                <td>{$goods.goods_sn}</td>-->
+                <td>{foreach $goods.goods_option as $v}
+                    {$v.title}:{$v.value}<br>
+                    {/foreach}
+                </td>
                 <td>{$goods.goods_price}</td>
                 <!--                <td id="change-{$goods.id}" class="change-goods">{$goods.change_price}</td>-->
                 <!--                <td is_input="false" onclick="change_goods(this,'{$goods.id}')">{$goods.change_price}</td>-->
