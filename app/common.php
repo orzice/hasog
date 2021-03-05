@@ -301,7 +301,12 @@ function is_mobile(){
 }
 //判断是否是微信访问
 function is_weixin(){
-  $ua = $_SERVER['HTTP_USER_AGENT'];  
+  if(isset($_SERVER['HTTP_USER_AGENT'])){
+    $ua = $_SERVER['HTTP_USER_AGENT'];
+   }else{
+    $ua = '';
+   }
+   
   //MicroMessenger 是android/iphone版微信所带的
   //Windows Phone 是winphone版微信带的  (这个标识会误伤winphone普通浏览器的访问)
   //if(strpos($ua, 'MicroMessenger') == false || strpos($ua, 'Windows Phone') == false){ 
