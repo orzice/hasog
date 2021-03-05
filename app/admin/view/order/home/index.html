@@ -1,4 +1,4 @@
-    <div class="layuimini-main">
+<div class="layuimini-main">
         <button class="layui-btn layui-btn-normal layui-btn-sm" data-open="" data-title="获取批量发货模板" data-full="false"
                 data-table="currentTableRenderId"><i class="fa fa-download "></i> 获取批量发货模板
         </button>
@@ -7,6 +7,7 @@
         <button class="layui-btn layui-btn-normal layui-btn-sm" data-open="" data-title="批量发货" data-full="false"
                 data-table="currentTableRenderId"><i class="fa fa-upload"></i> 批量发货
         </button>
+
     </div>
 
 
@@ -64,7 +65,7 @@
                 {type: "checkbox"},
                 {field: 'id', minWidth: 30, title: 'ID', searchOp:'='},
                 {field: 'order_sn', minWidth: 80, title: '订单号', searchOp:'='},
-
+                {field: 'type', minWidth: 80, title: '订单类型', search:'select', selectList:{0:'普通订单', 1:'拼团订单'}},
                 {
                     field: 'goods.goods_id', title: '商品ID', minWidth: 300,
                     templet: function (d) {

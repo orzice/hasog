@@ -259,7 +259,7 @@
             {foreach $row.goods as $goods}
             <tr>
                 <td>{$goods.id}</td>
-                <td><a href="/admin/goods.home/edit?id={$goods.goods_id}">{$goods.title}</a></td>
+                <td><a href="{if $row.type===0}/admin/goods.home/edit?id={$goods.goods_id}{else /}/admin/plugins.hasog_pintuan-index-index-edit?id={$goods.goods_id}{/if}">{$goods.title}</a></td>
                 <td>{$goods.total}</td>
                 <td>{$goods.price}</td>
 <!--                <td>{$goods.goods_sn}</td>-->
