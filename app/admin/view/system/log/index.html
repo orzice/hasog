@@ -1,0 +1,41 @@
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <table id="currentTable" class="layui-table layui-hide"
+               lay-filter="currentTable">
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+require(["jquery", "easy-admin"], function ($, ea) {
+
+
+    var init = {
+        table_elem: '#currentTable',
+        table_render_id: 'currentTableRenderId',
+        index_url: 'system.log/index',
+    };
+
+    var util = layui.util;
+    ea.table.render({
+        init: init,
+        toolbar: ['refresh'],
+        cols: [[
+            {field: 'id', width: 80, title: 'ID', search: false},
+            {field: 'admin.username', minWidth: 80, title: '后台用户', search: false},
+            {field: 'method', minWidth: 80, title: '请求方法'},
+            {field: 'url', minWidth: 80, title: '路由地址'},
+            {field: 'title', minWidth: 80, title: '日志标题'},
+            {field: 'content', minWidth: 80, title: '操作内容'},
+            {field: 'ip', minWidth: 80, title: 'IP地址'},
+            {field: 'useragent', minWidth: 80, title: 'useragent'},
+            {field: 'create_time', minWidth: 80, title: '操作时间', search: 'range'},
+        ]],
+    });
+
+    ea.listen();
+    
+    
+});
+</script>

@@ -62,7 +62,8 @@ class SystemLogService
     {
         $this->tablePrefix = Config::get('database.connections.mysql.prefix');
         $this->tableSuffix = date('Ym', time());
-        $this->tableName = "{$this->tablePrefix}system_log_{$this->tableSuffix}";
+        // $this->tableName = "{$this->tablePrefix}system_log_{$this->tableSuffix}";
+        $this->tableName = "{$this->tablePrefix}system_log";
         return $this;
     }
 
@@ -120,6 +121,7 @@ class SystemLogService
         return <<<EOT
 CREATE TABLE `{$this->tableName}` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `admin_name` varchar(150) NOT NULL DEFAULT '' COMMENT '管理员名称',
   `admin_id` int(10) unsigned DEFAULT '0' COMMENT '管理员ID',
   `url` varchar(1500) NOT NULL DEFAULT '' COMMENT '操作页面',
   `method` varchar(50) NOT NULL COMMENT '请求方法',
@@ -129,7 +131,7 @@ CREATE TABLE `{$this->tableName}` (
   `useragent` varchar(255) DEFAULT '' COMMENT 'User-Agent',
   `create_time` int(10) DEFAULT NULL COMMENT '操作时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=630 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='后台操作日志表 - {$this->tableSuffix}';
+) ENGINE=InnoDB AUTO_INCREMENT=630 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='后台操作日志表';
 EOT;
     }
 

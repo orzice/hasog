@@ -6,7 +6,7 @@ return [
     \think\middleware\SessionInit::class,
 
     // 系统操作日志
-    //\app\admin\middleware\SystemLog::class,
+    \app\admin\middleware\SystemLog::class,
 
 
 ];
