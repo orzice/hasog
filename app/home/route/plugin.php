@@ -16,4 +16,5 @@
 // +----------------------------------------------------------------------
 use think\facade\Route;
 
+Route::rule('Install','Install/index');
 Route::rule('<p1>','Index/index');

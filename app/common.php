@@ -21,6 +21,64 @@ use app\common\service\AuthService;
 use think\facade\Cache;
 use think\facade\Config;
 
+if (!function_exists('str_rand')) {
+/*
+ + 产生随机[数字+大写]激活码码
+ + @return string;
+*/
+function str_rand($codeLen){
+    //$str="abcdefghijkmnpqrstuvwxyz0123456789ABCDEFGHIGKLMNPQRSTUVWXYZ";//设置被随机采集的字符串
+    $str="ACEFGHKLQRSTUVWXYZ0123456789";//设置被随机采集的字符串
+    //$str="0123456789";//设置被随机采集的字符串
+    $rand="";
+    for($i=0; $i<$codeLen-1; $i++){
+        $rand .= $str[mt_rand(0, strlen($str)-1)];  //如：随机数为30  则：$str[30]
+    }
+   return $rand;
+}
+}
+/**
+ * 数组 转 对象
+ *
+ * @param array $arr 数组
+ * @return object
+ */
+if (!function_exists('array_to_object')) {
+function array_to_object($arr) {
+    if (gettype($arr) != 'array') {
+        return;
+    }
+    foreach ($arr as $k => $v) {
+        if (gettype($v) == 'array' || getType($v) == 'object') {
+            $arr[$k] = (object)array_to_object($v);
+        }
+    }
+    return (object)$arr;
+}
+}
+ 
+/**
+ * 对象 转 数组
+ *
+ * @param object $obj 对象
+ * @return array
+ */
+if (!function_exists('object_to_array')) {
+function object_to_array($obj) {
+    $obj = (array)$obj;
+    foreach ($obj as $k => $v) {
+        if (gettype($v) == 'resource') {
+            return;
+        }
+        if (gettype($v) == 'object' || gettype($v) == 'array') {
+            $obj[$k] = (array)object_to_array($v);
+        }
+    }
+ 
+    return $obj;
+}
+}
+
 if (!function_exists('RequestPlugin')) {
     /**
      *  后台插件专用 获取路由

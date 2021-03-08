@@ -601,6 +601,9 @@ class Plugins
         }
         closedir($str);
         for ($i=0; $i < count($dir_array); $i++) { 
+            if (is_file($dir.$dir_array[$i])) {
+               continue;
+            }
             $file = $dir.$dir_array[$i].$sep."package.json";
             if (is_file($file)){
                 $handle = fopen($file, 'r');

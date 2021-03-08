@@ -20,6 +20,7 @@ namespace app\home\controller;
 
 use app\HomeController;
 use Hasog\Response;
+use think\facade\Db;
 
 class Index extends HomeController
 {
@@ -120,8 +121,22 @@ class Index extends HomeController
       $Type = $new->Get();
       return download($dir, 'file')->force(false)->expire(2592000)->mimeType($Type);//缓存30天 2592000秒 因为每个请求都十分的消耗性能！但是十分安全！
     }
+    public function int(){
+      $path  = public_path();
+      $dic  = $path.'config'.$this->fg;
+      $lock = $dic .'install'.$this->fg;
+      if (!is_file($lock.'install.lock')) {
+        return true;
+      }
+      return false;
+    }
     public function index()
     {
+      $int =  $this->int();
+      if ($int) {
+        return redirect('/Install');
+      }
+
       $data = config_plus("hasog");
       header('Server: HaSog Server '.$data['version']);
       header('X-Powered-By: HaSog/'.$data['version']);
