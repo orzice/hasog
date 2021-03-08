@@ -45,10 +45,10 @@ class Install extends HomeController
         $errorInfo = '已安装系统，如需重新安装请删除文件：public/config/install/install.lock';
       } elseif (!isReadWrite($dic)) {
           $errorInfo = $dic . '：读写权限不足';
-      } elseif (!isReadWrite($path . 'runtime' . $this->fg)) {
-          $errorInfo = $path . 'runtime' . $this->fg . '：读写权限不足';
-      } elseif (!isReadWrite($path . 'public' . $this->fg)) {
-          $errorInfo = $path . 'public' . $this->fg . '：读写权限不足';
+      } elseif (!isReadWrite($root . 'runtime' . $this->fg)) {
+          $errorInfo = $root . 'runtime' . $this->fg . '：读写权限不足';
+      } elseif (!isReadWrite($root . 'public' . $this->fg)) {
+          $errorInfo = $root . 'public' . $this->fg . '：读写权限不足';
       } elseif (!checkPhpVersion('7.1.0')) {
           $errorInfo = 'PHP版本不能小于7.1.0';
       } elseif (!extension_loaded("PDO")) {
