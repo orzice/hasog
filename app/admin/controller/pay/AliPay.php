@@ -105,6 +105,7 @@ class AliPay extends AdminController
                 'open_status|标准微信支付' => 'require',
                 'is_login|是否登录' => 'require',
             ];
+            $this->validate($post, $rule);
             foreach (['enable_app', 'enable_wap', 'enable_pc'] as $item){
                 $post[$item] = isset($post[$item]) ? $post[$item] : 0;
             }
