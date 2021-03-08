@@ -8,3 +8,4 @@
 *.sql
 *.zip
 .env
+.lock
