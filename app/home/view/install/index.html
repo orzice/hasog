@@ -138,6 +138,12 @@
                 </div>
             </div>
 
+            <div class="layui-form-item">
+                <label class="layui-form-label">后台的地址</label>
+                <div class="layui-input-block">
+                    <input class="layui-input" id="key_admin" name="key_admin" autocomplete="off" lay-verify="required" lay-reqtext="请输入后台名称" placeholder="请输入后台名称" value="admin">
+                </div>
+            </div>
             <p class="desc" style="color: #ff0000;">
                 加密是给登录密码进行加密！安装后不要修改并牢记！否则所有用户无法登陆！
             </p>
@@ -163,7 +169,7 @@
             </div>
 
             <p class="desc">
-                后台登录地址： <a href="<?php echo $currentHost; ?>admin" target="_blank"><?php echo $currentHost; ?><span id="admin_name">admin</a></span>
+                后台登录地址： <a id="admin_url" href="<?php echo $currentHost; ?>admin" target="_blank"><?php echo $currentHost; ?><span id="admin_name">admin</a></span>
             </p>
         </div>
 
@@ -179,8 +185,9 @@
             form = layui.form,
             layer = layui.layer;
 
-        $("#admin_url").bind("input propertychange", function () {
+        $("#key_admin").bind("input propertychange", function () {
             var val = $(this).val();
+            $("#admin_url").attr('href','<?php echo $currentHost; ?>'+val);
             $("#admin_name").text(val);
         });
 

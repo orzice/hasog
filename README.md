@@ -1,203 +1,98 @@
-# 还在开发中！预计3月15日发布1.0.0 Bate版！
+<h1 align="center">HaSog幻神商城</h1>
+
+<p align="center">
+<a href="https://www.hasog.com"><img src="https://img.shields.io/badge/license-AGPL--3.0-blue" alt="AGPL"></a>
+<a href="https://www.hasog.com"><img src="https://img.shields.io/badge/HaSog-开发中-brightgreen" alt="badge"></a>
+<a href="https://gitee.com/orzice/hasog/members"><img src="https://gitee.com/orzice/hasog/badge/fork.svg?theme=dark" alt="fork"></a>
+</p>
 
 
+原有项目运营2年，遇到了无数的难题和痛点，苦于市面上并没有相似需求的项目，此项目专为解决需求痛点进行重新开发！加了很多新特性！基于 Tp6 开发的一个商城系统，适合刚起步的创业型公司。
 
-# HaSog（幻神商城系统）
+**！！ 还在开发中！预计3月15日发布1.0.0 Bate版！！**
 
-HaSog（全名 幻神商城）是基于TP6  开发的一套高扩展的社交电商分销系统。
+欢迎 Star！
 
-原有公司项目运营2年，遇到了无数的难题和痛点，此项目专为解决目前公司项目的痛点进行重新开发！并新加了很多特性！
+问题反馈请 [传送至这里](https://www.hasog.com)
 
-公司原有项目已经运营4年，很多需求在市面上都无法得到满足，此项目的设计理念较为奇特。
-
-
-
-
-> 立项于 2020-10-13日，预计登录平台为：H5 + APP + 小程序（微信 QQ 百度 等..）。
->
-> 开源！开源！开源！开源！
->
-> 原名叫 AcShop 更名为 HaSog系统
->
-> [![HaSog](https://img.shields.io/badge/license-AGPL--3.0-blue)](https://www.hasog.com)
-> [![HaSog](https://img.shields.io/badge/HaSog-开发中-brightgreen)](https://www.hasog.com)
-> [![star](https://gitee.com/orzice/hasog/badge/star.svg?theme=dark)](https://gitee.com/orzice/hasog/stargazers)
-> [![fork](https://gitee.com/orzice/hasog/badge/fork.svg?theme=dark)](https://gitee.com/orzice/hasog/members)
-> 
-> Gitee : https://gitee.com/orzice/hasog
-> 
-> Github : https://github.com/orzice/hasog
-> 
-> 幻神科技：https://www.hasog.com
-> 
-> 
-
-
-
-
-
-## [添加微信群]
-
-幻神商城系统体验官
-
+微信交流群：
 ![](wxq.png)
 
-扫码添加 幻神商城系统体验官微信群！给我们提需求！我们会做得更好！
-
-
-
-
-## [开发团队]
-
+## 开发团队
 >  开发公司：幻神科技 https://www.hasog.com
->
 >  负责人/主程：Orzice/小涛（吴英涛）
->
 > 后端开发：梗集（王国骁） ，王火火（王琰豪）
->
 > 前端开发：慵懒与猫（孙敬冉），M-A-O（张帆）
->
 > UI设计：潮鳴り（姚羽）
 
-## [开始安装]
+## 特点
+- 核心代码只做核心功能，拒绝乱七八糟！
+- 更强大的插件功能
+- 可支持打包 为 APP
+- 可支持打包 为 小程序（微信，QQ，头条，抖音，百度）
+- 多种支付方式随意切换（微信支付，支付宝支付，APP支付，线下付款，收款码转账支付）
+- 精确到街道且更加强大的发货逻辑（如：禁止某村发货，2个地区运费不同）
+- 更加安全的结构，项目内置HTTP请求解析，软件内置防火墙
+- 千人千面，每个人都可以定制自己的首页！
+
+
+## 运行环境
+- PHP 7.2+
+- Mysql 5.6 + （必须支持InnoDB）
+- Redis
 
 
 
-### 1. 运行环境要求
+计划任务
 
-> 后端技术栈：PHP7.2 + Redis + Mysql + Nginx 
->
-> 前端技术栈： Vue.js + uni-app
+> php think cron
 
-后台管理页部分代码参考 easyadmin
+队列
 
+> php think queue:work --sleep=3 --tries=3
 
+伪静态
 
-[队列]
-
-```
-php think queue:work --sleep=3 --tries=3
-```
-
-[计划任务]
-
-```
-php think cron
-```
-
-[Nginx配置]
-
-```
-if (!-e $request_filename) {
-	rewrite  ^(.*)$  /index.php?s=/$1  last;
-}
-```
+> if (!-e $request_filename) {
+>	rewrite  ^(.*)$  /index.php?s=/$1  last;
+>}
 
 
-
-### 2.一键安装
-
-
-
-
-
-
-## [常见问题]
-
-
-
-### 1. 不能注册，提示 没有默认值【需修改Mysql配置】
-
-```
-sql-mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
-
-改为↓
-sql-mode=NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+## 安装
+```shell
+部署后访问自己的域名即可
 ```
 
+## 使用说明
 
 
 
+## 项目实例
+在这里展示已经上线的例子
 
-
-
-
-## [项目实例]
-
-### 1. 商城系统
+###  正常商城系统
 ![](lz.jpg)
 
 
-### 2. 拼团抽奖系统
+### 拼团抽奖系统
 
 ![](lz_pt.jpg)
 
 
 
-## [企划]（挖坑）
-
-- 云端附件支持（本地，阿里云，七牛云.....）
-
-- 更简易的计划任务系统。
-
-- 更高效的队列系统。
-
-- 核心代码只做核心功能，以便以二次开发。
-
-- 更强大的插件功能 （核心代码只做核心功能！其他就交给插件来做！）
-
-- 可支持打包 为 APP！
-
-- 可支持打包 为 小程序（微信，QQ，头条，抖音，百度）！
-
-- 部分代码使用Go语言重写（高并发以及中间件，后期才会做）
-
-- 齐全的支付模块！微信支付，支付宝支付，（H5支付，APP支付，微信内支付，扫码支付）
-
-- 多种支付方式！且可以随意切换！
-
-- 精确到街道的发货逻辑！
-
-- 更加安全的结构！
-
-- 可以自定义界面！每个平台都可自定义！
-
-- 订单发货可以多个快递号！
-
-  
-
-## [特性]
-
-### 简洁高效
-
-HaSog 是开源的、轻巧高效的，源码是透明的。
-默认最小化程序安装，轻装上阵
+## 常见异常
 
 
 
-### 安全稳定
+### 1. 不能注册，提示 没有默认值，Mysql相关。
 
-安全稳定与优秀的用户体验是我们不断的追求，
+```
+Mysql配置，一般宝塔面板会出现这个问题。
 
-
-
-### 高扩展性
-
-扩展性一直是 HaSog 注重的功能之一，
-HaSog  提供丰富灵活的模块扩展软件支持，用户按需下载安装软件，扩展功能。
-同时 HaSog  用户也可以应需求自主开发功能支持。
-后续 HaSog  官方会计划推出更多企业级应用扩展程序支持，敬请期待。
+sql-mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
+改为↓
+sql-mode=NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+```
 
 
-
-
-
-
-
-## [已知缺陷]
-
-- 前端文件因为可以分平台自定义展现，导致性能较低。
-- 所有URL资源请求都要过滤，虽然加强了安全，但是导致性能较低。
-- 为了让插件更加自由，所以插件不会判断是否登录！请不要安装不明来源的插件！以免系统出现问题！
-- 系统对于插件较为开放，不要随意修改插件代码！不要安装不明来源的插件！一旦有一个插件崩溃，整个系统都会崩溃！
 

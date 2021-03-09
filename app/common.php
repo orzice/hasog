@@ -216,7 +216,10 @@ if (!function_exists('__url')) {
      */
     function __url(string $url = '', array $vars = [], $suffix = true, $domain = false)
     {
-        return url($url, $vars, $suffix, $domain)->build();
+        $url = url($url, $vars, $suffix, $domain)->build();
+        $url = str_replace('admin/', config_plus("hasog.Admin").'/', $url);
+        return $url;
+        // return url($url, $vars, $suffix, $domain)->build();
     }
 }
 if (!function_exists('__aurl')) {
@@ -231,7 +234,8 @@ if (!function_exists('__aurl')) {
      */
     function __aurl(string $url = '')
     {
-        return __url('admin/index/index').'#'.__url($url);
+        return __url(config_plus("hasog.Admin").'/index/index').'#'.__url($url);
+        // return __url('admin/index/index').'#'.__url($url);
     }
 }
 
