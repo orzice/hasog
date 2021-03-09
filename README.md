@@ -20,10 +20,15 @@
 
 ## 开发团队
 >  开发公司：幻神科技 https://www.hasog.com
+>  
 >  负责人/主程：Orzice/小涛（吴英涛）
+>  
 > 后端开发：梗集（王国骁） ，王火火（王琰豪）
+> 
 > 前端开发：慵懒与猫（孙敬冉），M-A-O（张帆）
+> 
 > UI设计：潮鳴り（姚羽）
+> 
 
 ## 特点
 - 核心代码只做核心功能，拒绝乱七八糟！
@@ -52,10 +57,11 @@
 > php think queue:work --sleep=3 --tries=3
 
 伪静态
-
-> if (!-e $request_filename) {
->	rewrite  ^(.*)$  /index.php?s=/$1  last;
->}
+```
+ if (!-e $request_filename) {
+	rewrite  ^(.*)$  /index.php?s=/$1  last;
+}
+```
 
 
 ## 安装

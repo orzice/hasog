@@ -103,7 +103,7 @@ class Install extends HomeController
         // HaSog配置初始化
         $hasog['pwSDK'] = $key;
         $hasog['userPW'] = $key_user;
-        @file_put_contents($dic_r.'hasog.php', $this->getHaSogConfig($hasog),$key_admin);
+        @file_put_contents($dic_r.'hasog.php', $this->getHaSogConfig($hasog,$key_admin));
 
         // DB类初始化
         $config = [
@@ -195,8 +195,8 @@ class Install extends HomeController
         // 处理安装文件
         !is_dir($lock) && @mkdir($lock);
         @file_put_contents($lock.'install.lock', date('Y-m-d H:i:s'));
-        @file_put_contents($dic_r.'app.php', $this->getAppConfig(),$key_admin);
-        @file_put_contents($dic_r.'database.php', $this->getDatabaseConfig($cons['connections']['install']),$key_admin);
+        @file_put_contents($dic_r.'app.php', $this->getAppConfig($key_admin));
+        @file_put_contents($dic_r.'database.php', $this->getDatabaseConfig($cons['connections']['install'],$key_admin));
         Db::commit();
     } catch (\Throwable $e) {
         Db::rollback();

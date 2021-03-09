@@ -25,7 +25,7 @@ return [
     // 前台用户密码加密
     'userPW'         => '12333',
     // 云平台配置
-    'CloudUrl'         => 'https://www.hasog.com',
+    'CloudUrl'         => 'https://cloud.hasog.com',
     //  后台访问目录
     'Admin'         => 'admin',
 ];

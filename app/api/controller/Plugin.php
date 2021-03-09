@@ -28,7 +28,7 @@ class Plugin extends ApiController
     public function list()
     {
         $return = [];
-        $data = Plugins::GetPluginList()->ToArray();
+        $data = Plugins::GetPluginList(1)->ToArray();
         for ($i=0; $i < count($data); $i++) { 
             $return['name'][] = $data[$i]['dir'];
             $return['list'][$data[$i]['dir']] = $data[$i];
