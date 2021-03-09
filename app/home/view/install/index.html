@@ -180,11 +180,16 @@
 </div>
 <script src="/static/lib/layui-v2.5.6/layui.js?v=<?php echo time() ?>" charset="utf-8"></script>
 <script>
+
     layui.use(['form', 'layer'], function () {
         var $ = layui.jquery,
             form = layui.form,
             layer = layui.layer;
 
+        var val = $('#key_admin').val();
+        $("#admin_url").attr('href','<?php echo $currentHost; ?>'+val);
+        $("#admin_name").text(val);
+            
         $("#key_admin").bind("input propertychange", function () {
             var val = $(this).val();
             $("#admin_url").attr('href','<?php echo $currentHost; ?>'+val);
