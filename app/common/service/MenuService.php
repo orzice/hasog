@@ -80,7 +80,8 @@ class MenuService
             }
         
 
-            $controller = app('http')->getName();
+            // $controller = app('http')->getName();
+            $controller = config_plus("hasog.Admin");
        
             if (!empty($v['href'] && substr ($v['href'], 0,strlen('plugins.')) !== 'plugins.')) {
                 $v['href'] = __url($v['href']);

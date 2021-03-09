@@ -77,6 +77,7 @@ class Install extends HomeController
         $password = $post['password'];
         $key = $post['key'];
         $key_user = $post['key_user'];
+        $key_admin = $post['key_admin'];
 
 
         // 参数验证
@@ -89,6 +90,8 @@ class Install extends HomeController
             $validateError = '后台加密必须为英文和数字组合！';
         }elseif (!preg_match("/^(([a-z]+[0-9]+)|([0-9]+[a-z]+))[a-z0-9]*$/i",$key_user)) {
             $validateError = '用户加密必须为英文和数字组合！';
+        }elseif (!preg_match("/^(([a-z]+[0-9]+)|([0-9]+[a-z]+))[a-z0-9]*$/i",$key_admin)) {
+            $validateError = '后台地址必须为英文和数字组合！';
         }
         if (!empty($validateError)) {
            return json([
@@ -100,7 +103,7 @@ class Install extends HomeController
         // HaSog配置初始化
         $hasog['pwSDK'] = $key;
         $hasog['userPW'] = $key_user;
-        @file_put_contents($dic_r.'hasog.php', $this->getHaSogConfig($hasog));
+        @file_put_contents($dic_r.'hasog.php', $this->getHaSogConfig($hasog),$key_admin);
 
         // DB类初始化
         $config = [
@@ -192,8 +195,8 @@ class Install extends HomeController
         // 处理安装文件
         !is_dir($lock) && @mkdir($lock);
         @file_put_contents($lock.'install.lock', date('Y-m-d H:i:s'));
-        @file_put_contents($dic_r.'app.php', $this->getAppConfig());
-        @file_put_contents($dic_r.'database.php', $this->getDatabaseConfig($cons['connections']['install']));
+        @file_put_contents($dic_r.'app.php', $this->getAppConfig(),$key_admin);
+        @file_put_contents($dic_r.'database.php', $this->getDatabaseConfig($cons['connections']['install']),$key_admin);
         Db::commit();
     } catch (\Throwable $e) {
         Db::rollback();
@@ -224,7 +227,7 @@ class Install extends HomeController
         return $this->fetch();
     }
 
-function getAppConfig()
+function getAppConfig($key_admin)
 {
     $config = <<<EOT
 <?php
@@ -249,7 +252,9 @@ return [
     'default_timezone' => 'Asia/Shanghai',
 
     // 应用映射（自动多应用模式有效）
-    'app_map'          => [],
+    'app_map'          => [
+        '{$key_admin}' => 'admin'
+    ],
     // 域名绑定（自动多应用模式有效）
     'domain_bind'      => [],
     // 禁止URL访问的应用列表（自动多应用模式有效）
@@ -347,7 +352,7 @@ EOT;
     return $config;
 }
 
-function getHaSogConfig($data)
+function getHaSogConfig($data,$key_admin)
 {
     $config = <<<EOT
 <?php
@@ -378,6 +383,8 @@ return [
     'userPW'         => '{$data['userPW']}',
     // 云平台配置
     'CloudUrl'         => '{$data['CloudUrl']}',
+    //  后台访问目录
+    'Admin'         => '{$key_admin}',
 ];
 
 EOT;
