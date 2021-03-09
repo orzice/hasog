@@ -51,7 +51,7 @@ class Uploadfile extends AdminController
             continue;
           }
             //进行删除文件操作
-             $wjm = ROOT_PATH . 'public/' . $row[$i]['file'];
+             $wjm = root_path() . 'public/' . $row[$i]['file'];
              $wjm = str_replace(DIRECTORY_SEPARATOR, '/', $wjm);
              $wjm = str_replace(DIRECTORY_SEPARATOR, '\/', $wjm);
 

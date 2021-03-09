@@ -59,7 +59,7 @@
             {if $row.status === 2}<button id="receive_goods" type="button" class="layui-btn layui-btn-primary layui-btn-sm">确认收货</button>{/if}
             {if $row.type === 0 && ($row.status === 1 || $row.status === 2 || $row.status === 3) && $row.type===0}<button id="apply_cancel" type="button" class="layui-btn layui-btn-primary layui-btn-sm">申请退款</button>{/if}
 <!--            {if $row.status === 4}<button id="receive_money1" type="button" class="layui-btn layui-btn-primary layui-btn-sm">确认收款</button>{/if}-->
-            {if $row.status === 4}<a href="/admin/finace.offlinepayment/edit?id={$order_xianxia_id}"><button id="receive_money1" type="button" class="layui-btn layui-btn-primary layui-btn-sm">点击去审核</button></a>{/if}
+            {if $row.status === 4}<a href="/{$Admin}/finace.offlinepayment/edit?id={$order_xianxia_id}"><button id="receive_money1" type="button" class="layui-btn layui-btn-primary layui-btn-sm">点击去审核</button></a>{/if}
         </div>
         <!--        <select name="status">
                     {foreach $status_array as $k=>$v}
@@ -229,7 +229,7 @@
     <div class="layui-input-block">
         <!--        <button class="layui-btn layui-btn-normal layui-btn-sm" data-open="system.menu/add" data-title="添加" data-full="true"><i class="fa fa-plus"></i> 添加</button>-->
         <!--        <button class="layui-btn layui-btn-normal layui-btn-sm"-->
-        <!--                data-open="/admin/order.order_goods/get_goods/?order_id={$row.id}" data-title="查看订单商品" data-full="false" data-width="600" data-height="300">-->
+        <!--                data-open="/{$Admin}/order.order_goods/get_goods/?order_id={$row.id}" data-title="查看订单商品" data-full="false" data-width="600" data-height="300">-->
         <!--            查看订单商品-->
         <!--        </button>-->
         <table class="layui-table">
@@ -259,7 +259,7 @@
             {foreach $row.goods as $goods}
             <tr>
                 <td>{$goods.id}</td>
-                <td><a href="{if $row.type===0}/admin/goods.home/edit?id={$goods.goods_id}{else /}/admin/plugins.hasog_pintuan-index-index-edit?id={$goods.goods_id}{/if}">{$goods.title}</a></td>
+                <td><a href="{if $row.type===0}/{$Admin}/goods.home/edit?id={$goods.goods_id}{else /}/{$Admin}/plugins.hasog_pintuan-index-index-edit?id={$goods.goods_id}{/if}">{$goods.title}</a></td>
                 <td>{$goods.total}</td>
                 <td>{$goods.price}</td>
 <!--                <td>{$goods.goods_sn}</td>-->

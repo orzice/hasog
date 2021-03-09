@@ -37,6 +37,18 @@ function str_rand($codeLen){
    return $rand;
 }
 }
+if (!function_exists('yanzhengma')) {
+/*
+ + 产生随机[数字]验证码
+ + @return string;
+*/
+function yanzhengma($length = 6){
+    $min = pow(10 , ($length - 1));
+    $max = pow(10, $length) - 1;
+    return rand($min, $max);
+}
+}
+
 /**
  * 数组 转 对象
  *
@@ -217,7 +229,9 @@ if (!function_exists('__url')) {
     function __url(string $url = '', array $vars = [], $suffix = true, $domain = false)
     {
         $url = url($url, $vars, $suffix, $domain)->build();
-        $url = str_replace('admin/', config_plus("hasog.Admin").'/', $url);
+        if (strpos($url,"/admin/") == 0) {
+            $url = str_replace('/admin/', '/'.config_plus("hasog.Admin").'/', $url);
+        }
         return $url;
         // return url($url, $vars, $suffix, $domain)->build();
     }

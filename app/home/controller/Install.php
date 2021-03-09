@@ -216,7 +216,7 @@ class Install extends HomeController
         $data = [
             'code' => 1,
             'msg'  => '系统安装成功，正在跳转登录页面',
-            'url'  => '/admin',
+            'url'  => '/'.$key_admin,
         ];
         return json($data);
       }
