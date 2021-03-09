@@ -110,8 +110,8 @@ class TransferCredit extends ApiController
             $this->error($validate);
         }
         $amount = $post['amount'];
-        if ($amount <= 0 ){
-            $this->error('请输入正确的转账金额');
+        if ($amount <= 0.01 ){
+            $this->error('转账金额最低为0.01');
         }
 //        $tar_user = Member::where('mobile', $post['target_mobile'])->where('state', 0)->find();
         $tar_user = Member::where('id', $post['target_mobile'])->where('state', 0)->find();

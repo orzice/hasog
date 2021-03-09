@@ -31,6 +31,10 @@ use think\facade\Route;
 //Route::rule('plugin.<p1>-<p2>-<p3>-<p4>','AcShop\plugin\<p1>\api\<p2>\<p3>@<p4>');
 Route::rule('plugin.<p1>-<p2>-<p3>-<p4>','Plugin/call');
 
+//Route::rule('order/wechat_no/<id>','order/wechat_no');
+Route::rule('wechat_front/wechat_no/<id>/<pay_id>','wechat_front/wechat_no');
+Route::rule('wechat_front/wechat_balance/<pay_id>','wechat_front/wechat_balance');
+
 // Route::rule('plugin.<p1>-<p2>-<p3>-<p4>', function ($p1,$p2,$p3,$p4) {
 // 	print_r($p1);
 // 	print_r($p2);

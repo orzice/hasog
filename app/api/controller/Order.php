@@ -30,6 +30,10 @@ use app\common\model\MemberAddress;
 use app\common\model\FinaceOfflinepayment;
 use app\common\model\Goods;
 use app\common\model\Order as OrderModel;
+use app\common\model\PayLog;
+use app\common\pay\WechatPays;
+use Yansongda\Pay\Log;
+
 
 use app\common\model\OrderPay;
 use app\common\model\PayType;
@@ -256,7 +260,20 @@ class Order extends ApiController
             $new_user = Member::where('id', $user->id)->find($user->id);
             foreach ($credit_type_array as $credit_item=>$credit_item_value){
                 if($new_user->getAttr($credit_item) >= $credit_item_value['amount']){
+//                    $old_balance = $new_user->getAttr($credit_item);
                     Member::where('id', $user->id)->dec($credit_item, $credit_item_value['amount'])->update();
+/*                    $balance_record = [
+                        'uid'=>$user->id,
+                        'remark'=>'订单('.$order->id.')'.$credit_item_value['title'].'抵扣使用'.$credit_item_value['amount'],
+                        'before_balance'=> $old_balance,
+                        'balance'=> $old_balance - $credit_item_value['amount'],
+                        'state'=>4,
+                        'money'=>4,
+                    ];
+                    $balance_save = new FinaceBalancesub($balance_record);
+                    if ($balance_save === false){
+                        throw new \Exception('添加失败');
+                    }*/
                 }else{
                     $msg = $credit_item_value['title'].'不足';
                     break;
@@ -497,10 +514,12 @@ class Order extends ApiController
     }
 
 
+
+
     // 支付订单
     public function pay_order()
     {
-        $post = $this->request->post();
+        $post = $this->request->get();
         $order_id = isset($post['order_id']) ? $post['order_id'] : null;
         $pay_type_id = isset($post['pay_type_id']) ? $post['pay_type_id'] : null;
         empty($order_id) && $this->error('订单不存在');
@@ -518,7 +537,6 @@ class Order extends ApiController
         if ($order->status === 0) {
             // 订单的统一操作
             $order->status = 1;
-            $order->pay_time = time();
             $order->pay_type_id = $pay_type_id;
             Db::startTrans();
             // 余额支付
@@ -531,8 +549,11 @@ class Order extends ApiController
                 // 生成账户余额明细 记录
                 $balance_change = new FinaceBalancesub([
                     'uid'=> $user->id,
-                    'balance'=> $user->credit2,
+                    'before_balance'=> $user->credit2,
+                    'remark'=> '订单号'.$order->order_sn.'支付'.$order->price,
+                    'balance'=> $user->credit2 - $order->price,
                     'state'=> 0,
+                    'credit_type'=> 1,
                     'money'=> $order->price,
                 ]);
 //                $user->credit2 -= $order->price;
@@ -578,6 +599,20 @@ class Order extends ApiController
                     $this->error('支付失败请稍后重试');
                 }
             }
+            elseif ($pay_type_id == 1){
+                $wechat_pay = new WechatPays();
+
+                $result = $wechat_pay->jsapi_index($order, true,'http://hasog.chengrx.com/api/wechat_front/wechat_no/'.$order->id, true);
+                Db::commit();
+                $pay_log = $result['pay_log'];
+                $result = $result['result'];
+                $this->assign('order', $order);
+                $this->assign('pay_log', $pay_log);
+                $this->assign('jsApiParameters', $result);
+                $this->assign('redirect_url', 'http://hasog.chengrx.com/#/paySuccess');
+
+                return $this->fetch('/pay/wechat/jsapi');
+            }
             else {
                 $this->error('暂时只支持余额付款和线下支付');
             }
@@ -612,7 +647,7 @@ class Order extends ApiController
                         }
                     }
                 }
-
+                $order->pay_time = time();
                 $save = $order->save();
                 if ($save === false || $goods_result === false || $pay_save === false || $change_save === false  ) {
                     throw new \Exception('添加失败');

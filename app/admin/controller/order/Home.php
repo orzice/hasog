@@ -122,7 +122,15 @@ class Home extends AdminController
             $this->model = $action_model;
             return json($data);
         }
-
+        $order_total = Order::select()->count();
+        $order_total_amount = Order::sum('price');
+        $order_today = Order::where('create_time', '>=', strtotime(date('Y-m-d')));
+        $order_today_total = $order_today->select()->count();
+        $order_today_amount = $order_today->sum('price');
+        $this->assign('order_total', $order_total); // 订单总数
+        $this->assign('order_total_amount', $order_total_amount);// 订单总金额
+        $this->assign('order_today_total', $order_today_total); // 订单今日总数
+        $this->assign('order_today_amount', $order_today_amount);// 订单今日总金额
         $get = $this->request->get();
         $action = isset($get['action']) && !empty($get['action']) ? $get['action'] : '{}';
         $this->assign('action', $action);

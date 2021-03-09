@@ -143,8 +143,11 @@ class OrderRefund extends AdminController
                         $user->credit2 += $order_pay->amount;
                         $balance_change = new FinaceBalancesub([
                             'uid'=> $user->id,
-                            'balance'=> $user->credit2,
+                            'before_balance'=> $user->credit2,
+                            'remark'=> '订单号'.$order->order_sn.'退款'.$order->price,
+                            'balance'=> $user->credit2 + $order->price,
                             'state'=> 1,
+                            'credit_type'=> 1,
                             'money'=> $order->price,
                         ]);
                         $change_save = $balance_change->save();

@@ -23,6 +23,7 @@ use app\common\controller\ApiController;
 use app\common\model\FinaceOfflinepayment;
 use app\common\model\FinaceWithdrawset;
 use think\facade\Config;
+use think\facade\Db;
 use think\facade\Event;
 use app\common\model\FinaceUprecord;
 use app\common\model\FinaceIncome;
@@ -31,6 +32,9 @@ use app\common\model\FinaceWithdrawalrecord;
 use app\common\model\FinaceBalancesub;
 use app\common\model\FinaceOfflinewithdrawals;
 use app\common\model\Member;
+use Yansongda\Pay\Pay;
+use app\common\pay\WechatPays;
+use app\common\model\WechatPay;
 
 class Finace extends ApiController
 {
@@ -70,7 +74,7 @@ class Finace extends ApiController
     //余额充值
     public function topup(){
         // type 0微信 1支付宝 2线下
-        $post = $this->request->post();
+        $post = $this->request->get();
         $id=$this->MemberId();
         $rule = [
             'money|金额'      => 'require|float',
@@ -124,38 +128,104 @@ class Finace extends ApiController
             }
         }
         //充值返回
-        $up = true;
-        if ($up !== true){
-            return api_return(0,'充值失败');
-        }
-        $s = json_decode($set[0]['sole'],true);
-        $moneys = 0;
-        $money = array();
-        foreach ($s as $k=>$v){
-            if ($post['money']>=$v['enough']){
-                $money[$k]['money'] = $v['give'];
+        if ($post['type']==0){
+            $wechat_pay = new WechatPays();
+            $pay = WechatPay::where('is_union',1)->find();
+            if (empty($pay)){
+                return api_return(0,'微信支付通道已关闭');
             }
-        }
-        if (!empty($money)){
-            $money = max($money);
-            if ($set[0]['proportion_status'] == 0){
-                $moneys = $money['money'];
-            }else{
-                $moneys = $post['money']*$money['money']/100;
+            $data = ['total_fee'=>$post['money'],'uid'=> $id];
+            $result = $wechat_pay->jsapi_index($data, false,'http://hasog.chengrx.com/api/wechat_front/wechat_balance/', true );
+            $pay_log = $result['pay_log'];
+            $result = $result['result'];
+//            $user = Member::find($id);
+            $this->assign('uid', $id);
+            $this->assign('pay_log', $pay_log);
+            $this->assign('amount', $post['money']);
+            $this->assign('jsApiParameters', $result);
+            $this->assign('redirect_url', 'http://hasog.chengrx.com/#/paySuccess');
+
+            return $this->fetch('/pay/wechat/jsapi_balance');
+
+            $up = true;
+            if ($up !== true){
+                return api_return(0,'充值失败');
             }
+            $s = json_decode($set[0]['sole'],true);
+            $moneys = 0;
+            $money = array();
+            foreach ($s as $k=>$v){
+                if ($post['money']>=$v['enough']){
+                    $money[$k]['money'] = $v['give'];
+                }
+            }
+            if (!empty($money)){
+                $money = max($money);
+                if ($set[0]['proportion_status'] == 0){
+                    $moneys = $money['money'];
+                }else{
+                    $moneys = $post['money']*$money['money']/100;
+                }
+            }
+            $momber = Member::find($id);
+            $post['money'] = $moneys+$post['money'];
+            $balance = $momber['credit2']+$post['money'];
+            $create_time = time();
+            try {
+                $save = FinaceBalancesub::insert(['uid'=>$id,'balance'=>$balance,'state'=>2,'money'=>$post['money'],'create_time'=>$create_time,'credit_type'=>'1']);
+                $save = Member::update(['id'=>$id,'credit2'=>$balance]);
+                $save = FinaceUprecord::insert(['uid'=>$id,'way'=>1,'money'=>$post['money'],'state'=>1,'create_time'=>$create_time,'credit_type'=>'1']);
+            } catch (\Exception $e) {
+                return api_return(0,'提交失败:'.$e->getMessage());
+            }
+        }else{
+
         }
-        $momber = Member::find($id);
-        $post['money'] = $moneys+$post['money'];
-        $balance = $momber['credit2']+$post['money'];
-        $create_time = time();
-        try {
-            $save = FinaceBalancesub::insert(['uid'=>$id,'balance'=>$balance,'state'=>2,'money'=>$post['money'],'create_time'=>$create_time,'credit_type'=>'1']);
-            $save = Member::update(['id'=>$id,'credit2'=>$balance]);
-            $save = FinaceUprecord::insert(['uid'=>$id,'way'=>1,'money'=>$post['money'],'state'=>1,'create_time'=>$create_time,'credit_type'=>'1']);
-        } catch (\Exception $e) {
-            return api_return(0,'提交失败:'.$e->getMessage());
-        }
+
         if ($save){return api_return(1,'提交成功');}else{return api_return(0,'提交失败');}
+    }
+    public function ceshi(){
+        $s = new \Hasog\wechat\Wechat();
+        $s->init('wxd5093ac3d5c139a0','1604006877','c292d794d2ae3227726637fae6c5d5ca','c292d794d2ae3227726637fae6c5d5ca');
+        $t =  $s->GetOpenid();
+        $config = $this->config();
+        // print_r($openid);
+        // print_r($config);
+        // exit;
+        $order =[
+            'out_trade_no' => time(),
+            'body' => '微信充值',
+            'total_fee'      => '10',
+            // 'openid'      => 'oTSxF6w3cOJ29rhRd6uFxma3cMRw',
+            'openid' => $t,
+        ];
+        
+        $result = Pay::wechat($config)->mp($order);
+		$result = json_encode($result);
+        print_r($result);
+    }
+    public function config(){
+        $config = [
+            'app_id' => 'wxd5093ac3d5c139a0', // 公众号 APPID
+            'mch_id' => '1604006877',
+            'key' => 'c292d794d2ae3227726637fae6c5d5ca',
+            'notify_url' => 'http://yanda.net.cn',
+            'cert_client' => './cert/apiclient_cert.pem', // optional, 退款，红包等情况时需要用到
+            'cert_key' => './cert/apiclient_key.pem',// optional, 退款，红包等情况时需要用到
+            'log' => [ // optional
+                'file' => './logs/wechat.log',
+                'level' => 'info', // 建议生产环境等级调整为 info，开发环境为 debug
+                'type' => 'single', // optional, 可选 daily.
+                'max_file' => 30, // optional, 当 type 为 daily 时有效，默认 30 天
+            ],
+            'http' => [ // optional
+                'timeout' => 5.0,
+                'connect_timeout' => 5.0,
+                // 更多配置项请参考 [Guzzle](https://guzzle-cn.readthedocs.io/zh_CN/latest/request-options.html)
+            ],
+            // 'mode' => 'dev',
+        ];
+return $config;
     }
     public function withdrawal(){
         $id=$this->MemberId();

@@ -12,20 +12,17 @@
 // +----------------------------------------------------------------------
 // | Author：Orzice(小涛)  https://gitee.com/orzice
 // +----------------------------------------------------------------------
-// | DateTime：2020-12-31 18:28:38
+// | DateTime：2020-12-31 18:22:57
 // +----------------------------------------------------------------------
 
-return [
+namespace app\common\model;
 
-    // 不需要验证登录的控制器
-    'no_login_controller' => [
-        'login',
-        'area',
-        'index',
-        'plugin',
-        'page',
-        'goods',
-        'wechat_front',
-    ],
 
-];
+use app\common\model\TimeModel;
+
+class PayLog extends TimeModel
+{
+
+
+
+}

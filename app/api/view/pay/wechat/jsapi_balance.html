@@ -1,0 +1,134 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>支付订单信息</title>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        .content {
+            width: 920px;
+            background-color: #F7F7F7;
+            margin: 0 auto;
+            padding: 1.875rem 1.25rem;
+            border: 3px solid #BCCCEE;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        h2 {
+            color: white;
+            text-shadow: 0 0 0.2em#00AAEE, 0 0 0.2em #00AAEE;
+            text-indent: 5px;
+        }
+        #orderInfo {
+            width: 60%;
+            text-align: left;
+            margin: 0 auto;
+            margin-top: 1.875rem;
+        }
+        #orderInfo > div {
+            margin: 1.25rem 0;
+        }
+        #orderInfo > div > span {
+            display: inline-block;
+            margin-left: 0.625rem;
+        }
+        .money {
+            text-align: right;
+        }
+        .money span {
+            color: red;
+            font-size: 1.125rem;
+        }
+        .pay {
+            color: #fff;
+            border: 0;
+            width: 100%;
+            height: 2.5rem;
+            margin-top: 1.875rem;
+            line-height: 2rem;
+            font-size: 1.0625rem;
+            border-radius: 1.875rem;
+            background-color: #00AAEE;
+        }
+        @media only screen and (max-width: 768px) {
+            .content {
+                width: 100%;
+            }
+            #orderInfo {
+                width: 100%;
+            }
+        }
+        @media only screen and (max-width: 334px) {
+            #oid {
+                font-size: 0.875rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="content">
+    <h2>订单信息</h2>
+    <div id="orderInfo">
+        <div class="uid">
+            充值账户ID:<span id="uid">{$uid}</span>
+        </div>
+        <div class="oid">
+            充值金额:<span id="oid">{$amount}</span>
+        </div>
+        <div class="otime">
+            创&nbsp;建&nbsp;时&nbsp;间:<span id="otime"></span>
+        </div>
+        <div class="money">
+            实付费:<span id="money"><small>￥</small>{$amount}</span>
+        </div>
+        <button class="pay" onclick="callpay();">立即支付</button>
+    </div>
+</div>
+</body>
+<script src="jquery-3.4.1.min.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+    $(function() {
+        $(".content").css("height",$(window).height());
+        $("#otime").html(tier({$pay_log.create_time}));
+    });
+    function tier(data) {
+        return new Date(parseInt(data) * 1000).toLocaleString('chinese',{hour12:false}).replace("/", "-").replace("/", "-");
+    }
+</script>
+<script type="text/javascript">
+    //调用微信JS api 支付
+    callpay()
+    function jsApiCall()
+    {
+        WeixinJSBridge.invoke(
+            'getBrandWCPayRequest',
+            {$jsApiParameters | raw},
+            function(res){
+                WeixinJSBridge.log(res.err_msg);
+                if(!res.err_code){
+                    window.location.href = '{$redirect_url}';
+                }else{
+                    alert(res.err_code+'-'+res.err_desc+'-'+res.err_msg);
+                }
+            }
+        );
+    }
+
+    function callpay()
+    {
+        if (typeof WeixinJSBridge == "undefined"){
+            if( document.addEventListener ){
+                document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
+            }else if (document.attachEvent){
+                document.attachEvent('WeixinJSBridgeReady', jsApiCall);
+                document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
+            }
+        }else{
+            jsApiCall();
+        }
+    }
+</script>
+</html>
