@@ -90,12 +90,12 @@ class Install extends HomeController
             $validateError = '后台加密必须为英文和数字组合！';
         }elseif (!preg_match("/^(([a-z]+[0-9]+)|([0-9]+[a-z]+))[a-z0-9]*$/i",$key_user)) {
             $validateError = '用户加密必须为英文和数字组合！';
-        }elseif (!preg_match("/^(([a-z]+[0-9]+)|([0-9]+[a-z]+))[a-z0-9]*$/i",$key_admin)) {
+        }elseif (!ctype_alnum($key_admin)) {
             $validateError = '后台地址必须为英文和数字组合！';
-        }elseif (!preg_match("/^(([a-z]+[0-9]+)|([0-9]+[a-z]+))[a-z0-9]*$/i",$password)) {
-            $validateError = '后台密码必须为英文和数字组合！';
-        }elseif (!preg_match("/^(([a-z]+[0-9]+)|([0-9]+[a-z]+))[a-z0-9]*$/i",$username)) {
-            $validateError = '后台账号必须为英文和数字组合！';
+        }elseif (!ctype_alnum($password)) {
+            $validateError = '后台密码必须为英文或数字的组合！';
+        }elseif (!ctype_alnum($username)) {
+            $validateError = '后台账号必须为英文或数字的组合！';
         }
         if (!empty($validateError)) {
            return json([
