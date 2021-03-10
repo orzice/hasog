@@ -103,7 +103,7 @@
 
 .login-main .login-top {
     height: 117px;
-    background-color: #148be4;
+    background-color: #fb7299;
     border-radius: 12px 12px 0 0;
     font-family: SourceHanSansCN-Regular;
     font-size: 30px;
@@ -230,7 +230,7 @@ html {
 .login-main .login-bottom .login-btn {
     width: 288px;
     height: 40px;
-    background-color: #1E9FFF;
+    background-color: #fb7299;
     border-radius: 16px;
     margin: 24px auto 0;
     text-align: center;
