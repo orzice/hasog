@@ -13,7 +13,14 @@
 
 欢迎 Star！
 
+
 问题反馈请 [传送至这里](https://www.hasog.com)
+
+**开源**
+
+码云  [https://gitee.com/orzice/hasog](https://gitee.com/orzice/hasog)
+Github  [https://github.com/orzice/hasog](https://github.com/orzice/hasog)
+
 
 微信交流群：
 ![](wxq.png)
@@ -74,6 +81,8 @@ www.a.com/Install
 ![](Install.png)
 
 ## 使用说明
+
+更新中...
 
 
 
