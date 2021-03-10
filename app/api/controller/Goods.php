@@ -54,9 +54,9 @@ class Goods  extends ApiController
                 return api_return(0, '分类不存在或暂时被禁用');
             }
         }else{
-            $goods_list = GoodsModel::select();
+            $goods_list = GoodsModel::where('status', 1);
             $goods_count = $goods_list->count();
-            $goods_list = GoodsModel::paginatefront($get)->select();
+            $goods_list = $goods_list->paginatefront($get)->select();
         }
         foreach ($goods_list as &$goods){
             $category_goods = GoodsCategory::where('goods_id','=', $goods->id)->find();
@@ -162,7 +162,7 @@ class Goods  extends ApiController
     public function goods_tag_list(){
         $get = $this->request->get();
         // 这种方法 分类如果enabled 或者 delete 就还能查出
-        $goods_list = GoodsModel::where('is_new', 1)->whereOr('is_hot', 1)->whereOr('is_discount', 1)
+        $goods_list = GoodsModel::where('status', 1)->where('is_new', 1)->whereOr('is_hot', 1)->whereOr('is_discount', 1)
             ->hidden(['cost_price','reduce_stock_method', 'show_sales' ]);
         $goods_count = $goods_list->count();
         $goods_list = $goods_list->paginatefront($get)->select();
