@@ -22,9 +22,9 @@
 
 Github  [https://github.com/orzice/hasog](https://github.com/orzice/hasog)
 
+**微信交流群**
 
-微信交流群：
-![](wxq.png)
+![](https://images.gitee.com/uploads/images/2021/0310/135948_0e426530_813605.png)
 
 ## 开发团队
 >  开发公司：幻神科技 https://www.hasog.com
@@ -79,7 +79,29 @@ Github  [https://github.com/orzice/hasog](https://github.com/orzice/hasog)
 www.a.com/Install
 ```
 **请牢记加密配置！每次均为随机生成！安装后请务必保存！**
-![](Install.png)
+![](https://images.gitee.com/uploads/images/2021/0310/140035_ca96d7cf_813605.png)
+
+## 未完善功能
+
+有些功能还未完善
+
+- **支付宝支付**
+
+项目时间太紧，所以支付宝支付暂且延后，延迟到1.0.1 BeTa  版本进行更新。
+
+- **高并发相关问题**
+
+时间原因，高并发问题暂时没有解决，也会在1.0.1 BeTa 版本进行更新。
+
+- **前端DIY**
+
+这个会在1.0.2 BeTa 版本进行上线。
+
+- **云平台**
+
+这个会在1.0.0 正式版，进行更新。
+
+
 
 ## 使用说明
 
@@ -91,12 +113,12 @@ www.a.com/Install
 在这里展示已经上线的例子
 
 ###  正常商城系统
-![](lz.jpg)
+![](https://images.gitee.com/uploads/images/2021/0310/140137_3e4de280_813605.jpeg)
 
 
 ### 拼团抽奖系统
 
-![](lz_pt.jpg)
+![](https://images.gitee.com/uploads/images/2021/0310/140202_a35e2ce5_813605.jpeg)
 
 
 
