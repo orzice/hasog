@@ -1130,12 +1130,39 @@ CREATE TABLE `{$tableName}` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='支付日志表';
 ETO;
 $this->detectTable($tableName,$Sql);
+//=================================================
+$tableName = 'page_navigation';
+$Sql = <<<ETO
+CREATE TABLE `{$tableName}` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增id',
+  `state` int(1) NOT NULL DEFAULT '0' COMMENT '状态',
+  `name` varchar(50) NOT NULL DEFAULT '0' COMMENT '名称',
+  `thumb` varchar(255) NOT NULL DEFAULT '0' COMMENT '图标',
+  `link` varchar(255) NOT NULL DEFAULT '0' COMMENT '链接',
+  `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '时间',
+  `weight` int(11) NOT NULL DEFAULT '0' COMMENT '权重',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='快捷导航分类';
+ETO;
+$this->detectTable($tableName,$Sql);
 
 //=================================================
 //===============【添加SQL数据】===================
 //=================================================
 
 
+$tableName = 'page_navigation';
+$Sql = <<<ETO
+INSERT INTO `{$tableName}`  (`id`, `state`, `name`, `thumb`, `link`, `create_time`, `weight`) VALUES
+(4, 1,  '环球美食', '/static/temp/c3.png',  '/#/goods/details/6', 1615362855, 10),
+(5, 1,  '个人美妆', '/static/temp/c5.png',  '#/goods/details/6',  1615362905, 9),
+(6, 1,  '营养保健', '/static/temp/c6.png',  '/#/goods/details/6', 1615362951, 8),
+(7, 1,  '家居厨卫', '/static/temp/c7.png',  '/#', 1615362987, 7),
+(8, 1,  '速食生鲜', '/static/temp/c8.png',  '/#', 1615363038, 6)
+ON DUPLICATE KEY UPDATE `id` = VALUES(`id`), `state` = VALUES(`state`), `name` = VALUES(`name`), `thumb` = VALUES(`thumb`), `link` = VALUES(`link`), `create_time` = VALUES(`create_time`), `weight` = VALUES(`weight`);
+ETO;
+$this->insertTable($tableName,$Sql);
+//=================================================
 $tableName = 'credit_type';
 $Sql = <<<ETO
 INSERT INTO `{$tableName}` (`id`, `title`, `value`, `is_pay`, `is_withdraw`, `is_transfer`, `is_convert`, `create_time`, `update_time`, `delete_time`) VALUES
