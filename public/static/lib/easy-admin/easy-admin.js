@@ -940,7 +940,7 @@ define(["jquery", "tableSelect", "ckeditor"], function ($, tableSelect, undefine
                     $(this).attr('data-title'),
                     admin.url(url),
                     clienWidth,
-                    clientHeight,
+                    clientHeight
                 );
             });
 

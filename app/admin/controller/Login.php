@@ -39,7 +39,7 @@ class Login extends AdminController
         parent::initialize();
         $action = $this->request->action();
         if (!empty(Sessions("id")) && !in_array($action, ['out'])) {
-            $adminModuleName = config('app.admin_alias_name');
+            $adminModuleName = config_plus("hasog.Admin");
             $this->success('已登录，无需再次登录', [], __url("@{$adminModuleName}"));
         }
     }
