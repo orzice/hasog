@@ -31,9 +31,15 @@ class Login extends ApiController
     public function state()
     {
         $user_id = $this->MemberId();
-        $user_id === false && $this->error('请先登录');
+//        $user_id === false && $this->error('请先登录');
+        if($user_id === false){
+            return api_return(0, '请先登录');
+        }
         $user = Member::where('state', '0')->find($user_id);
-        empty($user) && $this->error('该用户不存在或被冻结');
+//        empty($user) && $this->error('该用户不存在或被冻结');
+        if(empty($user)){
+            return api_return(0, '该用户不存在或被冻结');
+        }
         $user = $user->hidden(['password', 'salt', '']);
         $orders = $user->orders();
         $order_paid = $user->orders()->where('status', 1)->select()->count();  //待发货(已付款)
@@ -57,7 +63,9 @@ class Login extends ApiController
             ];
         $user->credit2 = floor($user->credit2 * 100)/100;
         $user->credit4 = floor($user->credit4 * 100)/100;
-        $this->success('获取用户信息成功', ['user_info'=> $user->toArray(), 'order_count'=>$order_count, 'order_all_count'=>$order_all_amount]);
+//        $this->success('获取用户信息成功', ['user_info'=> $user->toArray(), 'order_count'=>$order_count, 'order_all_count'=>$order_all_amount]);
+        return api_return(1, '获取用户信息成功', ['user_info'=> $user->toArray(), 'order_count'=>$order_count, 'order_all_count'=>$order_all_amount]);
+
     }
 
     //登录
@@ -73,21 +81,31 @@ class Login extends ApiController
             ];
             $validate = $this->validate($post, $rule);
             if ($validate !== true){
-                $this->error($validate);
+//                $this->error($validate);
+                return api_return(0, $validate);
             }
             $captcha = isset($post['captcha'])  ? $post['captcha'] : 'null';
             if (!captcha_check($captcha)){
-                $this->error('验证码错误');
+//                $this->error('验证码错误');
+                return api_return(0, '验证码错误');
             }
             //验证失败
             $user = Member::where(['mobile' => $post['mobile']])->find();
-            empty($user) && $this->error('用户名或密码错误');
+//            empty($user) && $this->error('用户名或密码错误');
+            if(empty($user)){
+                return api_return(0, '用户名或密码错误');
+            }
             $is_user = (U_password($post['password']) == $user->password);
             !$is_user && $this->error('用户名或密码错误');
+            if(!$is_user){
+                return api_return(0, '用户名或密码错误');
+            }
             Sessions("member_id", $user->id);
-            $this->success('登录成功了哦');
+//            $this->success('登录成功了哦');
+            return api_return(1, '登录成功了哦');
         }
-        $this->error('您已登录');
+//        $this->error('您已登录');
+        return api_return(0, '您已登录');
     }
 
     /**
@@ -115,16 +133,21 @@ class Login extends ApiController
             ];
             $validate = $this->validate($post, $rule);
             if ($validate !== true){
-                $this->error($validate);
+//                $this->error($validate);
+                return api_return(0, $validate);
             }
 
             //验证失败
             $captcha = isset($post['captcha'])  ? $post['captcha'] : 'null';
             if (!captcha_check($captcha)){
-                $this->error('验证码错误');
+//                $this->error('验证码错误');
+                return api_return(0, '验证码错误');
             }
             $isset_phone = Member::where('mobile', $post['mobile'])->find();
-            !empty($isset_phone) && $this->error('该手机号已注册');
+//            !empty($isset_phone) && $this->error('该手机号已注册');
+            if(!empty($isset_phone)){
+                return api_return(0, '该手机号已注册');
+            }
             $post['password'] = U_password($post['password']);
             $parent_id = isset($post['parent_id'])? $post['parent_id'] : null;
             $array = ['mobile'=> $post['mobile'], 'password'=>$post['password']];
@@ -138,11 +161,18 @@ class Login extends ApiController
                 $user = new Member();
                 $result = $user->save($array);
             } catch (\Exception $e) {
-                $this->error('注册失败,请稍后重试哦');
+//                $this->error('注册失败,请稍后重试哦');
+                return api_return(0, '注册失败,请稍后重试哦');
             }
-            $result ? $this->success('注册成功') : $this->error('注册失败');
+            if($result !== false){
+                return api_return(1, '注册成功');
+            }else{
+                return api_return(0, '注册失败');
+            }
+//            $result ? $this->success('注册成功') : $this->error('注册失败');
         }
-        $this->error('您已登录');
+//        $this->error('您已登录');
+        return api_return(0, '您已登录');
     }
 
     //找回密码
@@ -156,8 +186,12 @@ class Login extends ApiController
     {
         $user_id = $this->MemberId();
 //        $user_id = 1;
-        $user_id === false && $this->error('请先登录');
+//        $user_id === false && $this->error('请先登录');
+        if($user_id === false){
+            return api_return(0, '请先登录');
+        }
         Sessions('member_id', null);
-        $this->success('退出登录成功了哦');
+//        $this->success('退出登录成功了哦');
+        return api_return(1, '退出登录成功了哦');
     }
 }

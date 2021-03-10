@@ -42,7 +42,8 @@ class TransferCredit extends ApiController
         }else {
             $credit_types = CreditType::where($code, 1)->field('id, title, value')->select();
         }
-        $this->success('获取可转账积分列表成功', ['objs'=>$credit_types]);
+//        $this->success('获取可转账积分列表成功', ['objs'=>$credit_types]);
+        return api_return(1, '获取可转账积分列表成功', ['objs'=>$credit_types]);
     }
 
     // 积分转余额
@@ -50,7 +51,10 @@ class TransferCredit extends ApiController
         $post = $this->request->post();
         $user_id = $this->MemberId();
         $user = Member::where('state', '0')->find($user_id);
-        empty($user) && $this->error('用户数据错误');
+//        empty($user) && $this->error('用户数据错误');
+        if(empty($user)){
+            return api_return(0, '用户数据错误');
+        }
 //        $type = $post['type'];
         $rule = [
             'amount|转换金额' => 'require|float',
@@ -59,12 +63,17 @@ class TransferCredit extends ApiController
         $validate = $this->validate($post, $rule);
         //验证失败
         if ($validate !== true) {
-            $this->error('金额数据或转换类型有误');
+//            $this->error('金额数据或转换类型有误');
+            return api_return(0, '金额数据或转换类型有误');
         }
         $allow_credit = CreditType::where('id', $post['credit_type'])->where('is_convert', 1)->find();
-        empty($allow_credit) && $this->error('该类型暂不支持转成余额');
+//        empty($allow_credit) && $this->error('该类型暂不支持转成余额');
+        if(empty($allow_credit)){
+            return api_return(0, '该类型暂不支持转成余额');
+        }
         if($user->credit3 < $post['amount']){
-            $this->error('转换失败, '.$allow_credit->title.'数量不足');
+//            $this->error('转换失败, '.$allow_credit->title.'数量不足');
+            return api_return(0, '转换失败, '.$allow_credit->title.'数量不足');
         }
 //        $is_set = TransferCreditModel::where('uid', $user->id)->where('credit_type', 'credit3')
 //            ->where('status', 0)->find();
@@ -86,9 +95,11 @@ class TransferCredit extends ApiController
             Db::commit();
         }catch (\Exception $e){
             Db::rollback();
-            $this->error('转换失败,请稍后重试');
+//            $this->error('转换失败,请稍后重试');
+            return api_return(0, '转换失败,请稍后重试');
         }
-        $this->success('转换成功');
+//        $this->success('转换成功');
+        return api_return(1, '转换成功');
     }
 
     // 积分转账
@@ -96,7 +107,10 @@ class TransferCredit extends ApiController
         $post = $this->request->post();
         $user_id = $this->MemberId();
         $user = Member::where('state', '0')->find($user_id);
-        empty($user) && $this->error('用户数据错误', [], 'login');
+//        empty($user) && $this->error('用户数据错误', [], 'login');
+        if(empty($user)){
+            return api_return(0, '用户数据错误', [], 'login');
+        }
 //        $type = $post['type'];
         $rule = [
             'amount|转账金额' => 'require|float',
@@ -107,20 +121,32 @@ class TransferCredit extends ApiController
         $validate = $this->validate($post, $rule);
         //验证失败
         if ($validate !== true) {
-            $this->error($validate);
+//            $this->error($validate);
+            return api_return(0, $validate);
         }
         $amount = $post['amount'];
         if ($amount <= 0.01 ){
-            $this->error('转账金额最低为0.01');
+//            $this->error('转账金额最低为0.01');
+            return api_return(0, '转账金额最低为0.01');
         }
 //        $tar_user = Member::where('mobile', $post['target_mobile'])->where('state', 0)->find();
         $tar_user = Member::where('id', $post['target_mobile'])->where('state', 0)->find();
-        empty($tar_user) && $this->error('目标用户未注册或被冻结');
-        $tar_user->id === $user->id && $this->error('暂不支持给自己转账');
+//        empty($tar_user) && $this->error('目标用户未注册或被冻结');
+        if(empty($tar_user)){
+            return api_return(0, '目标用户未注册或被冻结');
+        }
+//        $tar_user->id === $user->id && $this->error('暂不支持给自己转账');
+        if($tar_user->id === $user->id){
+            return api_return(0, '暂不支持给自己转账');
+        }
         $allow_credit = CreditType::where('id', $post['credit_type'])->where('is_transfer', 1)->find();
-        empty($allow_credit) && $this->error('该类型暂不支持转账');
+//        empty($allow_credit) && $this->error('该类型暂不支持转账');
+        if(empty($allow_credit)){
+            return api_return(0, '该类型暂不支持转账');
+        }
         if($user->getAttr($allow_credit->value) < $post['amount']){
-            $this->error('转账失败,'.$allow_credit->title.'不足');
+//            $this->error('转账失败,'.$allow_credit->title.'不足');
+            return api_return(0, '转账失败,'.$allow_credit->title.'不足');
         }
         $this->PluginApiCD('credit_transfer'.$user_id);
         try{
@@ -140,9 +166,11 @@ class TransferCredit extends ApiController
                 throw new Exception('转账失败');
             }
         }catch (\Exception $e){
-        $this->error('转账失败,请稍后重试');
+//        $this->error('转账失败,请稍后重试');
+            return api_return(0, '转账失败,请稍后重试');
         }
-        $this->success('转账成功');
+//        $this->success('转账成功');
+        return api_return(1, '转账成功');
     }
 
     // 积分转账记录
@@ -161,7 +189,8 @@ class TransferCredit extends ApiController
             $credit_type = CreditType::find($item->credit_type);
             $item->credit_type = $credit_type ? $credit_type->title : null;
         }
-        $this->success('请求成功', ['order_list' => $order_list]);
+//        $this->success('请求成功', ['order_list' => $order_list]);
+        return api_return(1, '请求成功', ['order_list' => $order_list]);
     }
 
     // 积分被转账记录
@@ -180,7 +209,8 @@ class TransferCredit extends ApiController
             $credit_type = CreditType::find($item->credit_type);
             $item->credit_type = $credit_type ? $credit_type->title : null;
         }
-        $this->success('请求成功', ['order_list' => $order_list]);
+//        $this->success('请求成功', ['order_list' => $order_list]);
+        return api_return(1, '请求成功', ['order_list' => $order_list]);
     }
 
 

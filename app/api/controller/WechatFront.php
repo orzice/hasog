@@ -88,7 +88,8 @@ class WechatFront extends ApiController
             Log::debug('Alipay notify', $data->all());
         } catch (\Exception $e) {
             Db::rollback();
-            $this->error('支付失败请稍后重试');
+//            $this->error('支付失败请稍后重试');
+            return api_return(0, '支付失败请稍后重试');
         }
         return $pay->success()->send();// laravel 框架中请直接 `return $pay->success()`
     }
@@ -138,7 +139,8 @@ class WechatFront extends ApiController
             Log::debug('Alipay notify', $data->all());
         } catch (\Exception $e) {
             Db::rollback();
-            $this->error('支付失败请稍后重试');
+//            $this->error('支付失败请稍后重试');
+            return api_return(0, '支付失败请稍后重试');
         }
         return $pay->success()->send();// laravel 框架中请直接 `return $pay->success()`
     }

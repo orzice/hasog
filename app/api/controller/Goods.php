@@ -49,7 +49,10 @@ class Goods  extends ApiController
                 $goods_count = $goods_list->count();
                 $goods_list = $goods_list->paginatefront($get)->select();
             }
-            else{$this->error('分类不存在或暂时被禁用');}
+            else{
+//                $this->error('分类不存在或暂时被禁用');
+                return api_return(0, '分类不存在或暂时被禁用');
+            }
         }else{
             $goods_list = GoodsModel::select();
             $goods_count = $goods_list->count();
@@ -113,7 +116,10 @@ class Goods  extends ApiController
         $get = $this->request->get();
         $goods_id = isset($get['goods_id']) ? $get['goods_id'] : null;
         $goods = GoodsModel::where('id', '=', $goods_id)->hidden(['cost_price','reduce_stock_method', 'show_sales'])->find();
-        empty($goods) && $this->error('商品不存在');
+//        empty($goods) && $this->error('商品不存在');
+        if(empty($goods)){
+            return api_return(0, '商品不存在');
+        }
         $goods->show_sales = $goods->real_sales + $goods->virtual_sales;
         $goods->hidden(['real_sales', 'virtual_sales']);
         $user_id = $this->MemberId();
@@ -144,7 +150,10 @@ class Goods  extends ApiController
         $goods->credit_title = $credit_type->title;
 //        print_r($description_array);die();
 //        empty($goods) && $this->error('商品不存在');
-        $goods->status === 0 && $this->error('商品已下架');
+//        $goods->status === 0 && $this->error('商品已下架');
+        if($goods->status === 0){
+            return api_return(0, '商品已下架');
+        }
         $this->success('获取商品信息成功', ['goods'=> $goods, 'is_favor'=> $is_favor]);
     }
 

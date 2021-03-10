@@ -144,7 +144,7 @@ class ApiController extends BaseController
 	    protected function success($msg = '', $data = '', $url = null, $wait = 3, array $header = [])
 	    {
 	        // if (is_null($url) && isset($_SERVER["HTTP_REFERER"])) {
-	        //     $url = $_SERVER["HTTP_REFERER"];
+	        //    zuo $url = $_SERVER["HTTP_REFERER"];
 	        // } elseif ($url) {
 	        //     $url = (strpos($url, '://') || 0 === strpos($url, '/')) ? $url : app('route')->buildUrl($url)->__toString();
 	        // }

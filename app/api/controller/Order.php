@@ -52,7 +52,10 @@ class Order extends ApiController
         $post = $this->request->post();
         $user_id = $this->MemberId();
         $user = Member::where('state', '0')->find($user_id);
-        empty($user) && $this->error('用户数据错误');
+//        empty($user) && $this->error('用户数据错误');
+        if(empty($user)){
+            return api_return(0, '用户数据错误');
+        }
         $order_sn = OrderModel::createOrderSn('AC');
         $goods_price = 0;
         $discount_price = 0;
@@ -69,9 +72,13 @@ class Order extends ApiController
 
         $request_address = $user->address()->where('id', $request_address)->find();
         if (empty($request_address)){
-            $this->error("收货地址选择有误");
+//            $this->error("收货地址选择有误");
+            return api_return(0, '收货地址选择有误');
         }
-        empty($request_address) && $this->error('没有收货地址请先添加收货地址');
+//        empty($request_address) && $this->error('没有收货地址请先添加收货地址');
+        if(empty($request_address)){
+            return api_return(0, '没有收货地址请先添加收货地址');
+        }
         $weight = 0;
         $dispatch_price = 0;
         $goods_objs = [];
@@ -81,7 +88,8 @@ class Order extends ApiController
         if($result['is_success']){
             $goods_data = $result['data'];
         }else {
-            $this->error($result['msg']);
+//            $this->error($result['msg']);
+            return api_return(0, $result['msg']);
         }
         // 初始化积分抵扣数据
         $credit_type_array = [];
@@ -96,10 +104,16 @@ class Order extends ApiController
             if ($validate !== true) {
                 return api_return(0, '商品数量只能为正整数');
             }
-            !isset($goods_item['goods_id']) && $this->error('部分商品不存在或已下架');
+//            !isset($goods_item['goods_id']) && $this->error('部分商品不存在或已下架');
+            if(!isset($goods_item['goods_id'])){
+                return api_return(0, '部分商品不存在或已下架');
+            }
             $goods_obj = Goods::where('id', $goods_item['goods_id'])
                 ->where('status', 1)->find();
-            empty($goods_obj) && $this->error('部分商品不存在或已下架');
+//            empty($goods_obj) && $this->error('部分商品不存在或已下架');
+            if(empty($goods_obj)){
+                return api_return(0, '部分商品不存在或已下架');
+            }
             // 是否使用抵扣积分
             if($goods_obj->no_refund === 1){
                 $is_refund = 1;
@@ -110,7 +124,8 @@ class Order extends ApiController
                 $credit_result = $goods_obj->calculate_credit($user, $credit_type_array,$goods_item['goods_num']);
                 $credit_type_array = $credit_result['credit_type_array'];
                 if ($credit_result === -1){
-                    $this->error('商品积分类型已下架');
+//                    $this->error('商品积分类型已下架');
+                    return api_return(0, '商品积分类型已下架');
                 }
                 // 如果积分数据不存在则不能使用积分请联系技术支
 //                if (in_array($credit_result['msg'], [1,2])){
@@ -137,9 +152,14 @@ class Order extends ApiController
 //            $discount_price += ($goods_obj->market_price - $goods_obj->price) * $goods_item['goods_num'];
 //            $order_goods_price += ($goods_obj->market_price) * $goods_item['goods_num'];
             // 库存处理
-            $goods_obj->stock === 0 && $this->error($goods_obj->title . '暂时无货');
-            $goods_obj->stock < $goods_item['goods_num'] && $this->error($goods_obj->title . '拍下数量大于库存');
-
+//            $goods_obj->stock === 0 && $this->error($goods_obj->title . '暂时无货');
+            if($goods_obj->stock === 0){
+                return api_return(0, $goods_obj->title . '暂时无货');
+            }
+//            $goods_obj->stock < $goods_item['goods_num'] && $this->error($goods_obj->title . '拍下数量大于库存');
+            if($goods_obj->stock < $goods_item['goods_num']){
+                return api_return(0, $goods_obj->title . '拍下数量大于库存');
+            }
 
             // 计算商品价格
 //            $goods_price += $goods_obj->price * $goods_item['goods_num'];
@@ -147,7 +167,8 @@ class Order extends ApiController
             $goods_description = isset($goods_item['description']) ? $goods_item['description']: null;
             $option = $goods_obj->isset_description($goods_description);
             if($option === false){
-                $this->error('商品规格选择错误或改规格已下架');
+//                $this->error('商品规格选择错误或改规格已下架');
+                return api_return(0, '商品规格选择错误或改规格已下架');
             }
             $goods_obj->option = $option;
 
@@ -210,11 +231,13 @@ class Order extends ApiController
 
                     //黑名单
                     if ($disp['state'] == 1 && $yes_dis) {
-                        $this->error($yes_dq.' 该区域禁止配送！');
+//                        $this->error($yes_dq.' 该区域禁止配送！');
+                        return api_return(0, $yes_dq.' 该区域禁止配送！');
                     }
                 }
                 if (!$yes_dis) {
-                    $this->error('请更换收货地址，此收货地址不能发货！');
+//                    $this->error('请更换收货地址，此收货地址不能发货！');
+                    return api_return(0, '请更换收货地址，此收货地址不能发货！');
                 }
                 // 计算运费
                 if (count($yes_dis_lj) !== 0) {
@@ -289,12 +312,15 @@ class Order extends ApiController
         } catch (\Exception $e) {
             Db::rollback();
             $order->delete();
-            $this->error('生成订单失败，请稍后重试');
+//            $this->error('生成订单失败，请稍后重试');
+            return api_return(0, '生成订单失败，请稍后重试');
         }
         if($msg!==true){
-            $this->error($msg);
+//            $this->error($msg);
+            return api_return(0, $msg);
         }
-        $this->success('生成订单成功', ['order_id'=>$order->id,'pay_type' => OrderModel::PAY_TYPE_FRONT,]);
+//        $this->success('生成订单成功', ['order_id'=>$order->id,'pay_type' => OrderModel::PAY_TYPE_FRONT,]);
+        return api_return(1, '生成订单成功', ['order_id'=>$order->id,'pay_type' => OrderModel::PAY_TYPE_FRONT,]);
     }
 
 
@@ -305,13 +331,19 @@ class Order extends ApiController
         $post = $this->request->post();
         $user_id = $this->MemberId();
         $user = Member::where('state', '0')->find($user_id);
-        empty($user) && $this->error('用户数据错误');
+//        empty($user) && $this->error('用户数据错误');
+        if(empty($user)){
+            return api_return(0, '用户数据错误');
+        }
         $order_sn = OrderModel::createOrderSn('AC');
         $goods_price = 0;
         $discount_price = 0;
         $order_goods_price = 0;
         $goods_data = isset($post['goods_data']) ? $post['goods_data'] : [];
-        empty($goods_data) && $this->error('请提交商品');
+//        empty($goods_data) && $this->error('请提交商品');
+        if(empty($goods_data)){
+            return api_return(0, '请提交商品');
+        }
         // 请求的收货地址
         $request_address = isset($post['address_id']) ? $post['address_id'] : null;
         // 是否使用积分抵扣 默认否
@@ -335,7 +367,8 @@ class Order extends ApiController
         if($result['is_success']){
             $goods_data = $result['data'];
         }else {
-            $this->error($result['msg']);
+//            $this->error($result['msg']);
+            return api_return(0, $result['msg']);
         }
         // 初始化积分抵扣数据
         $credit_type_array = [];
@@ -348,11 +381,15 @@ class Order extends ApiController
             $validate = $this->validate($goods_item, $rule);
             //验证失败
             if ($validate !== true) {
-                $this->error('商品信息有误');
+//                $this->error('商品信息有误');
+                return api_return(0, '商品信息有误');
             }
             $goods_obj = Goods::where('id', $goods_item['goods_id'])
                 ->where('status', 1)->hidden(['cost_price', 'reduce_stock_method', 'real_sales', 'virtual_sales'])->find();
-            empty($goods_obj) && $this->error('部分商品不存在或已下架');
+//            empty($goods_obj) && $this->error('部分商品不存在或已下架');
+            if(empty($goods_obj)){
+                return api_return(0, '部分商品不存在或已下架');
+            }
             // 折扣价计算
             // 是否使用抵扣积分
             if($goods_obj->no_refund === 1){
@@ -363,7 +400,8 @@ class Order extends ApiController
                 $credit_result = $goods_obj->calculate_credit($user, $credit_type_array, $goods_item['goods_num'], 1);
                 $credit_type_array = $credit_result['credit_type_array'];
                 if ($credit_result === -1){
-                    $this->error('商品积分类型已下架');
+//                    $this->error('商品积分类型已下架');
+                    return api_return(0, '商品积分类型已下架');
                 }
                 // 如果积分数据不存在则不能使用积分请联系技术支
 //                if (in_array($credit_result['msg'], [1,2])){
@@ -392,16 +430,22 @@ class Order extends ApiController
             // 折扣价后总计
             $goods_price += round($goods_obj->price,2);
             // 库存计算
-            $goods_obj->stock === 0 && $this->error($goods_obj->title . '暂时无货');
-            $goods_obj->stock < $goods_item['goods_num'] && $this->error($goods_obj->title . '拍下数量大于库存');
-
+//            $goods_obj->stock === 0 && $this->error($goods_obj->title . '暂时无货');
+            if ($goods_obj->stock === 0){
+                return api_return(0, $goods_obj->title . '暂时无货');
+            }
+//            $goods_obj->stock < $goods_item['goods_num'] && $this->error($goods_obj->title . '拍下数量大于库存');
+            if($goods_obj->stock < $goods_item['goods_num']){
+                return api_return(0, $goods_obj->title . '拍下数量大于库存');
+            }
 
 
             // 商品规格拆分 及判断
             $goods_description = isset($goods_item['description']) ? $goods_item['description']: null;
             $option = $goods_obj->isset_description($goods_description);
             if($option === false){
-                $this->error('商品规格选择错误，或该规格已下架');
+//                $this->error('商品规格选择错误，或该规格已下架');
+                return api_return(0, '商品规格选择错误，或该规格已下架');
             }
             $goods_obj->option = $option;
 
@@ -461,11 +505,13 @@ class Order extends ApiController
 
                     //黑名单
                     if ($disp['state'] == 1 && $yes_dis) {
-                        $this->error($yes_dq.' 该区域禁止配送！');
+//                        $this->error($yes_dq.' 该区域禁止配送！');
+                        return api_return(0, $yes_dq.' 该区域禁止配送！');
                     }
                 }
                 if (!$yes_dis) {
-                    $this->error('请更换收货地址，此收货地址不能发货！');
+//                    $this->error('请更换收货地址，此收货地址不能发货！');
+                    return api_return(0, '请更换收货地址，此收货地址不能发货！');
                 }
                 // 计算运费
                 if (count($yes_dis_lj) !== 0) {
@@ -510,7 +556,9 @@ class Order extends ApiController
 //            'credit_type_list' => $credit_type_list,  // 商品积分
             'credit_type_array' => $credit_type_list,  // 商品积分
         ];
-        $this->success('请求成功', $data);
+//        $this->success('请求成功', $data);
+        return api_return(1, '请求成功', $data);
+
     }
 
 
@@ -522,12 +570,21 @@ class Order extends ApiController
         $post = $this->request->get();
         $order_id = isset($post['order_id']) ? $post['order_id'] : null;
         $pay_type_id = isset($post['pay_type_id']) ? $post['pay_type_id'] : null;
-        empty($order_id) && $this->error('订单不存在');
-        !array_key_exists($pay_type_id, OrderModel::PAY_TYPE_ID) && $this->error('请选择正确的支付方式');
+//        empty($order_id) && $this->error('订单不存在');
+        if(empty($order_id)){
+            return api_return(0, '订单不存在');
+        }
+//        !array_key_exists($pay_type_id, OrderModel::PAY_TYPE_ID) && $this->error('请选择正确的支付方式');
+        if(!array_key_exists($pay_type_id, OrderModel::PAY_TYPE_ID)){
+            return api_return(0, '请选择正确的支付方式');
+        }
         $user_id = $this->MemberId();
         $user = Member::find($user_id);
         $order = OrderModel::where('uid', $user_id)->where('id', $order_id)->find();
-        empty($order) && $this->error('订单不存在');
+//        empty($order) && $this->error('订单不存在');
+        if(empty($order)){
+            return api_return(0, '订单不存在');
+        }
         // 获取支付逻辑
         /**
          * $order->is_paid === 1;  // 获取支付结果
@@ -544,7 +601,8 @@ class Order extends ApiController
                 // 此处应该有支付逻辑并更改支付id
 //                if($pay_type_id == 4){
                 if ($user->credit2 < $order->price){
-                    $this->error('余额不足请充值');
+//                    $this->error('余额不足请充值');
+                    return api_return(0, '余额不足请充值');
                 }
                 // 生成账户余额明细 记录
                 $balance_change = new FinaceBalancesub([
@@ -563,7 +621,8 @@ class Order extends ApiController
 //                if ($change_save === false || $user_save === false){
                 if ($change_save === false){
                     Db::rollback();
-                    $this->error('支付失败请稍后重试');
+//                    $this->error('支付失败请稍后重试');
+                    return api_return(0, '支付失败请稍后重试');
                 }
 
             }
@@ -576,7 +635,8 @@ class Order extends ApiController
                 $validate = $this->validate($post, $rule);
                 //验证失败
                 if($validate !== true){
-                    $this->error($validate);
+//                    $this->error($validate);
+                    return api_return(0, $validate);
                 }
 //                $pay_obj = AdminsPayment::where('id',$post['pay_id'])->where('state',1)->find();
 //                empty($pay_obj) && $this->error('该付款方式暂不可用');
@@ -596,7 +656,8 @@ class Order extends ApiController
                 $change_save = $balance_change->save();
                 if ($change_save === false){
                     Db::rollback();
-                    $this->error('支付失败请稍后重试');
+//                    $this->error('支付失败请稍后重试');
+                    return api_return(0, '支付失败请稍后重试');
                 }
             }
             elseif ($pay_type_id == 1){
@@ -614,7 +675,8 @@ class Order extends ApiController
                 return $this->fetch('/pay/wechat/jsapi');
             }
             else {
-                $this->error('暂时只支持余额付款和线下支付');
+//                $this->error('暂时只支持余额付款和线下支付');
+                return api_return(0, '暂时只支持余额付款和线下支付');
             }
             $this->PluginApiCD('pay_order'.$user_id);
 
@@ -655,14 +717,17 @@ class Order extends ApiController
                 Db::commit();
             } catch (\Exception $e) {
                 Db::rollback();
-                $this->error('支付失败请稍后重试');
+//                $this->error('支付失败请稍后重试');
+                return api_return(0, '支付失败请稍后重试');
                 // $this->tuikuan() // 退款操作
             }
             event('OrderPay',$order_id);
-            $this->success('支付成功');
+//            $this->success('支付成功');
+            return api_return(1, '支付成功');
 
         }else{
-            $this->error('该订单当前状态不能付款');
+//            $this->error('该订单当前状态不能付款');
+            return api_return(0, '该订单当前状态不能付款');
         }
 
 
@@ -673,23 +738,32 @@ class Order extends ApiController
     {
         $post = $this->request->post();
         $order_id = isset($post['order_id']) ? $post['order_id'] : null;
-        empty($order_id) && $this->error('订单不存在');
+//        empty($order_id) && $this->error('订单不存在');
+        if(empty($order_id)){
+            return api_return(0, '订单不存在');
+        }
         $user_id = $this->MemberId();
         $user = Member::find($user_id);
         $order = OrderModel::where('uid', $user_id)->where('id', $order_id)->find();
-        empty($order) && $this->error('订单不存在');
+//        empty($order) && $this->error('订单不存在');
+        if(empty($order)){
+            return api_return(0, '订单不存在');
+        }
         $order->status = 3;
         $order->finish_time = time();
         try {
             event('OrderReceiving',$order_id);
             $save = $order->save();
         } catch (\Exception $e) {
-            $this->error('确认收货失败请稍后重试');
+//            $this->error('确认收货失败请稍后重试');
+            return api_return(0, '确认收货失败请稍后重试');
         }
         if ($save) {
-            $this->success('确认收货成功');
+//            $this->success('确认收货成功');
+            return api_return(1, '确认收货成功');
         }
-        $this->error('确认收货失败请稍后重试');
+//        $this->error('确认收货失败请稍后重试');
+        return api_return(0, '确认收货失败请稍后重试');
     }
 
     // 退款申请
@@ -697,7 +771,10 @@ class Order extends ApiController
     {
         $post = $this->request->post();
         $order_id = isset($post['order_id']) ? $post['order_id'] : null;
-        empty($order_id) && $this->error('订单不存在');
+        if (empty($order_id)){
+            return api_return(0, '用户信息异常请重新登录');
+        }
+//        empty($order_id) && $this->error('订单不存在');
         $user_id = $this->MemberId();
         $user = Member::find($user_id);
         $order = OrderModel::where('uid', $user_id)->where('id', $order_id)->where('is_refund', 0)
@@ -727,7 +804,8 @@ class Order extends ApiController
                 $this->error('申请失败');
             }
             event('OrderRefund',$order_id);
-            $this->success('申请成功');
+//            $this->success('申请成功');
+            return api_return(1, '申请成功');
         }
         $this->error('该订单当前状态不能申请退款');
     }
@@ -764,7 +842,8 @@ class Order extends ApiController
                 $this->error('取消订单失败');
             }
             event('OrderDelete',$order_id);
-            $this->success('取消订单成功');
+//            $this->success('取消订单成功');
+            return api_return(1, '取消订单成功');
         }
         $this->error('该订单当前状态不能申请退款');
     }
@@ -801,7 +880,8 @@ class Order extends ApiController
         $user_address = MemberAddress::where('uid', $user_id)->select()
             ->hidden(['create_time', 'update_time', 'delete_time'])
             ->toArray();
-        $this->success('请求成功', $user_address->toArray());
+//        $this->success('请求成功', $user_address->toArray());
+        return api_return(1, '请求成功', $user_address->toArray());
     }
 
     // 订单详情 get order_id
@@ -847,7 +927,8 @@ class Order extends ApiController
         $order->enable_refund = in_array($order->status, [1,2,3]) && $order->type === 0 && $order->is_refund === 0 ? true : false ;
         $order->enable_cancel = $order->status === 0 ? true : false ;
         $order->enable_delete = in_array($order->status, [-1, 3]) ? true : false ;
-        $this->success('返回订单成功', ['order' => $order, 'status_array' => OrderModel::STATUS_ARRAY,]);
+//        $this->success('返回订单成功', ['order' => $order, 'status_array' => OrderModel::STATUS_ARRAY,]);
+        return api_return(1, '请求成功', ['order' => $order, 'status_array' => OrderModel::STATUS_ARRAY,]);
 
     }
 
@@ -884,7 +965,8 @@ class Order extends ApiController
             $item->enable_delete = in_array($item->status, [-1, 3]) ? true : false ;
             $item->goods;
         }
-        $this->success('请求成功', ['order_list' => $order_list, 'status_array' => OrderModel::STATUS_ARRAY]);
+//        $this->success('请求成功', ['order_list' => $order_list, 'status_array' => OrderModel::STATUS_ARRAY]);
+        return api_return(1, '请求成功', ['order_list' => $order_list, 'status_array' => OrderModel::STATUS_ARRAY]);
     }
 
     // 订单状态
@@ -892,7 +974,8 @@ class Order extends ApiController
     {
         $user_id = 1;
         $status = OrderModel::STATUS_ARRAY;
-        $this->success('请求成功', ['status' => $status]);
+//        $this->success('请求成功', ['status' => $status]);
+        return api_return(1, '请求成功', ['status' => $status]);
     }
 
     // 支付类型
@@ -904,7 +987,8 @@ class Order extends ApiController
 //            ['id'=>3,'name'=> '线下支付','icon'=>'/static/common/images/xianxia.png'],
 //        ];
         $pay_type = PayType::where('status', 1)->select();
-        $this->success('请求成功', ['pay_type' => $pay_type]);
+//        $this->success('请求成功', ['pay_type' => $pay_type]);
+        return api_return(1, '请求成功', ['pay_type' => $pay_type]);
     }
 
 

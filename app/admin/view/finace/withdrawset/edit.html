@@ -1,209 +1,1 @@
-<style type="text/css">
-    p{
-        color: #737373;
-        font-size:15px;
-        font-weight:bold;
-    }
-</style>
-<div class="layuimini-container">
-    <form id="app-form" class="layui-form layuimini-form">
-        <div class="layui-form-item">
-            <label class="layui-form-label">开启余额提现</label>
-            <div class="layui-input-block">
-                <input type="radio" name="balance[recharge]" lay-filter="balance[recharge]" value="1" title="开启" {eq name="$res.recharge" value="1"}checked=""{/eq}>
-                <input type="radio" name="balance[recharge]" lay-filter="balance[recharge]" value="0" title="关闭" {eq name="$res.recharge" value="0"}checked=""{/eq}>
-            </div>
-            <div style="margin-left: 130px">
-                <blockquote class="site-text layui-elem-quote" style="color: #737373">
-                    <p style="font-size:15px; color: #737373;font-weight:bold;">是否允许用户将余额提出</p>
-                </blockquote>
-            </div>
-
-<!--            <tip>是否允许用户将余额提出</tip>-->
-        </div>
-        <div id="recharge"  {eq name="$res.recharge" value="0"}style="display:none"{/eq}>
-            <div class="layui-form-item">
-                <label class="layui-form-label">提现到微信</label>
-                <div class="layui-input-block">
-                    <input type="radio" name="balance[wechat]" lay-filter="balance[wechat]" value="1" title="开启" {eq name="$res.wechat" value="1"}checked=""{/eq}>
-                    <input type="radio" name="balance[wechat]" lay-filter="balance[wechat]" value="0" title="关闭" {eq name="$res.wechat" value="0"}checked=""{/eq}>
-                </div>
-            </div>
-            <div id="wechat" {eq name="$res.wechat" value="0"}style="display:none"{/eq}>
-                <label class="layui-form-label" style="margin-left: 100px">单笔付款金额</label>
-                <div class="layui-input-inline">
-                    单笔最低金额<input type="text" name="balance[wechatmin]" value="{$res.wechatmin}" autocomplete="off" class="layui-input">
-                </div>
-                <div class="layui-input-inline">
-                    单笔最高金额<input type="text" name="balance[wechatmax]" value="{$res.wechatmax}" autocomplete="off" class="layui-input">
-                </div>
-        <div style="margin-left: 130px">
-            <blockquote class="site-text layui-elem-quote" style="color: #737373">
-                <p style="font-size:15px; color: #737373;font-weight:bold;">可设置区间0.3-20000，设置为0为空则不限制，请参考微信商户平台&#45;&#45;产品中心&#45;&#45;企业付款到零钱&#45;&#45;产品设置&#45;&#45;额度设置中设置</p>
-            </blockquote>
-        </div>
-<!--                <div style="margin-left: 130px"><tip> 可设置区间0.3-20000，设置为0为空则不限制，请参考微信商户平台&#45;&#45;产品中心&#45;&#45;企业付款到零钱&#45;&#45;产品设置&#45;&#45;额度设置中设置-->
-<!--                </tip></div>-->
-                <div class="layui-form-item" style="margin-left: 100px">
-                    <div class="layui-inline">
-                        <label class="layui-form-label">每日向同一用户付款不允许超过</label>
-                        <div class="layui-input-inline">
-                            <input type="tel" name="balance[wechatnum]" value="{$res.wechatnum}"  autocomplete="off" class="layui-input">
-                        </div>次
-                    </div>
-                    <div style="margin-left: 30px">
-                        <blockquote class="site-text layui-elem-quote" style="color: #737373">
-                            <p style="font-size:15px; color: #737373;font-weight:bold;">可设置1-10次,不设置或为空默认为10</p>
-                        </blockquote>
-                    </div>
-<!--                    <div style="margin-left: 30px"><tip> 可设置1-10次,不设置或为空默认为10-->
-<!--                    </tip></div>-->
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">提现到支付宝</label>
-                <div class="layui-input-block">
-                    <input type="radio" name="balance[alipay]" lay-filter="balance[alipay]" value="1" title="开启" {eq name="$res.alipay" value="1"}checked=""{/eq}>
-                    <input type="radio" name="balance[alipay]" lay-filter="balance[alipay]" value="0" title="关闭" {eq name="$res.alipay" value="0"}checked=""{/eq}>
-                </div>
-            </div>
-            <div id="alipay" {eq name="$res.alipay" value="0"}style="display:none"{/eq}>
-                <label class="layui-form-label" style="margin-left: 100px">单笔付款金额</label>
-                <div class="layui-input-inline">
-                    单笔最低金额<input type="text" name="balance[alipaymin]" value="{$res.alipaymin}" autocomplete="off" class="layui-input">
-                </div>
-                <div class="layui-input-inline">
-                    单笔最高金额<input type="text" name="balance[alipaymax]" value="{$res.alipaymax}" autocomplete="off" class="layui-input">
-                </div>
-<div style="margin-left: 130px">
-    <blockquote class="site-text layui-elem-quote" style="color: #737373">
-        <p style="font-size:15px; color: #737373;font-weight:bold;">不设置或为空,则不限制</p>
-    </blockquote>
-</div>
-                <div class="layui-form-item" style="margin-left: 100px">
-                    <div class="layui-inline">
-                        <label class="layui-form-label">每日向同一用户付款不允许超过</label>
-                        <div class="layui-input-inline">
-                            <input type="tel" name="balance[alipaynum]" value="{$res.alipaynum}"  autocomplete="off" class="layui-input">
-                        </div>次
-                    </div>
-                    <div style="margin-left: 30px">
-                        <blockquote class="site-text layui-elem-quote" style="color: #737373">
-                            <p style="font-size:15px; color: #737373;font-weight:bold;">不设置或为空,则不限制</p>
-                        </blockquote>
-                    </div>
-                </div>
-        </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">手动提现</label>
-                <div class="layui-input-block">
-                    <input type="radio" name="balance[manual]" lay-filter="balance[manual]" value="1" title="开启" {eq name="$res.manual" value="1"}checked=""{/eq}>
-                    <input type="radio" name="balance[manual]" lay-filter="balance[manual]" value="0" title="关闭" {eq name="$res.manual" value="0"}checked=""{/eq}>
-                </div>
-                <div style="margin-left: 130px">
-                    <blockquote class="site-text layui-elem-quote" style="color: #737373">
-                        <p style="font-size:15px; color: #737373;font-weight:bold;">手动提现包含微信号、支付宝两种类型</p>
-                    </blockquote>
-                </div>
-<!--                <tip>手动提现包含 银行卡、微信号、支付宝等三种类型，会员需要完善对应资料才可以提现</tip>-->
-            </div>
-            <div id="manual" {eq name="$res.manual" value="0"}style="display:none"{/eq}>
-<div class="layui-form-item" pane="">
-    <div class="layui-input-block">
-        <input type="hidden" name="balance[manual_wechat]" value="0">
-        <input type="checkbox" name="balance[manual_wechat]" value="1" lay-skin="primary" title="微信" {eq name="$res.manual_wechat" value="1"}checked=""{/eq}>
-        <input type="hidden" name="balance[manual_alipay]" value="0">
-        <input type="checkbox" name="balance[manual_alipay]" value="1" lay-skin="primary" title="支付宝"{eq name="$res.manual_alipay" value="1"}checked=""{/eq}>
-    </div>
-</div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">提现手续费</label>
-                <div class="layui-input-block" >
-                    <input type="radio" name="balance[service]" lay-filter="balance[service]" value="1" title="固定金额" {eq name="$res.service" value="1"}checked=""{/eq}>
-                    <input type="radio" name="balance[service]" lay-filter="balance[service]" value="0" title="手续费比例" {eq name="$res.service" value="0"}checked=""{/eq}>
-                </div>
-            </div>
-            <span class="layui-badge layui-bg-gray unsets" style="margin-left: 130px;width: 100px">{if $res.service == 1} 固定金额 {else /} 手续费比例 {/if}</span>
-            <div class="layui-input-inline">
-                <input type="text" name="balance[services]" value="{$res.services}" autocomplete="off" placeholder="请输入提现手续费计算值" style="width: 300px" class="layui-input">
-            </div>
-            <span class="layui-badge layui-bg-gray unset">{if $res.service == 1} 元 {else /} % {/if}</span>
-            <div>
-                <span class="layui-badge layui-bg-gray " style="margin-left: 130px;width: 100px">满额减免手续费</span>
-                <div class="layui-input-inline" >
-                    <input type="text" name="balance[servicesminus]" value="{$res.servicesminus}" autocomplete="off" placeholder="提现金额达到N元减免手续费" style="width: 300px" class="layui-input">
-                </div>
-                <span class="layui-badge layui-bg-gray ">元</span>
-            </div>
-                <div class="layui-inline">
-                    <label class="layui-form-label" style="margin-left: 115px">余额提现限制</label>
-                    <div class="layui-input-inline" >
-                        <input type="text" name="balance[minservices]" value="{$res.minservices}" autocomplete="off" placeholder="余额提现最小金额值" style="width: 300px" class="layui-input">
-                    </div>
-                    <span class="layui-badge layui-bg-gray ">元</span>
-                </div>
-</div>
-<div class="hr-line"></div>
-<div class="layui-form-item text-center">
-    <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit>确认</button>
-</div>
-
-    </form>
-
-</div>
-<script type="text/javascript">
-    require(["jquery", "easy-admin"], function ($, ea) {
-        ea.listen();
-    });
-</script>
-<script type="text/javascript">
-    layui.use(['element','form','jquery'], function(){
-        var form = layui.form
-            ,element = layui.element
-            ,$= layui.$;
-
-        form.on('radio(balance[recharge])', function(data){
-            if(data.value == 1){
-                $("#recharge").show();
-            }else{
-                $("#recharge").hide();
-
-            }
-        });
-        form.on('radio(balance[wechat])', function(data){
-            if(data.value == 1){
-                $("#wechat").show();
-            }else{
-                $("#wechat").hide();
-
-            }
-        });
-        form.on('radio(balance[alipay])', function(data){
-            if(data.value == 1){
-                $("#alipay").show();
-            }else{
-                $("#alipay").hide();
-
-            }
-        });
-        form.on('radio(balance[manual])', function(data){
-            if(data.value == 1){
-                $("#manual").show();
-            }else{
-                $("#manual").hide();
-
-            }
-        });
-        form.on('radio(balance[service])', function(data){
-            if(data.value == 1){
-                $(".unsets").html('固定金额');
-                $(".unset").html('元');
-            }else{
-                $(".unsets").html('手续费比例');
-                $(".unset").html('%');
-
-            }
-        });
-    });
-</script>
+<style type="text/css">    p{        color: #737373;        font-size:15px;        font-weight:bold;    }</style><div class="layuimini-container" style="background: #fff">    <form id="app-form" class="layui-form layuimini-form">        <div class="layui-form-item">            <label class="layui-form-label">开启余额提现</label>            <div class="layui-input-block">                <input type="radio" name="balance[recharge]" lay-filter="balance[recharge]" value="1" title="开启" {eq name="$res.recharge" value="1"}checked=""{/eq}>                <input type="radio" name="balance[recharge]" lay-filter="balance[recharge]" value="0" title="关闭" {eq name="$res.recharge" value="0"}checked=""{/eq}>            </div>            <div style="margin-left: 130px">                <blockquote class="site-text layui-elem-quote" style="color: #737373">                    <p style="font-size:15px; color: #737373;font-weight:bold;">是否允许用户将余额提出</p>                </blockquote>            </div><!--            <tip>是否允许用户将余额提出</tip>-->        </div>        <div id="recharge"  {eq name="$res.recharge" value="0"}style="display:none"{/eq}>            <div class="layui-form-item">                <label class="layui-form-label">提现到微信</label>                <div class="layui-input-block">                    <input type="radio" name="balance[wechat]" lay-filter="balance[wechat]" value="1" title="开启" {eq name="$res.wechat" value="1"}checked=""{/eq}>                    <input type="radio" name="balance[wechat]" lay-filter="balance[wechat]" value="0" title="关闭" {eq name="$res.wechat" value="0"}checked=""{/eq}>                </div>            </div>            <div id="wechat" {eq name="$res.wechat" value="0"}style="display:none"{/eq}>                <label class="layui-form-label" style="margin-left: 100px">单笔付款金额</label>                <div class="layui-input-inline">                    单笔最低金额<input type="text" name="balance[wechatmin]" value="{$res.wechatmin}" autocomplete="off" class="layui-input">                </div>                <div class="layui-input-inline">                    单笔最高金额<input type="text" name="balance[wechatmax]" value="{$res.wechatmax}" autocomplete="off" class="layui-input">                </div>        <div style="margin-left: 130px">            <blockquote class="site-text layui-elem-quote" style="color: #737373">                <p style="font-size:15px; color: #737373;font-weight:bold;">可设置区间0.3-20000，设置为0为空则不限制，请参考微信商户平台&#45;&#45;产品中心&#45;&#45;企业付款到零钱&#45;&#45;产品设置&#45;&#45;额度设置中设置</p>            </blockquote>        </div><!--                <div style="margin-left: 130px"><tip> 可设置区间0.3-20000，设置为0为空则不限制，请参考微信商户平台&#45;&#45;产品中心&#45;&#45;企业付款到零钱&#45;&#45;产品设置&#45;&#45;额度设置中设置--><!--                </tip></div>-->                <div class="layui-form-item" style="margin-left: 100px">                    <div class="layui-inline">                        <label class="layui-form-label">每日向同一用户付款不允许超过</label>                        <div class="layui-input-inline">                            <input type="tel" name="balance[wechatnum]" value="{$res.wechatnum}"  autocomplete="off" class="layui-input">                        </div>次                    </div>                    <div style="margin-left: 30px">                        <blockquote class="site-text layui-elem-quote" style="color: #737373">                            <p style="font-size:15px; color: #737373;font-weight:bold;">可设置1-10次,不设置或为空默认为10</p>                        </blockquote>                    </div><!--                    <div style="margin-left: 30px"><tip> 可设置1-10次,不设置或为空默认为10--><!--                    </tip></div>-->                </div>            </div>            <div class="layui-form-item">                <label class="layui-form-label">提现到支付宝</label>                <div class="layui-input-block">                    <input type="radio" name="balance[alipay]" lay-filter="balance[alipay]" value="1" title="开启" {eq name="$res.alipay" value="1"}checked=""{/eq}>                    <input type="radio" name="balance[alipay]" lay-filter="balance[alipay]" value="0" title="关闭" {eq name="$res.alipay" value="0"}checked=""{/eq}>                </div>            </div>            <div id="alipay" {eq name="$res.alipay" value="0"}style="display:none"{/eq}>                <label class="layui-form-label" style="margin-left: 100px">单笔付款金额</label>                <div class="layui-input-inline">                    单笔最低金额<input type="text" name="balance[alipaymin]" value="{$res.alipaymin}" autocomplete="off" class="layui-input">                </div>                <div class="layui-input-inline">                    单笔最高金额<input type="text" name="balance[alipaymax]" value="{$res.alipaymax}" autocomplete="off" class="layui-input">                </div><div style="margin-left: 130px">    <blockquote class="site-text layui-elem-quote" style="color: #737373">        <p style="font-size:15px; color: #737373;font-weight:bold;">不设置或为空,则不限制</p>    </blockquote></div>                <div class="layui-form-item" style="margin-left: 100px">                    <div class="layui-inline">                        <label class="layui-form-label">每日向同一用户付款不允许超过</label>                        <div class="layui-input-inline">                            <input type="tel" name="balance[alipaynum]" value="{$res.alipaynum}"  autocomplete="off" class="layui-input">                        </div>次                    </div>                    <div style="margin-left: 30px">                        <blockquote class="site-text layui-elem-quote" style="color: #737373">                            <p style="font-size:15px; color: #737373;font-weight:bold;">不设置或为空,则不限制</p>                        </blockquote>                    </div>                </div>        </div>            <div class="layui-form-item">                <label class="layui-form-label">手动提现</label>                <div class="layui-input-block">                    <input type="radio" name="balance[manual]" lay-filter="balance[manual]" value="1" title="开启" {eq name="$res.manual" value="1"}checked=""{/eq}>                    <input type="radio" name="balance[manual]" lay-filter="balance[manual]" value="0" title="关闭" {eq name="$res.manual" value="0"}checked=""{/eq}>                </div>                <div style="margin-left: 130px">                    <blockquote class="site-text layui-elem-quote" style="color: #737373">                        <p style="font-size:15px; color: #737373;font-weight:bold;">手动提现包含微信号、支付宝两种类型</p>                    </blockquote>                </div><!--                <tip>手动提现包含 银行卡、微信号、支付宝等三种类型，会员需要完善对应资料才可以提现</tip>-->            </div>            <div id="manual" {eq name="$res.manual" value="0"}style="display:none"{/eq}><div class="layui-form-item" pane="">    <div class="layui-input-block">        <input type="hidden" name="balance[manual_wechat]" value="0">        <input type="checkbox" name="balance[manual_wechat]" value="1" lay-skin="primary" title="微信" {eq name="$res.manual_wechat" value="1"}checked=""{/eq}>        <input type="hidden" name="balance[manual_alipay]" value="0">        <input type="checkbox" name="balance[manual_alipay]" value="1" lay-skin="primary" title="支付宝"{eq name="$res.manual_alipay" value="1"}checked=""{/eq}>    </div></div>            </div>            <div class="layui-form-item">                <label class="layui-form-label">提现手续费</label>                <div class="layui-input-block" >                    <input type="radio" name="balance[service]" lay-filter="balance[service]" value="1" title="固定金额" {eq name="$res.service" value="1"}checked=""{/eq}>                    <input type="radio" name="balance[service]" lay-filter="balance[service]" value="0" title="手续费比例" {eq name="$res.service" value="0"}checked=""{/eq}>                </div>            </div>            <span class="layui-badge layui-bg-gray unsets" style="margin-left: 130px;width: 100px">{if $res.service == 1} 固定金额 {else /} 手续费比例 {/if}</span>            <div class="layui-input-inline">                <input type="text" name="balance[services]" value="{$res.services}" autocomplete="off" placeholder="请输入提现手续费计算值" style="width: 300px" class="layui-input">            </div>            <span class="layui-badge layui-bg-gray unset">{if $res.service == 1} 元 {else /} % {/if}</span>            <div>                <span class="layui-badge layui-bg-gray " style="margin-left: 130px;width: 100px">满额减免手续费</span>                <div class="layui-input-inline" >                    <input type="text" name="balance[servicesminus]" value="{$res.servicesminus}" autocomplete="off" placeholder="提现金额达到N元减免手续费" style="width: 300px" class="layui-input">                </div>                <span class="layui-badge layui-bg-gray ">元</span>            </div>                <div class="layui-inline">                    <label class="layui-form-label" style="margin-left: 115px">余额提现限制</label>                    <div class="layui-input-inline" >                        <input type="text" name="balance[minservices]" value="{$res.minservices}" autocomplete="off" placeholder="余额提现最小金额值" style="width: 300px" class="layui-input">                    </div>                    <span class="layui-badge layui-bg-gray ">元</span>                </div></div><div class="hr-line"></div><div class="layui-form-item text-center">    <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit>确认</button></div>    </form></div><script type="text/javascript">    require(["jquery", "easy-admin"], function ($, ea) {        ea.listen();    });</script><script type="text/javascript">    layui.use(['element','form','jquery'], function(){        var form = layui.form            ,element = layui.element            ,$= layui.$;        form.on('radio(balance[recharge])', function(data){            if(data.value == 1){                $("#recharge").show();            }else{                $("#recharge").hide();            }        });        form.on('radio(balance[wechat])', function(data){            if(data.value == 1){                $("#wechat").show();            }else{                $("#wechat").hide();            }        });        form.on('radio(balance[alipay])', function(data){            if(data.value == 1){                $("#alipay").show();            }else{                $("#alipay").hide();            }        });        form.on('radio(balance[manual])', function(data){            if(data.value == 1){                $("#manual").show();            }else{                $("#manual").hide();            }        });        form.on('radio(balance[service])', function(data){            if(data.value == 1){                $(".unsets").html('固定金额');                $(".unset").html('元');            }else{                $(".unsets").html('手续费比例');                $(".unset").html('%');            }        });    });</script>
