@@ -382,7 +382,7 @@ define(["jquery", "tableSelect", "ckeditor"], function ($, tableSelect, undefine
                     });
                 }
             },
-            renderOperat(data, elem) {
+            renderOperat: function (data, elem) {
                 for (dk in data) {
                     var col = data[dk];
                     var operat = col[col.length - 1].operat;
@@ -463,7 +463,7 @@ define(["jquery", "tableSelect", "ckeditor"], function ($, tableSelect, undefine
 
                 return html;
             },
-            toolSpliceUrl(url, field, data) {
+            toolSpliceUrl: function (url, field, data) {
                 url = url.indexOf("?") !== -1 ? url + '&' + field + '=' + data[field] : url + '?' + field + '=' + data[field];
                 return url;
             },
