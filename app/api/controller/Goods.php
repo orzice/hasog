@@ -154,7 +154,26 @@ class Goods  extends ApiController
         if($goods->status === 0){
             return api_return(0, '商品已下架');
         }
-        $this->success('获取商品信息成功', ['goods'=> $goods, 'is_favor'=> $is_favor]);
+//        $this->success('获取商品信息成功', ['goods'=> $goods, 'is_favor'=> $is_favor]);
+        return api_return(1, '获取商品信息成功', ['goods'=> $goods, 'is_favor'=> $is_favor]);
+    }
+
+    // 获取标签商品列表
+    public function goods_tag_list(){
+        $get = $this->request->get();
+        // 这种方法 分类如果enabled 或者 delete 就还能查出
+        $goods_list = GoodsModel::where('is_new', 1)->whereOr('is_hot', 1)->whereOr('is_discount', 1)
+            ->hidden(['cost_price','reduce_stock_method', 'show_sales' ]);
+        $goods_count = $goods_list->count();
+        $goods_list = $goods_list->paginatefront($get)->select();
+        foreach ($goods_list as &$goods){
+            $category_goods = GoodsCategory::where('goods_id','=', $goods->id)->find();
+            $goods['category'] = $category_goods;
+            $goods->show_sales = $goods->real_sales + $goods->virtual_sales;
+            $goods->hidden(['real_sales', 'virtual_sales']);
+        }
+        $list_count = $goods_list->count();
+        $this->success('获取标签商品成功',['goods_count'=> $goods_count,'list_count'=> $list_count, 'goods_list'=> $goods_list]);
     }
 
 }

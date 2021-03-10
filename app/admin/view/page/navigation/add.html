@@ -1,0 +1,56 @@
+<div class="layuimini-container">
+
+    <form id="app-form" class="layui-form layuimini-form">
+        <div class="layui-form-item">
+            <label class="layui-form-label required">导航名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" class="layui-input" lay-verify="required" lay-reqtext="请输入导航名称" placeholder="请输入导航名称" value="">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required">权重</label>
+            <div class="layui-input-block">
+                <input type="text" name="weight" class="layui-input" lay-verify="required" lay-reqtext="请输入权重" placeholder="请输入权重" value="">
+                <tip>权重越高越靠前。</tip>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required">导航图标</label>
+            <div class="layui-input-block layuimini-upload">
+                <input name="thumb" class="layui-input layui-col-xs6" lay-verify="required" placeholder="请上传导航图片" value="">
+                <div class="layuimini-upload-btn">
+                    <span><a class="layui-btn" data-upload="thumb" data-upload-number="one" data-upload-exts="png|jpg|ico|jpeg" data-upload-icon="image"><i class="fa fa-upload"></i> 上传</a></span>
+                    <span><a class="layui-btn layui-btn-normal" id="select_thumb" data-upload-select="thumb" data-upload-number="one" data-upload-mimetype="image/*"><i class="fa fa-list"></i> 选择</a></span>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">导航链接</label>
+            <div class="layui-input-block">
+                <input type="text" name="link" class="layui-input" lay-reqtext="请输入导航链接" placeholder="请输入导航链接" value="">
+                <tip>填写链接。</tip>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">是否开启</label>
+            <div class="layui-input-block">
+                <input type="radio" name="state" value="1" title="开启" checked="">
+                <input type="radio" name="state" value="0" title="关闭">
+            </div>
+        </div>
+        <div class="hr-line"></div>
+        <div class="layui-form-item text-center">
+            <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit>确认</button>
+            <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">重置</button>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+
+    require(["jquery", "easy-admin"], function ($, ea) {
+
+        ea.listen();
+
+    });
+
+</script>

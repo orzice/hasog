@@ -1,0 +1,64 @@
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <table id="currentTable" class="layui-table layui-hide"
+               data-auth-add="{:auth('page.navigation/add')}"
+               data-auth-edit="{:auth('page.navigation/edit')}"
+               data-auth-delete="{:auth('page.navigation/delete')}"
+               data-auth-preview="{:auth('page.navigation/preview')}"
+               lay-filter="currentTable">
+        </table>
+    </div>
+</div>
+<script type="text/javascript">
+    require(["jquery", "easy-admin"], function ($, ea) {
+        var init = {
+            table_elem: '#currentTable',
+            table_render_id: 'currentTableRenderId',
+            index_url: 'page.navigation/index',
+            add_url: 'page.navigation/add',
+            edit_url: 'page.navigation/edit',
+            delete_url: 'page.navigation/delete',
+            modify_url: 'page.navigation/modify',
+            export_url: 'page.navigation/export',
+            preview_url: 'page.navigation/preview'
+        };
+        ea.table.render({
+            init: init,
+            toolbar: ['refresh',
+                [{
+                    text: '添加',
+                    url: init.add_url,
+                    method: 'open',
+                    auth: 'add',
+                    class: 'layui-btn layui-btn-normal layui-btn-sm',
+                    icon: 'fa fa-plus ',
+                    extend: 'data-full="true"',
+                }], 'export'],
+            cols: [[
+                {field: 'weight', minWidth: 200, title: '权重',sort: true},
+                {field: 'name', minWidth: 200, title: '名称'},
+                {field: 'link', minWidth: 200, title: '链接'},
+                {field: 'thumb', minWidth: 80, title: '图片', search: false, templet: ea.table.image},
+                {field: 'state', minWidth: 80, title: '状态',search: 'select', selectList: { 1: '开启',0: '关闭'}, templet: ea.table.switch},
+                {field: 'create_time', minWidth: 80, title: '创建时间', search: 'range'},
+                {
+                    width: 180,
+                    title: '操作',
+                    templet: ea.table.tool,
+                    operat: [
+                        [{
+                            text: '编辑',
+                            url: init.edit_url,
+                            method: 'open',
+                            auth: 'edit',
+                            class: 'layui-btn layui-btn-xs layui-btn-success',
+                            extend: 'data-full="true"',
+                        }],
+                        'delete'
+                    ]
+                }
+            ]],
+        });
+        ea.listen();
+    });
+</script>
