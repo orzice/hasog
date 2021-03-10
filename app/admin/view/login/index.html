@@ -1,7 +1,8 @@
 <link rel="stylesheet" href="__STATIC__/css/login.css?v={$version}" media="all">
-<div class="video-container" >
+
+<div id="video-container" class="video-container" style="display: none;">
       <video muted="" loop="loop" autoplay="autoplay" src="/static/common/mp4/banner.mp4" class="video" id="video-home" data-object-fit="" style="">抱歉，您的浏览器不支持内嵌视频</video>
-    </div>
+</div>
 
 
 <div class="main-body">
@@ -45,7 +46,10 @@
 </div>
 <script type="text/javascript">
 require(["jquery", "easy-admin"], function ($, ea) {
-
+            
+            if (!ea.checkMobile()) {
+                $('#video-container').attr('style','display: block;');
+            };
       
             if (top.location !== self.location) {
                 top.location = self.location;
