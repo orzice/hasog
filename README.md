@@ -22,6 +22,12 @@
 
 Github  [https://github.com/orzice/hasog](https://github.com/orzice/hasog)
 
+
+
+**QQ交流群（点击加群）：**[372193289](https://jq.qq.com/?_wv=1027&k=MOx0H0EK)
+![](https://images.gitee.com/uploads/images/2021/0310/175719_a49cdd9b_813605.jpeg)
+
+
 **微信交流群**
 
 ![](https://images.gitee.com/uploads/images/2021/0310/135948_0e426530_813605.png)
