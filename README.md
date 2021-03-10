@@ -63,10 +63,12 @@
 }
 ```
 
-
 ## 安装
+
+部署后访问自己的域名即可 如：
+
 ```shell
-部署后访问自己的域名即可
+www.a.com/Install
 ```
 
 ## 使用说明
@@ -98,6 +100,16 @@ Mysql配置，一般宝塔面板会出现这个问题。
 sql-mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
 改为↓
 sql-mode=NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+```
+
+
+
+
+
+### 2. 提示 服务器积极拒绝
+
+```
+请启动 Redis
 ```
 
 

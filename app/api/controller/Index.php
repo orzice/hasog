@@ -26,25 +26,21 @@ use app\common\Plugins;
 
 class Index extends ApiController
 {
-    
+    //返回软件配置信息
     public function index()
-     {
-        
-        print_r($this->MemberId());
-        exit;
-        // 触发UserLogin事件 用于执行用户登录后的一系列操作
-       
-        event('UserLogin',"6666");
+    {
 
-        // 获取插件配置
-        //$plugin = new Plugins::GetPluginList();
-        print_r("=============<br>");
-        print_r("插件列表<br>");
-        print_r("=============<br>");
-        print_r(Plugins::GetPluginList());
-        //print_r(Config::get('plugins_menu'));
+        $data['version'] = config_plus("hasog.version");
+        $data['site'] = [];
+        $data['upload'] = [];
+        $data['site']['name'] = sysconfig('site','site_name');
+        $data['site']['beian'] = sysconfig('site','site_beian');
+        $data['site']['name'] = sysconfig('site','site_name');
+        $data['site']['copyright'] = sysconfig('site','site_copyright');
+        $data['upload']['allow_size'] = sysconfig('upload','upload_allow_size');
+        $data['upload']['allow_ext'] = sysconfig('upload','upload_allow_ext');
 
-        return "-结束";
+        return api_return(1,'',$data);
     }
 
 

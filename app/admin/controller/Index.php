@@ -42,7 +42,6 @@ class Index extends AdminController
         // 触发UserLogin事件 用于执行用户登录后的一系列操作
         event('AdminHome');
 
-
         return $this->fetch();
         //return "-结束";
     }

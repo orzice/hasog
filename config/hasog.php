@@ -17,7 +17,7 @@
 
 return [
     // 版本
-    'version'         => '1.0.0',
+    'version'         => '1.0.0 Beta',
     // Session配置
     'SessionName'         => 'user',
     // 后台管理员密码加密
