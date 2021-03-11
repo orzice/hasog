@@ -31,7 +31,11 @@
         "mtdowling/cron-expression": "^1.2",
         "topthink/think-queue": "^3.0",
         "phpoffice/phpspreadsheet": "^1.15",
-        "yansongda/pay": "^2.10"
+        "yansongda/pay": "^2.10",
+        "aliyuncs/oss-sdk-php": "^2.4",
+        "qcloud/cos-sdk-v5": "^2.1",
+        "qiniu/php-sdk": "^7.3",
+        "alibabacloud/client": "^1.5"
     },
     "require-dev": {
         "symfony/var-dumper": "^4.2",
