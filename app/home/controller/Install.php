@@ -186,7 +186,7 @@ class Install extends HomeController
             ->where('id', 1)
             ->delete();
         Db::connect('install')
-            ->name('system_admin')
+            ->table('system_admin')
             ->insert([
                 'id'          => 1,
                 'username'    => $username,
