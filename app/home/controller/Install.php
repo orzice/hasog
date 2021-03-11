@@ -182,11 +182,11 @@ class Install extends HomeController
     $erro = '';
     try {
         Db::connect('install')
-            ->table('system_admin')
+            ->name('system_admin')
             ->where('id', 1)
             ->delete();
         Db::connect('install')
-            ->table('system_admin')
+            ->name('system_admin')
             ->insert([
                 'id'          => 1,
                 'username'    => $username,
