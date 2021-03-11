@@ -154,3 +154,22 @@ sql-mode=NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
 
 
 
+### 3. 使用OSS无法上传提示SSL
+
+```
+RequestCoreException: cURL resource: Resource id #130; cURL error: SSL certificate problem: unable to get local issuer certificate (60)
+```
+
+在使用阿里云OSS上传文件的时候报上述错误。
+
+下载证书：https://curl.haxx.se/ca/cacert.pem
+
+**修改php.ini**
+
+```
+[curl]
+; A default value for the CURLOPT_CAINFO option. This is required to be an
+; absolute path.
+curl.cainfo=/path/cacert.pem
+```
+
