@@ -182,7 +182,7 @@ class Install extends HomeController
     $erro = '';
     try {
         Db::connect('install')
-            ->name('system_admin')
+            ->table('system_admin')
             ->where('id', 1)
             ->delete();
         Db::connect('install')
@@ -191,7 +191,7 @@ class Install extends HomeController
                 'id'          => 1,
                 'username'    => $username,
                 'head_img'    => '/static/admin/images/head.jpg',
-                'password'    => password($password),
+                'password'    => password($password,$hasog['pwSDK']),
                 'create_time' => time(),
             ]);
         $install = true;
@@ -230,7 +230,6 @@ class Install extends HomeController
         $this->assign('currentHost',$currentHost);
         return $this->fetch();
     }
-
 function getAppConfig($key_admin)
 {
     $config = <<<EOT

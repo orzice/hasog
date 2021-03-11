@@ -276,9 +276,13 @@ if (!function_exists('password')) {
      * @param $type  加密类型，默认为md5 （md5, hash）
      * @return mixed
      */
-    function password($value)
+    function password($value,$key=false)
     {
-        $value = sha1('ac_') . md5($value) . md5(config_plus("hasog.pwSDK")) . sha1($value);
+        $SDK = config_plus("hasog.pwSDK");
+        if ($key) {
+            $SDK = $key;
+        }
+        $value = sha1('ac_') . md5($value) . md5($SDK) . sha1($value);
         return sha1($value);
     }
 
