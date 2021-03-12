@@ -160,6 +160,8 @@ sql-mode=NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
 RequestCoreException: cURL resource: Resource id #130; cURL error: SSL certificate problem: unable to get local issuer certificate (60)
 ```
 
+**解决方案1**
+
 在使用阿里云OSS上传文件的时候报上述错误。
 
 下载证书：https://curl.haxx.se/ca/cacert.pem
@@ -171,5 +173,13 @@ RequestCoreException: cURL resource: Resource id #130; cURL error: SSL certifica
 ; A default value for the CURLOPT_CAINFO option. This is required to be an
 ; absolute path.
 curl.cainfo=/path/cacert.pem
+```
+
+**解决方案2**
+
+```
+vendor\aliyuncs\oss-sdk-php\src\OSS\Http\RequestCore.php
+
+160行 改为 false
 ```
 
