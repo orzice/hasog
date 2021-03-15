@@ -1,0 +1,40 @@
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">积分类型名</label>
+            <div class="layui-input-block">
+                <input type="text" name="title" class="layui-input" lay-verify="required" lay-reqtext="填写积分名称" placeholder="填写积分名称" value="">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">是否支持支付</label>
+            <div class="layui-input-block">
+                <input type="radio" name="is_pay" value="0" checked="" title="关闭" >
+                <input type="radio" name="is_pay" value="1" onclick=""  title="开启" >
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">是否支持提现</label>
+            <div class="layui-input-block">
+                <input type="radio" name="is_withdraw" value="0" checked="" title="关闭" >
+                <input type="radio" name="is_withdraw" value="1" onclick=""  title="开启" >
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">是否支持转账</label>
+            <div class="layui-input-block">
+                <input type="radio" name="is_transfer" value="0" checked="" title="关闭" >
+                <input type="radio" name="is_transfer" value="1" onclick=""  title="开启" >
+            </div>
+        </div>
+
+        <div class="layui-form-item  layui-row layui-col-xs12">
+            <label class="layui-form-label required" >值选择</label>
+            <div class="layui-input-block">
+                <select name="value" lay-search>
+                    {foreach $could_check as $vo}
+                    <option value="{$vo}">{$vo}</option>
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+

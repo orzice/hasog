@@ -78,9 +78,118 @@ class TransferCredit extends AdminController
             ];
             return json($data);
         }
+        $this->assign('credits');
         return $this->fetch();
     }
 
+    /**
+     * @NodeAnotation(title="新增积分类型")
+     */
+    public function add()
+    {
+        $all_obj = CreditType::select();
+        if ($all_obj->count() >= 10){
+            $this->error('最多只能有十种积分类型');
+        }
+
+        if ($this->request->isAjax()) {
+            $post = $this->request->post();
+            $rule = [
+                'title|积分类型名' => 'require|length:1,20',
+                'is_pay|支持支付' => 'require|in: 0,1',
+                'is_withdraw|支持提现' => 'require|in: 0,1',
+                'is_transfer|支持转账' => 'require|in: 0,1',
+                'value|值' => 'require|length: 4,8',
+            ];
+            $this->validate($post, $rule);
+            $value = $post['value'];
+            // 判断所需选值是否有效
+            if(!preg_match('/^credit\d|10&/', $value)){
+                $this->error('所选值无效');
+            }
+            $credit_values = $this->model->select()->column('value');
+//            print_r($credit_values);die();
+            if(in_array($value, $credit_values)){
+                $this->error('所选值已被使用');
+            }
+            try {
+                $save = $this->model->allowField(CreditType::AllOW_FIELD)->save($post);
+            } catch (\Exception $e) {
+                $this->error('新增失败');
+            }
+            if($save){
+                event('MemberAddEnd',$post);
+            }
+            $save ? $this->success('新增成功') : $this->error('新增失败');
+        }
+        $credit_values = $this->model->select()->column('value');
+//            print_r($credit_values);die();
+        $could_check = [];
+        for ($x = 1; $x <= 10; $x++){
+            if(!in_array('credit'.$x, $credit_values)){
+                $could_check[] = 'credit'.$x;
+                continue;
+            }
+//            else{
+//                $post['value'] = 'credit'.$x;
+//                break;
+//            }
+        }
+        $this->assign('could_check', $could_check);
+        return $this->fetch();
+    }
+
+    /**
+     * @NodeAnotation(title="编辑积分类型")
+     */
+    public function edit($id)
+    {
+        $row = CreditType::find($id);
+        if(empty($row)){
+            $this->error('积分类型不存在');
+        }
+        if ($this->request->isAjax()) {
+            $post = $this->request->post();
+            $rule = [
+                'title|积分类型名' => 'require|length:1,20',
+                'is_pay|支持支付' => 'require|in: 0,1',
+                'is_withdraw|支持提现' => 'require|in: 0,1',
+                'is_transfer|支持转账' => 'require|in: 0,1',
+            ];
+            $this->validate($post, $rule);
+            $value = $post['value'];
+            // 判断所需选值是否有效
+            if(!preg_match('/^credit\d|10&/', $value)){
+                $this->error('所选值无效');
+            }
+            $credit_values = $this->model->select()->column('value');
+            unset($credit_values[array_search($row->value, $credit_values)]);
+            if(in_array($value, $credit_values)){
+                $this->error('所选值已被使用');
+            }
+            try {
+                $save = $row->allowField(CreditType::AllOW_FIELD)->save($post);
+            } catch (\Exception $e) {
+                $this->error('编辑失败');
+            }
+            if($save){
+                event('MemberAddEnd',$post);
+            }
+            $save ? $this->success('编辑成功') : $this->error('编辑失败');
+        }
+        $credit_values = $this->model->select()->column('value');
+        $could_check = [];
+        $could_check[] = $row->value;
+        for ($x = 1; $x <= 10; $x++){
+            if(!in_array('credit'.$x, $credit_values)){
+                $could_check[] = 'credit'.$x;
+                continue;
+            }
+        }
+        $this->assign('row', $row);
+        $this->assign('could_check', $could_check);
+        return $this->fetch();
+    }
 
     /**
      * @NodeAnotation(title="积分配置列表")
@@ -114,7 +223,9 @@ class TransferCredit extends AdminController
         ];
         $this->validate($post, $rule);
 
-        if (!in_array($post['field'], $this->allowModifyFileds)) {
+        $allow_modify = $this->allowModifyFileds;
+        $allow_modify[] = 'title';
+        if (!in_array($post['field'], $allow_modify)) {
             $this->error('该字段不允许修改：' . $post['field']);
         }
         $row = $this->model->find($post['id']);
