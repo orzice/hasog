@@ -32,10 +32,14 @@ class Index extends HomeController
     // 注：微信不存在但是WAP存在！那么默认WAP！如果都不存在 那么 只能返回PC了
     // 注：如果在APP内且没有APP界面，那么直接返回404了！
     // 2020-12-24 Orzice 平安夜~~
+    // 2021-3-15 新增 platform 函数 可以让PC访问手机版
     public function GetSource()
     {
       $dic  = public_path().'config'.$this->fg;
-      
+      $platform = '';
+      if (isset($_GET['platform'])) {
+        $platform = $_GET['platform'];
+      }
       //===========判断来源=============
       //APP内
       if (is_app()) {
@@ -57,7 +61,7 @@ class Index extends HomeController
       }
 
       //手机内
-      if (is_mobile()) {
+      if (is_mobile() || $platform == 'wap') {
         $file = $dic .'wap.json';
         if (file_exists($file)) {
           $this->source = 'wap';
@@ -156,10 +160,23 @@ class Index extends HomeController
       $dir = $file.$pathinfo;
       $dir = str_replace(["/\\","\\\\",'/'],$this->fg,$dir);
 
+      $_404 = false;
       if(!file_exists($dir)){
-        return abort(404, '文件不存在');
+        //那么去wap里面找找
+        if ($this->view['dir'] == 'pc') {
+          $dir = str_replace('page'.$this->fg.$this->view['dir'].$this->fg, 'page'.$this->fg.'wap'.$this->fg, $dir);
+          if(!file_exists($dir)){
+            $_404 = true;
+          }
+        }else{
+            $_404 = true;
+        }
       }
+      
       if(filesize($dir) <= 0){
+          $_404 = true;
+      }
+      if ($_404) {
         return abort(404, '文件不存在');
       }
 
