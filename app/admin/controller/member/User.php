@@ -78,6 +78,8 @@ class User extends AdminController
             ];
             return json($data);
         }
+        $credit_values = CreditType::select();
+        $this->assign('credit_values', $credit_values);
         return $this->fetch();
     }
     /**

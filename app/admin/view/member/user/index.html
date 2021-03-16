@@ -35,9 +35,12 @@ require(["jquery", "easy-admin"], function ($, ea) {
                     {field: 'mobile', minWidth: 80, title: '手机'},
                     {field: 'fname', minWidth: 80, title: '真实姓名'},
                     // {field: 'invite_code', minWidth: 80, title: '邀请码'},
-                    {field: 'credit2', minWidth: 120, title: '余额'},
-                    {field: 'credit4', minWidth: 120, title: '创业金'},
-                    {field: 'credit5', minWidth: 120, title: '拼团券'},
+                    // {field: 'credit2', minWidth: 120, title: '余额'},
+                    // {field: 'credit4', minWidth: 120, title: '创业金'},
+                    // {field: 'credit5', minWidth: 120, title: '拼团券'},
+                    {foreach $credit_values as $v}
+                    {field: '{$v.value}', minWidth: 120, title: '{$v.title}'},
+                    {/foreach}
                     {field: 'state', title: '黑名单', width: 85, search: 'select', selectList: {0: '禁用', 1: '启用'}, templet: ea.table.switch},
                     {field: 'create_time', minWidth: 120, title: '创建时间', search: 'range'},
                     {
