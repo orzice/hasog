@@ -1167,10 +1167,7 @@ $tableName = 'credit_type';
 $Sql = <<<ETO
 INSERT INTO `{$tableName}` (`id`, `title`, `value`, `is_pay`, `is_withdraw`, `is_transfer`, `is_convert`, `create_time`, `update_time`, `delete_time`) VALUES
 (1, '余额', 'credit2',  1,  1,  1,  0,  NULL, 1614240049, NULL),
-(2, '感恩奖',  'credit3',  0,  0,  0,  1,  NULL, NULL, 1),
-(3, '创业金',  'credit4',  1,  0,  1,  0,  NULL, 1613615831, NULL),
-(4, '积分', 'credit1',  0,  0,  0,  0,  NULL, NULL, 1),
-(5, '拼团券',  'credit5',  0,  0,  0,  0,  NULL, NULL, NULL)
+(2, '积分',  'credit1',  0,  0,  0,  0,  NULL, NULL, NULL)
 ON DUPLICATE KEY UPDATE `id` = VALUES(`id`), `title` = VALUES(`title`), `value` = VALUES(`value`), `is_pay` = VALUES(`is_pay`), `is_withdraw` = VALUES(`is_withdraw`), `is_transfer` = VALUES(`is_transfer`), `is_convert` = VALUES(`is_convert`), `create_time` = VALUES(`create_time`), `update_time` = VALUES(`update_time`), `delete_time` = VALUES(`delete_time`);
 ETO;
 $this->insertTable($tableName,$Sql);
