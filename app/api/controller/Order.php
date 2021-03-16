@@ -568,6 +568,10 @@ class Order extends ApiController
     public function pay_order()
     {
         $post = $this->request->get();
+        //嵌容某些定制的旧版本
+        if(count($post) == 0){
+            $post = $this->request->post();
+        }
         $order_id = isset($post['order_id']) ? $post['order_id'] : null;
         $pay_type_id = isset($post['pay_type_id']) ? $post['pay_type_id'] : null;
 //        empty($order_id) && $this->error('订单不存在');
