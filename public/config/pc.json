@@ -1,6 +1,6 @@
 {
   "namespace": "hasog_view",
-  "dir": "wap",
+  "dir": "pc",
   "name": "幻神商城默认前端",
   "version": "1.0.0",
   "description": "幻神商城默认前端系统",
