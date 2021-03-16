@@ -1,9 +1,36 @@
 
 <div class="layui-form-item">
+    {if $could_change}
     <label class="layui-form-label">积分类型名</label>
     <div class="layui-input-block">
         <input type="text" name="title" class="layui-input" lay-verify="required" lay-reqtext="填写积分名称" placeholder="填写积分名称" value="{$row.title}">
     </div>
+    {else /}
+    <label class="layui-form-label required" >积分类型名</label>
+    <div class="layui-form-label-col">
+        {$row.title}
+        <input type="text" hidden name="title" value="{$row.title}">
+    </div>
+    {/if}
+
+</div>
+<div class="layui-form-item  layui-row layui-col-xs12">
+    {if $could_change}
+    <label class="layui-form-label required" >值选择{$row.value}</label>
+    <div class="layui-input-block">
+        <select name="value" lay-search data-value="{$row.value}">
+            {foreach $could_check as $vo}
+            <option value="{$vo}">{$vo}</option>
+            {/foreach}
+        </select>
+    </div>
+    {else /}
+    <label class="layui-form-label required" >值</label>
+    <div class="layui-form-label-col">
+        {$row.value}
+        <input type="text" hidden name="value" value="{$row.value}">
+    </div>
+    {/if}
 </div>
 <div class="layui-form-item">
     <label class="layui-form-label">是否支持支付</label>
@@ -27,14 +54,5 @@
     </div>
 </div>
 
-<div class="layui-form-item  layui-row layui-col-xs12">
-    <label class="layui-form-label required" >值选择{$row.value}</label>
-    <div class="layui-input-block">
-        <select name="value" lay-search data-value="{$row.value}">
-            {foreach $could_check as $vo}
-            <option value="{$vo}">{$vo}</option>
-            {/foreach}
-        </select>
-    </div>
-</div>
+
 

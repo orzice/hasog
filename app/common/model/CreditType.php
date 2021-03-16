@@ -29,6 +29,10 @@ class CreditType extends TimeModel
     const AllOW_FIELD = [
         'is_pay', 'is_withdraw', 'is_transfer', 'is_convert', 'title', 'value'
     ];
+    const DISABLED_VALUE = [
+      'credit1', 'credit2'
+    ];
+
     protected $deleteTime = 'delete_time';
 
 

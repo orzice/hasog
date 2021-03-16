@@ -148,6 +148,11 @@ class TransferCredit extends AdminController
         if(empty($row)){
             $this->error('积分类型不存在');
         }
+        $disable_value = CreditType::DISABLED_VALUE;
+        $could_change = true;
+        if(in_array($row->value, $disable_value)){
+            $could_change = false;
+        }
         if ($this->request->isAjax()) {
             $post = $this->request->post();
             $rule = [
@@ -155,9 +160,15 @@ class TransferCredit extends AdminController
                 'is_pay|支持支付' => 'require|in: 0,1',
                 'is_withdraw|支持提现' => 'require|in: 0,1',
                 'is_transfer|支持转账' => 'require|in: 0,1',
+                'value|值' => 'require|length: 4,8',
             ];
             $this->validate($post, $rule);
             $value = $post['value'];
+            $title = $post['title'];
+            // 判断是否为不能修改的值
+            if(in_array($row->value, $disable_value) && ($value !== $row->value || $title !== $row->value)){
+                $this->error('当前积分类型不能修改积分名称或值');
+            }
             // 判断所需选值是否有效
             if(!preg_match('/^credit\d|10&/', $value)){
                 $this->error('所选值无效');
@@ -187,6 +198,7 @@ class TransferCredit extends AdminController
             }
         }
         $this->assign('row', $row);
+        $this->assign('could_change', $could_change);
         $this->assign('could_check', $could_check);
         return $this->fetch();
     }
