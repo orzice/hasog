@@ -237,7 +237,7 @@
                             </tr>
                             <tr>
                                 <td>HaSog 版本</td>
-                                <td>v{$version}</td>
+                                <td>v{$version} / {$release}</td>
                             </tr>
                             <tr>
                                 <td>服务器系统及 PHP</td>
@@ -291,6 +291,45 @@
                         </table>
                     </div>
                 </div>
+{eq name=":Sessions('id')" value="1"}
+                <div class="layui-card">
+                    <div class="layui-card-header"><i class="fa fa-fire icon"></i>配置信息 (务必妥善保存)</div>
+                    <div class="layui-card-body layui-text">
+                        <table class="layui-table">
+                            <colgroup>
+                                <col width="180">
+                                <col>
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <td>后台管理员加密密钥</td>
+                                <td>
+                                   {$pwSDK}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>用户加密密钥</td>
+                                <td>
+                                   {$userPW}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>后台加密地址</td>
+                                <td>
+                                   {$Admin}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>软件唯一ID（云平台）</td>
+                                <td>
+                                   {$uniqueid}
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+{/eq}
 
                 <div class="layui-card">
                     <div class="layui-card-header"><i class="fa fa-paper-plane-o icon"></i>公告</div>

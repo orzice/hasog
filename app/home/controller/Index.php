@@ -142,8 +142,8 @@ class Index extends HomeController
       }
 
       $data = config_plus("hasog");
-      header('Server: HaSog Server '.$data['version']);
-      header('X-Powered-By: HaSog/'.$data['version']);
+      header('Server: HaSog Server '.$data['version'].'/'.$data['release']);
+      header('X-Powered-By: HaSog/'.$data['version'].'/'.$data['release']);
       if (!$this->GetView()) {
         return abort(404, '文件不存在');
       }

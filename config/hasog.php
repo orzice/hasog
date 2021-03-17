@@ -18,14 +18,18 @@
 return [
     // 版本
     'version'         => '1.0.0 Beta',
+    // 日期
+    'release'         => '20210317',
     // Session配置
     'SessionName'         => 'user',
     // 后台管理员密码加密
-    'pwSDK'         => '12333',
+    'pwSDK'         => '',
     // 前台用户密码加密
-    'userPW'         => '12333',
+    'userPW'         => '',
     // 云平台配置
     'CloudUrl'         => 'https://cloud.hasog.com',
     //  后台访问目录
-    'Admin'         => 'admin',
+    'Admin'         => '',
+    //  唯一ID 勿动
+    'uniqueid'         => '',
 ];

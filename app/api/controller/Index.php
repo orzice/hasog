@@ -31,6 +31,7 @@ class Index extends ApiController
     {
 
         $data['version'] = config_plus("hasog.version");
+        $data['release'] = config_plus("hasog.release");
         $data['site'] = [];
         $data['upload'] = [];
         $data['site']['name'] = sysconfig('site','site_name');

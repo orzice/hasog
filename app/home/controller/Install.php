@@ -78,6 +78,7 @@ class Install extends HomeController
         $key = $post['key'];
         $key_user = $post['key_user'];
         $key_admin = $post['key_admin'];
+        $uniqueid = $post['uniqueid'];
 
 
         // 参数验证
@@ -96,6 +97,8 @@ class Install extends HomeController
             $validateError = '后台密码必须为英文或数字的组合！';
         }elseif (!ctype_alnum($username)) {
             $validateError = '后台账号必须为英文或数字的组合！';
+        }elseif (!ctype_alnum($uniqueid)) {
+            $validateError = '唯一ID必须为英文或数字的组合！';
         }
         if (!empty($validateError)) {
            return json([
@@ -107,7 +110,7 @@ class Install extends HomeController
         // HaSog配置初始化
         $hasog['pwSDK'] = $key;
         $hasog['userPW'] = $key_user;
-        @file_put_contents($dic_r.'hasog.php', $this->getHaSogConfig($hasog,$key_admin));
+        @file_put_contents($dic_r.'hasog.php', $this->getHaSogConfig($hasog,$key_admin,$uniqueid));
 
         // DB类初始化
         $config = [
@@ -225,6 +228,7 @@ class Install extends HomeController
         return json($data);
       }
 
+        $this->assign('uniqueid',getuniqueid());
         $this->assign('hasog',$hasog);
         $this->assign('errorInfo',$errorInfo);
         $this->assign('currentHost',$currentHost);
@@ -355,7 +359,7 @@ EOT;
     return $config;
 }
 
-function getHaSogConfig($data,$key_admin)
+function getHaSogConfig($data,$key_admin,$uniqueid)
 {
     $config = <<<EOT
 <?php
@@ -388,6 +392,8 @@ return [
     'CloudUrl'         => '{$data['CloudUrl']}',
     //  后台访问目录
     'Admin'         => '{$key_admin}',
+    //  唯一ID 勿动
+    'uniqueid'         => '{$uniqueid}',
 ];
 
 EOT;

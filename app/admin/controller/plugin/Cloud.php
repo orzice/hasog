@@ -42,13 +42,16 @@ class Cloud extends AdminController
     public function index()
      {
         //获取插件配置
-        // $PluginOn = Plugins::GetPluginList(1);
-        // $PluginOff = Plugins::GetPluginList(0);
-        // $Install = Plugins::GetInstallPlugin();
+        $isHTTPS = ($this->request->server('SERVER_PORT') == 443 || $this->request->server('HTTPS') && strtolower($this->request->server('HTTPS')) != 'off') ? true : false;
+        $scheme = 'http'.($isHTTPS ? 's' : '');
+        $siteurl = $scheme.'://'.$this->request->server('HTTP_HOST');
 
-        // $this->assign('PluginOn', $PluginOn);
-        // $this->assign('PluginOff', $PluginOff);
-        // $this->assign('Install', $Install);
+        $data = 'siteuniqueid='.rawurlencode(getuniqueid()).'&siteurl='.rawurlencode($siteurl).'&sitever='.config_plus("hasog.version").'/'.config_plus("hasog.release").'&sitecharset=utf-8&addonversion=1';
+        $param = 'data='.rawurlencode(base64_encode($data));
+        $param .= '&md5hash='.substr(md5($data.time()), 8, 8).'&timestamp='.time();
+      
+
+        $this->assign('param', $param);
 
         return $this->fetch();
     }
