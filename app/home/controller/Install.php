@@ -382,6 +382,8 @@ function getHaSogConfig($data,$key_admin,$uniqueid)
 return [
     // 版本
     'version'         => '{$data['version']}',
+    // 日期
+    'release'         => '{$data['release']}',
     // Session配置
     'SessionName'         => '{$data['SessionName']}',
     // 后台管理员密码加密
