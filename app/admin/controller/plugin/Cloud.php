@@ -46,9 +46,9 @@ class Cloud extends AdminController
         $scheme = 'http'.($isHTTPS ? 's' : '');
         $siteurl = $scheme.'://'.$this->request->server('HTTP_HOST');
 
-        $data = 'siteuniqueid='.rawurlencode(getuniqueid()).'&siteurl='.rawurlencode($siteurl).'&sitever='.config_plus("hasog.version").'/'.config_plus("hasog.release").'&sitecharset=utf-8&addonversion=1';
+        $data = 'siteuniqueid='.rawurlencode(getuniqueid()).'&siteurl='.rawurlencode($siteurl).'&sitever='.config_plus("hasog.version").'/'.config_plus("hasog.release").'&ip='.config_plus("hasog.ServerIp").'&sitecharset=utf-8&addonversion=1';
         $param = 'data='.rawurlencode(base64_encode($data));
-        $param .= '&md5hash='.substr(md5($data.time()), 8, 8).'&timestamp='.time();
+        $param .= '&md5hash='.substr(md5(getHaSogServerIp().$data.time()), 8, 8).'&timestamp='.time();
       
 
         $this->assign('param', $param);

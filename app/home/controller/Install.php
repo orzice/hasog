@@ -79,6 +79,8 @@ class Install extends HomeController
         $key_user = $post['key_user'];
         $key_admin = $post['key_admin'];
         $uniqueid = $post['uniqueid'];
+        $ServerIp = $post['ServerIp'];
+
 
 
         // 参数验证
@@ -99,7 +101,10 @@ class Install extends HomeController
             $validateError = '后台账号必须为英文或数字的组合！';
         }elseif (!ctype_alnum($uniqueid)) {
             $validateError = '唯一ID必须为英文或数字的组合！';
+        }elseif (!filter_var($ServerIp, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+            $validateError = '公网IP不正确！必须为IPV4地址！';
         }
+
         if (!empty($validateError)) {
            return json([
                 'code' => 0,
@@ -110,7 +115,7 @@ class Install extends HomeController
         // HaSog配置初始化
         $hasog['pwSDK'] = $key;
         $hasog['userPW'] = $key_user;
-        @file_put_contents($dic_r.'hasog.php', $this->getHaSogConfig($hasog,$key_admin,$uniqueid));
+        @file_put_contents($dic_r.'hasog.php', $this->getHaSogConfig($hasog,$key_admin,$uniqueid,$ServerIp));
 
         // DB类初始化
         $config = [
@@ -359,7 +364,7 @@ EOT;
     return $config;
 }
 
-function getHaSogConfig($data,$key_admin,$uniqueid)
+function getHaSogConfig($data,$key_admin,$uniqueid,$ServerIp)
 {
     $config = <<<EOT
 <?php
@@ -396,6 +401,8 @@ return [
     'Admin'         => '{$key_admin}',
     //  唯一ID 勿动
     'uniqueid'         => '{$uniqueid}',
+    //  服务器公网IP
+    'ServerIp'         => '{$ServerIp}',
 ];
 
 EOT;

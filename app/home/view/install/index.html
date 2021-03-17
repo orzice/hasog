@@ -134,7 +134,7 @@ small{
         </div>
 
     <p class="desc">
-        加密配置
+        云平台配置
     </p>
         <div class="bg">
 
@@ -145,6 +145,22 @@ small{
                     <small>注意！此配置为站点唯一ID，供云平台使用！请牢记！</small>
                 </div>
             </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">服务器IP</label>
+                <div class="layui-input-block">
+                    <input class="layui-input" name="ServerIp" autocomplete="off" lay-verify="required" lay-reqtext="请输入服务器IP" placeholder="请输入服务器IP" value="{:getServerIp()}">
+                    <small>注意！请核对是否为服务器公网IP！</small>
+                </div>
+            </div>
+
+        </div>
+
+    <p class="desc">
+        加密配置
+    </p>
+        <div class="bg">
+
 
             <div class="layui-form-item">
                 <label class="layui-form-label">后台加密</label>

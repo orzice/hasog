@@ -32,4 +32,6 @@ return [
     'Admin'         => '',
     //  唯一ID 勿动
     'uniqueid'         => '',
+    //  服务器公网IP
+    'ServerIp'         => '',
 ];

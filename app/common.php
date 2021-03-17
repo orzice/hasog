@@ -22,6 +22,27 @@ use think\facade\Cache;
 use think\facade\Config;
 
 
+if (!function_exists('getServerIp')) {
+  function getServerIp() {
+    $externalContent = file_get_contents('http://vip.linux-code.com/json');
+    $externalContent = json_decode($externalContent,true);
+    $externalIp = $externalContent;
+
+    return $externalIp['ip'];
+  }
+}
+
+
+if (!function_exists('getHaSogServerIp')) {
+    function getHaSogServerIp() {
+      if(config_plus("hasog.ServerIp") && config_plus("hasog.ServerIp") !== '') {
+        return config_plus("hasog.ServerIp");
+      } else {
+        return getServerIp();
+      }
+    }
+}
+
 if (!function_exists('getpwSDK')) {
     function getpwSDK() {
       if(config_plus("hasog.pwSDK") && config_plus("hasog.pwSDK") !== '') {
@@ -55,7 +76,7 @@ if (!function_exists('getuniqueid')) {
         return config_plus("hasog.uniqueid");
       } else {
         $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz';
-        $addonuniqueid = $chars[date('y')%60].$chars[date('n')].$chars[date('j')].$chars[date('G')].$chars[date('i')].$chars[date('s')].substr(md5('127.0.0.1'.time()), 0, 4).random(6);
+        $addonuniqueid = $chars[date('y')%60].$chars[date('n')].$chars[date('j')].$chars[date('G')].$chars[date('i')].$chars[date('s')].substr(md5(request()->ip().time()), 0, 4).random(6);
         
         return $addonuniqueid;
       }
@@ -432,101 +453,149 @@ if (!function_exists('array_format_key')) {
 
 }
 
-//判断是否是APP访问
-function is_app(){
-  if(isset($_SERVER['HTTP_USER_AGENT'])){
-    $agent = $_SERVER['HTTP_USER_AGENT'];
-   }else{
-    $agent = '';
-   }
-   if(strpos($agent,"Html5Plus") !== false){
-    //H5手机版
-    return true;
-   }
+if (!function_exists('get_client_ip')) {
+/**
+ * 获取客户端IP地址
+ * @param integer $type 返回类型 0 返回IP地址 1 返回IPV4地址数字
+ * @param boolean $adv 是否进行高级模式获取（有可能被伪装）
+ * @return mixed
+ */
+function get_client_ip($type = 0,$adv=false) {
+    $type       =  $type ? 1 : 0;
+    static $ip  =   NULL;
+    if ($ip !== NULL) return $ip[$type];
+    if($adv){
+        if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $arr    =   explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+            $pos    =   array_search('unknown',$arr);
+            if(false !== $pos) unset($arr[$pos]);
+            $ip     =   trim($arr[0]);
+        }elseif (isset($_SERVER['HTTP_CLIENT_IP'])) {
+            $ip     =   $_SERVER['HTTP_CLIENT_IP'];
+        }elseif (isset($_SERVER['REMOTE_ADDR'])) {
+            $ip     =   $_SERVER['REMOTE_ADDR'];
+        }
+    }elseif (isset($_SERVER['REMOTE_ADDR'])) {
+        $ip     =   $_SERVER['REMOTE_ADDR'];
+    }
+    // IP地址合法验证
+    $long = sprintf("%u",ip2long($ip));
+    $ip   = $long ? array($ip, $long) : array('0.0.0.0', 0);
+    return $ip[$type];
 }
-//判断是否是手机访问不是就是PC访问
-function is_mobile(){
-  if(isMobiles()){
+
+}
+
+
+
+if (!function_exists('is_app')) {
+  //判断是否是APP访问
+  function is_app(){
+    if(isset($_SERVER['HTTP_USER_AGENT'])){
+      $agent = $_SERVER['HTTP_USER_AGENT'];
+     }else{
+      $agent = '';
+     }
+     if(strpos($agent,"Html5Plus") !== false){
+      //H5手机版
       return true;
-  }else{
-      return false;
+     }
   }
 }
-//判断是否是微信访问
-function is_weixin(){
-  if(isset($_SERVER['HTTP_USER_AGENT'])){
-    $ua = $_SERVER['HTTP_USER_AGENT'];
-   }else{
-    $ua = '';
-   }
-   
-  //MicroMessenger 是android/iphone版微信所带的
-  //Windows Phone 是winphone版微信带的  (这个标识会误伤winphone普通浏览器的访问)
-  //if(strpos($ua, 'MicroMessenger') == false || strpos($ua, 'Windows Phone') == false){ 
-  if(strpos($ua, 'MicroMessenger') == false){  
-      return false;
-  }else{  
-      return true;
-  }
-}
-//判断是否手机版
-function isMobiles()
-{ 
-    if (isset ($_SERVER['HTTP_X_WAP_PROFILE']))
-    {
+
+if (!function_exists('is_mobile')) {
+  //判断是否是手机访问不是就是PC访问
+  function is_mobile(){
+    if(isMobiles()){
         return true;
-    } 
-    if (isset ($_SERVER['HTTP_USER_AGENT']))
-    {
-        $clientkeywords = array ('nokia',
-            'sony',
-            'ericsson',
-            'mot',
-            'samsung',
-            'htc',
-            'sgh',
-            'lg',
-            'sharp',
-            'sie-',
-            'philips',
-            'panasonic',
-            'alcatel',
-            'lenovo',
-            'iphone',
-            'ipod',
-            'blackberry',
-            'meizu',
-            'android',
-            'netfront',
-            'symbian',
-            'ucweb',
-            'windowsce',
-            'palm',
-            'operamini',
-            'operamobi',
-            'openwave',
-            'nexusone',
-            'cldc',
-            'midp',
-            'wap',
-            'mobile'
-            ); 
-        if (preg_match("/(" . implode('|', $clientkeywords) . ")/i", strtolower($_SERVER['HTTP_USER_AGENT'])))
-        {
-            return true;
-        } 
-    } 
+    }else{
+        return false;
+    }
+  }
+}
+
+if (!function_exists('is_weixin')) {
+  //判断是否是微信访问
+  function is_weixin(){
+    if(isset($_SERVER['HTTP_USER_AGENT'])){
+      $ua = $_SERVER['HTTP_USER_AGENT'];
+     }else{
+      $ua = '';
+     }
+     
+    //MicroMessenger 是android/iphone版微信所带的
+    //Windows Phone 是winphone版微信带的  (这个标识会误伤winphone普通浏览器的访问)
+    //if(strpos($ua, 'MicroMessenger') == false || strpos($ua, 'Windows Phone') == false){ 
+    if(strpos($ua, 'MicroMessenger') == false){  
+        return false;
+    }else{  
+        return true;
+    }
+  }
+}
+if (!function_exists('isMobiles')) {
     
-    if (isset ($_SERVER['HTTP_VIA']))
-    { 
-        return stristr($_SERVER['HTTP_VIA'], "wap") ? true : false;
-    } 
-    if (isset ($_SERVER['HTTP_ACCEPT']))
-    { 
-        if ((strpos($_SERVER['HTTP_ACCEPT'], 'vnd.wap.wml') !== false) && (strpos($_SERVER['HTTP_ACCEPT'], 'text/html') === false || (strpos($_SERVER['HTTP_ACCEPT'], 'vnd.wap.wml') < strpos($_SERVER['HTTP_ACCEPT'], 'text/html'))))
-        {
-            return true;
-        } 
-    } 
-    return false;
-} 
+  //判断是否手机版
+  function isMobiles()
+  { 
+      if (isset ($_SERVER['HTTP_X_WAP_PROFILE']))
+      {
+          return true;
+      } 
+      if (isset ($_SERVER['HTTP_USER_AGENT']))
+      {
+          $clientkeywords = array ('nokia',
+              'sony',
+              'ericsson',
+              'mot',
+              'samsung',
+              'htc',
+              'sgh',
+              'lg',
+              'sharp',
+              'sie-',
+              'philips',
+              'panasonic',
+              'alcatel',
+              'lenovo',
+              'iphone',
+              'ipod',
+              'blackberry',
+              'meizu',
+              'android',
+              'netfront',
+              'symbian',
+              'ucweb',
+              'windowsce',
+              'palm',
+              'operamini',
+              'operamobi',
+              'openwave',
+              'nexusone',
+              'cldc',
+              'midp',
+              'wap',
+              'mobile'
+              ); 
+          if (preg_match("/(" . implode('|', $clientkeywords) . ")/i", strtolower($_SERVER['HTTP_USER_AGENT'])))
+          {
+              return true;
+          } 
+      } 
+      
+      if (isset ($_SERVER['HTTP_VIA']))
+      { 
+          return stristr($_SERVER['HTTP_VIA'], "wap") ? true : false;
+      } 
+      if (isset ($_SERVER['HTTP_ACCEPT']))
+      { 
+          if ((strpos($_SERVER['HTTP_ACCEPT'], 'vnd.wap.wml') !== false) && (strpos($_SERVER['HTTP_ACCEPT'], 'text/html') === false || (strpos($_SERVER['HTTP_ACCEPT'], 'vnd.wap.wml') < strpos($_SERVER['HTTP_ACCEPT'], 'text/html'))))
+          {
+              return true;
+          } 
+      } 
+      return false;
+  } 
+
+}
+
