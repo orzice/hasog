@@ -61,18 +61,6 @@ if (!function_exists('getuniqueid')) {
       }
     }
 }
-if (!function_exists('getuniqueid')) {
-    function getuniqueid() {
-      if(config_plus("hasog.uniqueid") && config_plus("hasog.uniqueid") !== '') {
-        return config_plus("hasog.uniqueid");
-      } else {
-        $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz';
-        $addonuniqueid = $chars[date('y')%60].$chars[date('n')].$chars[date('j')].$chars[date('G')].$chars[date('i')].$chars[date('s')].substr(md5('127.0.0.1'.time()), 0, 4).random(6);
-        
-        return $addonuniqueid;
-      }
-    }
-}
 
 if (!function_exists('random')) {
     function random($length, $numeric = 0) {
