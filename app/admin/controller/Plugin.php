@@ -48,6 +48,10 @@ class Plugin extends AdminController
         $plugin = str_replace($name, '', $info);
         $plugin = str_replace('.html', '', $plugin);
 
+        $this->assign('plugin', $plugin);
+
+        return $this->fetch();
+
     }
     /**
      * @NodeAnotation(title="插件HOOK")
