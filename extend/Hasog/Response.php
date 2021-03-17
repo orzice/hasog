@@ -111,7 +111,10 @@ ETO;
     protected $request;
 
     function __construct() {
-        $data = explode(PHP_EOL, $this->mimeType);
+        // $data = explode(PHP_EOL, $this->mimeType);
+        //平台适配问题
+        $data = str_replace(["\r\n","\n","\r"],"\r", $this->mimeType);
+        $data = explode("\r", $data);
 
         //创建快捷数组，=A= 只能for循环了
         $this->Type = array();
