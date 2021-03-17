@@ -51,6 +51,8 @@ abstract class BaseController
         $this->initialize();
         // 插件系统初始化
         Plugins::init();
+        // 全局HOOK
+        event('Hook');
     }
 
     // 初始化
