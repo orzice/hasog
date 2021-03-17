@@ -34,54 +34,62 @@
 	}
 }
 // 工具带图标flex布局
-.history-section{
-		/* padding: 30upx 0 0; */
-		margin-top: 20upx;
-		background: #fff;
-		border-radius:10upx;
-		display: flex;
-		flex-flow: wrap;
-		.content {
-			width: 25%;
-			margin: 16upx 0;
-			/deep/.mix-list-cell {
-				align-items: center;
-				flex-direction: column;
-				padding: 0;
-				.cell-icon {
-					font-size: 44upx;
-				}
-				.cell-tit {
-					font-size: $font-sm;
-				}
-				&::after {
-					border-bottom: 0;
-				}
-			}
-		}
-		.sec-header{
-			display:flex;
+.history-section {
+	/* padding: 30upx 0 0; */
+	margin-top: 20upx;
+	background: #fff;
+	border-radius: 10upx;
+	display: flex;
+	flex-flow: wrap;
+	.content {
+		width: 25%;
+		margin: 16upx 0;
+		/deep/.mix-list-cell {
 			align-items: center;
-			font-size: $font-base;
-			color: $font-color-dark;
-			line-height: 40upx;
-			margin-left: 30upx;
-			.yticon{
+			flex-direction: column;
+			padding: 0;
+			.cell-icon {
 				font-size: 44upx;
-				color: #5eba8f;
-				margin-right: 16upx;
-				line-height: 40upx;
 			}
-		}
-		.h-list{
-			white-space: nowrap;
-			padding: 30upx 30upx 0;
-			image{
-				display:inline-block;
-				width: 160upx;
-				height: 160upx;
-				margin-right: 20upx;
-				border-radius: 10upx;
+			.cell-tit {
+				font-size: $font-sm;
+			}
+			&::after {
+				border-bottom: 0;
 			}
 		}
 	}
+	/* #ifdef MP */
+	list-cell {
+		width: 25%;
+		.content {
+			width: 100%;
+		}
+	}
+	/* #endif */
+	.sec-header {
+		display: flex;
+		align-items: center;
+		font-size: $font-base;
+		color: $font-color-dark;
+		line-height: 40upx;
+		margin-left: 30upx;
+		.yticon {
+			font-size: 44upx;
+			color: #5eba8f;
+			margin-right: 16upx;
+			line-height: 40upx;
+		}
+	}
+	.h-list {
+		white-space: nowrap;
+		padding: 30upx 30upx 0;
+		image {
+			display: inline-block;
+			width: 160upx;
+			height: 160upx;
+			margin-right: 20upx;
+			border-radius: 10upx;
+		}
+	}
+}
