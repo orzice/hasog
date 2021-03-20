@@ -101,49 +101,49 @@
                                 <div class="welcome-module">
                                     <div class="layui-row layui-col-space10 layuimini-qiuck">
                                         <div class="layui-col-xs3 layuimini-qiuck-module">
-                                            <a href="javascript:;" layuimini-content-href="admin/member.user/index" data-title="会员列表" data-icon="fa fa-list">
+                                            <a href="javascript:;" layuimini-content-href="{:__url('member.user/index')}" data-title="会员列表" data-icon="fa fa-list">
                                                 <i class="fa fa-list"></i>
                                                 <cite>会员列表</cite>
                                             </a>
                                         </div>
                                         <div class="layui-col-xs3 layuimini-qiuck-module">
-                                            <a href="javascript:;" layuimini-content-href="admin/goods.home/index" data-title="商品管理" data-icon="fa fa-shopping-cart">
+                                            <a href="javascript:;" layuimini-content-href="{:__url('goods.home/index')}" data-title="商品管理" data-icon="fa fa-shopping-cart">
                                                 <i class="fa fa-shopping-cart"></i>
                                                 <cite>商品管理</cite>
                                             </a>
                                         </div>
                                         <div class="layui-col-xs3 layuimini-qiuck-module">
-                                            <a href="javascript:;" layuimini-content-href="admin/order.home/index" data-title="订单列表" data-icon="fa fa-file-text">
+                                            <a href="javascript:;" layuimini-content-href="{:__url('order.home/index')}" data-title="订单列表" data-icon="fa fa-file-text">
                                                 <i class="fa fa-file-text"></i>
                                                 <cite>订单列表</cite>
                                             </a>
                                         </div>
                                         <div class="layui-col-xs3 layuimini-qiuck-module">
-                                            <a href="javascript:;" layuimini-content-href="admin/page.notice/index" data-title="公告管理" data-icon="fa fa-dot-circle-o">
+                                            <a href="javascript:;" layuimini-content-href="{:__url('page.notice/index')}" data-title="公告管理" data-icon="fa fa-dot-circle-o">
                                                 <i class="fa fa-dot-circle-o"></i>
                                                 <cite>公告管理</cite>
                                             </a>
                                         </div>
                                         <div class="layui-col-xs3 layuimini-qiuck-module">
-                                            <a href="javascript:;" layuimini-content-href="admin/finace.uprecord/index" data-title="充值记录" data-icon="fa fa-calendar">
+                                            <a href="javascript:;" layuimini-content-href="{:__url('finace.uprecord/index')}" data-title="充值记录" data-icon="fa fa-calendar">
                                                 <i class="fa fa-calendar"></i>
                                                 <cite>充值记录</cite>
                                             </a>
                                         </div>
                                         <div class="layui-col-xs3 layuimini-qiuck-module">
-                                            <a href="javascript:;" layuimini-content-href="admin/plugin.index/index" data-title="我的插件" data-icon="fa fa-cogs">
+                                            <a href="javascript:;" layuimini-content-href="{:__url('plugin.index/index')}" data-title="我的插件" data-icon="fa fa-cogs">
                                                 <i class="fa fa-cogs"></i>
                                                 <cite>我的插件</cite>
                                             </a>
                                         </div>
                                         <div class="layui-col-xs3 layuimini-qiuck-module">
-                                            <a href="javascript:;" layuimini-content-href="admin/plugin.cloud/index" data-title="插件市场" data-icon="fa fa-puzzle-piece">
+                                            <a href="javascript:;" layuimini-content-href="{:__url('plugin.cloud/index')}" data-title="插件市场" data-icon="fa fa-puzzle-piece">
                                                 <i class="fa fa-puzzle-piece"></i>
                                                 <cite>插件市场</cite>
                                             </a>
                                         </div>
                                         <div class="layui-col-xs3 layuimini-qiuck-module">
-                                            <a href="javascript:;" layuimini-content-href="admin/finace.withdrawsts/index" data-title="提现统计" data-icon="fa fa-area-chart">
+                                            <a href="javascript:;" layuimini-content-href="{:__url('finace.withdrawsts/index')}" data-title="提现统计" data-icon="fa fa-area-chart">
                                                 <i class="fa fa-area-chart"></i>
                                                 <cite>提现统计</cite>
                                             </a>
@@ -155,6 +155,187 @@
 
                     </div>
                 </div>
+                <style type="text/css">
+.now-content{
+    padding-left: 5px;
+}
+.now-update-version{
+    font-size: 28px;
+    margin-bottom: 14px;
+    position: relative;
+    color: #333;
+}
+.now-version {
+    color: #999;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+.now-btn-default {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-color: #e8e9eb;
+    color: #333;
+    background-color: #fff;
+    min-width: 140px;
+    border-radius: 0;
+    text-decoration: none;
+}
+.now-btn-default:hover {
+    color: #333;
+    background-color: #e6e6e6;
+    border-color: #adadad;
+}
+.now-icon{
+    text-align: center;
+    flex: 0 1 240px;
+    /*border-right: 1px solid #e8e9eb;*/
+}
+.now-icon img{
+    vertical-align: middle;
+    width: 80px;
+}
+.now-update-statistics{
+    display: flex;
+    align-items: center;
+    /*padding: 6px 20px 20px;*/
+    height: 232px;
+}
+
+                </style>
+                <div class="layui-row layui-col-space15">
+
+                {eq name="$cld['state']" value="1"}
+                    <div class="layui-col-md6">
+                        <div class="layui-card">
+                            <div class="layui-card-header"><i class="fa fa-warning icon"></i>系统更新</div>
+                            <div class="layui-card-body layui-text">
+                                <div class="panel-body">
+
+                                    <div class="now-update-statistics">
+                                        <div class="now-icon">
+                                            <img src="/static/common/images/update-icon.png" alt="">
+                                        </div>
+                                        <div class="now-content">
+                                            <div class="now-update-version">
+                                                v{$version}          
+                                            </div>
+                                            <div class="now-version" style="margin-bottom: 0;">版本号：<b>{$release}</b></div>
+                                            <div class="now-version" >当前版本即最新版本，无须升级</div>
+                                            <div class="">
+                                                <!-- <a href="{:__url('plugin.cloud/update')}" class="now-btn-default" >检测新版本</a> -->
+                                                <a href="javascript:;" layuimini-content-href="{:__url('plugin.cloud/update')}" data-title="版本升级" data-icon="fa fa-puzzle-piece" class="now-btn-default" >检测新版本</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                {/eq}
+                {eq name="$cld['state']" value="2"}
+                    <div class="layui-col-md6">
+                        <div class="layui-card">
+                            <div class="layui-card-header" style="color: #f00;"><i class="fa fa-warning icon  icon-tip"></i>系统更新 - 【 {$cloud.version} / {$cloud.release} 】</div>
+                            <div class="layui-card-body layui-text">
+                                <div class="panel-body">
+
+                                    <div class="now-update-statistics">
+                                        <div class="now-icon">
+                                            <img src="/static/common/images/update-icon.png" alt="">
+                                        </div>
+                                        <div class="now-content">
+                                            <div class="now-update-version" style="color: #f00;">
+                                                v{$version} 
+                                            </div>
+                                            <div class="now-version" style="margin-bottom: 0;">版本号：<b>{$release}</b></div>
+                                            <div class="now-version" style="margin-bottom: 0;">新版本：<b style="color: #f00;">{$cloud.release}</b></div>
+                                            <div class="now-version" style="color: #f00;">发现新版本！请立即更新！</div>
+                                            <div class="">
+                                                <!-- <a href="{:__url('plugin.cloud/update')}" class="now-btn-default" >立即更新</a> -->
+                                                <a href="javascript:;" layuimini-content-href="{:__url('plugin.cloud/update')}" data-title="版本升级" data-icon="fa fa-puzzle-piece" class="now-btn-default" >立即更新</a>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>    
+                {/eq}
+                {eq name="$cld['state']" value="0"}
+                    <div class="layui-col-md6">
+
+                        <div class="layui-card">
+                            <div class="layui-card-header"><i class="fa fa-warning icon"></i>系统更新</div>
+                            <div class="layui-card-body layui-text">
+                                <div class="panel-body">
+
+                                    <div class="now-update-statistics">
+                                        <div class="now-icon">
+                                            <img src="/static/common/images/update-icon.png" alt="">
+                                        </div>
+                                        <div class="now-content">
+                                            <div class="now-update-version" style="color: #f00;">
+                                                云服务不可用
+                                            </div>
+                                            <div class="now-version" style="margin-bottom: 0;">本地版本号：<b>{$release}</b></div>
+                                            <div class="now-version" style="color: #f00;">提示：{$cld.error}</div>
+                                            <div class="">
+                                                <a href="https://www.hasog.com" target="_blank" class="now-btn-default" style="color: #f00;">联系技术支持</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {/eq}
+
+                    <div class="layui-col-md6">
+
+                        <div class="layui-card">
+                    <div class="layui-card-header"><i class="fa fa-bullhorn icon icon-tip"></i>系统公告</div>
+                    <div class="layui-card-body layui-text">
+
+                     {foreach $cloudnot as $key=>$vo }
+                                   
+                        <div class="layuimini-notice" data-src="http://www.bilibili.com">
+                            <div class="layuimini-notice-title">{$vo.title}</div>
+                            <div class="layuimini-notice-extra">{$vo.create_time}</div>
+                            <div class="layuimini-notice-content layui-hide">
+                                {$vo.notice|raw}
+                            </div>
+                        </div>
+
+                    {/foreach}
+
+                    </div>
+                </div>
+                    </div>
+
+                </div>
+
+
                 <div class="layui-row layui-col-space15">
                     <div class="layui-col-md6">
                         <div class="layui-card">
@@ -185,6 +366,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="layui-col-md6">
                         <div class="layui-card">
                             <div class="layui-card-header"><i class="fa fa-credit-card icon icon-blue"></i>订单排行</div>
@@ -216,10 +398,20 @@
                         </div>
 
                     </div>
+                    
                 </div>
+
             </div>
 
             <div class="layui-col-md4">
+
+                <div class="layui-card">
+                    <div class="layui-card-header"><i class="fa fa-paper-plane-o icon"></i>提醒</div>
+                    <div class="layui-card-body layui-text layadmin-text">
+                       如遇到任何系统错误，请联系我们！我们将会在第一时间解决！
+                    </div>
+                </div>
+
                 <div class="layui-card">
                     <div class="layui-card-header"><i class="fa fa-fire icon"></i>版本信息</div>
                     <div class="layui-card-body layui-text">
@@ -232,7 +424,7 @@
                             <tr>
                                 <td>框架名称</td>
                                 <td>
-                                    HaSog {$version}
+                                    HaSog幻神商城
                                 </td>
                             </tr>
                             <tr>
@@ -252,10 +444,6 @@
                                 <td>{$dbversion}</td>
                             </tr>
                             <tr>
-                                <td>介绍</td>
-                                <td>HaSog（全名 HaSog商城）基于TP6框架 的一套 微信社交电商分销系统</td>
-                            </tr>
-                            <tr>
                                 <td>Gitee</td>
                                 <td>
                                     <a href="https://gitee.com/orzice/hasog" target="_blank">Gitee 下载</a>
@@ -272,7 +460,7 @@
                             <tr>
                                 <td>联系我们</td>
                                 <td>
-                                   <a href="https://oauth.acgice.com" target="_blank">https://oauth.acgice.com</a>
+                                   <a href="https://www.hasog.com" target="_blank">https://oauth.acgice.com</a>
                                 </td>
                             </tr>
                             <tr>
@@ -337,12 +525,6 @@
                 </div>
 {/eq}
 
-                <div class="layui-card">
-                    <div class="layui-card-header"><i class="fa fa-paper-plane-o icon"></i>公告</div>
-                    <div class="layui-card-body layui-text layadmin-text">
-                       2333
-                    </div>
-                </div>
 
             </div>
 
@@ -351,6 +533,46 @@
 </div>
 <script>
     require(["jquery", "easy-admin", "miniAdmin", "miniTab"], function ($, ea, miniAdmin, miniTab) {
+
+        /**
+         * 查看公告信息
+         **/
+        $('body').on('click', '.layuimini-notice', function () {
+            var src = $(this).attr('data-src');
+
+            var title = $(this).children('.layuimini-notice-title').text(),
+                noticeTime = $(this).children('.layuimini-notice-extra').text(),
+                content = $(this).children('.layuimini-notice-content').html();
+            var html = '<div style="padding:15px 20px; text-align:justify; line-height: 22px;border-bottom:1px solid #e2e2e2;background-color: #2f4056;color: #ffffff">\n' +
+                '<div style="text-align: center;margin-bottom: 20px;font-weight: bold;border-bottom:1px solid #718fb5;padding-bottom: 5px"><h4 class="text-danger">' + title + '</h4></div>\n' +
+                '<div style="font-size: 12px">' + content + '</div>\n' +
+                '</div>\n';
+
+            if (src !== undefined) {
+                var btn = ['查看', '取消'];
+            }else{
+                 var btn = ['取消'];
+            }
+            var btn = ['取消'];
+            parent.layer.open({
+                type: 1,
+                title: '系统公告'+'<span style="float: right;right: 1px;font-size: 12px;color: #b1b3b9;margin-top: 1px">'+noticeTime+'</span>',
+                area: '600px;',
+                shade: 0.8,
+                id: 'layuimini-notice',
+                btn: btn,
+                btnAlign: 'c',
+                moveType: 1,
+                content:html,
+                success: function (layero) {
+                    // var btn = layero.find('.layui-layer-btn');
+                    // btn.find('.layui-layer-btn0').attr({
+                    //     href: src,
+                    //     target: '_blank'
+                    // });
+                }
+            });
+        });
         miniTab.listen();
     });
 </script>

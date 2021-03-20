@@ -27,6 +27,8 @@ use app\common\model\Member;
 use app\common\model\Goods;
 use app\common\model\Order;
 
+use app\common\Cloud;
+
 use EasyAdmin\auth\Node as NodeService;
 
 
@@ -41,6 +43,7 @@ class Index extends AdminController
      {
         // 触发UserLogin事件 用于执行用户登录后的一系列操作
         event('AdminHome');
+   
 
         return $this->fetch();
         //return "-结束";
@@ -61,19 +64,45 @@ class Index extends AdminController
 
         $mysqlinfo = \think\facade\Db::query("select VERSION()");
         $dbversion = $mysqlinfo[0]['VERSION()'];
+
+        $this->assign('serverinfo', $serverinfo);
+        $this->assign('serversoft', $serversoft);
+        $this->assign('dbversion', $dbversion);
+
+        $cl_d = [];
+        $Cloud = new Cloud();
+        $http = $Cloud->GetUpdate();
+        $not = $Cloud->GetNot();
+
+        if (!$http) {
+            $cl_d['state'] = 0;
+            $cl_d['error'] = $Cloud->GetError();
+        }else{
+            if ($http['release'] <= config_plus("hasog.release")) {
+                $cl_d['state'] = 1;
+            }else{
+                $cl_d['state'] = 2;
+            }
+        }
+        $this->assign('cld', $cl_d);
+        $this->assign('cloud', $http);
+        $this->assign('cloudnot', $not);
+
+
+        //==
         $res['member'] = Member::where('delete_time','NULL')->count();
         $res['goods'] = Goods::where('delete_time','NULL')->count();
          $res['order'] = Order::where('delete_time','NULL')->count();
          $res['list'] = Db::name('member')->whereDay('create_time')->count();
 
-         $member = Member::where('delete_time','NULL')->order('credit2','desc')->limit(4)->select()->toArray();
+         $member = Member::where('delete_time','NULL')->order('credit2','desc')->limit(5)->select()->toArray();
          if (empty($member)){
-             for ($i=0;$i<4;$i++){
+             for ($i=0;$i<5;$i++){
                  $member[$i]['id'] = '无';
                  $member[$i]['credit2'] = '无';
              }
          }
-         for ($i=0;$i<4;$i++){
+         for ($i=0;$i<5;$i++){
              if ($i<count($member)){
                  $a = $i+1;
                  $member[$i]['ph']="第"."$a"."名";
@@ -94,15 +123,15 @@ class Index extends AdminController
              ->field(['a.id,count(*) as count'])
              ->group('a.id')
              ->order('count','desc')
-             ->limit('4')
+             ->limit('5')
              ->select()->toArray();
          if (empty($list)){
-             for ($i=0;$i<4;$i++){
+             for ($i=0;$i<5;$i++){
                  $list[$i]['id'] = '无';
                  $list[$i]['count'] = '无';
              }
          }
-         for ($i=0;$i<4;$i++){
+         for ($i=0;$i<5;$i++){
              if ($i<count($list)){
                  $a = $i+1;
                  $data[$i] = $list[$i];
@@ -119,9 +148,7 @@ class Index extends AdminController
          $this->assign('list',$data);
          $this->assign('member',$member);
         $this->assign('res',$res);
-        $this->assign('serverinfo', $serverinfo);
-        $this->assign('serversoft', $serversoft);
-        $this->assign('dbversion', $dbversion);
+        //==
         return $this->fetch();
     }
 

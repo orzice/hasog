@@ -1146,6 +1146,24 @@ CREATE TABLE `{$tableName}` (
 ETO;
 $this->detectTable($tableName,$Sql);
 
+    $this->installData();
+
+
+  } catch (\Throwable $e) {
+      return false;
+  }
+  return true;
+
+    }
+
+    /**
+     * 安装
+     * @param $data
+     * @return bool|string
+     */
+    public function installData()
+    {
+      $this->tablePrefix = Config::get('database.connections.mysql.prefix');
 //=================================================
 //===============【添加SQL数据】===================
 //=================================================
@@ -1282,7 +1300,7 @@ INSERT INTO `{$tableName}` (`id`, `pid`, `title`, `icon`, `href`, `params`, `tar
 (13,  6,  '上传管理', 'fa fa-arrow-up', 'system.uploadfile/index',  '', '_self',  0,  1,  NULL, NULL, NULL, NULL),
 (14,  6,  '快捷入口', 'fa fa-list', 'system.quick/index', '', '_self',  0,  1,  NULL, NULL, NULL, NULL),
 (15,  1,  '我的插件', 'fa fa-cogs', 'plugin.index/index', '', '_self',  100,  1,  NULL, NULL, NULL, NULL),
-(16,  1,  '插件市场', 'fa fa-puzzle-piece', 'plugin.cloud/index', '', '_self',  100,  1,  '', NULL, 1606039969, NULL),
+(16,  1,  '幻神云平台', 'fa fa-cloud', 'plugin.cloud/index', '', '_self',  100,  1,  '', NULL, 1606039969, NULL),
 (17,  6,  '日志管理', 'fa fa-clock-o',  'system.log/index', '', '_self',  0,  1,  NULL, NULL, NULL, NULL),
 (20,  3,  '会员列表', 'fa fa-address-book', 'member.user/index',  '', '_self',  90, 1,  '', 1603349494, 1614935382, NULL),
 (21,  7,  '商品管理', 'fa fa-shopping-cart',  'goods.home/index', '', '_self',  100,  1,  '', 1603433706, 1603433706, NULL),
@@ -1290,37 +1308,37 @@ INSERT INTO `{$tableName}` (`id`, `pid`, `title`, `icon`, `href`, `params`, `tar
 (24,  4,  '订单列表', 'fa fa-align-justify',  'order.home/index', '', '_self',  100,  1,  '', 1604024310, 1614939632, NULL),
 (26,  5,  '余额设置', 'fa fa-dollar', 'finace.balanceset/edit', '', '_self',  100,  1,  '', 1608881230, 1614934899, NULL),
 (27,  5,  '提现设置', 'fa fa-gear', 'finace.withdrawset/edit',  '', '_self',  99, 1,  '', 1608881306, 1614935010, NULL),
-(28,  261,  '用户提现记录', 'fa fa-list', 'finace.withdrawalrecord/index',  '', '_self',  0,  1,  '', 1608881357, 1614934423, NULL),
-(29,  260,  '线下收款记录', 'fa fa-file-text-o',  'finace.offlinepayment/index',  '', '_self',  0,  1,  '', 1608881423, 1614935075, NULL),
-(30,  259,  '充值余额', 'fa fa-dollar', 'finace.upbalance/index', '', '_self',  0,  1,  '', 1608881467, 1614935122, NULL),
-(31,  261,  '充值记录', 'fa fa-list', 'finace.uprecord/index',  '', '_self',  0,  1,  '', 1608881539, 1614934432, NULL),
-(32,  259,  '余额明细', 'fa fa-list', 'finace.balancesub/index',  '', '_self',  0,  1,  '', 1608881588, 1614934211, NULL),
-(33,  261,  '收入明细', 'fa fa-list', 'finace.income/index',  '', '_self',  0,  1,  '', 1608881627, 1614934443, NULL),
-(34,  261,  '提现统计', 'fa fa-list', 'finace.withdrawsts/index', '', '_self',  0,  1,  '', 1608881678, 1614934480, NULL),
+(28,  55,  '用户提现记录', 'fa fa-list', 'finace.withdrawalrecord/index',  '', '_self',  0,  1,  '', 1608881357, 1614934423, NULL),
+(29,  54,  '线下收款记录', 'fa fa-file-text-o',  'finace.offlinepayment/index',  '', '_self',  0,  1,  '', 1608881423, 1614935075, NULL),
+(30,  53,  '充值余额', 'fa fa-dollar', 'finace.upbalance/index', '', '_self',  0,  1,  '', 1608881467, 1614935122, NULL),
+(31,  55,  '充值记录', 'fa fa-list', 'finace.uprecord/index',  '', '_self',  0,  1,  '', 1608881539, 1614934432, NULL),
+(32,  53,  '余额明细', 'fa fa-list', 'finace.balancesub/index',  '', '_self',  0,  1,  '', 1608881588, 1614934211, NULL),
+(33,  55,  '收入明细', 'fa fa-list', 'finace.income/index',  '', '_self',  0,  1,  '', 1608881627, 1614934443, NULL),
+(34,  55,  '提现统计', 'fa fa-list', 'finace.withdrawsts/index', '', '_self',  0,  1,  '', 1608881678, 1614934480, NULL),
 (35,  0,  '界面管理', 'fa fa-android',  '', '', '_self',  10, 1,  '', 1608881742, 1614939517, NULL),
 (36,  35, '轮播图管理',  'fa fa-picture-o',  'page.carousel/index',  '', '_self',  0,  1,  '', 1608881815, 1608881815, NULL),
 (37,  35, '公告管理', 'fa fa-calendar-o', 'page.notice/index',  '', '_self',  0,  1,  '', 1608881857, 1614937384, NULL),
 (38,  0,  '付款通道', 'fa fa-cny',  '', '', '_self',  59, 1,  '', 1608881893, 1614940217, NULL),
-(39,  264,  '用户反馈', 'fa fa-book', 'admins.feedback/index',  '', '_self',  0,  1,  '', 1608881944, 1614936760, NULL),
+(39,  58,  '用户反馈', 'fa fa-book', 'admins.feedback/index',  '', '_self',  0,  1,  '', 1608881944, 1614936760, NULL),
 (40,  38, '线下付款配置', 'fa fa-gear', 'admins.payment/index', '', '_self',  0,  1,  '', 1608881995, 1614940034, NULL),
 (41,  38, '支付宝支付资源',  'fa fa-github-alt', 'pay.ali_pay/index',  '', '_self',  0,  1,  '', 1608882534, 1614940140, NULL),
 (42,  38, '微信支付资源', 'fa fa-wechat', 'pay.wechat_pay/index', '', '_self',  0,  1,  '', 1608882611, 1614940083, NULL),
 (44,  7,  '商品分类', 'fa fa-list-ol',  'goods.category/index', '', '_self',  0,  1,  '', 1608951659, 1614935370, NULL),
-(45,  262,  '已付款',  'fa fa-list', 'order.home/index?action=paid', '', '_self',  0,  1,  '', 1609039821, 1614936529, NULL),
-(46,  262,  '已发货',  'fa fa-list', 'order.home/index?action=send_goods', '', '_self',  0,  1,  '', 1609039851, 1614936539, NULL),
+(45,  56,  '已付款',  'fa fa-list', 'order.home/index?action=paid', '', '_self',  0,  1,  '', 1609039821, 1614936529, NULL),
+(46,  56,  '已发货',  'fa fa-list', 'order.home/index?action=send_goods', '', '_self',  0,  1,  '', 1609039851, 1614936539, NULL),
 (47,  4,  '退款审核', 'fa fa-list', 'order.order_refund/index', '', '_self',  0,  1,  '', 1609039912, 1614939645, NULL),
-(139, 263,  '积分配置', 'fa fa-cog',  'member.transfer_credit/index', '', '_self',  0,  1,  '', 1613548008, 1614936735, NULL),
-(140, 263,  '积分转账', 'fa fa-credit-card',  'member.transfer_credit/list',  '', '_self',  0,  1,  '', 1613554910, 1614936744, NULL),
-(205, 260,  '线下提现记录', 'fa fa-file-text-o',  'finace.offlinewithdrawals/index',  '', '_self',  0,  1,  '', 1613812021, 1614935082, NULL),
-(245, 264,  '反馈黑名单',  'fa fa-address-book-o', 'admins.feedbackset/index', '', '_self',  0,  1,  '', 1614236710, 1614936774, NULL),
-(258, 38, '支付开关', 'fa fa-adjust', 'pay.pay_type/index', '', '_self',  0,  1,  '', 1614829846, 1614940050, NULL),
-(259, 5,  '余额相关', 'fa fa-dollar', '', '', '_self',  70, 1,  '', 1614934172, 1614935112, NULL),
-(260, 5,  '财务审核', 'fa fa-file-text-o',  '', '', '_self',  80, 1,  '', 1614934343, 1614935037, NULL),
-(261, 5,  '财务统计', 'fa fa-list', '', '', '_self',  0,  1,  '', 1614934411, 1614934411, NULL),
-(262, 4,  '订单状态', 'fa fa-list', '', '', '_self',  0,  1,  '', 1614936495, 1614939660, NULL),
-(263, 3,  '积分管理', 'fa fa-credit-card',  '', '', '_self',  0,  1,  '', 1614936670, 1614936670, NULL),
-(264, 3,  '反馈管理', 'fa fa-address-book', '', '', '_self',  0,  1,  '', 1614936713, 1614936713, NULL),
-(301, 35, '导航管理', 'fa fa-arrow-circle-right', 'page.navigation/index',  '', '_self',  0,  1,  '', 1615362737, 1615362737, NULL)
+(48, 57,  '积分配置', 'fa fa-cog',  'member.transfer_credit/index', '', '_self',  0,  1,  '', 1613548008, 1614936735, NULL),
+(49, 57,  '积分转账', 'fa fa-credit-card',  'member.transfer_credit/list',  '', '_self',  0,  1,  '', 1613554910, 1614936744, NULL),
+(50, 54,  '线下提现记录', 'fa fa-file-text-o',  'finace.offlinewithdrawals/index',  '', '_self',  0,  1,  '', 1613812021, 1614935082, NULL),
+(51, 58,  '反馈黑名单',  'fa fa-address-book-o', 'admins.feedbackset/index', '', '_self',  0,  1,  '', 1614236710, 1614936774, NULL),
+(52, 38, '支付开关', 'fa fa-adjust', 'pay.pay_type/index', '', '_self',  0,  1,  '', 1614829846, 1614940050, NULL),
+(53, 5,  '余额相关', 'fa fa-dollar', '', '', '_self',  70, 1,  '', 1614934172, 1614935112, NULL),
+(54, 5,  '财务审核', 'fa fa-file-text-o',  '', '', '_self',  80, 1,  '', 1614934343, 1614935037, NULL),
+(55, 5,  '财务统计', 'fa fa-list', '', '', '_self',  0,  1,  '', 1614934411, 1614934411, NULL),
+(56, 4,  '订单状态', 'fa fa-list', '', '', '_self',  0,  1,  '', 1614936495, 1614939660, NULL),
+(57, 3,  '积分管理', 'fa fa-credit-card',  '', '', '_self',  0,  1,  '', 1614936670, 1614936670, NULL),
+(58, 3,  '反馈管理', 'fa fa-address-book', '', '', '_self',  0,  1,  '', 1614936713, 1614936713, NULL),
+(59, 35, '导航管理', 'fa fa-arrow-circle-right', 'page.navigation/index',  '', '_self',  0,  1,  '', 1615362737, 1615362737, NULL)
 ON DUPLICATE KEY UPDATE `id` = VALUES(`id`), `pid` = VALUES(`pid`), `title` = VALUES(`title`), `icon` = VALUES(`icon`), `href` = VALUES(`href`), `params` = VALUES(`params`), `target` = VALUES(`target`), `sort` = VALUES(`sort`), `status` = VALUES(`status`), `remark` = VALUES(`remark`), `create_time` = VALUES(`create_time`), `update_time` = VALUES(`update_time`), `delete_time` = VALUES(`delete_time`);
 ETO;
 $this->insertTable($tableName,$Sql);
@@ -1600,10 +1618,6 @@ ON DUPLICATE KEY UPDATE `id` = VALUES(`id`), `node` = VALUES(`node`), `title` = 
 ETO;
 $this->insertTable($tableName,$Sql);
 
-
-  } catch (\Throwable $e) {
-      return false;
-  }
   return true;
 
     }

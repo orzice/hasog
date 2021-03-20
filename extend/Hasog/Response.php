@@ -137,6 +137,15 @@ ETO;
     public function GetData(){
         return $this->Type;
     }
+    public function Gets($ext){
+        if ($ext == '') {
+            return 'application/octet-stream';
+        }
+        if (isset($this->Type[$ext])) {
+            return $this->Type[$ext];
+        }
+        return 'application/octet-stream';
+    }
     public function Get(){
         $ext = Request::ext();
         if ($ext == '') {

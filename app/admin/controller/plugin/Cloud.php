@@ -28,6 +28,8 @@ use think\App;
 
 use app\admin\model\SystemMenu;
 
+use app\common\Update;
+
 /**
  * @ControllerAnnotation(title="插件云平台")
  * Class Node
@@ -55,4 +57,19 @@ class Cloud extends AdminController
 
         return $this->fetch();
     }
+    /**
+     * @NodeAnotation(title="在线升级")
+     */
+    public function update()
+     {
+
+        if (isset($_GET['up'])) {
+            if ($_GET['up'] == '1') {
+                $ups = new Update();
+                return $ups->index();
+            }
+        }
+
+        return $this->fetch();
+     }
 }
