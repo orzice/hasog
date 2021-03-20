@@ -168,14 +168,16 @@ try {
             $key_new[$i] = str_replace(["/","\\"],$this->fg, $key_new[$i]);
             $l_src = str_replace($dic.$this->fg, '', $key_new[$i]);
             $l_src = str_replace(["/","\\"],"\\", $l_src);
-            $bd[] = ['dir'=>$dic.$key_new[$i],'src'=>$l_src,'md5'=>$z_new[$key_new[$i]]];
+            $bd[] = ['dir'=>$dic.$key_new[$i],'src'=>$l_src,'md5'=>$z_new[$l_src]];
+            // $bd[] = ['dir'=>$dic.$key_new[$i],'src'=>$l_src,'md5'=>$z_new[$key_new[$i]]];
           }
           
         }else{
             $key_new[$i] = str_replace(["/","\\"],$this->fg, $key_new[$i]);
             $l_src = str_replace($dic.$this->fg, '', $key_new[$i]);
             $l_src = str_replace(["/","\\"],"\\", $l_src);
-            $bd[] = ['dir'=>$dic.$key_new[$i],'src'=>$l_src,'md5'=>$z_new[$key_new[$i]]];
+            $bd[] = ['dir'=>$dic.$key_new[$i],'src'=>$l_src,'md5'=>$z_new[$l_src]];
+            // $bd[] = ['dir'=>$dic.$key_new[$i],'src'=>$l_src,'md5'=>$z_new[$key_new[$i]]];
         }
        }
       $this->output('对比版本差异完成 需要升级 '.count($bd).' 个文件！');
@@ -289,6 +291,14 @@ flush();
 } catch (\Throwable $e) {
 
   $this->output('【致命错误】升级失败: '.$e->getMessage());
+
+echo <<<ETO
+<script>
+setTimeout(function(){ clearInterval(Interval); }, 3000);
+</script>
+ETO;
+flush();
+
 }
     }
 public function getHaSogConfig($data)
@@ -336,6 +346,7 @@ EOT;
     return $config;
 }
     public function copydir($dir,$toDir){
+      flush();
         if(is_file($toDir)){
           return;
         }else{
