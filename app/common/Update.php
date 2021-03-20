@@ -366,6 +366,7 @@ EOT;
          if($v!='.' && $v!='..'){
           $dirname = $dir.DIRECTORY_SEPARATOR.$v;
           $dirname = str_replace("\\\\",DIRECTORY_SEPARATOR, $dirname);
+          $dirname = str_replace(DIRECTORY_SEPARATOR.DIRECTORY_SEPARATOR,DIRECTORY_SEPARATOR, $dirname);
           if(is_dir($dirname)){
             $ls = false;
             $ls_n = str_replace($root,"", $dirname);
