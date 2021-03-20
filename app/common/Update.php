@@ -159,6 +159,18 @@ try {
        $z_old = $array;
        $z_new = $new_json2;
        $key_new = array_keys($z_new);
+
+       
+       $z_old2 = array_keys($z_old);
+       $z_old3 = [];
+       for ($i=0; $i < count($z_old2); $i++) { 
+          $key_n = str_replace(["/","\\"],"\\", $z_old2[$i]);
+          $z_old3[$key_n] = $z_old[$z_old2[$i]];
+       }
+       $z_old = $z_old3;
+     
+
+
       $this->output('初始化数据完成');
 
       $this->output('对比版本差异中...');
@@ -168,16 +180,15 @@ try {
             $key_new[$i] = str_replace(["/","\\"],$this->fg, $key_new[$i]);
             $l_src = str_replace($dic.$this->fg, '', $key_new[$i]);
             $l_src = str_replace(["/","\\"],"\\", $l_src);
-            $bd[] = ['dir'=>$dic.$key_new[$i],'src'=>$l_src,'md5'=>$z_new[$l_src]];
-            // $bd[] = ['dir'=>$dic.$key_new[$i],'src'=>$l_src,'md5'=>$z_new[$key_new[$i]]];
+            // $bd[] = ['dir'=>$dic.$key_new[$i],'src'=>$l_src,'md5'=>$z_new[$l_src]];
+            $bd[] = ['dir'=>$dic.$key_new[$i],'src'=>$l_src,'md5'=>$z_new[$key_new[$i]]];
           }
           
         }else{
             $key_new[$i] = str_replace(["/","\\"],$this->fg, $key_new[$i]);
             $l_src = str_replace($dic.$this->fg, '', $key_new[$i]);
             $l_src = str_replace(["/","\\"],"\\", $l_src);
-            $bd[] = ['dir'=>$dic.$key_new[$i],'src'=>$l_src,'md5'=>$z_new[$l_src]];
-            // $bd[] = ['dir'=>$dic.$key_new[$i],'src'=>$l_src,'md5'=>$z_new[$key_new[$i]]];
+            $bd[] = ['dir'=>$dic.$key_new[$i],'src'=>$l_src,'md5'=>$z_new[$key_new[$i]]];
         }
        }
       $this->output('对比版本差异完成 需要升级 '.count($bd).' 个文件！');
