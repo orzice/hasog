@@ -41,6 +41,9 @@ echo <<<ETO
                             </p-->
                         </div>
                     </li>
+<script>
+window.scroll({top:9999999,left:0,behavior:'smooth' });
+</script>
 ETO;
 
       // echo $val.'<br>';
@@ -77,11 +80,10 @@ echo <<<ETO
 </head>
 <body>
 <script>
-
 var  Interval = window.setInterval(function(){ 
  // var t = document.body.clientHeight;
 // window.scroll({top:t,left:0,behavior:'smooth' });
-window.scroll({top:9999999,left:0,behavior:'smooth' });
+//window.scroll({top:9999999,left:0,behavior:'smooth' });
 }, 100); 
 </script>
 <div class="layui-col-md6">
@@ -293,23 +295,11 @@ try {
       $this->output('写入版本信息成功');
       $this->output('升级完成！');
 
-echo <<<ETO
-<script>
-setTimeout(function(){ clearInterval(Interval); }, 3000);
-</script>
-ETO;
 flush();
 
 } catch (\Throwable $e) {
 
   $this->output('【致命错误】升级失败: '.$e->getMessage());
-
-echo <<<ETO
-<script>
-setTimeout(function(){ clearInterval(Interval); }, 3000);
-</script>
-ETO;
-flush();
 
 }
     }
