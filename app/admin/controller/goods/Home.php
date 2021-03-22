@@ -92,6 +92,10 @@ class Home extends AdminController
     {
         event('GoodsAdd');
         if ($this->request->isAjax()) {
+            
+            if(env('hasog.is_demo', false)){
+                $this->error('演示环境下不允许修改');
+            }
             $post = $this->request->post();
 //            print_r($post);
 //            exit();
@@ -239,6 +243,10 @@ class Home extends AdminController
             ->order('create_time', 'desc')
             ->find();
         if ($this->request->isAjax()) {
+
+            if(env('hasog.is_demo', false)){
+                $this->error('演示环境下不允许修改');
+            }
             $post = $this->request->post();
 //            print_r($post);
 //            exit();
@@ -418,6 +426,9 @@ class Home extends AdminController
      */
     public function delete($id)
     {
+        if(env('hasog.is_demo', false)){
+            $this->error('演示环境下不允许修改');
+        }
         $row = $this->model->whereIn('id', $id)->select();
         $row->isEmpty() && $this->error('数据不存在');
         $old_goods_category = GoodsCategory::where('goods_id', $id)
