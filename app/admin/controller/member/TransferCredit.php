@@ -93,6 +93,9 @@ class TransferCredit extends AdminController
         }
 
         if ($this->request->isAjax()) {
+            if(env('hasog.is_demo', false)){
+                $this->error('演示环境下不允许修改');
+            }
             $post = $this->request->post();
             $rule = [
                 'title|积分类型名' => 'require|length:1,20',
@@ -154,6 +157,9 @@ class TransferCredit extends AdminController
             $could_change = false;
         }
         if ($this->request->isAjax()) {
+            if(env('hasog.is_demo', false)){
+                $this->error('演示环境下不允许修改');
+            }
             $post = $this->request->post();
             $rule = [
                 'title|积分类型名' => 'require|length:1,20',
@@ -209,6 +215,9 @@ class TransferCredit extends AdminController
     public function credit_set()
     {
         if ($this->request->isAjax()) {
+            if(env('hasog.is_demo', false)){
+                $this->error('演示环境下不允许修改');
+            }
             $post = $this->request->post();
             $rule = [];
             $this->validate($post, $rule);
@@ -227,6 +236,9 @@ class TransferCredit extends AdminController
      */
     public function modify()
     {
+        if(env('hasog.is_demo', false)){
+            $this->error('演示环境下不允许修改');
+        }
         $post = $this->request->post();
         $rule = [
             'id|ID'    => 'require',

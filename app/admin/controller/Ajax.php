@@ -67,6 +67,9 @@ class Ajax extends AdminController
      */
     public function upload()
     {
+        if(env('hasog.is_demo', false)){
+            $this->error('演示环境下不允许修改');
+        }
         $adminId = Sessions('id');
         //================================================
         //  每一次上传 都会监控未使用的图片 进行删除处理
@@ -112,6 +115,9 @@ class Ajax extends AdminController
      */
     public function uploadEditor()
     {
+        if(env('hasog.is_demo', false)){
+            $this->error('演示环境下不允许修改');
+        }
         $data = [
             'upload_type' => $this->request->post('upload_type'),
             'file'        => $this->request->file('upload'),

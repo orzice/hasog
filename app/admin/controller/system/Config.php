@@ -52,6 +52,9 @@ class Config extends AdminController
      */
     public function save()
     {
+        if(env('hasog.is_demo', false)){
+            $this->error('演示环境下不允许修改');
+        }
         $post = $this->request->post();
         try {
             foreach ($post as $key => $val) {

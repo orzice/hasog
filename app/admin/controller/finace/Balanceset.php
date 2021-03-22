@@ -65,6 +65,10 @@ class Balanceset extends AdminController
 
 
         if ($this->request->isAjax()){
+            
+            if(env('hasog.is_demo', false)){
+                $this->error('演示环境下不允许修改');
+            }
             $post = $this->request->post();
             $rule = [
                 'recharge'=>'require|number|in:0,1',

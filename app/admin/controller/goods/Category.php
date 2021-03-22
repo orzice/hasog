@@ -91,6 +91,10 @@ class Category extends AdminController
     public function add($id = null)
     {
         if ($this->request->isAjax()) {
+
+            if(env('hasog.is_demo', false)){
+                $this->error('演示环境下不允许修改');
+            }
             $post = $this->request->post();
             $rule = [
                 'parent_id|上级分类' => 'number',
@@ -137,6 +141,10 @@ class Category extends AdminController
         $row = $this->model->find($id);
         empty($row) && $this->error('数据不存在');
         if ($this->request->isAjax()) {
+
+            if(env('hasog.is_demo', false)){
+                $this->error('演示环境下不允许修改');
+            }
             $post = $this->request->post();
             $rule = [
                 'name|分类描述' => 'require',
@@ -203,6 +211,10 @@ class Category extends AdminController
      */
     public function modify()
     {
+        
+        if(env('hasog.is_demo', false)){
+            $this->error('演示环境下不允许修改');
+        }
         $post = $this->request->post();
         $rule = [
             'id|ID' => 'require',

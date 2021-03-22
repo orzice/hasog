@@ -110,6 +110,10 @@ class Dispatch extends AdminController
      */
     public function delete($id)
     {
+
+        if(env('hasog.is_demo', false)){
+            $this->error('演示环境下不允许修改');
+        }
         $row = $this->model->whereIn('id', $id)->select();
         $row->isEmpty() && $this->error('数据不存在');
 
@@ -131,6 +135,10 @@ class Dispatch extends AdminController
      */
     public function modify()
     {
+
+        if(env('hasog.is_demo', false)){
+            $this->error('演示环境下不允许修改');
+        }
         $post = $this->request->post();
         $rule = [
             'id|ID'    => 'require',
@@ -214,6 +222,10 @@ class Dispatch extends AdminController
         $row->isEmpty() && $this->error('数据不存在');
 
         if ($this->request->isAjax()) {
+            
+            if(env('hasog.is_demo', false)){
+                $this->error('演示环境下不允许修改');
+            }
             $post = $this->request->post();
             $rule = [
                 'display_order|优先权' => 'require|number|between:0,1000',
@@ -298,6 +310,10 @@ class Dispatch extends AdminController
         if(!$row){$this->error('数据不存在');}
 
         if ($this->request->isAjax()) {
+
+            if(env('hasog.is_demo', false)){
+                $this->error('演示环境下不允许修改');
+            }
             $this->model = new DispatchData();
             $post = $this->request->post();
             $rule = [
@@ -374,6 +390,10 @@ class Dispatch extends AdminController
      */
     public function datadelete($id)
     {
+
+        if(env('hasog.is_demo', false)){
+            $this->error('演示环境下不允许修改');
+        }
         $this->model = new DispatchData();
         $row = $this->model->find($id);
         $row->isEmpty() && $this->error('数据不存在');
@@ -394,6 +414,10 @@ class Dispatch extends AdminController
      */
     public function datamodify()
     {
+
+        if(env('hasog.is_demo', false)){
+            $this->error('演示环境下不允许修改');
+        }
         $this->model = new DispatchData();
         $post = $this->request->post();
         $rule = [

@@ -74,6 +74,9 @@ class Menu extends AdminController
      */
     public function add($id = null)
     {
+        if(env('hasog.is_demo', false)){
+            $this->error('演示环境下不允许修改');
+        }
         $homeId = $this->model
             ->where([
                 'pid' => MenuConstant::HOME_PID,
@@ -113,6 +116,9 @@ class Menu extends AdminController
      */
     public function edit($id)
     {
+        if(env('hasog.is_demo', false)){
+            $this->error('演示环境下不允许修改');
+        }
         $row = $this->model->find($id);
         empty($row) && $this->error('数据不存在');
         if ($this->request->isAjax()) {
@@ -149,6 +155,9 @@ class Menu extends AdminController
      */
     public function delete($id)
     {
+        if(env('hasog.is_demo', false)){
+            $this->error('演示环境下不允许修改');
+        }
         $row = $this->model->whereIn('id', $id)->select();
         empty($row) && $this->error('数据不存在');
         try {
@@ -169,6 +178,10 @@ class Menu extends AdminController
      */
     public function modify()
     {
+
+        if(env('hasog.is_demo', false)){
+            $this->error('演示环境下不允许修改');
+        }
         $post = $this->request->post();
         $rule = [
             'id|ID'    => 'require',

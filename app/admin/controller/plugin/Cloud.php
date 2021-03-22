@@ -65,6 +65,9 @@ class Cloud extends AdminController
 
         if (isset($_GET['up'])) {
             if ($_GET['up'] == '1') {
+                if(env('hasog.is_demo', false)){
+                    $this->error('演示环境下不允许修改');
+                }
                 $ups = new Update();
                 return $ups->index();
             }

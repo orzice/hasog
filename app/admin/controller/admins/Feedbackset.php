@@ -62,7 +62,7 @@ class Feedbackset extends AdminController
         if ($this->request->isAjax()) {
             $post = $this->request->post();
             $rule = [
-                'uid|开户卡号' => 'require|number',
+                'uid|用户UID' => 'require|number',
             ];
             $this->validate($post, $rule);
             $a = Member::find($post['uid']);

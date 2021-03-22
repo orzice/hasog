@@ -128,6 +128,9 @@ class User extends AdminController
         event('MemberEditStart',$id);
 
         if ($this->request->isAjax()) {
+            if(env('hasog.is_demo', false)){
+                $this->error('演示环境下不允许修改');
+            }
             $post = $this->request->post();
             $rule = [];
             $this->validate($post, $rule);
@@ -155,6 +158,9 @@ class User extends AdminController
         $row = $this->model->find($id);
         $row->isEmpty() && $this->error('数据不存在');
         if ($this->request->isAjax()) {
+            if(env('hasog.is_demo', false)){
+                $this->error('演示环境下不允许修改');
+            }
             $post = $this->request->post();
             $rule = [
                 // 'mobile|手机'       => 'require|mobile|length:4,20',
@@ -270,6 +276,9 @@ class User extends AdminController
         $row = $this->model->find($id);
         $row->isEmpty() && $this->error('数据不存在');
         if ($this->request->isAjax()) {
+            if(env('hasog.is_demo', false)){
+                $this->error('演示环境下不允许修改');
+            }
             $post = $this->request->post();
             $rule = [
                 'password|登录密码'       => 'require|alphaNum|length:4,20',
@@ -301,6 +310,9 @@ class User extends AdminController
      */
     public function delete($id)
     {
+        if(env('hasog.is_demo', false)){
+            $this->error('演示环境下不允许修改');
+        }
         $row = $this->model->whereIn('id', $id)->select();
         $row->isEmpty() && $this->error('数据不存在');
         event('MemberDelete',$id);
@@ -319,6 +331,9 @@ class User extends AdminController
      */
     public function modify()
     {
+        if(env('hasog.is_demo', false)){
+            $this->error('演示环境下不允许修改');
+        }
         $post = $this->request->post();
         $rule = [
             'id|ID'    => 'require',

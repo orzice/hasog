@@ -84,6 +84,9 @@ class Admin extends AdminController
     public function add()
     {
         if ($this->request->isAjax()) {
+            if(env('hasog.is_demo', false)){
+                $this->error('演示环境下不允许修改');
+            }
             $post = $this->request->post();
             $authIds = $this->request->post('auth_ids', []);
             $post['auth_ids'] = implode(',', array_keys($authIds));
@@ -107,6 +110,9 @@ class Admin extends AdminController
         $row = $this->model->find($id);
         empty($row) && $this->error('数据不存在');
         if ($this->request->isAjax()) {
+            if(env('hasog.is_demo', false)){
+                $this->error('演示环境下不允许修改');
+            }
             $post = $this->request->post();
             $authIds = $this->request->post('auth_ids', []);
             $post['auth_ids'] = implode(',', array_keys($authIds));
@@ -136,6 +142,9 @@ class Admin extends AdminController
         $row = $this->model->find($id);
         empty($row) && $this->error('数据不存在');
         if ($this->request->isAjax()) {
+            if(env('hasog.is_demo', false)){
+                $this->error('演示环境下不允许修改');
+            }
             $post = $this->request->post();
             $rule = [
                 'password|登录密码'       => 'require',
@@ -164,6 +173,9 @@ class Admin extends AdminController
      */
     public function delete($id)
     {
+        if(env('hasog.is_demo', false)){
+            $this->error('演示环境下不允许修改');
+        }
         $row = $this->model->whereIn('id', $id)->select();
         $row->isEmpty() && $this->error('数据不存在');
         $id == AdminConstant::SUPER_ADMIN_ID && $this->error('超级管理员不允许修改');
@@ -185,6 +197,9 @@ class Admin extends AdminController
      */
     public function modify()
     {
+        if(env('hasog.is_demo', false)){
+            $this->error('演示环境下不允许修改');
+        }
         $post = $this->request->post();
         $rule = [
             'id|ID'    => 'require',

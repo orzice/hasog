@@ -161,12 +161,17 @@ class Index extends AdminController
      */
     public function editAdmin()
     {
+        // 判断是否为演示环境
+
         $id = Sessions('id');
         $row = (new SystemAdmin())
             ->withoutField('password')
             ->find($id);
         empty($row) && $this->error('用户信息不存在');
         if ($this->request->isAjax()) {
+            if(env('hasog.is_demo', false)){
+                $this->error('演示环境下不允许修改');
+            }
             $post = $this->request->post();
             $rule = [];
             $this->validate($post, $rule);
@@ -200,6 +205,9 @@ class Index extends AdminController
             $this->error('用户信息不存在');
         }
         if ($this->request->isAjax()) {
+            if(env('hasog.is_demo', false)){
+                $this->error('演示环境下不允许修改');
+            }
             $post = $this->request->post();
             $rule = [
                 'password|登录密码'       => 'require|alphaNum|length:4,20',

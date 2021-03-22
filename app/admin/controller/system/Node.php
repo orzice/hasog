@@ -71,6 +71,9 @@ class Node extends AdminController
      */
     public function refreshNode($force = 0)
     {
+        if(env('hasog.is_demo', false)){
+            $this->error('演示环境下不允许修改');
+        }
         $nodeList = (new NodeService())->getNodelist();
         
         empty($nodeList) && $this->error('暂无需要更新的系统节点');
@@ -109,6 +112,10 @@ class Node extends AdminController
      */
     public function clearNode()
     {
+        if(env('hasog.is_demo', false)){
+            $this->error('演示环境下不允许修改');
+        }
+
         $nodeList = (new NodeService())->getNodelist();
         $model = new SystemNode();
         try {
