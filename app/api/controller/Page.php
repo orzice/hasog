@@ -14,14 +14,16 @@
 // +----------------------------------------------------------------------
 // | DateTime：2020-12-31 18:28:38
 // +----------------------------------------------------------------------
-namespace appapicontroller;
-use appBaseController;
-use appcommoncontrollerApiController;
-use appcommonmodelPageNavigation;
-use thinkfacadeConfig;
-use thinkfacadeEvent;
-use appcommonmodelPageCarousel;
-use appcommonmodelPageNotice;
+namespace app\api\controller;
+
+use app\BaseController;
+use app\common\controller\ApiController;
+use app\common\model\PageNavigation;
+use think\facade\Config;
+use think\facade\Event;
+use app\common\model\PageCarousel;
+use app\common\model\PageNotice;
+
 class Page extends ApiController
 {
     //轮播图

@@ -14,12 +14,13 @@
 // +----------------------------------------------------------------------
 // | DateTime：2020-12-31 18:12:17
 // +----------------------------------------------------------------------
-namespace appadmincontrollerfinace;
-use appcommonmodelFinaceIncome as Incomes;
-use appcommoncontrollerAdminController;
-use thinkApp;
-use EasyAdminannotationControllerAnnotation;
-use EasyAdminannotationNodeAnotation;
+namespace app\admin\controller\finace;
+use app\common\model\FinaceIncome as Incomes;
+use app\common\controller\AdminController;
+use think\App;
+
+use EasyAdmin\annotation\ControllerAnnotation;
+use EasyAdmin\annotation\NodeAnotation;
 /**
  * Class Test
  * @package appadmincontrollerpage

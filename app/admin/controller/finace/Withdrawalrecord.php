@@ -14,13 +14,15 @@
 // +----------------------------------------------------------------------
 // | DateTime：2020-12-31 18:12:38
 // +----------------------------------------------------------------------
-namespace appadmincontrollerfinace;
-use appcommoncontrollerAdminController;
-use appcommonmodelFinaceWithdrawalrecord as Withdrawalrecords;
-use appcommonmodelMember;
-use thinkApp;
-use EasyAdminannotationControllerAnnotation;
-use EasyAdminannotationNodeAnotation;
+namespace app\admin\controller\finace;
+
+use app\common\controller\AdminController;
+use app\common\model\FinaceWithdrawalrecord as Withdrawalrecords;
+use app\common\model\Member;
+use think\App;
+
+use EasyAdmin\annotation\ControllerAnnotation;
+use EasyAdmin\annotation\NodeAnotation;
 /**
  * Class Test
  * @package appadmincontrollerpage
