@@ -25,7 +25,7 @@ class Update
 {
     protected $fg = DIRECTORY_SEPARATOR;
 
-    public function output($value)
+    public function output($value,$end=false)
     {
       $time = date('H:i:s',time());
       $val = $time.' - '.$value;
@@ -45,7 +45,21 @@ echo <<<ETO
 window.scroll({top:9999999,left:0,behavior:'smooth' });
 </script>
 ETO;
+if ($end) {
 
+echo <<<ETO
+<script>
+
+setTimeout(function (){
+ 
+window.parent.parent.location.reload();
+window.parent.location.reload();
+
+}, 3000);
+
+</script>
+ETO;
+}
       // echo $val.'<br>';
       flush();
     }
@@ -203,39 +217,98 @@ try {
           $dic_r  = $dic.'config'.$this->fg;
           @file_put_contents($dic_r.'hasog.php', $this->getHaSogConfig($hasog));
           $this->output('写入版本信息成功');
-          $this->output('没有需要更新的文件！');
+          $this->output('没有需要更新的文件！',true);
           return ;
        }
 
       $this->output('下载升级文件中...');
-       for ($i=0; $i < count($bd); $i++) { 
-        $ls_nas = $ver_dic.$this->fg.str_replace(["/","\\"],$this->fg, $bd[$i]['src']);
-        if (is_file($ls_nas)){
-          if (md5_file($ls_nas) == $bd[$i]['md5']){
-            $this->output('文件已存在：'.$ls_nas);
-            continue;
-          }
-        }
 
-         $h_dir = $Cloud->GetUpdateDir($bd[$i]['src']);
-         
-          if (!$h_dir) {
-            $this->output('【异常】下载云服务文件失败：'.$ls_nas);
+       if (count($bd) > 100) {
+         if (count($bd) > 5000) {
+          $this->output('【错误】需要升级的文件已经到达5000个以上！在线升级已经是十分困难，请前往 <a href="https://gitee.com/orzice/hasog" target="_blank">https://gitee.com/orzice/hasog</a> 下载最新版本的压缩包覆盖安装！');
+          return;
+         }
+          $this->output('文件改动较大！正在下载版本整包进行安装升级！');
+          if ($http['publish_zip'] == '') {
+             $this->output('【错误】下载云服务整包文件失败！');
+             return;
+          }
+
+          $ver_zip_dic  = root_path().'upgrade'.$this->fg.'releasezip'.$this->fg.$http['release'];
+          $this->output('生成：'.$ver_zip_dic);
+          if(!is_readable($ver_zip_dic))
+           {
+              is_file($ver_zip_dic) or mkdir($ver_zip_dic,0700,true);
+           }
+
+          $ls_nas = $ver_zip_dic.$this->fg.'update.zip';
+          if (!is_file($ls_nas)){
+            $this->output('下载升级包中...');
+            $this->http_download($http['publish_zip'],$ls_nas);
           }else{
+            $this->output('升级包已存在！');
+          }
+            $this->output('解压包文件中、本次耗时大概3分钟、请耐心等待...');
+            $zips = $this->unZip($ls_nas, $ver_zip_dic);
+            if (!is_file($ver_zip_dic.$this->fg.'app'.$this->fg.'AppService.php')) {
+              $this->output('【错误】解压升级包失败，请确保服务器支持 ZipArchive！');
+              return $ls_nas.' 打开文件失败';
+            }
+            $this->output('解压包文件完成！');
+
+         for ($i=0; $i < count($bd); $i++) {
+          $ls_nas = $ver_dic.$this->fg.str_replace(["/","\\"],$this->fg, $bd[$i]['src']);
+          $ls_zip_nas = $ver_zip_dic.$this->fg.str_replace(["/","\\"],$this->fg, $bd[$i]['src']);
+          if (is_file($ls_nas)){
+            if (md5_file($ls_nas) == $bd[$i]['md5']){
+              $this->output('文件已存在：'.$ls_nas);
+              continue;
+            }
+          }
+
+           $h_dir = $Cloud->GetUpdateDir($bd[$i]['src']);
+           
             if(!is_readable(dirname($ls_nas))){
               $this->output('创建目录：'.dirname($ls_nas));
               mkdir(dirname($ls_nas),0700,true);
             }
-             $ls_r = fopen ($ls_nas,"w+");
-             if(!fwrite ($ls_r,$h_dir)){
-                fclose($ls_r);
-                $this->output('【错误】打开文件失败：'.$ls_nas);
-                return $ls_nas.' 打开文件失败';
-             }
-             fclose($ls_r);
-              $this->output('写入文件：'.$ls_nas);
+            copy($ls_zip_nas, $ls_nas);
+         }
+
+
+       }else{
+
+         for ($i=0; $i < count($bd); $i++) {
+          $ls_nas = $ver_dic.$this->fg.str_replace(["/","\\"],$this->fg, $bd[$i]['src']);
+          if (is_file($ls_nas)){
+            if (md5_file($ls_nas) == $bd[$i]['md5']){
+              $this->output('文件已存在：'.$ls_nas);
+              continue;
+            }
           }
+
+           $h_dir = $Cloud->GetUpdateDir($bd[$i]['src']);
+           
+            if (!$h_dir) {
+              $this->output('【异常】下载云服务文件失败：'.$ls_nas);
+            }else{
+              if(!is_readable(dirname($ls_nas))){
+                $this->output('创建目录：'.dirname($ls_nas));
+                mkdir(dirname($ls_nas),0700,true);
+              }
+               $ls_r = fopen ($ls_nas,"w+");
+               if(!fwrite ($ls_r,$h_dir)){
+                  fclose($ls_r);
+                  $this->output('【错误】打开文件失败：'.$ls_nas);
+                  return $ls_nas.' 打开文件失败';
+               }
+               fclose($ls_r);
+                $this->output('写入文件：'.$ls_nas);
+            }
+         }
+
        }
+
       $this->output('下载升级文件完成');
 
       $this->output('备份原有文件中...');
@@ -293,7 +366,7 @@ try {
       $dic_r  = $dic.'config'.$this->fg;
       @file_put_contents($dic_r.'hasog.php', $this->getHaSogConfig($hasog));
       $this->output('写入版本信息成功');
-      $this->output('升级完成！');
+      $this->output('升级完成！',true);
 
 flush();
 
@@ -348,7 +421,6 @@ EOT;
     return $config;
 }
     public function copydir($dir,$toDir){
-      flush();
         if(is_file($toDir)){
           return;
         }else{
@@ -423,5 +495,105 @@ EOT;
       }
       return $dic;
 
+    }
+    /**
+   * @param string $zipFile 需要解压的文件
+   * @param string $unZipDir 解压后的文件夹路径
+   * @return bool
+   */
+    public function unZip($zipFile, $unZipDir)
+    {
+        $zip = new \ZipArchive;
+        if ($zip->open($zipFile) === TRUE) {
+            //将压缩文件解压到指定的目录下 为了追求速度 放弃中文名了
+            $zip->extractTo($unZipDir); 
+            //关闭zip文档 
+            $zip->close(); 
+            return true;
+
+  
+            // if (!is_dir($unZipDir)) {
+            //     mkdir($unZipDir, 0755, true);
+            // }
+            
+            // $docNum = $zip->numFiles;
+            // for ($i = 0; $i < $docNum; $i++) {
+            //     $statInfo = $zip->statIndex($i, \ZipArchive::FL_ENC_RAW);
+            //     // 此处如果 php >= 7.1 则无需调用 transcoding() 函数，如果为了兼容 php 旧版本，可以调用该函数
+            //     $filename = $this->transcoding($statInfo['name']);
+            //     if ($statInfo['crc'] == 0) {
+            //         //新建目录
+            //         $newFileDir = $unZipDir . DIRECTORY_SEPARATOR . substr($filename, 0, -1);
+            //         if (!is_dir($newFileDir)) {
+            //             mkdir($newFileDir, 0755, true);
+            //         }
+
+            //     } else {
+            //         //拷贝文件
+            //         $source = 'zip://' . $zipFile . '#' . $zip->getNameIndex($i);
+            //         $dest = $unZipDir . DIRECTORY_SEPARATOR . $filename;
+            //         //拷贝文件 V2 为了快速 如果文件已存在 则跳过！
+            //         if (!is_file($dest)) {
+            //            copy($source, $dest);
+            //         }
+            //     }
+            // }
+            
+            // $zip->close();
+
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+    /**
+     * 根据php版本以及系统环境决定是否编码转换，以 php 版本 7.1 为分界线
+     * @param string $codeWords 需要编码转换检测的文字
+     * @return false|string
+     */
+    public function transcoding($codeWords)
+    {
+        if (version_compare(PHP_VERSION, '7.1') === -1) {
+            $encoding = mb_detect_encoding($codeWords, ['ASCII', 'UTF-8', 'GBK', 'GB2312', 'BIG5', 'CP936']);
+            if (DIRECTORY_SEPARATOR == '/') {    //linux
+              // 这里转换也建议使用 mb_detect_encoding() 函数
+                $codeWords = iconv($encoding, 'UTF-8', $codeWords);
+            } else {  //win
+              // 这里转换也建议使用 mb_detect_encoding() 函数
+                $codeWords = iconv($encoding, 'GBK//ignore', $codeWords);
+            }
+        } else {
+            if (DIRECTORY_SEPARATOR == '/') {    //linux
+                $codeWords = $codeWords;
+            } else {  //win
+                $codeWords = $codeWords;
+            }
+        }
+
+        return $codeWords;
+    }
+
+public function http_download($url, $dir)
+   {
+        $ls_r = fopen ($dir,"w+");
+        // 初始化一个cURL会话
+        $ch = curl_init($url);
+
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 50);  
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 50); 
+        //忽略证书
+        if (substr($url, 0, 5) == 'https') {
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+        }
+        curl_setopt($ch, CURLOPT_FILE, $ls_r);
+        curl_exec($ch);
+        curl_close($ch);    #关闭cURL会话
+        //关闭文件描述符
+        fclose($ls_r);
+        return;
     }
 }
