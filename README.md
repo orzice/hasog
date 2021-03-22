@@ -8,8 +8,9 @@
 
 
 原有项目运营2年，遇到了无数的难题和痛点，苦于市面上并没有相似需求的项目，此项目专为解决需求痛点进行重新开发！加了很多新特性！基于 Tp6 开发的一个商城系统，适合刚起步的创业型公司。
+一个高扩展性且十分轻便的开源分销商城系统，以实际运营者的角度进行开发，已覆盖 PC、H5、APP、小程序（微信、QQ），内置HTTP请求处理，随时更改前端页面！软件内置防火墙（开发中）防注入！更加安全！
 
-**！！ 3月12日发布1.0.0 Bate版，如发现错误请通过反馈群立即反馈！！**
+**！！ 目前是 Bate版，如发现错误请通过反馈群立即反馈！！**
 
 欢迎 Star！
 
@@ -86,6 +87,25 @@ www.a.com/Install
 ```
 **请牢记加密配置！每次均为随机生成！安装后请务必保存！**
 ![](https://images.gitee.com/uploads/images/2021/0310/140035_ca96d7cf_813605.png)
+
+## 在线升级
+
+使用管理员用户登录（UID：1）访问首页，点击立即更新，即可。
+
+**注意：不要关闭升级网页！如果白屏或者卡着不动了！刷新页面然后重新进行升级！（不影响）**
+
+**注意：升级中不会影响到当前项目的运行！仅在升级完成后会自动替换版本！**
+
+**注意：该功能只能是已注册云平台的用户才可以使用！注册方式 -》插件 -》幻神云平台 点进去即可（本地无法使用哟）**
+
+
+
+
+![enter image description here](https://images.gitee.com/uploads/images/2021/0322/113147_e9c5afaa_813605.png "1.png")
+![enter image description here](https://images.gitee.com/uploads/images/2021/0322/113156_a068aa36_813605.png "2.png")
+![enter image description here](https://images.gitee.com/uploads/images/2021/0322/113207_23ba6879_813605.png "3.png")
+![enter image description here](https://images.gitee.com/uploads/images/2021/0322/113213_a82b8f62_813605.png "4.png")
+![enter image description here](https://images.gitee.com/uploads/images/2021/0322/113220_b20bda6e_813605.png "5.png")
 
 ## 未完善功能
 
