@@ -66,6 +66,9 @@ trait Curd
     public function add()
     {
         if ($this->request->isAjax()) {
+            if(env('hasog.is_demo', false)){
+                $this->error('演示环境下不允许修改');
+            }
             $post = $this->request->post();
             $rule = [];
             $this->validate($post, $rule);
@@ -87,6 +90,10 @@ trait Curd
         $row = $this->model->find($id);
         $row->isEmpty() && $this->error('数据不存在');
         if ($this->request->isAjax()) {
+
+            if(env('hasog.is_demo', false)){
+                $this->error('演示环境下不允许修改');
+            }
             $post = $this->request->post();
             $rule = [];
             $this->validate($post, $rule);
@@ -106,6 +113,10 @@ trait Curd
      */
     public function delete($id)
     {
+
+        if(env('hasog.is_demo', false)){
+            $this->error('演示环境下不允许修改');
+        }
         $row = $this->model->whereIn('id', $id)->select();
         $row->isEmpty() && $this->error('数据不存在');
         try {
@@ -148,6 +159,10 @@ trait Curd
      */
     public function modify()
     {
+        
+        if(env('hasog.is_demo', false)){
+            $this->error('演示环境下不允许修改');
+        }
         $post = $this->request->post();
         $rule = [
             'id|ID'    => 'require',
