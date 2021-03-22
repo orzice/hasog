@@ -1,8 +1,8 @@
 <h1 align="center">HaSog幻神商城</h1>
 
 <p align="center">
-<a href="https://www.hasog.com"><img src="https://img.shields.io/badge/license-AGPL--3.0-blue" alt="AGPL"></a>
-<a href="https://www.hasog.com"><img src="https://img.shields.io/badge/HaSog-开发中-brightgreen" alt="badge"></a>
+<a href="https://www.hasog.com"><img src="https://img.shields.io/badge/license-Apache--2.0-blue" alt=" Apache-2.0"></a>
+<a href='https://gitee.com/orzice/hasog/stargazers'><img src='https://gitee.com/orzice/hasog/badge/star.svg?theme=dark' alt='star'></img></a>
 <a href="https://gitee.com/orzice/hasog/members"><img src="https://gitee.com/orzice/hasog/badge/fork.svg?theme=dark" alt="fork"></a>
 </p>
 
