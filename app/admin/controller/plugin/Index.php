@@ -57,6 +57,9 @@ class Index extends AdminController
      */
     public function install($name=null)
      {
+        if(env('hasog.is_demo', false)){
+            $this->error('演示环境下不允许修改');
+        }
         if (!$name) {
             $this->error('请输入插件名称！', [], __url('admin/plugin.index/index'));
         }
@@ -71,6 +74,9 @@ class Index extends AdminController
      */
     public function on($name=null)
      {
+        if(env('hasog.is_demo', false)){
+            $this->error('演示环境下不允许修改');
+        }
         if (!$name) {
             $this->error('请输入插件名称！', [], __url('admin/plugin.index/index'));
         }
@@ -89,6 +95,9 @@ class Index extends AdminController
      */
     public function update_dir($name=null)
      {
+        if(env('hasog.is_demo', false)){
+            $this->error('演示环境下不允许修改');
+        }
         if (!$name) {
             $this->error('请输入插件名称！', [], __url('admin/plugin.index/index'));
         }
@@ -108,6 +117,9 @@ class Index extends AdminController
      */
     public function off($name=null)
      {
+        if(env('hasog.is_demo', false)){
+            $this->error('演示环境下不允许修改');
+        }
         if (!$name) {
             $this->error('请输入插件名称！', [], __url('admin/plugin.index/index'));
         }
@@ -126,6 +138,9 @@ class Index extends AdminController
      */
     public function del($name=null)
      {
+        if(env('hasog.is_demo', false)){
+            $this->error('演示环境下不允许修改');
+        }
         if (!$name) {
             $this->error('请输入插件名称！', [], __url('admin/plugin.index/index'));
         }
