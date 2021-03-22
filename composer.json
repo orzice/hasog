@@ -35,7 +35,8 @@
         "aliyuncs/oss-sdk-php": "^2.4",
         "qcloud/cos-sdk-v5": "^2.1",
         "qiniu/php-sdk": "^7.3",
-        "alibabacloud/client": "^1.5"
+        "alibabacloud/client": "^1.5",
+        "tencentcloud/tencentcloud-sdk-php": "^3.0"
     },
     "require-dev": {
         "symfony/var-dumper": "^4.2",
