@@ -5,6 +5,7 @@
             <ul class="layui-tab-title">
                 <li class="layui-this">网站设置</li>
                 <li>上传配置</li>
+                <li>短信配置</li>
             </ul>
             <div class="layui-tab-content">
                 <div class="layui-tab-item layui-show">
@@ -12,6 +13,9 @@
                 </div>
                 <div class="layui-tab-item">
                     {include file="system/config/upload" /}
+                </div>
+                <div class="layui-tab-item">
+                    {include file="system/config/sms" /}
                 </div>
             </div>
         </div>
@@ -28,12 +32,16 @@ require(["jquery", "easy-admin", "vue"], function ($, ea, Vue) {
     var app = new Vue({
         el: '#app',
         data: {
-            upload_type: upload_type
+            upload_type: upload_type,
+            sms_new_type: sms_new_type,
         }
     });
 
     form.on("radio(upload_type)", function (data) {
         app.upload_type = this.value;
+    });
+    form.on("radio(sms_new_type)", function (data) {
+        app.sms_new_type = this.value;
     });
 
     ea.listen();

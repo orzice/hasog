@@ -12,7 +12,7 @@
 // +----------------------------------------------------------------------
 // | Author：Orzice(小涛)  https://gitee.com/orzice
 // +----------------------------------------------------------------------
-// | DateTime：2020-12-31 18:14:42
+// | DateTime：2021-03-23 10:10:40
 // +----------------------------------------------------------------------
 
 namespace app\admin\controller\system;
@@ -58,11 +58,21 @@ class Config extends AdminController
         $post = $this->request->post();
         try {
             foreach ($post as $key => $val) {
-                $this->model
-                    ->where('name', $key)
-                    ->update([
-                        'value' => $val,
-                    ]);
+                $cz = $this->model->where('name', $key)->find();
+                if (empty($cz)) {
+                    $this->model
+                        ->insert([
+                            'name' => $key,
+                            'group' => 'default',//分组
+                            'value' => $val,
+                        ]);
+                }else{
+                    $this->model
+                        ->where('name', $key)
+                        ->update([
+                            'value' => $val,
+                        ]);
+                }
             }
             TriggerService::updateMenu();
             TriggerService::updateSysconfig();

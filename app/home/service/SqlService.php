@@ -1278,7 +1278,19 @@ INSERT INTO `{$tableName}` (`id`, `name`, `group`, `value`, `remark`, `sort`, `c
 (86,  'qnoss_bucket', 'upload', '填你的',  '存储空间', 0,  NULL, NULL),
 (87,  'qnoss_domain', 'upload', '填你的',  '访问域名', 0,  NULL, NULL),
 (88,  'site_kefu',  'site', '暂无', '填写客服信息', 0,  NULL, NULL),
-(89,  'shop_useryh',  'shop', '0', '优惠用户组ID',  0,  NULL, NULL)
+(89,  'shop_useryh',  'shop', '0', '优惠用户组ID',  0,  NULL, NULL),
+(90,  'sms_max',  'default',  '5',  '每日上限', 0,  NULL, NULL),
+(91,  'sms_fz', 'default',  '60', '发送间隔', 0,  NULL, NULL),
+(92,  'txsms_secret_id',  'default',  '填你的',  '腾讯云短信配置',  0,  NULL, NULL),
+(93,  'txsms_secret_key', 'default',  '填你的',  '腾讯云短信配置',  0,  NULL, NULL),
+(94,  'txsms_appid',  'default',  '填你的',  '腾讯云短信配置',  0,  NULL, NULL),
+(95,  'txsms_template_id',  'default',  '填你的',  '腾讯云短信配置',  0,  NULL, NULL),
+(96,  'txsms_signname', 'default',  '幻神科技', '腾讯云短信配置',  0,  NULL, NULL),
+(97,  'alisms_appkey',  'default',  '填你的',  '阿里云短信配置',  0,  NULL, NULL),
+(98,  'alisms_secret',  'default',  '填你的',  '阿里云短信配置',  0,  NULL, NULL),
+(99,  'alisms_template_id', 'default',  '填你的',  '阿里云短信配置',  0,  NULL, NULL),
+(100, 'alisms_signname',  'default',  '幻神科技', '阿里云短信配置',  0,  NULL, NULL),
+(102, 'sms_new_type', 'default',  'txsms',  '', 0,  NULL, NULL)
 ON DUPLICATE KEY UPDATE `id` = VALUES(`id`), `name` = VALUES(`name`), `group` = VALUES(`group`), `value` = VALUES(`value`), `remark` = VALUES(`remark`), `sort` = VALUES(`sort`), `create_time` = VALUES(`create_time`), `update_time` = VALUES(`update_time`);
 ETO;
 $this->insertTable($tableName,$Sql);

@@ -1,0 +1,109 @@
+<form id="app-form" class="layui-form layuimini-form">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label required">使用平台</label>
+        <div class="layui-input-block">
+            {foreach ['txsms'=>'腾讯云短信','alisms'=>'阿里云短信'] as $key=>$val}
+            <input type="radio" v-model="sms_new_type" name="sms_new_type" lay-filter="sms_new_type" value="{$key}" title="{$val}" {if $key==sysconfig('default','sms_new_type')}checked=""{/if}>
+            {/foreach}
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label required">每日上限</label>
+        <div class="layui-input-block">
+            <input type="text" name="sms_max" class="layui-input" lay-verify="required" lay-reqtext="请输入每日上限（单用户）" placeholder="请输入每日上限（单用户）" value="{:sysconfig('default','sms_max')}">
+            <tip>每日上限（单用户）</tip>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label required">发送间隔</label>
+        <div class="layui-input-block">
+            <input type="text" name="sms_fz" class="layui-input" lay-verify="required" lay-reqtext="请输入发送间隔（秒）" placeholder="请输入发送间隔（秒）" value="{:sysconfig('default','sms_fz')}">
+            <tip>发送间隔（秒）</tip>
+        </div>
+    </div>
+
+<!-- <fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
+            <legend>数据配置</legend>
+        </fieldset>
+ -->
+<blockquote class="layui-elem-quote" v-if="sms_new_type == 'txsms'" v-cloak>
+请到 腾讯云 (https://console.cloud.tencent.com/smsv2) 去申请开通 <br>
+验证码内容建议：您的验证码是：{1}（泄露有风险），请在{2}分钟内输入！请不要把验证码泄露给其他人。
+        </blockquote>
+    <div class="layui-form-item" v-if="sms_new_type == 'txsms'" v-cloak>
+        <label class="layui-form-label required">SecretId</label>
+        <div class="layui-input-block">
+            <input type="text" name="txsms_secret_id" class="layui-input" lay-verify="required" lay-reqtext="请输入SecretId" placeholder="请输入SecretId" value="{:sysconfig('default','txsms_secret_id')}">
+        </div>
+    </div>
+    <div class="layui-form-item" v-if="sms_new_type == 'txsms'" v-cloak>
+        <label class="layui-form-label required">SecretKey</label>
+        <div class="layui-input-block">
+            <input type="text" name="txsms_secret_key" class="layui-input" lay-verify="required" lay-reqtext="请输入SecretKey" placeholder="请输入SecretKey" value="{:sysconfig('default','txsms_secret_key')}">
+        </div>
+    </div>
+    <div class="layui-form-item" v-if="sms_new_type == 'txsms'" v-cloak>
+        <label class="layui-form-label required">SmsSdkAppid</label>
+        <div class="layui-input-block">
+            <input type="text" name="txsms_appid" class="layui-input" lay-verify="required" lay-reqtext="请输入SmsSdkAppid" placeholder="请输入SmsSdkAppid" value="{:sysconfig('default','txsms_appid')}">
+        </div>
+    </div>
+    <div class="layui-form-item" v-if="sms_new_type == 'txsms'" v-cloak>
+        <label class="layui-form-label required">TemplateID</label>
+        <div class="layui-input-block">
+            <input type="text" name="txsms_template_id" class="layui-input" lay-verify="required" lay-reqtext="请输入TemplateID" placeholder="请输入TemplateID" value="{:sysconfig('default','txsms_template_id')}">
+        </div>
+    </div>
+    <div class="layui-form-item" v-if="sms_new_type == 'txsms'" v-cloak>
+        <label class="layui-form-label required">短信签名</label>
+        <div class="layui-input-block">
+            <input type="text" name="txsms_signname" class="layui-input" lay-verify="required" lay-reqtext="请输入短信签名" placeholder="请输入短信签名" value="{:sysconfig('default','txsms_signname')}">
+            <tip>例子：幻神科技</tip>
+        </div>
+    </div>
+
+
+<blockquote class="layui-elem-quote" v-if="sms_new_type == 'alisms'" v-cloak>
+    请到 阿里云 (https://dayu.aliyun.com) 去申请开通,请参考默认验证码设置。<br>
+验证码内容建议：您的验证码是：{code}（泄露有风险），请在{time}分钟内输入！请不要把验证码泄露给其他人。
+        </blockquote>
+    <div class="layui-form-item" v-if="sms_new_type == 'alisms'" v-cloak>
+        <label class="layui-form-label required">AccessKeyId</label>
+        <div class="layui-input-block">
+            <input type="text" name="alisms_appkey" class="layui-input" lay-verify="required" lay-reqtext="请输入AccessKeyId" placeholder="请输入AccessKeyId" value="{:sysconfig('default','alisms_appkey')}">
+        </div>
+    </div>
+    <div class="layui-form-item" v-if="sms_new_type == 'alisms'" v-cloak>
+        <label class="layui-form-label required">AccessKeySecret</label>
+        <div class="layui-input-block">
+            <input type="text" name="alisms_secret" class="layui-input" lay-verify="required" lay-reqtext="请输入AccessKeySecret" placeholder="请输入AccessKeySecret" value="{:sysconfig('default','alisms_secret')}">
+        </div>
+    </div>
+    <div class="layui-form-item" v-if="sms_new_type == 'alisms'" v-cloak>
+        <label class="layui-form-label required">TemplateID</label>
+        <div class="layui-input-block">
+            <input type="text" name="alisms_template_id" class="layui-input" lay-verify="required" lay-reqtext="请输入TemplateID" placeholder="请输入TemplateID" value="{:sysconfig('default','alisms_template_id')}">
+        </div>
+    </div>
+    <div class="layui-form-item" v-if="sms_new_type == 'alisms'" v-cloak>
+        <label class="layui-form-label required">短信签名</label>
+        <div class="layui-input-block">
+            <input type="text" name="alisms_signname" class="layui-input" lay-verify="required" lay-reqtext="请输入短信签名" placeholder="请输入短信签名" value="{:sysconfig('default','alisms_signname')}">
+            <tip>例子：幻神科技</tip>
+        </div>
+    </div>
+
+
+    <div class="hr-line"></div>
+    <div class="layui-form-item text-center">
+        <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit="system.config/save" data-refresh="false">确认</button>
+        <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">重置</button>
+    </div>
+
+</form>
+<script>
+    var sms_new_type = "{:sysconfig('default','sms_new_type')}";
+</script>
