@@ -223,11 +223,7 @@ try {
 
       $this->output('下载升级文件中...');
 
-       if (count($bd) > 100) {
-         if (count($bd) > 5000) {
-          $this->output('【错误】需要升级的文件已经到达5000个以上！在线升级已经是十分困难，请前往 <a href="https://gitee.com/orzice/hasog" target="_blank">https://gitee.com/orzice/hasog</a> 下载最新版本的压缩包覆盖安装！');
-          return;
-         }
+       if (count($bd) > 300) {
           $this->output('文件改动较大！正在下载版本整包进行安装升级！');
           if ($http['publish_zip'] == '') {
              $this->output('【错误】下载云服务整包文件失败！');
@@ -256,23 +252,31 @@ try {
             }
             $this->output('解压包文件完成！');
 
-         for ($i=0; $i < count($bd); $i++) {
-          $ls_nas = $ver_dic.$this->fg.str_replace(["/","\\"],$this->fg, $bd[$i]['src']);
-          $ls_zip_nas = $ver_zip_dic.$this->fg.str_replace(["/","\\"],$this->fg, $bd[$i]['src']);
-          if (is_file($ls_nas)){
-            if (md5_file($ls_nas) == $bd[$i]['md5']){
-              $this->output('文件已存在：'.$ls_nas);
-              continue;
+         if (count($bd) > 1000) {
+          // $this->output('【错误】需要升级的文件已经到达5000个以上！在线升级已经是十分困难，请前往 <a href="https://gitee.com/orzice/hasog" target="_blank">https://gitee.com/orzice/hasog</a> 下载最新版本的压缩包覆盖安装！');
+          $this->output('【提醒】需要升级的文件已经到达1000个以上！不再进行对比升级文件，直接进行升级操作！');
+          $ver_dic = $ver_zip_dic;
+          // return;
+         }else{
+           for ($i=0; $i < count($bd); $i++) {
+            $ls_nas = $ver_dic.$this->fg.str_replace(["/","\\"],$this->fg, $bd[$i]['src']);
+            $ls_zip_nas = $ver_zip_dic.$this->fg.str_replace(["/","\\"],$this->fg, $bd[$i]['src']);
+            if (is_file($ls_nas)){
+              if (md5_file($ls_nas) == $bd[$i]['md5']){
+                $this->output('文件已存在：'.$ls_nas);
+                continue;
+              }
             }
-          }
 
-           $h_dir = $Cloud->GetUpdateDir($bd[$i]['src']);
-           
-            if(!is_readable(dirname($ls_nas))){
-              $this->output('创建目录：'.dirname($ls_nas));
-              mkdir(dirname($ls_nas),0700,true);
-            }
-            copy($ls_zip_nas, $ls_nas);
+             $h_dir = $Cloud->GetUpdateDir($bd[$i]['src']);
+             
+              if(!is_readable(dirname($ls_nas))){
+                $this->output('创建目录：'.dirname($ls_nas));
+                mkdir(dirname($ls_nas),0700,true);
+              }
+              copy($ls_zip_nas, $ls_nas);
+           }
+
          }
 
 
@@ -315,26 +319,27 @@ try {
       $this->output('备份：'.$dic.'app'.' -> '.$bf_dic.$this->fg.'app');
        $this->copydir($dic.'app',$bf_dic.$this->fg.'app');
 
-      $this->output('备份：'.$dic.'vendor'.' -> '.$bf_dic.$this->fg.'vendor');
-       $this->copydir($dic.'vendor',$bf_dic.$this->fg.'vendor');
-
       $this->output('备份：'.$dic.'public'.' -> '.$bf_dic.$this->fg.'public');
        $this->copydir($dic.'public',$bf_dic.$this->fg.'public');
 
       $this->output('备份：'.$dic.'extend'.' -> '.$bf_dic.$this->fg.'extend');
        $this->copydir($dic.'extend',$bf_dic.$this->fg.'extend');
 
-      $this->output('备份：'.$dic.'composer.json'.' -> '.$bf_dic.$this->fg.'composer.json');
-       $fh = copy($dic.'composer.json',$bf_dic.$this->fg.'composer.json');
-       if (!$fh) {
-         $this->output('【异常】备份失败：'.$dic.'composer.json'.' -> '.$bf_dic.$this->fg.'composer.json');
-       }
+       // 追求速度  暂不备份依赖文件
+      // $this->output('备份：'.$dic.'vendor'.' -> '.$bf_dic.$this->fg.'vendor');
+      //  $this->copydir($dic.'vendor',$bf_dic.$this->fg.'vendor');
 
-      $this->output('备份：'.$dic.'composer.lock'.' -> '.$bf_dic.$this->fg.'composer.lock');
-       $fh = copy($dic.'composer.lock',$bf_dic.$this->fg.'composer.lock');
-       if (!$fh) {
-         $this->output('【异常】备份失败：'.$dic.'composer.lock'.' -> '.$bf_dic.$this->fg.'composer.lock');
-       }
+      // $this->output('备份：'.$dic.'composer.json'.' -> '.$bf_dic.$this->fg.'composer.json');
+      //  $fh = copy($dic.'composer.json',$bf_dic.$this->fg.'composer.json');
+      //  if (!$fh) {
+      //    $this->output('【异常】备份失败：'.$dic.'composer.json'.' -> '.$bf_dic.$this->fg.'composer.json');
+      //  }
+
+      // $this->output('备份：'.$dic.'composer.lock'.' -> '.$bf_dic.$this->fg.'composer.lock');
+      //  $fh = copy($dic.'composer.lock',$bf_dic.$this->fg.'composer.lock');
+      //  if (!$fh) {
+      //    $this->output('【异常】备份失败：'.$dic.'composer.lock'.' -> '.$bf_dic.$this->fg.'composer.lock');
+      //  }
 
       $this->output('备份原有文件完成');
 
@@ -365,6 +370,9 @@ try {
       $hasog['release'] = $http['release'];
       $dic_r  = $dic.'config'.$this->fg;
       @file_put_contents($dic_r.'hasog.php', $this->getHaSogConfig($hasog));
+      if (is_file($dic.$this->fg.'update.zip')) {
+        unlink($dic.$this->fg.'update.zip');
+      }
       $this->output('写入版本信息成功');
       $this->output('升级完成！',true);
 
