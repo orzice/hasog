@@ -7,6 +7,7 @@ namespace app\common\pay;
 use app\common\model\PayLog;
 use app\common\model\WechatPay;
 use think\facade\Db;
+use Yansongda\Pay\Log;
 use Yansongda\Pay\Pay;
 
 class WechatPays

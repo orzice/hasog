@@ -21,6 +21,7 @@ namespace app\api\controller;
 
 use app\common\controller\ApiController;
 use app\common\model\AdminsPayment;
+use app\common\model\AliPay;
 use app\common\model\CreditType;
 use app\common\model\Dispatch;
 use app\common\model\DispatchData;
@@ -31,6 +32,7 @@ use app\common\model\FinaceOfflinepayment;
 use app\common\model\Goods;
 use app\common\model\Order as OrderModel;
 use app\common\model\PayLog;
+use app\common\pay\AliPays;
 use app\common\pay\WechatPays;
 use Yansongda\Pay\Log;
 
@@ -678,9 +680,24 @@ class Order extends ApiController
 
                 return $this->fetch('/pay/wechat/jsapi');
             }
+            elseif ($pay_type_id == 2){
+                $ali_pay = new AliPays();
+
+                $result = $ali_pay->jsapi_index($order, true,'http://hasog.chengrx.com/api/ali_front/ali_no/'.$order->id, true);
+                Db::commit();
+                $pay_log = $result['pay_log'];
+                $result = $result['result'];
+                $this->assign('order', $order);
+                $this->assign('pay_log', $pay_log);
+                $this->assign('jsApiParameters', $result);
+                $this->assign('redirect_url', 'http://hasog.chengrx.com/#/paySuccess');
+
+                return $this->fetch('/pay/wechat/jsapi');
+            }
             else {
 //                $this->error('暂时只支持余额付款和线下支付');
-                return api_return(0, '暂时只支持余额付款和线下支付');
+//                return api_return(0, '暂时只支持余额付款和线下支付');
+                return api_return(0, '暂时不支持所选支付');
             }
             $this->PluginApiCD('pay_order'.$user_id);
 

@@ -20,8 +20,10 @@ namespace app\api\controller;
 
 use app\BaseController;
 use app\common\controller\ApiController;
+use app\common\model\AliPay;
 use app\common\model\FinaceOfflinepayment;
 use app\common\model\FinaceWithdrawset;
+use app\common\pay\AliPays;
 use think\facade\Config;
 use think\facade\Db;
 use think\facade\Event;
@@ -128,7 +130,7 @@ class Finace extends ApiController
             }
         }
         //充值返回
-        if ($post['type']==0){
+        elseif ($post['type']==0){
             $wechat_pay = new WechatPays();
             $pay = WechatPay::where('is_union',1)->find();
             if (empty($pay)){
@@ -178,7 +180,59 @@ class Finace extends ApiController
             } catch (\Exception $e) {
                 return api_return(0,'提交失败:'.$e->getMessage());
             }
-        }else{
+        }
+        elseif ($post['type']==1){
+            $ali_pay = new AliPays();
+            $pay = AliPay::where('is_union',1)->find();
+            if (empty($pay)){
+                return api_return(0,'阿里支付通道已关闭');
+            }
+            $data = ['total_fee'=>$post['money'],'uid'=> $id];
+            $result = $ali_pay->jsapi_index($data, false,'http://hasog.chengrx.com/api/ali_front/ali_no/', true );
+            $pay_log = $result['pay_log'];
+            $result = $result['result'];
+//            $user = Member::find($id);
+            $this->assign('uid', $id);
+            $this->assign('pay_log', $pay_log);
+            $this->assign('amount', $post['money']);
+            $this->assign('jsApiParameters', $result);
+            $this->assign('redirect_url', 'http://hasog.chengrx.com/#/paySuccess');
+
+            return $this->fetch('/pay/wechat/jsapi_balance');
+
+            $up = true;
+            if ($up !== true){
+                return api_return(0,'充值失败');
+            }
+            $s = json_decode($set[0]['sole'],true);
+            $moneys = 0;
+            $money = array();
+            foreach ($s as $k=>$v){
+                if ($post['money']>=$v['enough']){
+                    $money[$k]['money'] = $v['give'];
+                }
+            }
+            if (!empty($money)){
+                $money = max($money);
+                if ($set[0]['proportion_status'] == 0){
+                    $moneys = $money['money'];
+                }else{
+                    $moneys = $post['money']*$money['money']/100;
+                }
+            }
+            $momber = Member::find($id);
+            $post['money'] = $moneys+$post['money'];
+            $balance = $momber['credit2']+$post['money'];
+            $create_time = time();
+            try {
+                $save = FinaceBalancesub::insert(['uid'=>$id,'balance'=>$balance,'state'=>2,'money'=>$post['money'],'create_time'=>$create_time,'credit_type'=>'1']);
+                $save = Member::update(['id'=>$id,'credit2'=>$balance]);
+                $save = FinaceUprecord::insert(['uid'=>$id,'way'=>1,'money'=>$post['money'],'state'=>1,'create_time'=>$create_time,'credit_type'=>'1']);
+            } catch (\Exception $e) {
+                return api_return(0,'提交失败:'.$e->getMessage());
+            }
+        }
+        else{
 
         }
 

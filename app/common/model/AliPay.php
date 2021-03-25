@@ -22,6 +22,8 @@ use app\common\model\TimeModel;
 use think\facade\Db;
 use think\Model;
 use think\model\concern\SoftDelete;
+use Yansongda\Pay\Log;
+use Yansongda\Pay\Pay;
 
 class AliPay extends TimeModel
 {
@@ -45,7 +47,6 @@ class AliPay extends TimeModel
     protected $updateTime = 'update_time';
     protected $defaultSoftDelete = null;
     protected $name = 'ali_pay';
-
 
 
 
