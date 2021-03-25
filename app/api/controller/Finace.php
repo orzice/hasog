@@ -188,7 +188,7 @@ class Finace extends ApiController
                 return api_return(0,'阿里支付通道已关闭');
             }
             $data = ['total_fee'=>$post['money'],'uid'=> $id];
-            $result = $ali_pay->jsapi_index($data, false,'http://hasog.chengrx.com/api/ali_front/ali_no/', true );
+            $result = $ali_pay->jsapi_index($data, false,'http://hasog.chengrx.com/api/ali_front/ali_balance/',  'http://hasog.chengrx.com/api/ali_front/ali_balance_return/');
             $pay_log = $result['pay_log'];
             $result = $result['result'];
 //            $user = Member::find($id);

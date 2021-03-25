@@ -683,7 +683,7 @@ class Order extends ApiController
             elseif ($pay_type_id == 2){
                 $ali_pay = new AliPays();
 
-                $result = $ali_pay->jsapi_index($order, true,'http://hasog.chengrx.com/api/ali_front/ali_no/'.$order->id, true);
+                $result = $ali_pay->jsapi_index($order, true,'http://hasog.chengrx.com/api/ali_front/ali_no/'.$order->id);
                 Db::commit();
                 $pay_log = $result['pay_log'];
                 $result = $result['result'];

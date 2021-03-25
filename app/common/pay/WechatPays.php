@@ -94,6 +94,7 @@ class WechatPays
         ];
         if ($is_order){
             $order_data['total_fee'] = $order->price * 100;
+            $order_data['out_trade_no'] = $order->order_sn;
         }else{
             $order_data['total_fee'] = $order['total_fee'] * 100;
         }

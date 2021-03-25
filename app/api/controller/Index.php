@@ -26,6 +26,28 @@ use app\common\Plugins;
 
 class Index extends ApiController
 {
+
+    //APP下载安装外部接口
+    public function cloudApp()
+    {
+        $post = $this->request->get();
+        $rule = [
+            'dir' => 'require|alphaDash',
+            'uniqueid' => 'require|alphaDash',
+            'key' => 'require|alphaDash',
+        ];
+        $validate = $this->validate($post, $rule);
+        //验证失败
+        if ($validate !== true) {
+            return api_return(0, '异常');
+        }
+        if ($post['uniqueid'] !== config_plus("hasog.uniqueid")) {
+            return api_return(0, '异常');
+        }
+
+        return redirect('/'.config_plus("hasog.Admin".'/plugin.cloud/up?dir='.$post['dir'].'&key='.$post['key']));
+    }
+
     //返回软件配置信息
     public function index()
     {
