@@ -101,8 +101,8 @@
                                 注意！一旦点击确认更新后！不要关闭网页！请耐心等待！
                             </div>
                             <div class="text-center">
-                                <input name="submit" id="submit" type="submit" value="立即升级" class="btn btn-primary hasog-margin-right" >
-                                <input name="rollback" type="button" value="返回" class="btn btn-default">
+                                <input name="submit" id="submit" type="submit" value="立即安装" class="btn btn-primary hasog-margin-right" >
+                                <input name="rollback" id="rollback" type="button" value="点击返回后台首页" class="btn btn-default">
                             </div>
                         </div>
                         <div class="upgrade-wechat">
@@ -119,9 +119,20 @@
 
     require(["jquery", "easy-admin"], function ($, ea, miniAdmin, miniTab) {
         $("#submit").click(function(){
-            $('.text-center').attr('style','display: none;')
+            // $('.text-center').attr('style','display: none;')
+          $('#submit').attr('style','display: none;')
           $('#htmls').attr('style',"")
           $('#htmls').attr('src',"?up=1")
+          $('#rollback').attr('style','background-color: #03A9F4;border-color: #03A9F4;color: #fff;')
+        });
+        
+        $("#rollback").click(function(){
+            
+            var urls = '/{$Admin}'
+            window.parent.parent.parent.location.replace(urls);
+            window.parent.parent.location.replace(urls);
+            window.parent.location.replace(urls);
+            window.location.replace(urls);
         });
     });
 

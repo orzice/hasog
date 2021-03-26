@@ -55,6 +55,7 @@ echo <<<ETO
 
 setTimeout(function (){
  
+window.parent.parent.parent.location.reload();
 window.parent.parent.location.reload();
 window.parent.location.reload();
 
