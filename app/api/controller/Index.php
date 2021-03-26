@@ -27,7 +27,7 @@ use app\common\Plugins;
 class Index extends ApiController
 {
 
-    //APP下载安装外部接口  http://hasog.chengrx.com/api/index/cloudApp?dir=1_1&uniqueid=VDRPuQ09f8LhcQ5z&key=123456
+    //APP下载安装外部接口  http://127.0.1.99/api/index/cloudApp?dir=1_1&uniqueid=VDRRmBb9d9vcGa0E&key=123456
     public function cloudApp()
     {
         $post = $this->request->get();
