@@ -29,6 +29,7 @@ use think\App;
 use app\admin\model\SystemMenu;
 
 use app\common\Update;
+use app\common\PluginsUpdate;
 
 /**
  * @ControllerAnnotation(title="插件云平台")
@@ -57,6 +58,32 @@ class Cloud extends AdminController
 
         return $this->fetch();
     }
+    /**
+     * @NodeAnotation(title="升级插件")
+     */
+    public function up()
+     {
+        if(env('hasog.is_demo', false)){
+            $this->error('演示环境下不允许修改');
+        }
+        $get = request()->get();
+        $rule = [
+            'dir|文件'      => 'require|alphaDash',
+            'key|密钥'      => 'require|alphaDash',
+        ];
+        $validate = $this->validate($get, $rule);
+        
+
+        if (isset($_GET['up'])) {
+            if ($_GET['up'] == '1') {
+                $ups = new PluginsUpdate();
+                return $ups->index($get['dir'],$get['key']);
+            }
+        }
+
+        $this->assign('get', $get);
+        return $this->fetch();
+     }
     /**
      * @NodeAnotation(title="在线升级")
      */

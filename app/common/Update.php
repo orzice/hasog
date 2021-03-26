@@ -268,7 +268,7 @@ try {
               }
             }
 
-             $h_dir = $Cloud->GetUpdateDir($bd[$i]['src']);
+             // $h_dir = $Cloud->GetUpdateDir($bd[$i]['src']);
              
               if(!is_readable(dirname($ls_nas))){
                 $this->output('创建目录：'.dirname($ls_nas));

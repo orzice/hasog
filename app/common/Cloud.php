@@ -103,5 +103,21 @@ class Cloud
         }
         return $json['data'];
     }
+    static public function GetPluginUpdate($plugin='',$key='')
+    {
+        $http = http_query(self::$api.'update/plugin?uniqueid='.self::$uniqueid.'&plugin='.$plugin.'&key='.$key);
+        $json = json_decode($http,true);
+        if (!empty($json)) {
+            if(isset($json['code'])){
+                if ($json['code'] == 0) {
+                    return self::Error($json['msg']);
+                }
+            }else{
+                return $http;
+            }
+        }
+        
+        return $http;
+    }
 
 }
