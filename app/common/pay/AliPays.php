@@ -16,7 +16,7 @@ class AliPays
     protected $config = [
         'app_id' => '2016082000295641',
         'notify_url' => 'http://yansongda.cn/notify.php',
-        'return_url' => 'http://yansongda.cn/return.php',
+        'return_url' => 'http://hasog.chengrx.com/api/ali_front/ali_return/',
         'ali_public_key' => 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuWJKrQ6SWvS6niI+4vEVZiYfjkCfLQfoFI2nCp9ZLDS42QtiL4Ccyx8scgc3nhVwmVRte8f57TFvGhvJD0upT4O5O/lRxmTjechXAorirVdAODpOu0mFfQV9y/T9o9hHnU+VmO5spoVb3umqpq6D/Pt8p25Yk852/w01VTIczrXC4QlrbOEe3sr1E9auoC7rgYjjCO6lZUIDjX/oBmNXZxhRDrYx4Yf5X7y8FRBFvygIE2FgxV4Yw+SL3QAa2m5MLcbusJpxOml9YVQfP8iSurx41PvvXUMo49JG3BDVernaCYXQCoUJv9fJwbnfZd7J5YByC+5KM4sblJTq7bXZWQIDAQAB',
         // 加密方式： **RSA2**
         'private_key' => 'MIIEpAIBAAKCAQEAs6+F2leOgOrvj9jTeDhb5q46GewOjqLBlGSs/bVL4Z3fMr3p+Q1Tux/6uogeVi/eHd84xvQdfpZ87A1SfoWnEGH5z15yorccxSOwWUI+q8gz51IWqjgZxhWKe31BxNZ+prnQpyeMBtE25fXp5nQZ/pftgePyUUvUZRcAUisswntobDQKbwx28VCXw5XB2A+lvYEvxmMv/QexYjwKK4M54j435TuC3UctZbnuynSPpOmCu45ZhEYXd4YMsGMdZE5/077ZU1aU7wx/gk07PiHImEOCDkzqsFo0Buc/knGcdOiUDvm2hn2y1XvwjyFOThsqCsQYi4JmwZdRa8kvOf57nwIDAQABAoIBAQCw5QCqln4VTrTvcW+msB1ReX57nJgsNfDLbV2dG8mLYQemBa9833DqDK6iynTLNq69y88ylose33o2TVtEccGp8Dqluv6yUAED14G6LexS43KtrXPgugAtsXE253ZDGUNwUggnN1i0MW2RcMqHdQ9ORDWvJUCeZj/AEafgPN8AyiLrZeL07jJz/uaRfAuNqkImCVIarKUX3HBCjl9TpuoMjcMhz/MsOmQ0agtCatO1eoH1sqv5Odvxb1i59c8Hvq/mGEXyRuoiDo05SE6IyXYXr84/Nf2xvVNHNQA6kTckj8shSi+HGM4mO1Y4Pbb7XcnxNkT0Inn6oJMSiy56P+CpAoGBAO1O+5FE1ZuVGuLb48cY+0lHCD+nhSBd66B5FrxgPYCkFOQWR7pWyfNDBlmO3SSooQ8TQXA25blrkDxzOAEGX57EPiipXr/hy5e+WNoukpy09rsO1TMsvC+v0FXLvZ+TIAkqfnYBgaT56ku7yZ8aFGMwdCPL7WJYAwUIcZX8wZ3dAoGBAMHWplAqhe4bfkGOEEpfs6VvEQxCqYMYVyR65K0rI1LiDZn6Ij8fdVtwMjGKFSZZTspmsqnbbuCE/VTyDzF4NpAxdm3cBtZACv1Lpu2Om+aTzhK2PI6WTDVTKAJBYegXaahBCqVbSxieR62IWtmOMjggTtAKWZ1P5LQcRwdkaB2rAoGAWnAPT318Kp7YcDx8whOzMGnxqtCc24jvk2iSUZgb2Dqv+3zCOTF6JUsV0Guxu5bISoZ8GdfSFKf5gBAo97sGFeuUBMsHYPkcLehM1FmLZk1Q+ljcx3P1A/ds3kWXLolTXCrlpvNMBSN5NwOKAyhdPK/qkvnUrfX8sJ5XK2H4J8ECgYAGIZ0HIiE0Y+g9eJnpUFelXvsCEUW9YNK4065SD/BBGedmPHRC3OLgbo8X5A9BNEf6vP7fwpIiRfKhcjqqzOuk6fueA/yvYD04v+Da2MzzoS8+hkcqF3T3pta4I4tORRdRfCUzD80zTSZlRc/h286Y2eTETd+By1onnFFe2X01mwKBgQDaxo4PBcLL2OyVT5DoXiIdTCJ8KNZL9+kV1aiBuOWxnRgkDjPngslzNa1bK+klGgJNYDbQqohKNn1HeFX3mYNfCUpuSnD2Yag53Dd/1DLO+NxzwvTu4D6DCUnMMMBVaF42ig31Bs0jI3JQZVqeeFzSET8fkoFopJf3G6UXlrIEAQ==',
@@ -34,7 +34,7 @@ class AliPays
             'connect_timeout' => 5.0,
             // 更多配置项请参考 [Guzzle](https://guzzle-cn.readthedocs.io/zh_CN/latest/request-options.html)
         ],
-        'mode' => 'dev', // optional,设置此参数，将进入沙箱模式
+//        'mode' => 'dev', // optional,设置此参数，将进入沙箱模式
     ];
 
     public function __construct()
@@ -51,12 +51,11 @@ class AliPays
         $this->config['ali_public_key'] = $alipay->rsa_public_key;
     }
 
-    public function jsapi_index($order, $is_order=true, $notify_url=null, $need_append=false)
+//    public function jsapi_index($order, $is_order=true, $notify_url=null, $need_append=null)
+    public function jsapi_index($order, $is_order=true, $notify_url=null, $return_url=null)
     {
         $this->config['notify_url'] = $notify_url ? $notify_url : $this->config['notify_url'];
-//        $s = new \Hasog\wechat\Wechat();
-//        $s->init($this->config['app_id'], $this->config['mch_id'], $this->config['key'], $this->config['app_secret']);
-//        $t =  $s->GetOpenid();
+        $this->config['return_url'] = $return_url ? $return_url : $this->config['return_url'];
         // 生成支付记录
         $union_ali = $this->get_union_ali();
 
@@ -78,16 +77,19 @@ class AliPays
         }
         $pay_log->save();
         $this->config['notify_url'] .= '/'.$pay_log->id.'/';
+        $this->config['return_url'] .= $pay_log->id.'/';
         $order_data =[
             'out_trade_no' => time(),
             'subject' => '阿里充值',
         ];
         if ($is_order){
-            $order_data['total_amount'] = $order->price * 100;
+            $order_data['total_amount'] = $order->price;
+            $order_data['out_trade_no'] = $order->order_sn;
         }else{
-            $order_data['total_amount'] = $order['total_fee'] * 100;
+            $order_data['total_amount'] = $order['total_fee'];
         }
         $config = $this->config;
+//        print_r($config);die();
         $result = Pay::alipay($config)->wap($order_data)->send();
         $result = json_encode($result);
 //        if ($order){
@@ -145,9 +147,15 @@ class AliPays
         return AliPay::where('is_union', 1)->find();
     }
 
-    public function return_pay_obj($notify_url=null)
+    public function return_pay_obj($notify_url=null, $pay_id=null, $return_url=null)
     {
         $this->config['notify_url'] = $notify_url ? $notify_url : $this->config['notify_url'] ;
+        if (!empty($pay_id) && empty($return_url)){
+            $this->config['return_url'] .= $pay_id.'/';
+        }
+        if(!empty($return_url)){
+            $this->config['return_url'] = $return_url;
+        }
         $pay = Pay::alipay($this->config);
         return $pay;
     }

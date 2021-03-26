@@ -137,7 +137,8 @@ class Finace extends ApiController
                 return api_return(0,'微信支付通道已关闭');
             }
             $data = ['total_fee'=>$post['money'],'uid'=> $id];
-            $result = $wechat_pay->jsapi_index($data, false,'http://hasog.chengrx.com/api/wechat_front/wechat_balance/', true );
+
+            $result = $wechat_pay->jsapi_index($data, false,$this->request->domain().'/api/wechat_front/wechat_balance/', true );
             $pay_log = $result['pay_log'];
             $result = $result['result'];
 //            $user = Member::find($id);
@@ -188,7 +189,8 @@ class Finace extends ApiController
                 return api_return(0,'阿里支付通道已关闭');
             }
             $data = ['total_fee'=>$post['money'],'uid'=> $id];
-            $result = $ali_pay->jsapi_index($data, false,'http://hasog.chengrx.com/api/ali_front/ali_no/', true );
+            $return_url = $this->request->domain().'/api/ali_front/ali_balance_return/';
+            $result = $ali_pay->jsapi_index($data, false,$this->request->domain().'/api/ali_front/ali_balance/',  $return_url);
             $pay_log = $result['pay_log'];
             $result = $result['result'];
 //            $user = Member::find($id);
@@ -196,7 +198,7 @@ class Finace extends ApiController
             $this->assign('pay_log', $pay_log);
             $this->assign('amount', $post['money']);
             $this->assign('jsApiParameters', $result);
-            $this->assign('redirect_url', 'http://hasog.chengrx.com/#/paySuccess');
+            $this->assign('redirect_url', $this->request->domain().'/#/paySuccess');
 
             return $this->fetch('/pay/wechat/jsapi_balance');
 

@@ -26,11 +26,20 @@ use app\common\Plugins;
 
 class Index extends ApiController
 {
+<<<<<<< HEAD
     //APP下载安装外部接口  http://hasog.chengrx.com/api/index/cloudApp?dir=1_1&uniqueid=VDRPuQ09f8LhcQ5z&key=123456
     public function cloudApp()
     {
         $post = $this->request->get();
           $rule = [
+=======
+
+    //APP下载安装外部接口
+    public function cloudApp()
+    {
+        $post = $this->request->get();
+        $rule = [
+>>>>>>> 1243d68dc80f7a0312d237e8f23e33643a2192d2
             'dir' => 'require|alphaDash',
             'uniqueid' => 'require|alphaDash',
             'key' => 'require|alphaDash',
@@ -46,6 +55,10 @@ class Index extends ApiController
 
         return redirect('/'.config_plus("hasog.Admin".'/plugin.cloud/up?dir='.$post['dir'].'&key='.$post['key']));
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 1243d68dc80f7a0312d237e8f23e33643a2192d2
     //返回软件配置信息
     public function index()
     {

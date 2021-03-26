@@ -668,8 +668,9 @@ class Order extends ApiController
             }
             elseif ($pay_type_id == 1){
                 $wechat_pay = new WechatPays();
-
-                $result = $wechat_pay->jsapi_index($order, true,'http://hasog.chengrx.com/api/wechat_front/wechat_no/'.$order->id, true);
+//                $notify_url = 'http://hasog.chengrx.com/api/wechat_front/wechat_no/'.$order->id;
+                $notify_url = $this->request->domain().'/api/wechat_front/wechat_no/'.$order->id;
+                $result = $wechat_pay->jsapi_index($order, true, $notify_url, true);
                 Db::commit();
                 $pay_log = $result['pay_log'];
                 $result = $result['result'];
@@ -682,8 +683,10 @@ class Order extends ApiController
             }
             elseif ($pay_type_id == 2){
                 $ali_pay = new AliPays();
-
-                $result = $ali_pay->jsapi_index($order, true,'http://hasog.chengrx.com/api/ali_front/ali_no/'.$order->id, true);
+//                $notify_url = 'http://hasog.chengrx.com/api/ali_front/ali_no/'.$order->id;
+                $notify_url = $this->request->domain().'/api/ali_front/ali_no/'.$order->id;
+                $return_url = $this->request->domain().'/api/ali_front/ali_return/';
+                $result = $ali_pay->jsapi_index($order, true, $notify_url, $return_url);
                 Db::commit();
                 $pay_log = $result['pay_log'];
                 $result = $result['result'];

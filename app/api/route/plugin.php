@@ -34,6 +34,10 @@ Route::rule('plugin.<p1>-<p2>-<p3>-<p4>','Plugin/call');
 //Route::rule('order/wechat_no/<id>','order/wechat_no');
 Route::rule('wechat_front/wechat_no/<id>/<pay_id>','wechat_front/wechat_no');
 Route::rule('wechat_front/wechat_balance/<pay_id>','wechat_front/wechat_balance');
+Route::rule('ali_front/ali_no/<id>/<pay_id>','ali_front/ali_no');
+Route::rule('ali_front/ali_balance/<pay_id>','ali_front/ali_balance');
+Route::rule('ali_front/ali_return/<pay_id>','ali_front/ali_return');
+Route::rule('ali_front/ali_balance_return/<pay_id>','ali_front/ali_balance_return');
 
 // Route::rule('plugin.<p1>-<p2>-<p3>-<p4>', function ($p1,$p2,$p3,$p4) {
 // 	print_r($p1);
