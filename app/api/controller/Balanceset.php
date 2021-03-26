@@ -47,10 +47,10 @@ class Balanceset extends AdminController {
         if ($this->request->isAjax()) {
             $post = $this->request->post();
             $rule = [
-                                'recharge'=>'require|number|in:0,1',
-                                'proportion_status' => 'require|number|in:0,1',
-                                'transfer' =>'require|number|in:0,1',
-                            ];
+                'recharge'=>'require|number|in:0,1',
+                'proportion_status' => 'require|number|in:0,1',
+                'transfer' =>'require|number|in:0,1',
+            ];
             $this->validate($post['balance'], $rule);
             if ($post['balance']['enough']) {
                 $enough = $post['balance']['enough'];
@@ -60,9 +60,9 @@ class Balanceset extends AdminController {
                     $array = is_array($enough) ? $enough : array();
                     foreach ($array as $k => $v) {
                         $sole[] = array(
-                                                        'enough' => $enough[$k],
-                                                        'give' => $give[$k],
-                                                    );
+                                'enough' => $enough[$k],
+                                'give' => $give[$k],
+                            );
                     }
                 }
                 foreach ($sole as $k=>$v) {
@@ -71,9 +71,9 @@ class Balanceset extends AdminController {
                     }
                 }
                 $rule = [
-                                        'enough'=>'number|min:0',
-                                        'give' => 'number|min:0',
-                                    ];
+                    'enough'=>'number|min:0',
+                    'give' => 'number|min:0',
+                ];
                 foreach ($sole as $k => $v) {
                     $this->validate($v, $rule);
                 }
