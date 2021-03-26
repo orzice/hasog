@@ -31,7 +31,8 @@ class AliFront extends ApiController
         $ali_pay = new AliPays();
         // 获取支付订单时的微信配置参数
         $ali_pay->init($ali_account);
-        $pay = $ali_pay->return_pay_obj($this->request->url(true), $pay_id);
+        $return_url = $this->request->domain().'/api/ali_front/ali_return/'.$pay_id.'/';
+        $pay = $ali_pay->return_pay_obj($this->request->url(true), $pay_id, $return_url);
         try{
             $data = $pay->verify(); // 是的，验签就这么简单！
             $order = Order::where('order_sn', $data['out_trade_no'])->find();
@@ -100,7 +101,8 @@ class AliFront extends ApiController
         $ali_pay = new AliPays();
         // 获取支付订单时的微信配置参数
         $ali_pay->init($ali_account);
-        $pay = $ali_pay->return_pay_obj($this->request->url(true), $pay_id, 'http://hasog.chengrx.com/api/ali_front/ali_balance_return/'.$pay_id.'/');
+        $return_url = $this->request->domain().'/api/ali_front/ali_balance_return/'.$pay_id.'/';
+        $pay = $ali_pay->return_pay_obj($this->request->url(true), $pay_id, $return_url);
         $user = Member::where('id', $pay_log->uid)->find();
         $old_credit = $user->credit2;
         try{
@@ -143,7 +145,8 @@ class AliFront extends ApiController
         $this->assign('pay_log', $pay_log);
         $this->assign('amount', $pay_log->amount);
         $this->assign('jsApiParameters', 'result');
-        $this->assign('redirect_url', 'http://hasog.chengrx.com/#/paySuccess');
+//        $this->assign('redirect_url', 'http://hasog.chengrx.com/#/paySuccess');
+        $this->assign('redirect_url', $this->request->domain().'/#/paySuccess');
         return $this->fetch('/pay/wechat/jsapi_balance');
     }
 
@@ -160,7 +163,8 @@ class AliFront extends ApiController
         $ali_pay = new AliPays();
         // 获取支付订单时的微信配置参数
         $ali_pay->init($ali_account);
-        $pay = $ali_pay->return_pay_obj($this->request->url(true), $pay_id);
+        $return_url = $this->request->domain().'/api/ali_front/ali_return/'.$pay_id.'/';
+        $pay = $ali_pay->return_pay_obj($this->request->url(true), $pay_id, $return_url);
         try{
             $data = $pay->verify(); // 是的，验签就这么简单！
 //            if ($data['trade_status'] !==  'TRADE_SUCCESS'){
@@ -235,7 +239,8 @@ class AliFront extends ApiController
         $ali_pay = new AliPays();
         // 获取支付订单时的微信配置参数
         $ali_pay->init($ali_account);
-        $pay = $ali_pay->return_pay_obj($this->request->url(true), $pay_id, 'http://hasog.chengrx.com/api/ali_front/ali_balance_return/'.$pay_id.'/');
+        $return_url = $this->request->domain().'/api/ali_front/ali_balance_return/'.$pay_id.'/';
+        $pay = $ali_pay->return_pay_obj($this->request->url(true), $pay_id, $return_url);
         $user = Member::where('id', $pay_log->uid)->find();
         $old_credit = $user->credit2;
         try{
