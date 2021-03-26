@@ -131,8 +131,8 @@ try {
        {
           is_file($p_dic) or mkdir($p_dic,0700,true);
        }
-
-     $h_dir = $Cloud->GetPluginUpdate($p_dir,$p_key);
+       
+      $h_dir = $Cloud->GetPluginUpdate($p_dir,$p_key);
      
       if (!$h_dir) {
         $this->output('【异常】下载云服务文件失败：'.$Cloud->GetError());
@@ -149,46 +149,60 @@ try {
           $this->output('写入文件：'.$ls_nas);
       }
 
-      $this->output('解压包文件中、本次耗时大概3分钟、请耐心等待...');
+      // 升级 Or 安装
+      $ins_dir = $p_dic.DIRECTORY_SEPARATOR."app.json";
+      $inst = false;
+      if (is_file($ins_dir)) {
+        $inst = true;
+      }
+
+
+      $this->output('解压包文件中、本次耗时大概2分钟、请耐心等待...');
       $zips = $this->unZip($ls_nas, $p_dic);
+      if (is_file($ls_nas)) {
+        unlink($ls_nas);
+      }
       if (!$zips) {
         $this->output('【错误】压缩包解压失败');
-        if (is_file($ls_nas)) {
-          unlink($ls_nas);
-        }
         return $Cloud->GetError();
       }
       //============int===============
-      try {
-          $a = Plugins::Update($p_dir);
-      } catch (\Exception $e) {
-        if (is_file($ls_nas)) {
-          unlink($ls_nas);
+      // 升级 Or 安装
+      if ($inst) {
+        if (is_file($p_dic.DIRECTORY_SEPARATOR.'package.json')) {
+          unlink($p_dic.DIRECTORY_SEPARATOR.'package.json');
         }
-        $this->output('【错误】插件更新失败！');
-        return;
-      }
-      if(!$a){
-        if (is_file($ls_nas)) {
-          unlink($ls_nas);
-        }
-        $this->output('【错误】插件更新失败！');
-        return;
-      }
 
-      $install = $p_dic.DIRECTORY_SEPARATOR."install.php";
-      if (is_file($install)){
-          $hook = include $install;
-          $state = $hook();
-          if(!$state){
-              if (is_file($ls_nas)) {
-                unlink($ls_nas);
-              }
-              $this->output('【错误】插件安装失败！');
-              return;
+        //更新
+        try {
+            $a = Plugins::Update($p_dir);
+        } catch (\Exception $e) {
+          if (is_file($ls_nas)) {
+            unlink($ls_nas);
           }
-      }
+          $this->output('【错误】插件更新失败！');
+          return;
+        }
+        $install = $p_dic.DIRECTORY_SEPARATOR."install.php";
+        if (is_file($install)){
+            $hook = include $install;
+            $state = $hook();
+            if(!$state){
+                if (is_file($ls_nas)) {
+                  unlink($ls_nas);
+                }
+                $this->output('【错误】插件安装失败！');
+                return;
+            }
+        }
 
+
+      }else{
+        //新装 不需要管理
+        if (is_file($ins_dir)) {
+          unlink($ins_dir);
+        }
+      }
       //============int===============
 
       if (is_file($ls_nas)) {

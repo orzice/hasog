@@ -71,7 +71,7 @@ class Cloud extends AdminController
             'dir|文件'      => 'require|alphaDash',
             'key|密钥'      => 'require|alphaDash',
         ];
-        $validate = $this->validate($get, $rule);
+        $this->validate($get, $rule);
         
 
         if (isset($_GET['up'])) {

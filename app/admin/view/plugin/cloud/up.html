@@ -1,0 +1,126 @@
+
+<style>
+    
+    .skin-2 {
+        min-height: 100vh;
+        background: #e6e6e6;
+    }
+    
+    .skin-2__container {
+        width: auto;
+        padding: 20px;
+    }
+    
+    .upgrade-content .upgrade-heading .upgrade-version {
+        padding-top: 10px;
+        font-size: 18px;
+        font-weight: 400;
+    }
+    
+    .hasog-margin-right {
+        margin-right: 30px !important;
+    }
+    
+    .btn {
+        display: inline-block;
+        padding: 6px 12px;
+        margin-bottom: 0;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.42857143;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        -ms-touch-action: manipulation;
+        touch-action: manipulation;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background-image: none;
+        border: 1px solid transparent;
+        border-radius: 4px;
+    }
+    
+    .upgrade-content .upgrade-new {
+        font-size: 20px;
+        color: #4c4c4c;
+        text-align: center;
+        margin: 30px 0;
+    }
+    
+    .upgrade-content .upgrade-wechat {
+        text-align: center;
+        margin: 40px auto;
+        background-color: #f7f8fa;
+    }
+    
+    .text-center {
+        text-align: center !important;
+    }
+    
+    .upgrade-content .upgrade-heading {
+        text-align: center;
+        padding: 30px 0;
+        position: relative;
+    }
+    
+    .btn-btndefault {
+        color: #333;
+        background-color: #e6e6e6;
+        border-color: #adadad;
+    }
+    
+    .btn-primary {
+        color: #fff;
+        background-color: #067cf3;
+        border-color: #056bd0;
+    }
+.hasog-logo{
+    width: 140px;
+    height: 140px;
+}
+</style>
+<div class="skin-2" data-skin="2">
+        <div class="skin-2__right">
+            <div class="skin-2__container container">
+                <div class="content">
+                    <div class="upgrade-content ng-scope" id="js-cloud-upgrade" ng-controller="CloudUpgradeCtrl">
+                        <div class="upgrade-heading">
+                            <img src="/static/images/hasog.png" alt="" class="hasog-logo" >
+                            <h2 class="upgrade-version">安装 【{$get.dir}】 插件</h2>
+                        </div>
+
+                        <div class="ng-pristine ng-valid ng-scope">
+                            <div class="upgrade-new" style="color: #f00;">
+                                注意！一旦点击确认安装后！不要关闭网页！请耐心等待！<br>
+                                安装中可能影响插件的正常使用！如果确定是最新版本 请不要进行升级！
+                            </div>
+                            <div class="text-center">
+                                <input name="submit" id="submit" type="submit" value="立即安装" class="btn btn-primary hasog-margin-right" >
+                                <input name="rollback" type="button" value="返回" class="btn btn-default">
+                            </div>
+                        </div>
+                        <div class="upgrade-wechat">
+                            <iframe id="htmls" width="100%" height="350px" frameborder="0" style="display: none;"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+<script>
+
+
+    require(["jquery", "easy-admin"], function ($, ea, miniAdmin, miniTab) {
+        $("#submit").click(function(){
+            $('.text-center').attr('style','display: none;')
+          $('#htmls').attr('style',"")
+          $('#htmls').attr('src',"?up=1&dir={$get.dir}&key={$get.key}")
+        });
+    });
+
+
+</script>
