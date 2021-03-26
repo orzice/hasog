@@ -46,7 +46,7 @@ class Index extends ApiController
             return api_return(0, '异常');
         }
 
-        return redirect('/'.config_plus("hasog.Admin".'/plugin.cloud/up?dir='.$post['dir'].'&key='.$post['key']));
+        return redirect('/'.config_plus("hasog.Admin").'/plugin.cloud/up?dir='.$post['dir'].'&key='.$post['key']);
     }
 
     //返回软件配置信息
