@@ -19,7 +19,7 @@ return [
     // 版本
     'version'         => '1.0.0 Beta',
     // 日期
-    'release'         => '20210323',
+    'release'         => '20210326',
     // Session配置
     'SessionName'         => 'user',
     // 后台管理员密码加密
