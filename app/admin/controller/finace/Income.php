@@ -28,7 +28,8 @@ use EasyAdmin\annotation\NodeAnotation;
  */
 class Income extends AdminController
 {
-    use appadmintraitsCurd;
+    use \app\admin\traits\Curd;
+    // use appadmintraitsCurd;
     protected $sort = [
             'id'   => 'desc',
         ];

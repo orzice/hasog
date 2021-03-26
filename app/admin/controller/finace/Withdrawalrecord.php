@@ -30,7 +30,7 @@ use EasyAdmin\annotation\NodeAnotation;
  */
 class Withdrawalrecord extends AdminController
 {
-    use appadmintraitsCurd;
+    use \app\admin\traits\Curd;
     protected $sort = [
             'create_time'   => 'desc',
         ];

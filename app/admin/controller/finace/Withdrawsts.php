@@ -29,7 +29,7 @@ use EasyAdmin\annotation\NodeAnotation;
  */
 class Withdrawsts extends AdminController
 {
-    use appadmintraitsCurd;
+    use \app\admin\traits\Curd;
     protected $sort = [
             'create_time'   => 'desc',
         ];
