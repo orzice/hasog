@@ -147,21 +147,29 @@ class SmsService
         return true;
     }
     /**
-     *  验证手机号是否可以继续发送
+     *  验证手机号是否可以继续发送  单个手机号最多每天发送多少次！
      */
     public function MobileCd($mobile=false,$state=0)
     {
+        $bt = date('Ymd',time());
         if (self::$je == 0) {
             return true;
         }
+        $max = Cache::store('redis')->get('sms_max_'.$bt.'_'.$mobile);
+        if ($max >= self::$max) {
+            self::$error = '每日发送短信超过限制！';
+            return false;
+        }
         if ($state == 0) {
-            $sx = Cache::get('sms_cd_'.$mobile);
+            $sx = Cache::store('redis')->get('sms_cd_'.$mobile);
             if (!$sx) {
                 return true;
             }
+            self::$error = '不要在短时间内重复发送短信！';
             return false;
         }else{
-            $sx = Cache::set('sms_cd_'.$mobile,'1',self::$je);
+            Cache::store('redis')->set('sms_cd_'.$mobile,'1',self::$je);
+            Cache::store('redis')->inc('sms_max_'.$bt.'_'.$mobile);
             return true;
         }
     }
@@ -170,6 +178,6 @@ class SmsService
      */
     public function Error()
     {
-        return self::$error_value;
+        return self::$error;
     }
 }
