@@ -46,6 +46,28 @@ class SmsService
         self::$type = sysconfig('default','sms_new_type');
     }
     /**
+     *  验证码验证服务
+     */
+    public function Code($mobile=false,$code=0)
+    {
+        //查询Code
+        if ($code == 0) {
+            $max = Cache::store('redis')->get('sms_code_'.$mobile);
+            if (!$sx) {
+                self::$error = '数据不存在！';
+                return false;
+            }
+            return $max;
+
+        }else{
+            //创建Code
+            Cache::store('redis')->set('sms_code_'.$mobile,$code,300);//默认储存5分钟
+            return true;
+        }
+
+    }
+
+    /**
      *  发送短信验证码
      */
     public function GoSmSCode($mobile=false,$Code=false)
