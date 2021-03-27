@@ -299,6 +299,29 @@ ETO;
 $this->detectTable($tableName,$Sql);
 //=================================================
 
+    $tableName = 'plugins_income';
+    $Sql = <<<ETO
+    CREATE TABLE `{$tableName}` (
+      `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '索引',
+      `uid` int(11) NOT NULL DEFAULT '0' COMMENT '收入的用户id',
+      `child_uid` int(11) NOT NULL DEFAULT '0' COMMENT '产生此记录的id',
+      `loid` int(11) NOT NULL DEFAULT '0' COMMENT '绑定相关日志ID',
+      `style` int(11) NOT NULL DEFAULT '0' COMMENT '收入类型ID',
+      `style_desc` varchar(255) NOT NULL DEFAULT '' COMMENT '收入类型文字介绍',
+      `level` int(11) NOT NULL DEFAULT '0' COMMENT '等级记录',
+      `je` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '金额',
+      `desc` char(255) NOT NULL DEFAULT '' COMMENT '介绍',
+      `create_time` int(11) DEFAULT NULL COMMENT '创建时间',
+      `update_time` int(11) DEFAULT NULL COMMENT '更新时间',
+      `delete_time` int(11) DEFAULT NULL COMMENT '删除时间',
+      PRIMARY KEY (`id`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='所有插件收入表';
+ETO;
+$this->detectTable($tableName,$Sql);
+//=================================================
+
+
+
 $tableName = 'finace_balancesub';
 $Sql = <<<ETO
 CREATE TABLE `{$tableName}` (
