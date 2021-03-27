@@ -81,6 +81,9 @@ class SmsService
             $code = yanzhengma(6);
         }
 
+        //储存KEY
+        $this->Code($mobile,$code)
+
         $sms = [];
         $sms['tx_secretid'] = sysconfig('default','txsms_secret_id');
         $sms['tx_secretkey'] = sysconfig('default','txsms_secret_key');
