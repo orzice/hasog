@@ -41,8 +41,8 @@ class SmsService
     private static $error = false;
     public function init()
     {
-        self::$max = sysconfig('default','sms_fz');
-        self::$je = sysconfig('default','sms_max');
+        self::$max = sysconfig('default','sms_max');
+        self::$je = sysconfig('default','sms_fz');
         self::$type = sysconfig('default','sms_new_type');
     }
     /**
