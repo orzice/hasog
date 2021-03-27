@@ -159,6 +159,7 @@ class SmsService
             if (!$sx) {
                 return true;
             }
+            return false;
         }else{
             $sx = Cache::set('sms_cd_'.$mobile,'1',self::$je);
             return true;
