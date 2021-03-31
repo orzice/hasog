@@ -46,14 +46,18 @@ class SmsService
         self::$type = sysconfig('default','sms_new_type');
     }
     /**
-     *  验证码验证服务
+     *  验证码验证服务 3
      */
     public function Code($mobile=false,$code=0)
     {
-        //查询Code
-        if ($code == 0) {
+        if ($code == -1) {//删除Code
+            Cache::store('redis')->delete('sms_code_'.$mobile);
+
+            return true;
+
+        }else if ($code == 0) {//查询Code
             $max = Cache::store('redis')->get('sms_code_'.$mobile);
-            if (!$sx) {
+            if (!$max) {
                 self::$error = '数据不存在！';
                 return false;
             }
@@ -82,7 +86,7 @@ class SmsService
         }
 
         //储存KEY
-        $this->Code($mobile,$code)
+        $this->Code($mobile,$code);
 
         $sms = [];
         $sms['tx_secretid'] = sysconfig('default','txsms_secret_id');
@@ -90,7 +94,7 @@ class SmsService
         $sms['tx_tmplateid'] = sysconfig('default','txsms_template_id');
         $sms['tx_smssdkappid'] = sysconfig('default','txsms_appid');
         $sms['tx_signname'] = sysconfig('default','txsms_signname');
-        $sms['tx_fz'] = self::$je / 60;
+        $sms['tx_fz'] = 5;//5分钟
 
         $sms['al_accessKeyId'] = sysconfig('default','alisms_appkey');
         $sms['al_accessKeySecret'] = sysconfig('default','alisms_secret');

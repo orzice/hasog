@@ -19,6 +19,7 @@ namespace app\api\controller;
 
 use app\common\controller\ApiController;
 
+use app\common\service\SmsService;
 use think\captcha\Captcha;
 use think\facade\Request;
 use app\common\Plugins;
@@ -128,23 +129,42 @@ class Login extends ApiController
                 'mobile|用户手机号' => 'require|mobile',
                 'password|用户密码' => 'require|length:6,20',
                 'repassword|再次输入密码' => 'require|confirm:password',
-                'captcha|验证码'=> 'require|length:3,6',
                 'parent_id|推荐人ID'=> 'number|length:1,8',
             ];
-            $validate = $this->validate($post, $rule);
-            if ($validate !== true){
+            $message_status = sysconfig('sms', 'message_status');
+            // 开启手机验证码
+            if ($message_status==1) {
+                $rule['code|手机验证码'] = 'require|number';
+                $validate = $this->validate($post, $rule);
+                if ($validate !== true){
 //                $this->error($validate);
-                return api_return(0, $validate);
-            }
-
-            //验证失败
-            $captcha = isset($post['captcha'])  ? $post['captcha'] : 'null';
-            if (!captcha_check($captcha)){
+                    return api_return(0, $validate);
+                }
+                //验证手机验证码
+                $sms = new SmsService();
+                $sms->init();
+                $codes = $sms->Code($post['username']);
+                if (!$codes) {
+                    return api_return(0, '手机验证码错误');
+                }
+                if ($codes !== $post['code']) {
+                    return api_return(0, '手机验证码错误');
+                }
+            }else{// 未开启手机验证码
+                $rule['captcha|验证码'] = 'require|length:3,6';
+                $validate = $this->validate($post, $rule);
+                if ($validate !== true){
+//                $this->error($validate);
+                    return api_return(0, $validate);
+                }
+                //验证失败
+                $captcha = isset($post['captcha'])  ? $post['captcha'] : 'null';
+                if (!captcha_check($captcha)){
 //                $this->error('验证码错误');
-                return api_return(0, '验证码错误');
+                    return api_return(0, '验证码错误');
+                }
             }
             $isset_phone = Member::where('mobile', $post['mobile'])->find();
-//            !empty($isset_phone) && $this->error('该手机号已注册');
             if(!empty($isset_phone)){
                 return api_return(0, '该手机号已注册');
             }
@@ -180,6 +200,89 @@ class Login extends ApiController
     {
 
     }
+
+    //发送短信
+    public function mobile(){
+        $message_status = sysconfig('sms', 'message_status');
+        if ($message_status === 0){
+            return api_return(0, '获取验证码失败，短信验证未开启');
+        }
+        $user_session = $this->MemberId();
+        if ($user_session) {
+//            return $this->error('您已登录',[],__urls('clouduser/Index/index'));
+            return api_return(0, '您已登录');
+        }
+
+        $post = $this->request->post();
+        $rule = [
+            'username|手机号'      => 'require|mobile',
+            'captcha|验证码'       => 'require|captcha',
+        ];
+        $validate = $this->validate($post, $rule);
+        //验证失败
+        if($validate !== true){
+            $data = array(
+                "error" => "1",
+                "value" => $validate,
+            );
+            return json($data);
+        }
+        $mobile = $post["username"];
+
+
+        //验证账号是否存在
+        $row = Member::where("mobile",$mobile)->find();
+        if ($row !== null) {
+            $data = array(
+                "error" => "1",
+                "value" => "账号已注册",
+            );
+            return json($data);
+        }
+
+        $sms = new SmsService();
+        $sms->init();
+        $code = yanzhengma(6);
+
+        $tz = $sms->MobileCd($mobile);
+        if (!$tz) {
+            $data = array(
+                "error" => "1",
+                "value" => $sms->Error(),
+                // "code" => $code,
+            );
+            return json($data);
+        }
+        $fs = true;
+        $fs = $sms->GoSmSCode($mobile,$code);
+        $sms->MobileCd($mobile,1);
+        $sms->Code($mobile,$code);
+        if (!$fs) {
+            $data = array(
+                "error" => "1",
+                "value" => $sms->Error(),
+                // "code" => $code,
+            );
+            return json($data);
+        }
+
+
+        $data = array(
+            "error" => "0",
+            "value" => "发送成功",
+            // "code" => $code,
+        );
+        return json($data);
+    }
+
+    //是否开启短息验证码
+    public function message_state(){
+        $status = sysconfig('sms', 'message_status');
+        $data = ['status'=>$status];
+        return api_return(1, '请求成功', $data);
+
+    }
+
 
     // 用户退出
     public function user_out()

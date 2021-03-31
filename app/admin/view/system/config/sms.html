@@ -1,6 +1,13 @@
 <form id="app-form" class="layui-form layuimini-form">
 
     <div class="layui-form-item">
+        <label class="layui-form-label required">使用短信验证</label>
+        <input type="radio" name="message_status" value="0" title="否" {if sysconfig('sms','message_status')==0}checked=""{/if}>
+        <input type="radio" name="message_status" value="1" title="是" {if sysconfig('sms','message_status')==1}checked=""{/if}>
+    </div>
+
+
+    <div class="layui-form-item">
         <label class="layui-form-label required">使用平台</label>
         <div class="layui-input-block">
             {foreach ['txsms'=>'腾讯云短信','alisms'=>'阿里云短信'] as $key=>$val}

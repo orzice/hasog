@@ -4,12 +4,16 @@
         <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
             <ul class="layui-tab-title">
                 <li class="layui-this">网站设置</li>
+                <li>首页设置</li>>
                 <li>上传配置</li>
                 <li>短信配置</li>
             </ul>
             <div class="layui-tab-content">
                 <div class="layui-tab-item layui-show">
                     {include file="system/config/site" /}
+                </div>
+                <div class="layui-tab-item">
+                    {include file="system/config/shows" /}
                 </div>
                 <div class="layui-tab-item">
                     {include file="system/config/upload" /}
@@ -34,6 +38,7 @@ require(["jquery", "easy-admin", "vue"], function ($, ea, Vue) {
         data: {
             upload_type: upload_type,
             sms_new_type: sms_new_type,
+            sms_shows: sms_shows,
         }
     });
 
@@ -42,6 +47,9 @@ require(["jquery", "easy-admin", "vue"], function ($, ea, Vue) {
     });
     form.on("radio(sms_new_type)", function (data) {
         app.sms_new_type = this.value;
+    });
+    form.on("radio(sms_shows)", function (data) {
+        app.sms_shows = this.value;
     });
 
     ea.listen();
