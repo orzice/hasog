@@ -6,30 +6,58 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "20585717",
+      "name": "领取任务",
+      "font_class": "get-task",
+      "unicode": "e629",
+      "unicode_decimal": 58921
+    },
+    {
+      "icon_id": "20585694",
+      "name": "任务列表",
+      "font_class": "order-list",
+      "unicode": "e628",
+      "unicode_decimal": 58920
+    },
+    {
+      "icon_id": "20556222",
+      "name": "资源 9",
+      "font_class": "paotui",
+      "unicode": "e627",
+      "unicode_decimal": 58919
+    },
+    {
+      "icon_id": "20555564",
+      "name": "跑腿",
+      "font_class": "paotui1",
+      "unicode": "e626",
+      "unicode_decimal": 58918
+    },
+    {
       "icon_id": "20116481",
       "name": "下载",
-      "font_class": "ziyuan11",
+      "font_class": "app-downloda",
       "unicode": "e625",
       "unicode_decimal": 58917
     },
     {
       "icon_id": "20116134",
       "name": "app下载",
-      "font_class": "ziyuan6",
+      "font_class": "app-downloda1",
       "unicode": "e624",
       "unicode_decimal": 58916
     },
     {
       "icon_id": "20031206",
       "name": "任务1",
-      "font_class": "ziyuan21",
+      "font_class": "renwu",
       "unicode": "e622",
       "unicode_decimal": 58914
     },
     {
       "icon_id": "20030852",
       "name": "任务",
-      "font_class": "ziyuan12",
+      "font_class": "renwu1",
       "unicode": "e623",
       "unicode_decimal": 58915
     },
@@ -64,14 +92,14 @@
     {
       "icon_id": "19944133",
       "name": "资源 2",
-      "font_class": "ziyuan2",
+      "font_class": "group-xi",
       "unicode": "e61f",
       "unicode_decimal": 58911
     },
     {
       "icon_id": "19944057",
       "name": "资源 1",
-      "font_class": "ziyuan1",
+      "font_class": "group-cu",
       "unicode": "e61e",
       "unicode_decimal": 58910
     },

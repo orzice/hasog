@@ -7,6 +7,22 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-get-task:before {
+  content: "\e629";
+}
+
+.icon-order-list:before {
+  content: "\e628";
+}
+
+.icon-paotui:before {
+  content: "\e627";
+}
+
+.icon-paotui1:before {
+  content: "\e626";
+}
+
 .icon-app-downloda:before {
   content: "\e625";
 }
@@ -15,11 +31,11 @@
   content: "\e624";
 }
 
-.icon-ziyuan21:before {
+.icon-renwu:before {
   content: "\e622";
 }
 
-.icon-ziyuan12:before {
+.icon-renwu1:before {
   content: "\e623";
 }
 
@@ -39,11 +55,11 @@
   content: "\e621";
 }
 
-.icon-ziyuan2:before {
+.icon-group-xi:before {
   content: "\e61f";
 }
 
-.icon-ziyuan1:before {
+.icon-group-cu:before {
   content: "\e61e";
 }
 

@@ -25,7 +25,7 @@ return function () {
 	Config::set(['ac_cron' => [
         'name' => '计划任务模块',
         'version' => '1.0.0',
-        'description' => '常用计划任务管理模块，请勿关闭！',
+        'description' => '常用计划任务管理模块，请勿关闭！如改动后请勿更新！',
         'author' => '幻神科技',
         'url' => 'https://www.hasog.com',
         'namespace' => 'HaSog\\plugin\\ac_cron',

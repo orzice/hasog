@@ -99,6 +99,7 @@
 						box-sizing: border-box;
 						background-color: $base-color;
 						&.hide {
+							display: none;
 							background-color: rgba(0,0,0,0);
 						}
 						.yticon {

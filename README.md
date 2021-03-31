@@ -10,7 +10,7 @@
 原有项目运营2年，遇到了无数的难题和痛点，苦于市面上并没有相似需求的项目，此项目专为解决需求痛点进行重新开发！加了很多新特性！基于 Tp6 开发的一个商城系统，适合刚起步的创业型公司。
 一个高扩展性且十分轻便的开源分销商城系统，以实际运营者的角度进行开发，已覆盖 PC、H5、APP、小程序（微信、QQ），内置HTTP请求处理，随时更改前端页面！软件内置防火墙（开发中）防注入！更加安全！
 
-**！！ 目前是 Bate版，如发现错误请通过反馈群立即反馈！！**
+**！！ 1.0.0正式版已发布，如发现错误请通过反馈群立即反馈！！**
 
 欢迎 Star！
 
@@ -22,6 +22,10 @@
 码云  [https://gitee.com/orzice/hasog](https://gitee.com/orzice/hasog)
 
 Github  [https://github.com/orzice/hasog](https://github.com/orzice/hasog)
+
+
+
+用户手册：https://www.kancloud.cn/hasog_cloud/hasog
 
 
 
@@ -115,17 +119,7 @@ www.a.com/Install
 
 时间原因，高并发问题暂时没有解决，也会在1.0.1 BeTa 版本进行更新。
 
-- **前端DIY**
 
-这个会在1.0.2 BeTa 版本进行上线。
-
-
-
-
-
-## 使用说明
-
-更新中...
 
 
 
