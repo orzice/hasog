@@ -143,7 +143,7 @@ class Login extends ApiController
                 //验证手机验证码
                 $sms = new SmsService();
                 $sms->init();
-                $codes = $sms->Code($post['username']);
+                $codes = $sms->Code($post['mobile']);
                 if (!$codes) {
                     return api_return(0, '手机验证码错误');
                 }
@@ -185,7 +185,7 @@ class Login extends ApiController
                 return api_return(0, '注册失败,请稍后重试哦');
             }
             if($result !== false){
-                $sms->Code($post['username'], -1);
+                $sms->Code($post['mobile'], -1);
                 return api_return(1, '注册成功');
             }else{
                 return api_return(0, '注册失败');
