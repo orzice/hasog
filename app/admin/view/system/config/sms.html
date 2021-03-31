@@ -2,8 +2,8 @@
 
     <div class="layui-form-item">
         <label class="layui-form-label required">使用短信验证</label>
-        <input type="radio" name="message_status" value="0" title="否" {if sysconfig('sms','message_status')==0}checked=""{/if}>
-        <input type="radio" name="message_status" value="1" title="是" {if sysconfig('sms','message_status')==1}checked=""{/if}>
+        <input type="radio" name="message_status" value="0" title="否" {if sysconfig('default','message_status')==0}checked=""{/if}>
+        <input type="radio" name="message_status" value="1" title="是" {if sysconfig('default','message_status')==1}checked=""{/if}>
     </div>
 
 

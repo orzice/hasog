@@ -226,7 +226,7 @@ class Login extends ApiController
                 "error" => "1",
                 "value" => $validate,
             );
-            return json($data);
+            return api_return(0, $validate);
         }
         $mobile = $post["username"];
 
@@ -238,7 +238,7 @@ class Login extends ApiController
                 "error" => "1",
                 "value" => "账号已注册",
             );
-            return json($data);
+            return api_return(0, '账号已注册');
         }
 
         $sms = new SmsService();
@@ -252,7 +252,7 @@ class Login extends ApiController
                 "value" => $sms->Error(),
                 // "code" => $code,
             );
-            return json($data);
+            return api_return(0, $sms->Error());
         }
         $fs = true;
         $fs = $sms->GoSmSCode($mobile,$code);
@@ -264,7 +264,7 @@ class Login extends ApiController
                 "value" => $sms->Error(),
                 // "code" => $code,
             );
-            return json($data);
+            return api_return(0, $sms->Error());
         }
 
 
@@ -273,7 +273,7 @@ class Login extends ApiController
             "value" => "发送成功",
             // "code" => $code,
         );
-        return json($data);
+        return api_return(1, '发送成功');
     }
 
     //是否开启短息验证码

@@ -63,6 +63,15 @@ class Index extends ApiController
         $data['site']['copyright'] = sysconfig('site','site_copyright');
         $data['upload']['allow_size'] = sysconfig('upload','upload_allow_size');
         $data['upload']['allow_ext'] = sysconfig('upload','upload_allow_ext');
+        $data['upload']['allow_ext'] = sysconfig('upload','upload_allow_ext');
+        $data['default']['message_status'] = sysconfig('default','message_status');
+        if (empty($data['default']['message_status'])){
+            $data['default']['message_status'] = 0;
+        }
+        $data['shows'] = sysconfig('default','sms_shows');
+        if (empty($data['shows'])){
+            $data['shows'] = 0;
+        }
 
         return api_return(1,'',$data);
     }
