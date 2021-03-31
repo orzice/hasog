@@ -281,8 +281,9 @@ if (!function_exists('sysconfig')) {
         return $value;
     }
 }
+
 if (!function_exists('http_query')) {
-function http_query($url, $post = null)
+function http_query($url, $post = null,$timeout=5)
    {
         // 初始化一个cURL会话
         $ch = curl_init($url);
@@ -292,8 +293,8 @@ function http_query($url, $post = null)
         }
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 5);  
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5); 
+        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);  
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout); 
         //忽略证书
         if (substr($url, 0, 5) == 'https') {
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);

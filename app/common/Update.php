@@ -591,8 +591,8 @@ public function http_download($url, $dir)
 
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 50);  
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 50); 
+        curl_setopt($ch, CURLOPT_TIMEOUT, 180);  
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 180); 
         //忽略证书
         if (substr($url, 0, 5) == 'https') {
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);

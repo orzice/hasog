@@ -60,7 +60,7 @@ class Cloud
     }
     static public function GetUpdate()
     {
-        $http = http_query(self::$api.'update?uniqueid='.self::$uniqueid);
+        $http = http_query(self::$api.'update?uniqueid='.self::$uniqueid,null,60);
         $json = json_decode($http,true);
         if (empty($json)) {
             return self::Error('链接云平台失败！');
@@ -76,7 +76,7 @@ class Cloud
     }
     static public function GetUpdateDir($dir='')
     {
-        $http = http_query(self::$api.'update/dir?uniqueid='.self::$uniqueid.'&dir='.$dir);
+        $http = http_query(self::$api.'update/dir?uniqueid='.self::$uniqueid.'&dir='.$dir,null,60);
         $json = json_decode($http,true);
         if (!empty($json)) {
             if(isset($json['code'])){
@@ -105,7 +105,7 @@ class Cloud
     }
     static public function GetPluginUpdate($plugin='',$key='')
     {
-        $http = http_query(self::$api.'update/plugin?uniqueid='.self::$uniqueid.'&plugin='.$plugin.'&key='.$key);
+        $http = http_query(self::$api.'update/plugin?uniqueid='.self::$uniqueid.'&plugin='.$plugin.'&key='.$key,null,120);
         $json = json_decode($http,true);
         if (!empty($json)) {
             if(isset($json['code'])){
