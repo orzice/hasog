@@ -185,7 +185,10 @@ class Login extends ApiController
                 return api_return(0, '注册失败,请稍后重试哦');
             }
             if($result !== false){
-                $sms->Code($post['mobile'], -1);
+                // 开启手机验证码
+                if ($message_status==1) {
+                    $sms->Code($post['mobile'], -1);
+                }
                 return api_return(1, '注册成功');
             }else{
                 return api_return(0, '注册失败');
