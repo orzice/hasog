@@ -13,10 +13,30 @@
                 <tip></tip>
             </div>
         </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required">身份证号</label>
+            <div class="layui-input-block">
+                <input type="text"  class="layui-input" name="fid" value="{$row.fid|default=''}">
+                <tip></tip>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required">真实姓名</label>
+            <div class="layui-input-block">
+                <input type="text"  class="layui-input" name="fname" value="{$row.fname|default=''}">
+                <tip></tip>
+            </div>
+        </div>
 
-
-
-
+        <div class="layui-form-item">
+            <label class="layui-form-label required">黑名单</label>
+            <div class="layui-input-block">
+                <!--                <input type="text"  class="layui-input" readonly value="{$row.mobile|default=''}">-->
+                <input type="radio" name="state" value="0" {if $row.state == 0 }checked=""{/if} title="拉黑">
+                <input type="radio" name="state" value="1" {if $row.state == 1 }checked=""{/if} title="正常" >
+                <tip></tip>
+            </div>
+        </div>
 
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">备注信息</label>
