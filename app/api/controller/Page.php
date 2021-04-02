@@ -33,6 +33,13 @@ class Page extends ApiController
             return api_return(0,'没有数据');
         }
         $data = $data->toArray();
+
+        //支持HTTPS
+        $host = "//".$this->request->host();
+        for ($i=0; $i < count($data); $i++) { 
+           $data[$i]['picture'] = str_replace(['http:'.$host,'https:'.$host],$host, $data[$i]['picture']);
+           $data[$i]['link'] = str_replace(['http:'.$host,'https:'.$host],$host, $data[$i]['link']);
+        }
         return api_return(1,'查询成功',$data);
     }
     //公告列表
@@ -75,6 +82,12 @@ class Page extends ApiController
             return api_return(0,'没有数据');
         }
         $data = $data->toArray();
+        //支持HTTPS
+        $host = "//".$this->request->host();
+        for ($i=0; $i < count($data); $i++) { 
+           $data[$i]['thumb'] = str_replace(['http:'.$host,'https:'.$host],$host, $data[$i]['thumb']);
+           $data[$i]['link'] = str_replace(['http:'.$host,'https:'.$host],$host, $data[$i]['link']);
+        }
         return api_return(1,'查询成功',$data);
     }
 }

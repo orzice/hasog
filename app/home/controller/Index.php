@@ -176,8 +176,10 @@ class Index extends HomeController
       if(filesize($dir) <= 0){
           $_404 = true;
       }
-      if ($_404) {
-        return abort(404, '文件不存在');
+      if(file_exists($dir)){
+          if(filesize($dir) <= 0){
+              $_404 = true;
+          }
       }
 
       switch ($ext) {

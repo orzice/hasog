@@ -65,6 +65,13 @@ class Goods  extends ApiController
             $goods->hidden(['real_sales', 'virtual_sales']);
         }
         $list_count = $goods_list->count();
+        //支持HTTPS
+        $host = "//".$this->request->host();
+        for ($i=0; $i < count($goods_list); $i++) { 
+           $goods_list[$i]['thumb'] = str_replace(['http:'.$host,'https:'.$host],$host, $goods_list[$i]['thumb']);
+           $goods_list[$i]['thumb_url'] = str_replace(['http:'.$host,'https:'.$host],$host, $goods_list[$i]['thumb_url']);
+           $goods_list[$i]['content'] = str_replace(['http:'.$host,'https:'.$host],$host, $goods_list[$i]['content']);
+        }
         $this->success($msg,['goods_count'=> $goods_count,'list_count'=> $list_count, 'goods_list'=> $goods_list]);
     }
 
@@ -93,6 +100,14 @@ class Goods  extends ApiController
             $goods->show_sales = $goods->real_sales + $goods->virtual_sales;
             $goods->hidden(['real_sales', 'virtual_sales']);
         }
+
+        //支持HTTPS
+        $host = "//".$this->request->host();
+        for ($i=0; $i < count($goods_list); $i++) { 
+           $goods_list[$i]['thumb'] = str_replace(['http:'.$host,'https:'.$host],$host, $goods_list[$i]['thumb']);
+           $goods_list[$i]['thumb_url'] = str_replace(['http:'.$host,'https:'.$host],$host, $goods_list[$i]['thumb_url']);
+           $goods_list[$i]['content'] = str_replace(['http:'.$host,'https:'.$host],$host, $goods_list[$i]['content']);
+        }
         $this->success($msg,['goods_count'=> $goods_count,'list_count'=> $list_count, 'goods_list'=> $goods_list]);
     }
 
@@ -108,6 +123,7 @@ class Goods  extends ApiController
                 $second_item->child_category;
             }
         }
+        
         $this->success('获取分类成功', ['categories'=> $categories]);
     }
 
@@ -155,6 +171,14 @@ class Goods  extends ApiController
             return api_return(0, '商品已下架');
         }
 //        $this->success('获取商品信息成功', ['goods'=> $goods, 'is_favor'=> $is_favor]);
+
+        //支持HTTPS
+        $host = "//".$this->request->host();
+        $goods['thumb'] = str_replace(['http:'.$host,'https:'.$host],$host, $goods['thumb']);
+        $goods['thumb_url'] = str_replace(['http:'.$host,'https:'.$host],$host, $goods['thumb_url']);
+        $goods['content'] = str_replace(['http:'.$host,'https:'.$host],$host, $goods['content']);
+        
+
         return api_return(1, '获取商品信息成功', ['goods'=> $goods, 'is_favor'=> $is_favor]);
     }
 
@@ -173,6 +197,15 @@ class Goods  extends ApiController
             $goods->hidden(['real_sales', 'virtual_sales']);
         }
         $list_count = $goods_list->count();
+
+        //支持HTTPS
+        $host = "//".$this->request->host();
+        for ($i=0; $i < count($goods_list); $i++) { 
+           $goods_list[$i]['thumb'] = str_replace(['http:'.$host,'https:'.$host],$host, $goods_list[$i]['thumb']);
+           $goods_list[$i]['thumb_url'] = str_replace(['http:'.$host,'https:'.$host],$host, $goods_list[$i]['thumb_url']);
+           $goods_list[$i]['content'] = str_replace(['http:'.$host,'https:'.$host],$host, $goods_list[$i]['content']);
+        }
+
         $this->success('获取标签商品成功',['goods_count'=> $goods_count,'list_count'=> $list_count, 'goods_list'=> $goods_list]);
     }
 
