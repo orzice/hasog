@@ -29,7 +29,7 @@ class Favor extends ApiController
 {
     public function favorlist(){
         $id = $this->MemberId();
-        $data = GoodsFavor::where('uid',$id)->order('create_time','desc')->select();
+        $data = GoodsFavor::where('uid',$id)->where('delete_time','null')->order('create_time','desc')->select();
         foreach ($data as $dat){
             $dat->goods;
         }
