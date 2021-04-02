@@ -145,6 +145,13 @@ www.a.com/Install
 ![enter image description here](https://images.gitee.com/uploads/images/2021/0402/095945_510a3674_813605.png "7.png")
 ![enter image description here](https://images.gitee.com/uploads/images/2021/0402/095951_63f8ebf7_813605.png "8.png")
 
+## 宝塔面板一键安装
+
+帖子：https://www.bt.cn/bbs/thread-66572-1-1.html
+
+一键安装正在审核中
+
+
 
 
 ## 项目实例

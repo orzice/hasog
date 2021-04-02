@@ -1,0 +1,3 @@
+##rewrite 规则1
+
+RewriteRule '$' ^(.*)$ [L] 
