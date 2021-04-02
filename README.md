@@ -17,7 +17,7 @@
 
 问题反馈请 [传送至这里](https://www.hasog.com)
 
-**开源**
+**开源 免费**
 
 码云  [https://gitee.com/orzice/hasog](https://gitee.com/orzice/hasog)
 
@@ -92,7 +92,22 @@ www.a.com/Install
 **请牢记加密配置！每次均为随机生成！安装后请务必保存！**
 ![](https://images.gitee.com/uploads/images/2021/0310/140035_ca96d7cf_813605.png)
 
-## 在线升级最新版本
+## 云平台
+我们将通过云平台对软件进行：在线升级系统、修复BUG、发送公告、在线安装/升级 插件、在线安装/升级 前端界面、提供商业授权服务。
+
+
+### 注册云平台
+
+访问 插件 -》 幻神云平台 ，点进去即可，系统会自动进行注册和登录。
+
+**注意：本地环境无效！**
+
+
+![enter image description here](https://images.gitee.com/uploads/images/2021/0402/101053_ff9612cb_813605.png "QQ截图20210402100941.png")
+![enter image description here](https://images.gitee.com/uploads/images/2021/0402/101102_48671c7c_813605.png "QQ截图20210402101004.png")
+![enter image description here](https://images.gitee.com/uploads/images/2021/0402/101119_71a6f159_813605.png "QQ截图20210402101036.png")
+
+### 在线升级最新版本
 
 使用管理员用户登录（UID：1）访问首页，点击立即更新，即可。
 
@@ -111,7 +126,7 @@ www.a.com/Install
 ![enter image description here](https://images.gitee.com/uploads/images/2021/0322/113220_b20bda6e_813605.png "5.png")
 
 
-## 在线安装 插件/前端
+### 在线安装 插件/前端
 
 首次安装版本时，不带前端文件！需要通过云平台进行下载安装定制！
 
