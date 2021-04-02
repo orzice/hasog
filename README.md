@@ -8,7 +8,7 @@
 
 
 原有项目运营2年，遇到了无数的难题和痛点，苦于市面上并没有相似需求的项目，此项目专为解决需求痛点进行重新开发！加了很多新特性！基于 Tp6 开发的一个商城系统，适合刚起步的创业型公司。
-一个高扩展性且十分轻便的开源分销商城系统，以实际运营者的角度进行开发，已覆盖 PC、H5、APP、小程序（微信、QQ），内置HTTP请求处理，随时更改前端页面！软件内置防火墙（开发中）防注入！更加安全！
+一个高扩展性且十分轻便的开源分销商城系统，以实际运营者的角度进行开发，已覆盖 PC、H5、APP、小程序（微信、QQ），内置云平台，随意定制功能，可在线升级版本、在线安装/更新插件，内置HTTP请求处理，随时更改前端页面！软件内置防火墙（开发中）防注入！更加安全！
 
 **！！ 1.0.0正式版已发布，如发现错误请通过反馈群立即反馈！！**
 
@@ -82,7 +82,7 @@ Github  [https://github.com/orzice/hasog](https://github.com/orzice/hasog)
 }
 ```
 
-## 安装
+## 一键安装
 
 部署后访问自己的域名即可 如：
 
@@ -92,7 +92,7 @@ www.a.com/Install
 **请牢记加密配置！每次均为随机生成！安装后请务必保存！**
 ![](https://images.gitee.com/uploads/images/2021/0310/140035_ca96d7cf_813605.png)
 
-## 在线升级
+## 在线升级最新版本
 
 使用管理员用户登录（UID：1）访问首页，点击立即更新，即可。
 
@@ -104,22 +104,31 @@ www.a.com/Install
 
 
 
-
 ![enter image description here](https://images.gitee.com/uploads/images/2021/0322/113147_e9c5afaa_813605.png "1.png")
 ![enter image description here](https://images.gitee.com/uploads/images/2021/0322/113156_a068aa36_813605.png "2.png")
 ![enter image description here](https://images.gitee.com/uploads/images/2021/0322/113207_23ba6879_813605.png "3.png")
 ![enter image description here](https://images.gitee.com/uploads/images/2021/0322/113213_a82b8f62_813605.png "4.png")
 ![enter image description here](https://images.gitee.com/uploads/images/2021/0322/113220_b20bda6e_813605.png "5.png")
 
-## 未完善功能
 
-有些功能还未完善
+## 在线安装 插件/前端
 
-- **高并发相关问题**
+首次安装版本时，不带前端文件！需要通过云平台进行下载安装定制！
 
-时间原因，高并发问题暂时没有解决，也会在1.0.1 BeTa 版本进行更新。
+**注意：不要关闭升级网页！如果白屏或者卡着不动了！刷新页面然后重新进行升级！（不影响）**
 
+**注意：升级中不会影响到当前项目的运行！仅在升级完成后会自动替换版本！**
 
+**注意：该功能只能是已注册云平台的用户才可以使用！注册方式 -》插件 -》幻神云平台 点进去即可（本地无法使用哟）**
+
+![enter image description here](https://images.gitee.com/uploads/images/2021/0402/095824_6b932e4c_813605.png "1.png")
+![enter image description here](https://images.gitee.com/uploads/images/2021/0402/095850_1e8a3e34_813605.png "2.png")
+![enter image description here](https://images.gitee.com/uploads/images/2021/0402/095857_ff269608_813605.png "3.png")
+![enter image description here](https://images.gitee.com/uploads/images/2021/0402/095905_9df03916_813605.png "4.png")
+![enter image description here](https://images.gitee.com/uploads/images/2021/0402/095913_8d3deb52_813605.png "5.png")
+![enter image description here](https://images.gitee.com/uploads/images/2021/0402/095938_a0592c90_813605.png "6.png")
+![enter image description here](https://images.gitee.com/uploads/images/2021/0402/095945_510a3674_813605.png "7.png")
+![enter image description here](https://images.gitee.com/uploads/images/2021/0402/095951_63f8ebf7_813605.png "8.png")
 
 
 
