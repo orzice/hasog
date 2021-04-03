@@ -209,7 +209,8 @@ try {
       if (is_file($ls_nas)) {
         unlink($ls_nas);
       }
-      $this->output('升级完成！',true);
+      // $this->output('升级完成！',true);
+      $this->output('插件安装升级完成！请点击【返回后台首页】');
 
 flush();
 

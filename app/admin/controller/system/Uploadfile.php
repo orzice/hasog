@@ -40,6 +40,30 @@ class Uploadfile extends AdminController
         $this->model = new SystemUploadfile();
     }
     /**
+     * @NodeAnotation(title="修改状态")
+     */
+    public function type($id)
+    {
+        if(env('hasog.is_demo', false)){
+            $this->error('演示环境下不允许修改');
+        }
+        $row = $this->model->whereIn('id', $id)->find();
+        if (empty($row)) {
+          $this->error('数据不存在');
+        }
+        $state = 1;
+        if ($row['state'] == 1) {
+           $state = 0;
+        }
+
+        try {
+            $save = $row->where('id',$row['id'])->update(['state'=>$state]);
+        } catch (\Exception $e) {
+            $this->error('修改状态失败');
+        }
+        $save ? $this->success('修改状态成功') : $this->error('修改状态失败');
+    }
+    /**
      * @NodeAnotation(title="删除")
      */
     public function delete($id)

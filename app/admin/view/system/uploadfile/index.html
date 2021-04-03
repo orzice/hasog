@@ -21,6 +21,7 @@ require(["jquery", "easy-admin"], function ($, ea) {
         delete_url: 'system.uploadfile/delete',
         modify_url: 'system.uploadfile/modify',
         export_url:'system.uploadfile/export',
+        type_url:'system.uploadfile/type',
     };
 
          ea.table.render({
@@ -37,7 +38,14 @@ require(["jquery", "easy-admin"], function ($, ea) {
                     {field: 'create_time', minWidth: 80, title: '上传时间', search: 'range'},
                     {field: 'uid', minWidth: 80, title: '上传者UID'},
                     {field: 'state', minWidth: 80, title: '状态', search: 'select', selectList: {'0': '临时文件', '1': '使用中'}},
-                    {width: 250, title: '操作', templet: ea.table.tool, operat: ['delete']}
+                    {width: 250, title: '操作', templet: ea.table.tool, operat: ['delete',
+                            [{
+                                text: '修改状态',
+                                url: init.type_url,
+                                method: 'url',
+                                auth: 'type',
+                                class: 'layui-btn layui-btn-normal layui-btn-xs',
+                            }]]}
                 ]],
             });
 
