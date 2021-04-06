@@ -33,9 +33,9 @@ class AliFront extends ApiController
         $ali_pay->init($ali_account);
         $return_url = $this->request->domain().'/api/ali_front/ali_return/'.$pay_id.'/';
         $pay = $ali_pay->return_pay_obj($this->request->url(true), $pay_id, $return_url);
-        try{
-            $data = $pay->verify(); // 是的，验签就这么简单！
-            $order = Order::where('order_sn', $data['out_trade_no'])->find();
+        $data = $pay->verify(); // 是的，验签就这么简单！
+        $order = Order::where('order_sn', $data['out_trade_no'])->find();
+/*        try{
             Log::debug('Alipay notify', $data->all());
             $pay_log->status = 1;
             $pay_log->pay_id = 'test';
@@ -82,7 +82,7 @@ class AliFront extends ApiController
         } catch (\Exception $e) {
             Db::rollback();
             return api_return(0, '错误');
-        }
+        }*/
         $pay_log = $data['pay_log'];
         $result = $data['result'];
         $this->assign('order', $order);
@@ -105,8 +105,8 @@ class AliFront extends ApiController
         $pay = $ali_pay->return_pay_obj($this->request->url(true), $pay_id, $return_url);
         $user = Member::where('id', $pay_log->uid)->find();
         $old_credit = $user->credit2;
-        try{
-            $data = $pay->verify(); // 是的，验签就这么简单！
+        $data = $pay->verify(); // 是的，验签就这么简单！
+/*        try{
             $pay_log->status = 1;
             $pay_log->pay_id = 'test';
             $pay_log->result_notice = json_encode($data);
@@ -116,14 +116,14 @@ class AliFront extends ApiController
             $balancesub['uid']   = $pay_log->uid;
             $balancesub['before_balance'] = $old_credit; // 修改前积分
             $balancesub['balance'] = $old_credit + $pay_log->amount; // 修改后的积分
-            $balancesub['remark'] = '微信充值余额'.$pay_log->amount;
+            $balancesub['remark'] = '阿里余额'.$pay_log->amount;
             $balancesub['state'] = 2;
             $balancesub['create_time'] = time();
             $uprecord['uid'] = $pay_log->uid;
             $uprecord['way'] = 0;
             $uprecord['before_balance'] = $old_credit; // 修改前积分
             $uprecord['after_balance'] = $old_credit + $pay_log->amount; // 修改后的积分
-            $uprecord['remark'] = '微信充值余额'.$pay_log->amount;
+            $uprecord['remark'] = '阿里余额'.$pay_log->amount;
             $uprecord['money'] = $pay_log->amount;
             $uprecord['state'] = 1;
             $uprecord['create_time'] =time();
@@ -138,7 +138,7 @@ class AliFront extends ApiController
         } catch (\Exception $e) {
             Db::rollback();
             return api_return(0, '错误');
-        }
+        }*/
         $pay_log = $data['pay_log'];
         $result = $data['result'];
         $this->assign('uid', $pay_log->id);
@@ -257,14 +257,14 @@ class AliFront extends ApiController
             $balancesub['uid']   = $pay_log->uid;
             $balancesub['before_balance'] = $old_credit; // 修改前积分
             $balancesub['balance'] = $old_credit + $pay_log->amount; // 修改后的积分
-            $balancesub['remark'] = '微信充值余额'.$pay_log->amount;
+            $balancesub['remark'] = '阿里充值余额'.$pay_log->amount;
             $balancesub['state'] = 2;
             $balancesub['create_time'] = time();
             $uprecord['uid'] = $pay_log->uid;
             $uprecord['way'] = 0;
             $uprecord['before_balance'] = $old_credit; // 修改前积分
             $uprecord['after_balance'] = $old_credit + $pay_log->amount; // 修改后的积分
-            $uprecord['remark'] = '微信充值余额'.$pay_log->amount;
+            $uprecord['remark'] = '阿里充值余额'.$pay_log->amount;
             $uprecord['money'] = $pay_log->amount;
             $uprecord['state'] = 1;
             $uprecord['create_time'] =time();

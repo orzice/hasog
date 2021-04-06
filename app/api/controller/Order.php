@@ -247,7 +247,7 @@ class Order extends ApiController
                     $dispatch_price += $yes_dis_lj['first_piece_price'];
                     if ($goods_item['goods_num'] > $yes_dis_lj['first_piece']) {
                         $sl = $goods_item['goods_num'] - $yes_dis_lj['first_piece'];
-                        $zsl = $sl / $yes_dis_lj['another_piece'];
+                        $zsl = $yes_dis_lj['another_piece'] === 0 ? 0 : $sl / $yes_dis_lj['another_piece'];
                         //不是整数则加一
                         if(!is_int($zsl)){
                             $zsl = intval($zsl)+1;
@@ -521,7 +521,8 @@ class Order extends ApiController
                     $dispatch_price += $yes_dis_lj['first_piece_price'];
                     if ($goods_item['goods_num'] > $yes_dis_lj['first_piece']) {
                         $sl = $goods_item['goods_num'] - $yes_dis_lj['first_piece'];
-                        $zsl = $sl / $yes_dis_lj['another_piece'];
+//                        $zsl = $sl / $yes_dis_lj['another_piece'];
+                        $zsl = $yes_dis_lj['another_piece'] === 0 ? 0 : $sl / $yes_dis_lj['another_piece'];
                         //不是整数则加一
                         if(!is_int($zsl)){
                             $zsl = intval($zsl)+1;
