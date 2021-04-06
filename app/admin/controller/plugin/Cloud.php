@@ -53,6 +53,9 @@ class Cloud extends AdminController
         $param = 'data='.rawurlencode(base64_encode($data));
         $param .= '&md5hash='.substr(md5(getHaSogServerIp().$data.time()), 8, 8).'&timestamp='.time();
       
+        if(env('hasog.is_demo', false)){
+            $param = '';
+        }
 
         $this->assign('param', $param);
 

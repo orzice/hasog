@@ -79,6 +79,9 @@ class Upbalance extends AdminController
         $row = $this->model->find($id);
         $row->isEmpty() && $this->error('数据不存在');
         if ($this->request->isAjax()){
+            if(env('hasog.is_demo', false)){
+                $this->error('演示环境下不允许修改');
+            }
             $post = $this->request->post();
             $rule=[
                 'id|id'=>'require|number',

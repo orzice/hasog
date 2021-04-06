@@ -89,6 +89,9 @@ class User extends AdminController
     {
         event('MemberAddStart');
         if ($this->request->isAjax()) {
+            if(env('hasog.is_demo', false)){
+                $this->error('演示环境下不允许修改');
+            }
             $post = $this->request->post();
             $rule = [
                 'mobile|手机' => 'require|mobile|length:4,20',

@@ -190,6 +190,9 @@ class Category extends AdminController
      */
     public function delete($id)
     {
+        if(env('hasog.is_demo', false)){
+            $this->error('演示环境下不允许修改');
+        }
         $row = $this->model->whereIn('id', $id)->select();
         empty($row) && $this->error('数据不存在');
         $save = false;
