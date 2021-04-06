@@ -1133,6 +1133,9 @@ CREATE TABLE `{$tableName}` (
     `create_time` int(11) DEFAULT NULL,
     `update_time` int(11) DEFAULT NULL,
     `delete_time` int(11) DEFAULT NULL,
+    `is_jsapi` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是支持否jsapi 支付 0否1是',
+    `is_h5` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否支持h5支付0否1是',
+    `is_app` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否支持app支付0否1是',
     PRIMARY KEY (`id`)
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 ETO;
