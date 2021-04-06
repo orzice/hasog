@@ -53,9 +53,9 @@
 
     <div class="layui-form-item">
         <label class="layui-form-label required">本地附件请求</label>
-        <input type="radio" name="plugin_http" value="0" title="默认" {if sysconfig('default','plugin_http')==0}checked=""{/if}>
-        <input type="radio" name="plugin_http" value="1" title="HTTP" {if sysconfig('default','plugin_http')==1}checked=""{/if}>
-        <input type="radio" name="plugin_http" value="2" title="HTTPS" {if sysconfig('default','plugin_http')==2}checked=""{/if}>
+        <input type="radio" name="uploadfile_http" value="0" title="默认" {if sysconfig('default','uploadfile_http')==0}checked=""{/if}>
+        <input type="radio" name="uploadfile_http" value="1" title="HTTP" {if sysconfig('default','uploadfile_http')==1}checked=""{/if}>
+        <input type="radio" name="uploadfile_http" value="2" title="HTTPS" {if sysconfig('default','uploadfile_http')==2}checked=""{/if}>
     </div>
     
     <div class="hr-line"></div>
@@ -66,5 +66,5 @@
 
 </form>
 <script>
-    var plugin_http = "{:sysconfig('default','plugin_http')}";
+    var uploadfile_http = "{:sysconfig('default','uploadfile_http')}";
 </script>

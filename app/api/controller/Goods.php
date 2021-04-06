@@ -67,9 +67,9 @@ class Goods  extends ApiController
         $list_count = $goods_list->count();
         //支持HTTPS
         for ($i=0; $i < count($goods_list); $i++) { 
-           $goods_list[$i]['thumb'] = plugin_http($goods_list[$i]['thumb']);
-           $goods_list[$i]['thumb_url'] = plugin_http($goods_list[$i]['thumb_url']);
-           $goods_list[$i]['content'] = plugin_http($goods_list[$i]['content']);
+           $goods_list[$i]['thumb'] = uploadfile_http($goods_list[$i]['thumb']);
+           $goods_list[$i]['thumb_url'] = uploadfile_http($goods_list[$i]['thumb_url']);
+           $goods_list[$i]['content'] = uploadfile_http($goods_list[$i]['content']);
         }
         $this->success($msg,['goods_count'=> $goods_count,'list_count'=> $list_count, 'goods_list'=> $goods_list]);
     }
@@ -102,9 +102,9 @@ class Goods  extends ApiController
 
         //支持HTTPS
         for ($i=0; $i < count($goods_list); $i++) { 
-           $goods_list[$i]['thumb'] = plugin_http( $goods_list[$i]['thumb']);
-           $goods_list[$i]['thumb_url'] = plugin_http( $goods_list[$i]['thumb_url']);
-           $goods_list[$i]['content'] = plugin_http($goods_list[$i]['content']);
+           $goods_list[$i]['thumb'] = uploadfile_http( $goods_list[$i]['thumb']);
+           $goods_list[$i]['thumb_url'] = uploadfile_http( $goods_list[$i]['thumb_url']);
+           $goods_list[$i]['content'] = uploadfile_http($goods_list[$i]['content']);
         }
         $this->success($msg,['goods_count'=> $goods_count,'list_count'=> $list_count, 'goods_list'=> $goods_list]);
     }
@@ -124,11 +124,11 @@ class Goods  extends ApiController
 
         //唉....... 一言难尽.....
         for ($i=0; $i < count($categories); $i++) { 
-            $categories[$i]['thumb'] = plugin_http($categories[$i]['thumb']);
+            $categories[$i]['thumb'] = uploadfile_http($categories[$i]['thumb']);
             for ($s=0; $s < count($categories[$i]['child_category']); $s++) { 
-                $categories[$i]['child_category'][$s]['thumb'] = plugin_http($categories[$i]['child_category'][$s]['thumb']);
+                $categories[$i]['child_category'][$s]['thumb'] = uploadfile_http($categories[$i]['child_category'][$s]['thumb']);
                 for ($t=0; $t < count($categories[$i]['child_category'][$s]['child_category']); $t++) { 
-                    $categories[$i]['child_category'][$s]['child_category'][$t]['thumb'] = plugin_http($categories[$i]['child_category'][$s]['child_category'][$t]['thumb']);
+                    $categories[$i]['child_category'][$s]['child_category'][$t]['thumb'] = uploadfile_http($categories[$i]['child_category'][$s]['child_category'][$t]['thumb']);
                 }
             }
         }
@@ -182,9 +182,9 @@ class Goods  extends ApiController
 //        $this->success('获取商品信息成功', ['goods'=> $goods, 'is_favor'=> $is_favor]);
 
         //支持HTTPS
-        $goods['thumb'] = plugin_http( $goods['thumb']);
-        $goods['thumb_url'] = plugin_http( $goods['thumb_url']);
-        $goods['content'] = plugin_http( $goods['content']);
+        $goods['thumb'] = uploadfile_http( $goods['thumb']);
+        $goods['thumb_url'] = uploadfile_http( $goods['thumb_url']);
+        $goods['content'] = uploadfile_http( $goods['content']);
         
 
         return api_return(1, '获取商品信息成功', ['goods'=> $goods, 'is_favor'=> $is_favor]);
@@ -208,9 +208,9 @@ class Goods  extends ApiController
 
         //支持HTTPS
         for ($i=0; $i < count($goods_list); $i++) { 
-           $goods_list[$i]['thumb'] = plugin_http($goods_list[$i]['thumb']);
-           $goods_list[$i]['thumb_url'] = plugin_http($goods_list[$i]['thumb_url']);
-           $goods_list[$i]['content'] = plugin_http($goods_list[$i]['content']);
+           $goods_list[$i]['thumb'] = uploadfile_http($goods_list[$i]['thumb']);
+           $goods_list[$i]['thumb_url'] = uploadfile_http($goods_list[$i]['thumb_url']);
+           $goods_list[$i]['content'] = uploadfile_http($goods_list[$i]['content']);
         }
 
         $this->success('获取标签商品成功',['goods_count'=> $goods_count,'list_count'=> $list_count, 'goods_list'=> $goods_list]);

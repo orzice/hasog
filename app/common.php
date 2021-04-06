@@ -22,9 +22,9 @@ use think\facade\Cache;
 use think\facade\Config;
 
 //附件适配https
-if (!function_exists('plugin_http')) {
-  function plugin_http($url) {
-    $http = sysconfig('default','plugin_http');
+if (!function_exists('uploadfile_http')) {
+  function uploadfile_http($url) {
+    $http = sysconfig('default','uploadfile_http');
     if(empty($http)){
       return $url;
     }
