@@ -66,11 +66,10 @@ class Goods  extends ApiController
         }
         $list_count = $goods_list->count();
         //支持HTTPS
-        $host = "//".$this->request->host();
         for ($i=0; $i < count($goods_list); $i++) { 
-           $goods_list[$i]['thumb'] = str_replace(['http:'.$host,'https:'.$host],$host, $goods_list[$i]['thumb']);
-           $goods_list[$i]['thumb_url'] = str_replace(['http:'.$host,'https:'.$host],$host, $goods_list[$i]['thumb_url']);
-           $goods_list[$i]['content'] = str_replace(['http:'.$host,'https:'.$host],$host, $goods_list[$i]['content']);
+           $goods_list[$i]['thumb'] = plugin_http($goods_list[$i]['thumb']);
+           $goods_list[$i]['thumb_url'] = plugin_http($goods_list[$i]['thumb_url']);
+           $goods_list[$i]['content'] = plugin_http($goods_list[$i]['content']);
         }
         $this->success($msg,['goods_count'=> $goods_count,'list_count'=> $list_count, 'goods_list'=> $goods_list]);
     }
@@ -102,11 +101,10 @@ class Goods  extends ApiController
         }
 
         //支持HTTPS
-        $host = "//".$this->request->host();
         for ($i=0; $i < count($goods_list); $i++) { 
-           $goods_list[$i]['thumb'] = str_replace(['http:'.$host,'https:'.$host],$host, $goods_list[$i]['thumb']);
-           $goods_list[$i]['thumb_url'] = str_replace(['http:'.$host,'https:'.$host],$host, $goods_list[$i]['thumb_url']);
-           $goods_list[$i]['content'] = str_replace(['http:'.$host,'https:'.$host],$host, $goods_list[$i]['content']);
+           $goods_list[$i]['thumb'] = plugin_http( $goods_list[$i]['thumb']);
+           $goods_list[$i]['thumb_url'] = plugin_http( $goods_list[$i]['thumb_url']);
+           $goods_list[$i]['content'] = plugin_http($goods_list[$i]['content']);
         }
         $this->success($msg,['goods_count'=> $goods_count,'list_count'=> $list_count, 'goods_list'=> $goods_list]);
     }
@@ -121,6 +119,17 @@ class Goods  extends ApiController
             $item->child_category;
             foreach ($item->child_category as $second_item){
                 $second_item->child_category;
+            }
+        }
+
+        //唉....... 一言难尽.....
+        for ($i=0; $i < count($categories); $i++) { 
+            $categories[$i]['thumb'] = plugin_http($categories[$i]['thumb']);
+            for ($s=0; $s < count($categories[$i]['child_category']); $s++) { 
+                $categories[$i]['child_category'][$s]['thumb'] = plugin_http($categories[$i]['child_category'][$s]['thumb']);
+                for ($t=0; $t < count($categories[$i]['child_category'][$s]['child_category']); $t++) { 
+                    $categories[$i]['child_category'][$s]['child_category'][$t]['thumb'] = plugin_http($categories[$i]['child_category'][$s]['child_category'][$t]['thumb']);
+                }
             }
         }
         
@@ -173,10 +182,9 @@ class Goods  extends ApiController
 //        $this->success('获取商品信息成功', ['goods'=> $goods, 'is_favor'=> $is_favor]);
 
         //支持HTTPS
-        $host = "//".$this->request->host();
-        $goods['thumb'] = str_replace(['http:'.$host,'https:'.$host],$host, $goods['thumb']);
-        $goods['thumb_url'] = str_replace(['http:'.$host,'https:'.$host],$host, $goods['thumb_url']);
-        $goods['content'] = str_replace(['http:'.$host,'https:'.$host],$host, $goods['content']);
+        $goods['thumb'] = plugin_http( $goods['thumb']);
+        $goods['thumb_url'] = plugin_http( $goods['thumb_url']);
+        $goods['content'] = plugin_http( $goods['content']);
         
 
         return api_return(1, '获取商品信息成功', ['goods'=> $goods, 'is_favor'=> $is_favor]);
@@ -199,11 +207,10 @@ class Goods  extends ApiController
         $list_count = $goods_list->count();
 
         //支持HTTPS
-        $host = "//".$this->request->host();
         for ($i=0; $i < count($goods_list); $i++) { 
-           $goods_list[$i]['thumb'] = str_replace(['http:'.$host,'https:'.$host],$host, $goods_list[$i]['thumb']);
-           $goods_list[$i]['thumb_url'] = str_replace(['http:'.$host,'https:'.$host],$host, $goods_list[$i]['thumb_url']);
-           $goods_list[$i]['content'] = str_replace(['http:'.$host,'https:'.$host],$host, $goods_list[$i]['content']);
+           $goods_list[$i]['thumb'] = plugin_http($goods_list[$i]['thumb']);
+           $goods_list[$i]['thumb_url'] = plugin_http($goods_list[$i]['thumb_url']);
+           $goods_list[$i]['content'] = plugin_http($goods_list[$i]['content']);
         }
 
         $this->success('获取标签商品成功',['goods_count'=> $goods_count,'list_count'=> $list_count, 'goods_list'=> $goods_list]);

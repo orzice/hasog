@@ -39,6 +39,7 @@ require(["jquery", "easy-admin", "vue"], function ($, ea, Vue) {
             upload_type: upload_type,
             sms_new_type: sms_new_type,
             sms_shows: sms_shows,
+            plugin_http: plugin_http,
         }
     });
 
@@ -50,6 +51,9 @@ require(["jquery", "easy-admin", "vue"], function ($, ea, Vue) {
     });
     form.on("radio(sms_shows)", function (data) {
         app.sms_shows = this.value;
+    });
+    form.on("radio(plugin_http)", function (data) {
+        app.plugin_http = this.value;
     });
 
     ea.listen();

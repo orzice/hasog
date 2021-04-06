@@ -21,6 +21,32 @@ use app\common\service\AuthService;
 use think\facade\Cache;
 use think\facade\Config;
 
+//附件适配https
+if (!function_exists('plugin_http')) {
+  function plugin_http($url) {
+    $http = sysconfig('default','plugin_http');
+    if(empty($http)){
+      return $url;
+    }
+    if($http == 0){
+      return $url;
+    }
+
+    //支持HTTPS
+    $host = "//".request()->host();
+
+    if($http == 2){
+      $new_host =  'https:'.$host;
+    }else{
+      $new_host =  'http:'.$host;
+    }
+    
+
+    $url = str_replace(['http:'.$host,'https:'.$host],$new_host, $url);
+
+    return $url;
+  }
+}
 
 if (!function_exists('getServerIp')) {
   function getServerIp() {

@@ -51,6 +51,13 @@
         </div>
     </div>
 
+    <div class="layui-form-item">
+        <label class="layui-form-label required">本地附件请求</label>
+        <input type="radio" name="plugin_http" value="0" title="默认" {if sysconfig('default','plugin_http')==0}checked=""{/if}>
+        <input type="radio" name="plugin_http" value="1" title="HTTP" {if sysconfig('default','plugin_http')==1}checked=""{/if}>
+        <input type="radio" name="plugin_http" value="2" title="HTTPS" {if sysconfig('default','plugin_http')==2}checked=""{/if}>
+    </div>
+    
     <div class="hr-line"></div>
     <div class="layui-form-item text-center">
         <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit="system.config/save" data-refresh="false">确认</button>
@@ -58,3 +65,6 @@
     </div>
 
 </form>
+<script>
+    var plugin_http = "{:sysconfig('default','plugin_http')}";
+</script>

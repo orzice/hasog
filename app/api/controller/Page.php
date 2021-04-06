@@ -35,10 +35,9 @@ class Page extends ApiController
         $data = $data->toArray();
 
         //支持HTTPS
-        $host = "//".$this->request->host();
         for ($i=0; $i < count($data); $i++) { 
-           $data[$i]['picture'] = str_replace(['http:'.$host,'https:'.$host],$host, $data[$i]['picture']);
-           $data[$i]['link'] = str_replace(['http:'.$host,'https:'.$host],$host, $data[$i]['link']);
+           $data[$i]['picture'] = plugin_http($data[$i]['picture']);
+           $data[$i]['link'] = plugin_http($data[$i]['link']);
         }
         return api_return(1,'查询成功',$data);
     }
@@ -85,8 +84,8 @@ class Page extends ApiController
         //支持HTTPS
         $host = "//".$this->request->host();
         for ($i=0; $i < count($data); $i++) { 
-           $data[$i]['thumb'] = str_replace(['http:'.$host,'https:'.$host],$host, $data[$i]['thumb']);
-           $data[$i]['link'] = str_replace(['http:'.$host,'https:'.$host],$host, $data[$i]['link']);
+           $data[$i]['thumb'] = plugin_http($data[$i]['thumb']);
+           $data[$i]['link'] = plugin_http($data[$i]['link']);
         }
         return api_return(1,'查询成功',$data);
     }
