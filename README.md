@@ -25,9 +25,15 @@ Github  [https://github.com/orzice/hasog](https://github.com/orzice/hasog)
 
 
 
+后台视频教程：https://www.bilibili.com/video/BV17K411w7mr
+
+前端默认框架展示：https://www.bilibili.com/video/BV1NK4y1m7jL
+
 用户手册：https://www.kancloud.cn/hasog_cloud/hasog
 
 
+
+## 交流群
 
 **QQ交流群（点击加群）：**[372193289](https://jq.qq.com/?_wv=1027&k=MOx0H0EK)
 ![](https://images.gitee.com/uploads/images/2021/0310/175719_a49cdd9b_813605.jpeg)
@@ -39,17 +45,36 @@ Github  [https://github.com/orzice/hasog](https://github.com/orzice/hasog)
 
 ## 开发团队
 >  开发公司：幻神科技 https://www.hasog.com
+
+
+
+**HaSog幻神商城开源软件**
+
 >  
 >  负责人/主程：Orzice/小涛（吴英涛）
 >  
 > 后端开发：梗集（王国骁） ，王火火（王琰豪）
 > 
-> 前端开发：慵懒与猫（孙敬冉），M-A-O（张帆）
+> 前端开发：慵懒与猫（孙敬冉）
 > 
 > UI设计：潮鳴り（姚羽）
 > 
 
+
+
+**幻神云平台**：https://cloud.hasog.com
+
+> 
+> 负责人/主程：Orzice/小涛（吴英涛）
+> 
+> 后端开发：Orzice/小涛（吴英涛）
+> 
+> 前端开发：Orzice/小涛（吴英涛），M-A-O（张帆）
+
+
+
 ## 特点
+
 - 核心代码只做核心功能，拒绝乱七八糟！
 - 更强大的插件功能
 - 可支持打包 为 APP
@@ -144,6 +169,13 @@ www.a.com/Install
 ![enter image description here](https://images.gitee.com/uploads/images/2021/0402/095938_a0592c90_813605.png "6.png")
 ![enter image description here](https://images.gitee.com/uploads/images/2021/0402/095945_510a3674_813605.png "7.png")
 ![enter image description here](https://images.gitee.com/uploads/images/2021/0402/095951_63f8ebf7_813605.png "8.png")
+
+## 宝塔面板一键安装
+
+帖子：https://www.bt.cn/bbs/thread-66572-1-1.html
+
+一键安装正在审核中
+
 
 
 

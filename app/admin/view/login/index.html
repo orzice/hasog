@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="__STATIC__/css/login.css?v={$version}" media="all">
 
 <div id="video-container" class="video-container" style="display: none;">
-      <video muted="" loop="loop" autoplay="autoplay" src="/static/common/mp4/banner.mp4" class="video" id="video-home" data-object-fit="" style="">抱歉，您的浏览器不支持内嵌视频</video>
+      <video muted="" loop="loop" autoplay="autoplay" class="video" id="video-home" data-object-fit="" style="">抱歉，您的浏览器不支持内嵌视频</video>
 </div>
 
 
@@ -89,5 +89,6 @@ require(["jquery", "easy-admin"], function ($, ea) {
                     $('#refreshCaptcha').trigger("click");
                 });
             });
+            $('#video-home').attr('src','/static/common/mp4/banner.mp4')
 });
 </script>

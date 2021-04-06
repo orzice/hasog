@@ -479,6 +479,9 @@
                         </table>
                     </div>
                 </div>
+
+ 
+{if condition="env('hasog.is_demo', false) == false"}
 {eq name=":Sessions('id')" value="1"}
                 <div class="layui-card">
                     <div class="layui-card-header"><i class="fa fa-fire icon"></i>配置信息 (务必妥善保存)</div>
@@ -524,7 +527,7 @@
                     </div>
                 </div>
 {/eq}
-
+{/if}
 
             </div>
 

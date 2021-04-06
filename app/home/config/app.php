@@ -18,7 +18,7 @@
 // +----------------------------------------------------------------------
 return [
     // 异常页面的模板文件
-    'exception_tmpl'   => app()->getThinkPath() . 'tpl/think_exception.tpl',
+    // 'exception_tmpl'   => app()->getThinkPath() . 'tpl/think_exception.tpl',
    
     'http_exception_template' => [
         // 定义404错误的模板文件地址

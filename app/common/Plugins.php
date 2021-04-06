@@ -592,6 +592,7 @@ class Plugins
         $install = array();
         $dir = $root.'plugin'.$sep;
         $str = opendir($dir);
+        $dir_array = [];
         while( ($filename = readdir($str)) !== false ){
             if($filename != "." && $filename != ".."){
                 if (!is_file($filename)){
@@ -600,6 +601,9 @@ class Plugins
             }
         }
         closedir($str);
+        if (count($dir_array) == 0) {
+            return [];
+        }
         for ($i=0; $i < count($dir_array); $i++) { 
             if (is_file($dir.$dir_array[$i])) {
                continue;

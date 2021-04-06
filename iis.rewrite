@@ -1,0 +1,5 @@
+<rule name="规则1" patternSyntax="ECMAScript" stopProcessing="true">
+                    <match url="" ignoreCase="false" />
+                    <conditions logicalGrouping="MatchAll" trackAllCaptures="false" />
+                    <action type="Rewrite" url="^(.*)$" appendQueryString="false" />
+                </rule>
