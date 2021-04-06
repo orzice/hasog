@@ -25,6 +25,10 @@ Github  [https://github.com/orzice/hasog](https://github.com/orzice/hasog)
 
 
 
+后台视频教程：https://www.bilibili.com/video/BV17K411w7mr
+
+前端默认框架展示：https://www.bilibili.com/video/BV1NK4y1m7jL
+
 用户手册：https://www.kancloud.cn/hasog_cloud/hasog
 
 
