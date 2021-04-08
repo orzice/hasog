@@ -13,16 +13,16 @@ use Yansongda\Pay\Pay;
 class WechatPays
 {
     protected $config = [
-        'appid' => 'wxb3fxxxxxxxxxxx', // APP APPID
-        'app_id' => 'wxb3fxxxxxxxxxxx', // 公众号 APPID
-        'miniapp_id' => 'wxb3fxxxxxxxxxxx', // 小程序 APPID
-        'mch_id' => '14577xxxx',
-        'key' => 'mF2suE9sU6Mk1Cxxxxxxxxxxx',
-        'notify_url' => 'http://yanda.net.cn/notify.php',
-        'cert_client' => './cert/apiclient_cert.pem', // optional，退款等情况时用到
-        'cert_key' => './cert/apiclient_key.pem',// optional，退款等情况时用到
+        'appid' => '', // APP APPID
+        'app_id' => '', // 公众号 APPID
+        'miniapp_id' => '', // 小程序 APPID
+        'mch_id' => '',
+        'key' => '',
+        'notify_url' => '',
+        'cert_client' => '', // optional，退款等情况时用到
+        'cert_key' => '',// optional，退款等情况时用到
         'log' => [ // optional
-            'file' => './logs/wechat.log',
+            'file' => '../runtime/paylog/wechat.log',
             'level' => 'info', // 建议生产环境等级调整为 info，开发环境为 debug
             'type' => 'single', // optional, 可选 daily.
             'max_file' => 30, // optional, 当 type 为 daily 时有效，默认 30 天
@@ -47,7 +47,7 @@ class WechatPays
         $this->config['key'] = $wechat_pay->merchant_secret;
         $this->config['cert_client'] = $wechat_pay->cert_file;
         $this->config['cert_key'] = $wechat_pay->key_file;
-        $this->config['notify_url'] = 'http://hasog.chengrx.com/api/wechat_front/notify';
+        $this->config['notify_url'] = '';
     }
 
     public function init($wechat_pay){
@@ -86,7 +86,7 @@ class WechatPays
             $pay_log['uid'] = $order['uid'];
         }
         $pay_log->save();
-        $this->config['notify_url'] .= '/'.$pay_log->id.'/';
+        $this->config['notify_url'] .= $pay_log->id.'/';
         $order_data =[
             'out_trade_no' => time(),
             'body' => '微信充值',

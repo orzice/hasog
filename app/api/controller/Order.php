@@ -669,7 +669,7 @@ class Order extends ApiController
             }
             elseif ($pay_type_id == 1){
                 $wechat_pay = new WechatPays();
-//                $notify_url = 'http://hasog.chengrx.com/api/wechat_front/wechat_no/'.$order->id;
+//                $notify_url = $this->request->domain().'/api/wechat_front/wechat_no/'.$order->id;
                 $notify_url = $this->request->domain().'/api/wechat_front/wechat_no/'.$order->id;
                 $result = $wechat_pay->jsapi_index($order, true, $notify_url, true);
                 Db::commit();
@@ -678,13 +678,13 @@ class Order extends ApiController
                 $this->assign('order', $order);
                 $this->assign('pay_log', $pay_log);
                 $this->assign('jsApiParameters', $result);
-                $this->assign('redirect_url', 'http://hasog.chengrx.com/#/paySuccess');
+                $this->assign('redirect_url', $this->request->domain().'/#/paySuccess');
 
                 return $this->fetch('/pay/wechat/jsapi');
             }
             elseif ($pay_type_id == 2){
                 $ali_pay = new AliPays();
-//                $notify_url = 'http://hasog.chengrx.com/api/ali_front/ali_no/'.$order->id;
+//                $notify_url = $this->request->domain().'/api/ali_front/ali_no/'.$order->id;
                 $notify_url = $this->request->domain().'/api/ali_front/ali_no/'.$order->id;
                 $return_url = $this->request->domain().'/api/ali_front/ali_return/';
                 $result = $ali_pay->jsapi_index($order, true, $notify_url, $return_url);
@@ -694,7 +694,7 @@ class Order extends ApiController
                 $this->assign('order', $order);
                 $this->assign('pay_log', $pay_log);
                 $this->assign('jsApiParameters', $result);
-                $this->assign('redirect_url', 'http://hasog.chengrx.com/#/paySuccess');
+                $this->assign('redirect_url', $this->request->domain().'/#/paySuccess');
 
                 return $this->fetch('/pay/wechat/jsapi');
             }

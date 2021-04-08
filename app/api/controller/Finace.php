@@ -146,7 +146,7 @@ class Finace extends ApiController
             $this->assign('pay_log', $pay_log);
             $this->assign('amount', $post['money']);
             $this->assign('jsApiParameters', $result);
-            $this->assign('redirect_url', 'http://hasog.chengrx.com/#/paySuccess');
+            $this->assign('redirect_url', $this->request->domain().'/#/paySuccess');
 
             return $this->fetch('/pay/wechat/jsapi_balance');
 
@@ -186,7 +186,7 @@ class Finace extends ApiController
             $ali_pay = new AliPays();
             $pay = AliPay::where('is_union',1)->find();
             if (empty($pay)){
-                return api_return(0,'阿里支付通道已关闭');
+                return api_return(0,'支付宝支付通道已关闭');
             }
             $data = ['total_fee'=>$post['money'],'uid'=> $id];
             $return_url = $this->request->domain().'/api/ali_front/ali_balance_return/';

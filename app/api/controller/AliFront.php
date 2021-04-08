@@ -88,7 +88,7 @@ class AliFront extends ApiController
         $this->assign('order', $order);
         $this->assign('pay_log', $pay_log);
         $this->assign('jsApiParameters', 'test');
-        $this->assign('redirect_url', 'http://hasog.chengrx.com/#/paySuccess');
+        $this->assign('redirect_url', $this->request->domain().'/#/paySuccess');
         return $this->fetch('/pay/wechat/jsapi');
     }
 
@@ -145,7 +145,7 @@ class AliFront extends ApiController
         $this->assign('pay_log', $pay_log);
         $this->assign('amount', $pay_log->amount);
         $this->assign('jsApiParameters', 'result');
-//        $this->assign('redirect_url', 'http://hasog.chengrx.com/#/paySuccess');
+//        $this->assign('redirect_url', $this->request->domain().'/#/paySuccess');
         $this->assign('redirect_url', $this->request->domain().'/#/paySuccess');
         return $this->fetch('/pay/wechat/jsapi_balance');
     }

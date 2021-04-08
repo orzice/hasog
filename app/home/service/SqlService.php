@@ -1146,7 +1146,7 @@ $Sql = <<<ETO
 CREATE TABLE `{$tableName}` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `uid` int(11) DEFAULT NULL COMMENT '用户id',
-  `pay_id` int(11) DEFAULT NULL COMMENT '支付订单号',
+  `pay_id` varchar(255) DEFAULT NULL COMMENT '支付订单号',
   `pay_account` int(11) DEFAULT '0' COMMENT '支付的微信号微信表里的id',
   `status` tinyint(255) DEFAULT '0' COMMENT '状态0未完成支付1已完成支付',
   `order_sn` varchar(255) DEFAULT NULL COMMENT '订单号order的id',
