@@ -17,7 +17,7 @@
 // 升级SQL脚本
 namespace app\common;
 
-use app\admin\controller\system\Config;
+use think\facade\Config;
 use Hasog\Response;
 use think\facade\Db;
 use app\common\Cloud;
@@ -30,7 +30,7 @@ class UpdateSql
       $lv = $release;
 
         if ($lv >= 2021040801) {return true;}
-        $tablePrefix = think\facade\Config::get('database.connections.mysql.prefix');
+        $tablePrefix = Config::get('database.connections.mysql.prefix');
 
         $name = $tablePrefix.'pay_log';
 
@@ -38,7 +38,7 @@ class UpdateSql
 ALTER TABLE `{$name}`
 MODIFY COLUMN `pay_id`  varchar(255) NULL DEFAULT NULL COMMENT '支付订单号' AFTER `uid`;
 ETO;
-        think\facade\Db::execute($sql);
+        Db::execute($sql);
         if ($lv >= 20210310) {return true;}
 
 
