@@ -174,7 +174,9 @@ www.a.com/Install
 
 帖子：https://www.bt.cn/bbs/thread-66572-1-1.html
 
-一键安装正在审核中
+![enter image description here](https://images.gitee.com/uploads/images/2021/0407/183011_55e4c876_813605.png "1.png")
+![enter image description here](https://images.gitee.com/uploads/images/2021/0407/183018_5ca681b6_813605.png "2.png")
+![enter image description here](https://images.gitee.com/uploads/images/2021/0407/183024_ad2793d8_813605.png "3.png")
 
 
 
