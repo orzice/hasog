@@ -1,6 +1,9 @@
 <div class="layuimini-container">
     <form id="app-form" class="layui-form layuimini-form">
         <input type="hidden" name="goods[id]" value="{$row.id}">
+        <blockquote class="layui-elem-quote">
+            用户信息
+        </blockquote>
         <div class="layui-form-item">
             <label class="layui-form-label required">用户ID</label>
             <div class="layui-input-block">
@@ -13,6 +16,9 @@
                 <input type="text" name="goods[mobile]" readonly="readonly" class="layui-input"  lay-reqtext="手机号" placeholder="手机号" value="{$row.mobile}">
             </div>
         </div>
+        <blockquote class="layui-elem-quote">
+            请确保充值的用户是正确的，然后选择类型和金额，如果充值金额为负数，则是扣除多少余额！
+        </blockquote>
         <div class="layui-form-item">
             <label class="layui-form-label required">积分类型</label>
             <div class="layui-input-block">

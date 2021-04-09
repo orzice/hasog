@@ -200,7 +200,7 @@ define(["jquery"], function ($) {
                 element.init();
                 layer.close(loading);
             });
-			
+            
             $('body').on('click', '.layuimini-header-menu.layuimini-mobile-show', function () {
                 var loading = layer.load(0, {shade: false, time: 2 * 1000});
                 var isShow = $('.layuimini-tool [data-side-fold]').attr('data-side-fold');
@@ -260,6 +260,24 @@ define(["jquery"], function ($) {
                 }
                 layer.close(loading);
             });
+
+            //初始化备份
+            var layuimini_href = $('.layuimini-menu-left .layui-nav-child').prev();
+            for (var i = 0; i < layuimini_href.length; i++) {
+                $(layuimini_href[i]).attr('layuimini-hrefs',$(layuimini_href[i]).attr('layuimini-href'));
+            };
+
+            $(window).resize( function  () {
+                if ($(window).width() <= 720) {
+                    $('.layuimini-menu-left .layui-nav-child').prev().removeAttr("layuimini-href")
+                }else{
+                    for (var i = 0; i < layuimini_href.length; i++) {
+                        $(layuimini_href[i]).attr('layuimini-href',$(layuimini_href[i]).attr('layuimini-hrefs'));
+                    };
+                }
+
+            });
+
         },
 
     };

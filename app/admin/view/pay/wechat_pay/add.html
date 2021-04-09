@@ -28,7 +28,7 @@
 
 
         <div class="layui-form-item">
-            <label class="layui-form-label">app_secret</label>
+            <label class="layui-form-label required">app_secret</label>
             <div class="layui-input-block">
                 <input type="text" name="app_secret" lay-reqtext="app_secret不能为空" placeholder="请输入app_secret"
                        class="layui-input">
@@ -44,7 +44,7 @@
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label">商户号支付秘钥(api_secret)</label>
+            <label class="layui-form-label required">商户号支付秘钥(api_secret)</label>
             <div class="layui-input-block">
                 <input type="text" name="merchant_secret" lay-reqtext="请输入商户号支付秘钥" placeholder="商户号支付秘钥"
                        class="layui-input">
@@ -52,7 +52,7 @@
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label">cert证书文件</label>
+            <label class="layui-form-label required">cert证书文件</label>
             <div class="layui-input-block layuimini-upload">
                 <!--                <input type="file" class="layui-input layui-col-xs6" name="cert_file" lay-reqtext="请上传cert证书文件" placeholder="请上传cert证书文件"  >-->
                 <input class="layui-input layui-col-xs6" name="cert_file" lay-reqtext="请上传cert证书文件"
@@ -68,7 +68,7 @@
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label">key秘钥文件</label>
+            <label class="layui-form-label required">key秘钥文件</label>
             <div class="layui-input-block layuimini-upload">
                 <!--                <input type="file" class="layui-input layui-col-xs6" name="key_file" lay-reqtext="请上传key秘钥文件" placeholder="请上传key秘钥文件" >-->
                 <input class="layui-input layui-col-xs6" name="key_file" lay-reqtext="请上传key秘钥文件" placeholder="请上传key秘钥文件">
@@ -83,7 +83,7 @@
 
 
         <div class="layui-form-item">
-            <label class="layui-form-label">标准微信支付</label>
+            <label class="layui-form-label required">标准微信支付</label>
             <div class="layui-input-block">
                 <input type="radio" name="open_status" value="1" title="开启">
                 <input type="radio" name="open_status" value="0" title="关闭" checked="">
@@ -92,7 +92,7 @@
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label">可选支付方式</label>
+            <label class="layui-form-label required">可选支付方式</label>
             <div class="layui-input-block">
                 <input type="checkbox" name="is_jsapi" value="1" title="jsapi支付" checked="">
                 <input type="checkbox" name="is_h5" value="1" title="h5支付" checked="">
@@ -101,7 +101,7 @@
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label">是否登录</label>
+            <label class="layui-form-label required">是否登录</label>
             <div class="layui-input-block">
                 <input type="radio" name="is_login" value="1" title="开启">
                 <input type="radio" name="is_login" value="0" title="关闭" checked="">

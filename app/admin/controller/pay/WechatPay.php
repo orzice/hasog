@@ -99,8 +99,8 @@ class WechatPay extends AdminController
                 'app_secret|app_secret' => 'require',
                 'merchant_id|商户号id' => 'require',
                 'merchant_secret|商户号支付秘钥' => 'require',
-                'cert_file|cert证书文件' => 'require',
-                'key_file|key秘钥文件' => 'require',
+                // 'cert_file|cert证书文件' => 'require',
+                // 'key_file|key秘钥文件' => 'require',
                 'open_status|标准微信支付' => 'require',
                 'is_login|是否登录' => 'require',
             ];
@@ -139,8 +139,8 @@ class WechatPay extends AdminController
                 'app_secret|app_secret' => 'require',
                 'merchant_id|商户号id' => 'require',
                 'merchant_secret|商户号支付秘钥' => 'require',
-                'cert_file|cert证书文件' => 'require',
-                'key_file|key秘钥文件' => 'require',
+                // 'cert_file|cert证书文件' => 'require',
+                // 'key_file|key秘钥文件' => 'require',
                 'open_status|标准微信支付' => 'require',
             ];
             // 上级分类是否存在 并且存入id

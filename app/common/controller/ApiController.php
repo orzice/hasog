@@ -131,6 +131,33 @@ class ApiController extends BaseController
 	
 	
 	    /**
+	     * 展示页面
+	     * @access protected
+	     * @param mixed $msg 提示信息
+	     * @param mixed $data 返回的数据
+	     * @param string $url 跳转的 URL 地址
+	     * @param int $wait 跳转等待时间
+	     * @param array $header 发送的 Header 信息
+	     * @return void
+	     * @throws HttpResponseException
+	     */
+	    protected function apiview($code = 0,$msg = '', $data = '', $url = null, $wait = 2)
+	    {
+	        $result = [
+	            'code' => $code,
+	            'msg'  => $msg,
+	            'data' => $data,
+	            'url'  => $url,
+	            'wait' => $wait,
+	        ];
+
+	
+            $response = view(app('config')->get('app.dispatch_success_tmpl'), $result);
+	       
+	        throw new HttpResponseException($response);
+	    }
+	
+	    /**
 	     * 操作成功跳转的快捷方法
 	     * @access protected
 	     * @param mixed $msg 提示信息
