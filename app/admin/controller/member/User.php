@@ -229,8 +229,8 @@ class User extends AdminController
             empty($allow_credit) && $this->error('积分类型错误');
             $this->validate($post['goods'], $rule);
             $credit = $this->model::where('id',$post['goods']['id'])->find();
-            $old_credit=$credit['credit2'];
-            $credit = $credit['credit2']+$post['goods']['credit2s'];
+            $old_credit=$credit[$allow_credit->value];
+            $credit = $credit[$allow_credit->value]+$post['goods'][$allow_credit->value];
             $b = substr($post['goods']['credit2s'], 0,1);
             $balancesub['money'] =$post['goods']['credit2s'];
             $balancesub['uid']   =$post['goods']['id'];
