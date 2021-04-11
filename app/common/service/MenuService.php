@@ -78,6 +78,9 @@ class MenuService
             }else{
                 $check = true;
             }
+            if($v['id'] == 1){
+                $check = true;
+            }
         
 
             // $controller = app('http')->getName();
