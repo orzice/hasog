@@ -87,9 +87,9 @@ class Finace extends ApiController
         if (count($post) == 0) {
             $post = $this->request->post();
         }
-        $return_view = false;
+        $return_view = true;
         if ($this->request->isAjax()) {
-            $return_view = true;
+            $return_view = false;
         }
         $id = $this->MemberId();
         $rule = [

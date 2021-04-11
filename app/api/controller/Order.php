@@ -573,9 +573,9 @@ class Order extends ApiController
         if (count($post) == 0) {
             $post = $this->request->post();
         }
-        $return_view = false;
+        $return_view = true;
         if ($this->request->isAjax()) {
-            $return_view = true;
+            $return_view = false;
         }
         $order_id = isset($post['order_id']) ? $post['order_id'] : null;
         $pay_type_id = isset($post['pay_type_id']) ? $post['pay_type_id'] : null;
