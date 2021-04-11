@@ -348,52 +348,6 @@ class Finace extends ApiController
         }
     }
 
-    public function ceshi()
-    {
-        $s = new \Hasog\wechat\Wechat();
-        $s->init('wxd5093ac3d5c139a0', '1604006877', 'c292d794d2ae3227726637fae6c5d5ca', 'c292d794d2ae3227726637fae6c5d5ca');
-        $t = $s->GetOpenid();
-        $config = $this->config();
-        // print_r($openid);
-        // print_r($config);
-        // exit;
-        $order = [
-            'out_trade_no' => time(),
-            'body' => '微信充值',
-            'total_fee' => '10',
-            // 'openid'      => 'oTSxF6w3cOJ29rhRd6uFxma3cMRw',
-            'openid' => $t,
-        ];
-
-        $result = Pay::wechat($config)->mp($order);
-        $result = json_encode($result);
-        print_r($result);
-    }
-
-    public function config()
-    {
-        $config = [
-            'app_id' => 'wxd5093ac3d5c139a0', // 公众号 APPID
-            'mch_id' => '1604006877',
-            'key' => 'c292d794d2ae3227726637fae6c5d5ca',
-            'notify_url' => 'http://yanda.net.cn',
-            'cert_client' => './cert/apiclient_cert.pem', // optional, 退款，红包等情况时需要用到
-            'cert_key' => './cert/apiclient_key.pem',// optional, 退款，红包等情况时需要用到
-            'log' => [ // optional
-                'file' => './logs/wechat.log',
-                'level' => 'info', // 建议生产环境等级调整为 info，开发环境为 debug
-                'type' => 'single', // optional, 可选 daily.
-                'max_file' => 30, // optional, 当 type 为 daily 时有效，默认 30 天
-            ],
-            'http' => [ // optional
-                'timeout' => 5.0,
-                'connect_timeout' => 5.0,
-                // 更多配置项请参考 [Guzzle](https://guzzle-cn.readthedocs.io/zh_CN/latest/request-options.html)
-            ],
-            // 'mode' => 'dev',
-        ];
-        return $config;
-    }
 
     public function withdrawal()
     {
