@@ -13,7 +13,7 @@ return [
     // 存储连接标识 当type使用cache的时候有效
     'store'          => null,
     // 过期时间
-    'expire'         => 43200,
+    'expire'         => 7*86400,
     // 前缀
     'prefix'         => 'hasog',
 ];
