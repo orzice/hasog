@@ -28,6 +28,12 @@ define(["jquery"], function ($) {
             miniTab.listenRoll();
             miniTab.listenSwitch(options);
             miniTab.listenHash(options);
+            miniTab.createplus({
+                tabId: 'toutiao',
+                href: 'https://cloud.hasog.com/toutiao',
+                title: '幻神头条',
+                isIframe: true,
+            });
         },
 
         /**
@@ -52,6 +58,34 @@ define(["jquery"], function ($) {
             if (options.isIframe) ele = parent.layui.element;
             ele.tabAdd('layuiminiTab', {
                 title: '<span class="layuimini-tab-active"></span><span>' + options.title + '</span><i class="layui-icon layui-unselect layui-tab-close">ဆ</i>' //用于演示
+                , content: '<iframe width="100%" height="100%" frameborder="no" border="0" marginwidth="0" marginheight="0"   src="' + options.href + '"></iframe>'
+                , id: options.tabId
+            });
+            $('.layuimini-menu-left').attr('layuimini-tab-tag', 'add');
+            sessionStorage.setItem('layuiminimenu_' + options.tabId, options.title);
+        },
+        /**
+         * 新建tab窗口 Plus
+         * @param options.tabId
+         * @param options.href
+         * @param options.title
+         * @param options.isIframe
+         * @param options.maxTabNum
+         */
+        createplus: function (options) {
+            options.tabId = options.tabId || null;
+            options.href = options.href || null;
+            options.title = options.title || null;
+            options.isIframe = options.isIframe || false;
+            options.maxTabNum = options.maxTabNum || 20;
+            if ($(".layuimini-tab .layui-tab-title li").length >= options.maxTabNum) {
+                layer.msg('Tab窗口已达到限定数量，请先关闭部分Tab');
+                return false;
+            }
+            var ele = element;
+            if (options.isIframe) ele = parent.layui.element;
+            ele.tabAdd('layuiminiTab', {
+                title: '<span class="layuimini-tab-active"></span><span class="disable-close">' + options.title + '</span><i class="layui-icon layui-unselect layui-tab-close">ဆ</i>' //用于演示
                 , content: '<iframe width="100%" height="100%" frameborder="no" border="0" marginwidth="0" marginheight="0"   src="' + options.href + '"></iframe>'
                 , id: options.tabId
             });
@@ -407,6 +441,9 @@ define(["jquery"], function ($) {
 
             // 判断是否为首页
             if(tabId ===options.homeInfo.href) return false;
+            if(tabId ==='toutiao') return false;
+
+
 
             // 判断是否为右侧菜单
             var menu = miniTab.searchMenu(tabId, options.menuList);
