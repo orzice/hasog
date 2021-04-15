@@ -58,6 +58,7 @@ class Order extends ApiController
         if (empty($user)) {
             return api_return(0, '用户数据错误');
         }
+        event('AddOrder', $post);
         $order_sn = OrderModel::createOrderSn('AC');
         $goods_price = 0;
         $discount_price = 0;
@@ -337,6 +338,7 @@ class Order extends ApiController
         if (empty($user)) {
             return api_return(0, '用户数据错误');
         }
+        event('CacheOrder', $post);
         $order_sn = OrderModel::createOrderSn('AC');
         $goods_price = 0;
         $discount_price = 0;
