@@ -94,11 +94,11 @@ $langSet == 'en' && $lang = array_combine(array_keys($lang), array_keys($lang));
     </div>
     <div class="buttons-container">
         <a href="/"><?=$lang['Home']?></a>
-        <a href="https://gitee.com/orzice/hasog" target="_blank"><?=$lang['Feedback']?></a>
+        <a href="https://cloud.hasog.com/toutiao" target="_blank"><?=$lang['Feedback']?></a>
     </div>
     <div >
         <p style="font-size: 14px;margin: 20px 0;padding: 10px 0;font-weight: 400;">
-            开源项目 <a href="https://gitee.com/orzice/hasog" target="_blank" class="">HaSog幻神商城</a> 驱动，
+            开源项目 <a href="https://cloud.hasog.com/toutiao" target="_blank" class="">HaSog幻神商城</a> 驱动，
             由 <a href="https://www.hasog.com" target="_blank" class="">河南幻神科技</a> 提供技术支持
         </p>
     </div>

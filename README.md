@@ -23,7 +23,11 @@
 
 Github  [https://github.com/orzice/hasog](https://github.com/orzice/hasog)
 
+开发计划：https://cloud.hasog.com/toutiao/article/8.html
 
+HaSog幻神商城收费么？可以商用么？：https://cloud.hasog.com/toutiao/article/7.html
+
+---
 
 后台视频教程：https://www.bilibili.com/video/BV17K411w7mr
 
@@ -128,8 +132,11 @@ www.a.com/Install
 **注意：本地环境无效！**
 
 
-![enter image description here](https://images.gitee.com/uploads/images/2021/0402/101053_ff9612cb_813605.png "QQ截图20210402100941.png")
-![enter image description here](https://images.gitee.com/uploads/images/2021/0402/101102_48671c7c_813605.png "QQ截图20210402101004.png")
+
+教程地址：https://cloud.hasog.com/toutiao/article/2.html
+
+
+
 ![enter image description here](https://images.gitee.com/uploads/images/2021/0402/101119_71a6f159_813605.png "QQ截图20210402101036.png")
 
 ### 在线升级最新版本
@@ -182,15 +189,9 @@ www.a.com/Install
 
 
 ## 项目实例
-在这里展示已经上线的例子
-
-###  正常商城系统
-![](https://images.gitee.com/uploads/images/2021/0310/140137_3e4de280_813605.jpeg)
+点击查看：https://cloud.hasog.com/toutiao/?pid=1
 
 
-### 拼团抽奖系统
-
-![](https://images.gitee.com/uploads/images/2021/0310/140202_a35e2ce5_813605.jpeg)
 
 
 

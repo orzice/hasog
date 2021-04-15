@@ -254,7 +254,7 @@ try {
             $this->output('解压包文件完成！');
 
          if (count($bd) > 1000) {
-          // $this->output('【错误】需要升级的文件已经到达5000个以上！在线升级已经是十分困难，请前往 <a href="https://gitee.com/orzice/hasog" target="_blank">https://gitee.com/orzice/hasog</a> 下载最新版本的压缩包覆盖安装！');
+          // $this->output('【错误】需要升级的文件已经到达5000个以上！在线升级已经是十分困难，请前往 <a href="https://cloud.hasog.com/toutiao" target="_blank">https://cloud.hasog.com/toutiao</a> 下载最新版本的压缩包覆盖安装！');
           $this->output('【提醒】需要升级的文件已经到达1000个以上！不再进行对比升级文件，直接进行升级操作！');
           $ver_dic = $ver_zip_dic;
           // return;
