@@ -266,9 +266,9 @@
                                                 v{$version} 
                                             </div>
                                             <div class="now-version" style="margin-bottom: 0;">版本号：<b>{$release}</b></div>
-                                            <div class="now-version" style="margin-bottom: 0;">新版本：<b style="color: #f00;">{$cloud.release}</b></div>
+                                            <div class="now-version" style="margin-bottom: 0;" title="更新内容：{$cloud.description}">新版本：<b style="color: #f00;">{$cloud.release}</b></div>
                                             <div class="now-version" style="color: #f00;">发现新版本！请立即更新！</div>
-                                            <div class="">
+                                            <div class="" title="更新内容：{$cloud.description}">
                                                 <!-- <a href="{:__url('plugin.cloud/update')}" class="now-btn-default" >立即更新</a> -->
                                                 <a href="javascript:;" layuimini-content-href="{:__url('plugin.cloud/update')}" data-title="版本升级" data-icon="fa fa-puzzle-piece" class="now-btn-default" >立即更新</a>
 
@@ -408,7 +408,50 @@
                 <div class="layui-card">
                     <div class="layui-card-header"><i class="fa fa-paper-plane-o icon"></i>提醒</div>
                     <div class="layui-card-body layui-text layadmin-text">
-                       如遇到任何系统错误，请联系我们！我们将会在第一时间解决！
+                       如遇到任何系统错误，请联系我们！我们将会在第一时间解决！<a target="_blank" href="https://cloud.hasog.com/toutiao/article/9.html">点我获取联系方式</a>
+                    </div>
+                </div>
+                <div class="layui-card">
+                    <div class="layui-card-header"><i class="fa fa-paper-plane-o icon"></i>常见疑问</div>
+                    <div class="layui-card-body layui-text layadmin-text">
+                       <table class="layui-table">
+                            <colgroup>
+                                <col>
+                                <col>
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <td>1..HaSog幻神商城开发计划</td>
+                                <td>
+                                    <a target="_blank" href="https://cloud.hasog.com/toutiao/article/8.html"> 点我了解详情</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2.幻神云平台怎么注册？</td>
+                                <td>
+                                    <a target="_blank" href="https://cloud.hasog.com/toutiao/article/2.html"> 点我了解详情</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3.HaSog幻神商城收费么？可以商用么？</td>
+                                <td>
+                                    <a target="_blank" href="https://cloud.hasog.com/toutiao/article/7.html"> 点我了解详情</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>4.系统可以做什么？有已经发布的案例么？</td>
+                                <td>
+                                    <a target="_blank" href="https://cloud.hasog.com/toutiao/?pid=1"> 点我了解详情</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>5.我不懂商业模式，有已经使用现成的么？</td>
+                                <td>
+                                    <a target="_blank" href="https://cloud.hasog.com/toutiao/?pid=2"> 点我了解详情</a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
@@ -444,16 +487,22 @@
                                 <td>{$dbversion}</td>
                             </tr>
                             <tr>
-                                <td>Gitee</td>
+                                <td>官网</td>
                                 <td>
-                                    <a href="https://gitee.com/orzice/hasog" target="_blank">Gitee 下载</a>
+                                    <a href="https://cloud.hasog.com" target="_blank">幻神云</a>
+                                    /
+                                   <a href="https://cloud.hasog.com/toutiao" target="_blank">幻神头条</a>
+                                    /
+                                   <a href="https://www.hasog.com" target="_blank">幻神科技</a>
                                    
                                 </td>
                             </tr>
                             <tr>
-                                <td>Github</td>
+                                <td>开源地址</td>
                                 <td>
-                                   <a href="https://github.com/orzice/hasog" target="_blank">Github 下载</a>
+                                    <a href="https://gitee.com/orzice/hasog" target="_blank">Gitee</a>
+                                    /
+                                   <a href="https://github.com/orzice/hasog" target="_blank">Github</a>
                                    
                                 </td>
                             </tr>
@@ -470,6 +519,12 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td>QQ交流群</td>
+                                <td>
+                                   372193289
+                                </td>
+                            </tr>
+                            <tr>
                                 <td>作者邮箱</td>
                                 <td>
                                    1073519986@qq.com
@@ -482,6 +537,8 @@
 
  
 {if condition="env('hasog.is_demo', false) == false"}
+{if condition="env('hasog.is_saas', false) == false"}
+
 {eq name=":Sessions('id')" value="1"}
                 <div class="layui-card">
                     <div class="layui-card-header"><i class="fa fa-fire icon"></i>配置信息 (务必妥善保存)</div>
@@ -527,6 +584,7 @@
                     </div>
                 </div>
 {/eq}
+{/if}
 {/if}
 
             </div>

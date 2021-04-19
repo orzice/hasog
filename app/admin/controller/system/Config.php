@@ -56,6 +56,16 @@ class Config extends AdminController
             $this->error('演示环境下不允许修改');
         }
         $post = $this->request->post();
+
+        if(env('hasog.is_saas', false)){
+            if (isset($post['upload_type'])) {
+                if ($post['upload_type'] == 'local') {
+                    $post['upload_allow_ext'] = 'gif,jpg,mp3,mp4,pem,png,jpeg';
+                    $post['upload_allow_size'] = '1024000';
+                }
+            }
+        }
+
         try {
             foreach ($post as $key => $val) {
                 $cz = $this->model->where('name', $key)->find();
