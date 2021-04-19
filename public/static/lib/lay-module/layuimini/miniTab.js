@@ -323,7 +323,7 @@ define(["jquery"], function ($) {
                     var tabId = $(this).attr('lay-id');
                     var id = $(this).attr('id');
                     var isCurrent = $(this).hasClass('layui-this');
-                    if (id !== 'layuiminiHomeTabId') {
+                    if (id !== 'layuiminiHomeTabId' && tabId !== 'toutiao') {
                         if (closeType === 'all') {
                             miniTab.delete(tabId);
                         } else {
@@ -374,7 +374,7 @@ define(["jquery"], function ($) {
                 $(".layuimini-tab .layui-tab-title li").each(function () {
                     var tabId = $(this).attr('lay-id');
                     var id = $(this).attr('id');
-                    if (id !== 'layuiminiHomeTabId') {
+                    if (id !== 'layuiminiHomeTabId' && tabId !== 'toutiao') {
                         if (closeType === 'all') {
                             miniTab.delete(tabId);
                         } else {
