@@ -302,7 +302,7 @@ class Home extends AdminController
     }
 
     /**
-     * @NodeAnotation(title="退款订单")
+     * @NodeAnotation(title="确认收货")
      */
     public function refund_order(){
         $post = $this->request->post();
@@ -335,7 +335,7 @@ class Home extends AdminController
             ->where('type', 0)
             ->find();
 //        empty($order) && $this->error('订单不存在或该订单类型不支持退款');
-        (empty($order) || !in_array($order->status, [1, 2, 3]))  && $this->error('该订单暂不支持退款');
+        (empty($order) || !in_array($order->status, [1, 2]))  && $this->error('该订单状态暂不支持退款');
         Db::startTrans();
         try{
             $data = [
