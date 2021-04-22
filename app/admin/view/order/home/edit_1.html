@@ -57,7 +57,7 @@
             {if $row.status === 0}<button id="cancel_order" type="button" class="layui-btn layui-btn-primary layui-btn-sm">取消订单</button>{/if}
             {if $row.status === 1}<button id="send_goods" type="button" class="layui-btn layui-btn-primary layui-btn-sm">确认发货</button>{/if}
             {if $row.status === 2}<button id="receive_goods" type="button" class="layui-btn layui-btn-primary layui-btn-sm">确认收货</button>{/if}
-            {if $row.type === 0 && ($row.status === 1 || $row.status === 2 || $row.status === 3) && $row.type===0}<button id="apply_cancel" type="button" class="layui-btn layui-btn-primary layui-btn-sm">申请退款</button>{/if}
+            {if $row.type === 0 && ($row.status === 1 || $row.status === 2) && $row.type===0}<button id="apply_cancel" type="button" class="layui-btn layui-btn-primary layui-btn-sm">申请退款</button>{/if}
 <!--            {if $row.status === 4}<button id="receive_money1" type="button" class="layui-btn layui-btn-primary layui-btn-sm">确认收款</button>{/if}-->
             {if $row.status === 4}<a href="/{$Admin}/finace.offlinepayment/edit?id={$order_xianxia_id}"><button id="receive_money1" type="button" class="layui-btn layui-btn-primary layui-btn-sm">点击去审核</button></a>{/if}
         </div>
