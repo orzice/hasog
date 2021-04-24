@@ -170,9 +170,9 @@ class Finace extends ApiController
             if (!empty($c)) {
 //                return api_return(0, '提交成功,等待审核');
                 if (!$return_view) {
-                    return api_return(0, '提交成功,等待审核');
+                    return api_return(1, '提交成功,等待审核');
                 } else {
-                    $this->apiview(0, '提交成功,等待审核');
+                    $this->apiview(1, '提交成功,等待审核');
                 }
             }
             $time = time();
@@ -180,9 +180,9 @@ class Finace extends ApiController
             if ($a) {
 //                return api_return(1, '提交成功,等待审核');
                 if (!$return_view) {
-                    return api_return(0, '提交成功,等待审核');
+                    return api_return(1, '提交成功,等待审核');
                 } else {
-                    $this->apiview(0, '提交成功,等待审核');
+                    $this->apiview(1, '提交成功,等待审核');
                 }
             } else {
 //                return api_return(0, '失败');
