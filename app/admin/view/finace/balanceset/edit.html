@@ -21,6 +21,70 @@
 
 <!--            <tip>是否允许用户对账户余额进行充值</tip>-->
         </div>
+         <div id="recharge" {eq name="$row.recharge" value="0"}style="display:none"{/eq} >
+        <div class="layui-form-item" pane="">
+            <label class="layui-form-label">余额充值方式</label>
+            <div class="layui-input-block">
+                <input type="hidden" name="balance[manual_wechat]" value="0">
+                <input type="checkbox" name="balance[manual_wechat]" value="1" lay-skin="primary" title="微信" {eq name="$row.manual_wechat" value="1"}checked=""{/eq}>
+                <input type="hidden" name="balance[manual_alipay]" value="0">
+                <input type="checkbox" name="balance[manual_alipay]" value="1" lay-skin="primary" title="支付宝"{eq name="$row.manual_alipay" value="1"}checked=""{/eq}>
+                <input type="hidden" name="balance[manual_offline]" value="0">
+                <input type="checkbox" name="balance[manual_offline]" value="1" lay-skin="primary" title="线下"{eq name="$row.manual_offline" value="1"}checked=""{/eq}>
+            </div>
+        </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <input type="radio" name="balance[proportion_status]" lay-filter="balance[proportion_status]" value="0" title="赠送固定金额" {eq name="$row.proportion_status" value="0"}checked=""{/eq} >
+                    <input type="radio" name="balance[proportion_status]" lay-filter="balance[proportion_status]" value="1" title="赠送充值比例" {eq name="$row.proportion_status" value="1"}checked=""{/eq}>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label"></label>
+                <h4>
+                    充值满额送:
+                    <button type='button' class="layui-btn layui-btn-normal layui-btn-sm" onclick='addRechargeItem()' style="margin-bottom:5px">
+                        <i class='fa fa-plus'></i> 增加优惠项
+                    </button>
+                </h4>
+                <input type="hidden" name="balance[enough][]" value="" autocomplete="off" class="layui-input">
+                <input type="hidden" name="balance[give][]" value="" autocomplete="off" class="layui-input">
+                <div class="layui-form-item recharge-items" >
+                    <div class="recharge-item">
+                        {foreach $sole as $key=>$vo }
+                         <div class="recharge-item">
+                         <label class="layui-form-label"></label>
+                         <div class="layui-inline">
+                         <div class="layui-input-inline">
+                         满<input type="text" name="balance[enough][]" value="{$vo.enough}" autocomplete="off" class="layui-input">
+                         </div>
+                         <div class="layui-input-inline">
+                         赠送<input type="text" name="balance[give][]" value="{$vo.give}" autocomplete="off" class="layui-input">
+                         </div>
+                         <span class="layui-badge layui-bg-gray unset">{if empty($row.proportion_status)} 元 {else /} % {/if}</span>
+                         <button type="button"  class="layui-btn layui-btn-danger layui-btn layui-btn-xs" onclick="removeRechargeItem(this)" style="margin-bottom:5px">
+                          X
+                          </button>
+                          </div>
+                         </div>
+                        {/foreach}
+                        </div>
+                </div>
+                <div style="margin-left: 130px">
+                    <blockquote class="site-text layui-elem-quote" style="color: #737373">
+                        <p>两项都填写才能生效</p>
+                        <p>赠送固定金额：充值满100，赠送10元,实际赠送10元</p>
+                        <p>赠送充值比例：充值满200，赠送15%，实际赠送30【200*15%】元</p>
+                    </blockquote>
+                </div>
+
+<!--                <tip style="margin-left: 130px">两项都填写才能生效</tip>-->
+<!--                <br>-->
+<!--                <tip style="margin-left: 130px">赠送固定金额：充值满100，赠送10元,实际赠送10元</tip>-->
+<!--                <br>-->
+<!--                <tip style="margin-left: 130px">赠送充值比例：充值满200，赠送15%，实际赠送30【200*15%】元</tip>-->
+            </div>
+        </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label">开启余额转账</label>
