@@ -29,6 +29,8 @@ HaSog幻神商城收费么？可以商用么？：https://cloud.hasog.com/toutia
 
 ---
 
+演示站（基础商城）：https://cloud.hasog.com/toutiao/article/10.html
+
 后台视频教程：https://www.bilibili.com/video/BV17K411w7mr
 
 前端默认框架展示：https://www.bilibili.com/video/BV1NK4y1m7jL
@@ -74,6 +76,16 @@ HaSog幻神商城收费么？可以商用么？：https://cloud.hasog.com/toutia
 > 后端开发：Orzice/小涛（吴英涛）
 > 
 > 前端开发：Orzice/小涛（吴英涛），M-A-O（张帆）
+
+
+
+**已离职**
+
+> 
+> M-A-O（张帆） 2020-8-24 ~ 2021-4-10 离职
+> 
+> 王火火（王琰豪）2020-11-11 ~ 2021-4-27 离职
+> 
 
 
 

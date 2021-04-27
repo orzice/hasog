@@ -189,9 +189,6 @@ class Dispatch extends AdminController
         $data = $this->model->where('did',$id)->find();
 
         if ($this->request->isAjax()) {
-            if(env('hasog.is_demo', false)){
-                $this->error('演示环境下不允许修改');
-            }
             if (input('selectFields')) {
                 return $this->selectList();
             }
