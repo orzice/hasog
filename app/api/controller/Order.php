@@ -589,6 +589,9 @@ class Order extends ApiController
                 $this->apiview(0, '订单不存在');
             }
         }
+        if ($pay_type_id !== 1 && $pay_type_id !== 2) {
+            $return_view = false;
+        }
 //        !array_key_exists($pay_type_id, OrderModel::PAY_TYPE_ID) && $this->error('请选择正确的支付方式');
         if (!array_key_exists($pay_type_id, OrderModel::PAY_TYPE_ID)) {
             if (!$return_view) {
