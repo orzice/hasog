@@ -53,7 +53,7 @@ if (!function_exists('UserUploadfileDelete')) {
             }
         }
         //删除数据库记录
-        \app\admin\model\SystemUploadfile::where('file','<>',"")->where('state',0)->delete();
+        \app\admin\model\MemberUploadfile::where('file','<>',"")->where('state',0)->delete();
         return true;
     }
 }
