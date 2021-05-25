@@ -90,7 +90,11 @@ require(["jquery", "easy-admin", "vue","layer"], function ($, ea, Vue,layer) {
   //loading带文字
   // layer.open({type: 2,shadeClose: false,content: '加载中'});
 
-    ea.listen();
+    // ea.listen();
+    
+    ea.listen(false, function (res) {
+        parent.parent.$(".layui-tab-item iframe[src='/{$Admin}/goods.category/index.html']")[0].contentWindow.location.reload();
+    }, false);
     
 });
 </script>

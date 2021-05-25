@@ -1,55 +1,52 @@
-<div class="layuimini-container">
-    <form id="app-form" class="layui-form layuimini-form">
-        <input type="hidden" name="id" value="{$row.id}">
-        <div class="layui-form-item">
-            <label class="layui-form-label required">用户id</label>
-            <div class="layui-input-block">
-                <input type="text" class="layui-input" lay-verify="required"  readonly="readonly " value="{$row.uid|default=''}">
-            </div>
-        </div>
-
-
-        <div class="layui-form-item">
-            {if !empty($img)  }
-            <label class="layui-form-label required">图片</label>
-            {/if}
-
-            {foreach $img as $vo }
-            <div class="layui-input-block">
-                <img src="$vo">
-            </div>
-            {/foreach}
-        </div>
-
-        <div class="layui-form-item">
-            <label class="layui-form-label required">内容</label>
-            <div class="layui-input-block">
-                <textarea  class="layui-textarea" readonly="readonly ">{$row.text|default=''}</textarea>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label required">客服回复</label>
-            <div class="layui-input-block">
-                <textarea  class="layui-textarea" name="kf_text">{$row.kf_text|default=''}</textarea>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">是否解决</label>
-            <div class="layui-input-block">
-                <input type="radio" name="state" value="1" title="已解决" {eq name="$row.state" value="1"}checked=""{/eq}>
-                <input type="radio" name="state" value="0" title="未解决" {eq name="$row.state" value="0"}checked=""{/eq}>
-            </div>
-        </div>
-
-        <div class="hr-line"></div>
-        <div class="layui-form-item text-center">
-            <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit>确认</button>
-        </div>
-
-    </form>
-</div>
-<script type="text/javascript">
-    require(["jquery", "easy-admin"], function ($, ea) {
-        ea.listen();
-    });
+<div class="layuimini-container">
+    <form id="app-form" class="layui-form layuimini-form">
+        <input type="hidden" name="id" value="{$row.id}">
+        <div class="layui-form-item">
+            <label class="layui-form-label required">用户id</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" lay-verify="required"  readonly="readonly " value="{$row.uid|default=''}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            {if !empty($img)  }
+            <label class="layui-form-label required">图片</label>
+            {/if}
+            {foreach $img as $vo }
+            <div class="layui-input-block">
+                <img src="$vo">
+            </div>
+            {/foreach}
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required">内容</label>
+            <div class="layui-input-block">
+                <textarea  class="layui-textarea" readonly="readonly ">{$row.text|default=''}</textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required">客服回复</label>
+            <div class="layui-input-block">
+                <textarea  class="layui-textarea" name="kf_text">{$row.kf_text|default=''}</textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">是否解决</label>
+            <div class="layui-input-block">
+                <input type="radio" name="state" value="1" title="已解决" {eq name="$row.state" value="1"}checked=""{/eq}>
+                <input type="radio" name="state" value="0" title="未解决" {eq name="$row.state" value="0"}checked=""{/eq}>
+            </div>
+        </div>
+
+        <div class="hr-line"></div>
+        <div class="layui-form-item text-center">
+            <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit>确认</button>
+        </div>
+
+    </form>
+</div>
+
+<script type="text/javascript">
+    require(["jquery", "easy-admin"], function ($, ea) {
+        ea.listen();
+    });
 </script>

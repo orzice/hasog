@@ -31,6 +31,7 @@ class Ajax extends ApiController
      */
     public function upload()
     {
+        $this->error('开发中，后期版本开放');
         $adminId = $this->MemberId();
         //================================================
         //  每一次上传 都会监控未使用的图片 进行删除处理
