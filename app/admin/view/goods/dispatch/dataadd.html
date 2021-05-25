@@ -136,6 +136,7 @@ tip{
 <script type="text/javascript">
 
 require(["jquery", "easy-admin", "vue","layer"], function ($, ea, Vue,layer) {
+    
 
     var form = layui.form;
 
@@ -253,8 +254,15 @@ require(["jquery", "easy-admin", "vue","layer"], function ($, ea, Vue,layer) {
                 $("input[name=street]").val($("option[value="+data.value+"]").text());
             });
 
+                // parent.$(".layui-tab-item iframe[src='/admin/goods.dispatch/data?id=1']")[0].contentWindow.location.reload();
+                // parent.layui.element.tabDelete('layuiminiTab', '/admin/goods.dispatch/dataadd?id=1');
       
-    ea.listen();
+    // ea.listen();
+
+            ea.listen(false, function (res) {
+                parent.$(".layui-tab-item iframe[src='/{$Admin}/goods.dispatch/data?id={$row.id}']")[0].contentWindow.location.reload();
+                parent.layui.element.tabDelete('layuiminiTab', '/{$Admin}/goods.dispatch/dataadd?id={$row.id}');
+            }, false);
     
 });
 </script>
