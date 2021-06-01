@@ -130,11 +130,11 @@ class Login extends ApiController
                 'password|用户密码' => 'require|length:6,20',
                 'repassword|再次输入密码' => 'require|confirm:password',
                 'parent_id|推荐人ID'=> 'number|length:1,8',
+                'code|手机验证码'=> 'require|number',
             ];
             $message_status = sysconfig('sms', 'message_status');
             // 开启手机验证码
             if ($message_status==1) {
-                $rule['code|手机验证码'] = 'require|number';
                 $validate = $this->validate($post, $rule);
                 if ($validate !== true){
 //                $this->error($validate);
@@ -202,7 +202,109 @@ class Login extends ApiController
     //找回密码
     public function lostpasswd()
     {
+        $user_session = $this->MemberId();
 
+        if ($user_session) {
+            return api_return(0, '您已登录');
+        }
+
+        $post = $this->request->post();
+        $rule = [
+            'mobile|用户手机号' => 'require|mobile',
+            'password|用户密码' => 'require|length:6,20',
+            'repassword|再次输入密码' => 'require|confirm:password',
+        ];
+        $message_status = sysconfig('sms', 'message_status');
+        // 开启手机验证码
+        if ($message_status!==1) {
+            return api_return(0, '管理员没有开通验证码！无法找回密码！');
+        }
+        $validate = $this->validate($post, $rule);
+        if ($validate !== true){
+            return api_return(0, $validate);
+        }
+        //验证手机验证码
+        $sms = new SmsService();
+        $sms->init();
+        $codes = $sms->Code($post['mobile']);
+        if (!$codes) {
+            return api_return(0, '手机验证码错误');
+        }
+        if ($codes !== $post['code']) {
+            return api_return(0, '手机验证码错误');
+        }
+        
+        $isset_phone = Member::where('mobile', $post['mobile'])->find();
+        if(empty($isset_phone)){
+            return api_return(0, '该手机号未注册');
+        }
+
+        $post['password'] = U_password($post['password']);
+        $array = ['password'=>$post['password']];
+
+
+        try {
+            $user = new Member();
+            $result = $user->where('mobile', $post['mobile'])->update($array);
+        } catch (\Exception $e) {
+            return api_return(0, '重置密码失败,请稍后重试哦');
+        }
+        if($result !== false){
+            $sms->Code($post['mobile'], -1);
+            return api_return(1, '重置密码成功！请去登录吧！');
+        }else{
+            return api_return(0, '重置密码失败！');
+        }
+        
+
+    }
+    //找回密码发送短信
+    public function mobilezh(){
+        $message_status = sysconfig('sms', 'message_status');
+        if ($message_status === 0){
+            return api_return(0, '获取验证码失败，短信验证未开启');
+        }
+        $user_session = $this->MemberId();
+        if ($user_session) {
+            return api_return(0, '您已登录');
+        }
+
+        $post = $this->request->post();
+        $rule = [
+            'username|手机号'      => 'require|mobile',
+            'captcha|验证码'       => 'require|captcha',
+        ];
+        $validate = $this->validate($post, $rule);
+        //验证失败
+        if($validate !== true){
+            return api_return(0, $validate);
+        }
+        $mobile = $post["username"];
+
+
+        //验证账号是否存在
+        $row = Member::where("mobile",$mobile)->find();
+        if (empty($row)) {
+            return api_return(0, '手机号不存在！');
+        }
+
+        $sms = new SmsService();
+        $sms->init();
+        $code = yanzhengma(6);
+
+        $tz = $sms->MobileCd($mobile);
+        if (!$tz) {
+            return api_return(0, $sms->Error());
+        }
+        $fs = true;
+        $fs = $sms->GoSmSCode($mobile,$code);
+        $sms->MobileCd($mobile,1);
+        $sms->Code($mobile,$code);
+        if (!$fs) {
+            return api_return(0, $sms->Error());
+        }
+
+        return api_return(1, '发送成功');
     }
 
     //发送短信
