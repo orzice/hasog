@@ -242,7 +242,6 @@ class Login extends ApiController
         $post['password'] = U_password($post['password']);
         $array = ['password'=>$post['password']];
 
-
         try {
             $user = new Member();
             $result = $user->where('mobile', $post['mobile'])->update($array);
