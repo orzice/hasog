@@ -25,9 +25,31 @@ Github  [https://github.com/orzice/hasog](https://github.com/orzice/hasog)
 
 开发计划：https://cloud.hasog.com/toutiao/article/8.html
 
-HaSog幻神商城收费么？可以商用么？：https://cloud.hasog.com/toutiao/article/7.html
+
+
+
+
+## **HaSog幻神商城 SaaS版**
+
+点击免费试用45天：https://saas.hasog.com/ex/price.html
+
+
+**你什么都不需要管，由我们专业技术团队维护！**
+**不需要你购买域名！不需要购买服务器！也不需要备案！**我们来提供！
+助力项目快速上线！抢先占领市场！
+
+![SaaS版](https://images.gitee.com/uploads/images/2021/0602/110920_61fefd24_813605.png "2.png")
+
+
+
+### SaaS渠道合作
+SaaS渠道合作（高佣，无任何套路） ：https://saas.hasog.com/ex/agenthelp.html
+
+![渠道合作](https://images.gitee.com/uploads/images/2021/0602/110913_84cd166e_813605.png "1.png")
 
 ---
+
+
 
 演示站（基础商城）：https://cloud.hasog.com/toutiao/article/10.html
 
@@ -36,6 +58,11 @@ HaSog幻神商城收费么？可以商用么？：https://cloud.hasog.com/toutia
 前端默认框架展示：https://www.bilibili.com/video/BV1NK4y1m7jL
 
 用户手册：https://www.kancloud.cn/hasog_cloud/hasog
+
+HaSog幻神商城收费么？可以商用么？：https://cloud.hasog.com/toutiao/article/7.html
+
+
+
 
 
 
@@ -76,6 +103,17 @@ HaSog幻神商城收费么？可以商用么？：https://cloud.hasog.com/toutia
 > 后端开发：Orzice/小涛（吴英涛）
 > 
 > 前端开发：Orzice/小涛（吴英涛），~~M-A-O（张帆）~~
+
+
+
+**幻神SaaS云平台**：https://saas.hasog.com
+
+> 
+> 负责人/主程：Orzice/小涛（吴英涛）
+> 
+> 后端开发：Orzice/小涛（吴英涛）
+> 
+> 前端开发：Orzice/小涛（吴英涛）
 
 
 
