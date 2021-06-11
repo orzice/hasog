@@ -132,7 +132,8 @@ class Login extends ApiController
                 'parent_id|推荐人ID'=> 'number|length:1,8',
                 'code|手机验证码'=> 'require|number',
             ];
-            $message_status = sysconfig('sms', 'message_status');
+            $message_status = sysconfig('default','message_status');//sysconfig('sms', 'message_status');
+            $message_status = intval($message_status);
             // 开启手机验证码
             if ($message_status==1) {
                 $validate = $this->validate($post, $rule);
@@ -214,7 +215,8 @@ class Login extends ApiController
             'password|用户密码' => 'require|length:6,20',
             'repassword|再次输入密码' => 'require|confirm:password',
         ];
-        $message_status = sysconfig('sms', 'message_status');
+        $message_status = sysconfig('default', 'message_status');
+        $message_status = intval($message_status);
         // 开启手机验证码
         if ($message_status!==1) {
             return api_return(0, '管理员没有开通验证码！无法找回密码！');
@@ -259,8 +261,9 @@ class Login extends ApiController
     }
     //找回密码发送短信
     public function mobilezh(){
-        $message_status = sysconfig('sms', 'message_status');
-        if ($message_status === 0){
+        $message_status = sysconfig('default', 'message_status');
+        $message_status = intval($message_status);
+        if ($message_status !== 1){
             return api_return(0, '获取验证码失败，短信验证未开启');
         }
         $user_session = $this->MemberId();
@@ -308,8 +311,9 @@ class Login extends ApiController
 
     //发送短信
     public function mobile(){
-        $message_status = sysconfig('sms', 'message_status');
-        if ($message_status === 0){
+        $message_status = sysconfig('default', 'message_status');
+        $message_status = intval($message_status);
+        if ($message_status !== 1){
             return api_return(0, '获取验证码失败，短信验证未开启');
         }
         $user_session = $this->MemberId();
@@ -382,7 +386,8 @@ class Login extends ApiController
 
     //是否开启短息验证码
     public function message_state(){
-        $status = sysconfig('sms', 'message_status');
+        $status = sysconfig('default', 'message_status');
+        $status = intval($status);
         $data = ['status'=>$status];
         return api_return(1, '请求成功', $data);
 
