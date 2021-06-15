@@ -44,7 +44,7 @@ CREATE TABLE `{$tableName}` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 ETO;
-Db::execute($tableName);
+Db::execute($Sql);
 
 
         if ($lv >= 2021040801) {return true;}
