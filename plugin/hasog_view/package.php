@@ -12,26 +12,26 @@
 // +----------------------------------------------------------------------
 // | Author：Orzice(小涛)  https://gitee.com/orzice
 // +----------------------------------------------------------------------
-// | DateTime：2021-03-06 17:52:38
+// | DateTime：2021-01-12 15:53:49
 // +----------------------------------------------------------------------
 
-return [
-    // 版本
-    'version'         => '1.0.0',
-    // 日期
-    'release'         => '2021061501',
-    // Session配置
-    'SessionName'         => 'user',
-    // 后台管理员密码加密
-    'pwSDK'         => '',
-    // 前台用户密码加密
-    'userPW'         => '',
-    // 云平台配置
-    'CloudUrl'         => 'https://cloud.hasog.com',
-    //  后台访问目录
-    'Admin'         => '',
-    //  唯一ID 勿动
-    'uniqueid'         => '',
-    //  服务器公网IP
-    'ServerIp'         => '',
-];
+use think\facade\Config;
+use think\facade\Event;
+use AcgCron\Cron;
+
+
+return function () {
+	// 设置插件
+	Config::set(['hasog_view' => [
+        'name' => '幻神商城默认前端组件',
+        'version' => '1.0.0',
+        'description' => '幻神商城默认前端组件,包含PC,WAP页面，不需要启动和安装！',
+        'author' => '',
+        'url' => '',
+        'namespace' => 'HaSog\\plugin\\hasog_view',
+        'permit' => 1,//如果不设置则不会做权限检测
+        'menu' => 1,//如果不设置则不显示菜单，子菜单也将不显示
+        'parents' => [],
+        ]], 'plugins_menu');
+
+};

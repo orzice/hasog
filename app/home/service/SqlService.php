@@ -1174,6 +1174,21 @@ CREATE TABLE `{$tableName}` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='快捷导航分类';
 ETO;
 $this->detectTable($tableName,$Sql);
+//=================================================
+$tableName = 'finace_bankcard';
+$Sql = <<<ETO
+CREATE TABLE `{$tableName}` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增id',
+  `bankcard` varchar(20) NOT NULL DEFAULT '0' COMMENT '银行卡号',
+  `time` int(11) NOT NULL COMMENT '时间',
+  `u_id` int(11) NOT NULL DEFAULT '0' COMMENT '用户id',
+  `name` varchar(255) NOT NULL COMMENT '姓名',
+  `bankname` varchar(255) NOT NULL COMMENT '银行名称',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+ETO;
+$this->detectTable($tableName,$Sql);
+
 
     $this->installData();
 
@@ -1267,6 +1282,9 @@ ETO;
 
 $this->insertTable($tableName,$Sql);
 //=================================================
+
+
+
 
 $tableName = 'system_config';
 $Sql = <<<ETO

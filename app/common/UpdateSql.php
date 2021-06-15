@@ -28,9 +28,26 @@ class UpdateSql
     public function up($release=0)
     {
       $lv = $release;
+      $tablePrefix = Config::get('database.connections.mysql.prefix');
+
+        if ($lv >= 2021061501) {return true;}
+
+$tableName = $tablePrefix.'finace_bankcard';
+$Sql = <<<ETO
+CREATE TABLE `{$tableName}` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增id',
+  `bankcard` varchar(20) NOT NULL DEFAULT '0' COMMENT '银行卡号',
+  `time` int(11) NOT NULL COMMENT '时间',
+  `u_id` int(11) NOT NULL DEFAULT '0' COMMENT '用户id',
+  `name` varchar(255) NOT NULL COMMENT '姓名',
+  `bankname` varchar(255) NOT NULL COMMENT '银行名称',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+ETO;
+Db::execute($tableName);
+
 
         if ($lv >= 2021040801) {return true;}
-        $tablePrefix = Config::get('database.connections.mysql.prefix');
 
         $name = $tablePrefix.'pay_log';
 
