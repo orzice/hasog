@@ -25,7 +25,33 @@ Github  [https://github.com/orzice/hasog](https://github.com/orzice/hasog)
 
 开发计划：https://cloud.hasog.com/toutiao/article/8.html
 
+
+
+
+
+## **HaSog幻神商城 SaaS版**
+
+点击免费试用45天：https://saas.hasog.com/ex/price.html
+
+
+**你什么都不需要管，由我们专业技术团队维护！**
+**不需要你购买域名！不需要购买服务器！也不需要备案！**我们来提供！
+助力项目快速上线！抢先占领市场！
+
+![SaaS版](https://images.gitee.com/uploads/images/2021/0602/110920_61fefd24_813605.png "2.png")
+
+
+
+### SaaS渠道合作
+SaaS渠道合作（高佣，无任何套路） ：https://saas.hasog.com/ex/agenthelp.html
+
+![渠道合作](https://images.gitee.com/uploads/images/2021/0602/110913_84cd166e_813605.png "1.png")
+
 ---
+
+
+
+演示站（基础商城）：https://cloud.hasog.com/toutiao/article/10.html
 
 后台视频教程：https://www.bilibili.com/video/BV17K411w7mr
 
@@ -39,6 +65,17 @@ HaSog幻神商城收费么？可以商用么？：https://cloud.hasog.com/toutia
 
 
 
+
+## 交流群
+
+**QQ交流群（点击加群）：**[372193289](https://jq.qq.com/?_wv=1027&k=MOx0H0EK)
+![](https://images.gitee.com/uploads/images/2021/0310/175719_a49cdd9b_813605.jpeg)
+
+
+**微信交流群**
+
+![](https://images.gitee.com/uploads/images/2021/0310/135948_0e426530_813605.png)
+
 ## 开发团队
 >  开发公司：幻神科技 https://www.hasog.com
 
@@ -47,11 +84,11 @@ HaSog幻神商城收费么？可以商用么？：https://cloud.hasog.com/toutia
 **HaSog幻神商城开源软件**
 
 >  
->  负责人/主程：~~Orzice/小涛（吴英涛）~~
+>  负责人/主程：Orzice/小涛（吴英涛）
 >  
-> 后端开发：梗集（王国骁），~~王火火（王琰豪）~~，~~Orzice/小涛（吴英涛）~~
+> 后端开发：梗集（王国骁），~~王火火（王琰豪）~~，Orzice/小涛（吴英涛）
 > 
-> 前端开发：~~慵懒与猫（孙敬冉）~~，~~Orzice/小涛（吴英涛）~~
+> 前端开发：~~慵懒与猫（孙敬冉）~~，Orzice/小涛（吴英涛）
 > 
 > UI设计：潮鳴り（姚羽）
 > 
@@ -61,22 +98,22 @@ HaSog幻神商城收费么？可以商用么？：https://cloud.hasog.com/toutia
 **幻神云平台**：https://cloud.hasog.com
 
 > 
-> 负责人/主程：~~Orzice/小涛（吴英涛）~~
+> 负责人/主程：Orzice/小涛（吴英涛）
 > 
-> 后端开发：~~Orzice/小涛（吴英涛）~~
+> 后端开发：Orzice/小涛（吴英涛）
 > 
-> 前端开发：~~Orzice/小涛（吴英涛）~~，~~M-A-O（张帆）~~
+> 前端开发：Orzice/小涛（吴英涛），~~M-A-O（张帆）~~
 
 
 
 **幻神SaaS云平台**：https://saas.hasog.com
 
 > 
-> 负责人/主程：~~Orzice/小涛（吴英涛）~~
+> 负责人/主程：Orzice/小涛（吴英涛）
 > 
-> 后端开发：~~Orzice/小涛（吴英涛）~~
+> 后端开发：Orzice/小涛（吴英涛）
 > 
-> 前端开发：~~Orzice/小涛（吴英涛）~~
+> 前端开发：Orzice/小涛（吴英涛）
 
 
 
@@ -88,8 +125,6 @@ HaSog幻神商城收费么？可以商用么？：https://cloud.hasog.com/toutia
 > 王火火（王琰豪）2020-11-11 ~ 2021-4-27 离职【负责主体后端开发】
 > 
 > 慵懒与猫（孙敬冉）2019-3-14 ~ 2021-5-29 离职【负责主体前端开发】
-> 
-> Orzice/小涛（吴英涛）2019-3-3 ~ 2021-6-14 离职【负责人 / 主程】
 > 
 
 
